@@ -3,7 +3,7 @@ import sqlite3
 import logging_tools_GLS
 
 def test_connect_to_database():
-    path = "testSQL.db3"
+    path = "./tests/testSQL.db3"
     to_test = sql_wrapper_GLS.connect_to_database(path)
 
     assert type(to_test) is sqlite3.Connection
@@ -23,8 +23,6 @@ def test_query_fails_for_lack_of_connection_object():
 
 
 
-
-
 def test_reading_database():
     def test_column1(the_results,first_column,x):
         assert (first_column) == the_results[x][0]
@@ -39,7 +37,7 @@ def test_reading_database():
         assert (fourth_column) == the_results[x][3]
     # connect
 
-    path = "testSQL.db3"
+    path = "./tests/testSQL.db3"
     to_test = sql_wrapper_GLS.connect_to_database(path)
 
     # create SQL query

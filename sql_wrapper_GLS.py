@@ -40,26 +40,11 @@ def print_search_results(search_result):
     for row in search_result:
         print (row)
 
-def gls1():
-
-    path = "testSQL.db3"
-    to_test = connect_to_database(path)
-    query = "SELECT * FROM TestTable01"
-    the_results = retrieve_from_database(to_test, query)
-    
-    print_search_results(the_results)
-    
-    for x in range(0,4): # there are 4 lines in test table
-        
-        print (x+1)
-        print(the_results[x][0]) # first column of each row is numbered 1-4; results start at zero, however, so plus 1.
-        print ("--")
-
 def main():
      log.setup_logging()
      log.start_logging()
      print ("Begin main.")
-     gls1()
+     
      print ("End of program")
      log.end_logging()
  
