@@ -7,6 +7,7 @@ def test_connect_to_database():
     to_test = sql_wrapper_GLS.connect_to_database(path)
 
     assert type(to_test) is sqlite3.Connection
+    to_test.close()
 
 
 def test_fail_connect_since_file_not_exist():
@@ -27,7 +28,7 @@ def test_query_fails_for_improper_SQL_query():
     to_test = sql_wrapper_GLS.connect_to_database(path) # need a database Object to pass to test
 
     assert type (sql_wrapper_GLS.retrieve_from_database(to_test, "Not A Query")) is sqlite3.DatabaseError
-
+    to_test.close()
     
 
 

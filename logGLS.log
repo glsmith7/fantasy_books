@@ -5,3 +5,10 @@ INFO:root:Logging begins at 21:49:03 on 11/04/2023
 INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000015AED09C5E0>
 ERROR:root:Incomplete or improper SQL query
 INFO:root:Logging ended at 21:49:03 on 11/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:51:22 on 11/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001E89F15C5E0>
+ERROR:root:Incomplete or improper SQL query
+INFO:root:Logging ended at 21:51:22 on 11/04/2023

@@ -39,6 +39,7 @@ def main():
      db = connect_to_database ("testSQL.db3")
      print (retrieve_from_database(db,"B"))
      print ("End of program")
+     db.close()
      log.end_logging()
  
 if __name__ == "__main__":
