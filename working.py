@@ -6,8 +6,9 @@ def main():
      log.setup_logging()
      log.start_logging()
      print ("Begin main.")
-     db = sql.connect_to_database ("testSQL.db3")
-     print (sql.sqlretrieve_from_database(db,"B"))
+     db = sql.connect_to_database ("./sqlite_db/trialSQL.db3")
+     query = 'SELECT * from "TestTable01";'
+     print (sql.retrieve_from_database(db,query))
      print ("End of program")
      db.close()
      log.end_logging()

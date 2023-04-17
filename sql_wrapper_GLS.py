@@ -7,21 +7,25 @@ import datetime
 
 def connect_to_database(path):
 
-   if os.path.exists(path) == False:
+    if os.path.isfile(path) == False:
         log.logging.error ("Database name does not exist.")
-        return FileNotFoundError
+        raise FileNotFoundError
 
-   try:
-     connection = sqlite3.connect(path)
-     log.logging.info ("SLQ connection established: " + str(connection))
-     return connection
-   
-   except OSError as err:
+    try:
+        connection = sqlite3.connect(path)
+
+    except OSError as err:
        
-       log.logging.error ("The error" + err + " occurred.")
-       return(print(f"The error '{err}' occurred"))
-   
+        log.logging.error ("The error" + err + " occurred.")
+        return(print(f"The error '{err}' occurred"))
+        raise
 
+    else:
+         log.logging.info ("SLQ connection established: " + str(connection))
+         
+    return connection
+   
+   
 def retrieve_from_database(connection, query):
     if type(connection) is not sqlite3.Connection:
         log.logging.error ("There is no open connection to a database.")

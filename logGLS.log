@@ -1,0 +1,26 @@
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 13:12:11 on 17/04/2023
+ERROR:root:Database name does not exist.
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 13:13:14 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000217723508B0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 13:13:58 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000212ADD908B0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 13:15:45 on 17/04/2023
+ERROR:root:Database name does not exist.
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 13:16:35 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000025B50FD07C0>
+INFO:root:Logging ended at 13:16:35 on 17/04/2023

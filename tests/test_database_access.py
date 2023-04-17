@@ -1,21 +1,22 @@
 import sql_wrapper_GLS
 import sqlite3
 import logging_tools_GLS
+import pytest
 
 def test_connect_to_database():
     path = "./tests/testSQL.db3"
     to_test = sql_wrapper_GLS.connect_to_database(path)
 
     assert type(to_test) is sqlite3.Connection
+    
     to_test.close()
 
 
 def test_fail_connect_since_file_not_exist():
-    path = "xxBogusNonexistantDatabase.db3"
-    to_test = sql_wrapper_GLS.connect_to_database(path)
+    with pytest.raises(FileNotFoundError):
+        path = "xxBogusNonexistantDatabase.db3"
+        to_test = sql_wrapper_GLS.connect_to_database(path)
 
-    assert type(to_test) is not sqlite3.Connection # no connection since DB doesn't exist
-    assert to_test is FileNotFoundError # returns FileNotFound if database doesn't exist
 
 
 def test_query_fails_for_lack_of_connection_object():
