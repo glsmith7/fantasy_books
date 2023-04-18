@@ -45,7 +45,7 @@ def test_reading_database():
     query = "SELECT * FROM TestTable01"
     the_results = sql_wrapper_GLS.retrieve_from_database(to_test, query)
     
-    sql_wrapper_GLS.print_search_results(the_results)
+    sql_wrapper_GLS.print_SQL_results(the_results)
 
     the_words = ("One","Two","Three","Four") # these are in the 3rd column of the test database.
 
