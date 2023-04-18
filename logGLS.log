@@ -24,3 +24,302 @@ CRITICAL:root:
 INFO:root:Logging begins at 13:16:35 on 17/04/2023
 INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000025B50FD07C0>
 INFO:root:Logging ended at 13:16:35 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:43:27 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000017E172247C0>
+INFO:root:Logging ended at 19:43:27 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:43:58 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001CB3D9347C0>
+INFO:root:Logging ended at 19:43:58 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:45:19 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000022C6EBA48B0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:46:13 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000029D7C4F48B0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:49:42 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001B1C7AD48B0>
+INFO:root:Logging ended at 19:49:42 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:57:14 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000020EC54248B0>
+INFO:root:Logging ended at 19:57:14 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:57:49 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001A67F0348B0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:58:31 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000027B26CF48B0>
+INFO:root:Logging ended at 19:58:31 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:58:39 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000029B6E4D48B0>
+INFO:root:Logging ended at 19:58:39 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:58:47 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000266925748B0>
+INFO:root:Logging ended at 19:58:47 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 19:59:04 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000242D2FF48B0>
+INFO:root:Logging ended at 19:59:04 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:02:31 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001DA078E48B0>
+INFO:root:Logging ended at 20:02:31 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:03:01 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002077FBF48B0>
+INFO:root:Logging ended at 20:03:01 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:03:13 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001D7BA7847C0>
+INFO:root:Logging ended at 20:03:13 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:03:56 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002C70A9247C0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:04:08 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000257A12048B0>
+INFO:root:Logging ended at 20:04:08 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:05:05 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002696A5348B0>
+INFO:root:Logging ended at 20:05:05 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:05:53 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001BC9C3748B0>
+INFO:root:Logging ended at 20:05:53 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:06:15 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002049E2F47C0>
+INFO:root:Logging ended at 20:06:15 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:07:58 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000019F61BE47C0>
+INFO:root:Logging ended at 20:07:58 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:17:19 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000175F01B47C0>
+INFO:root:Logging ended at 20:17:19 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:26:18 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000020BCE3E48B0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:26:43 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000018D20B086D0>
+INFO:root:Logging ended at 20:26:43 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:27:40 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001D199D847C0>
+INFO:root:Logging ended at 20:27:40 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:30:46 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002630E8C47C0>
+INFO:root:Logging ended at 20:30:46 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:32:11 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000024CD04947C0>
+INFO:root:Logging ended at 20:32:11 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:32:23 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000215790247C0>
+INFO:root:Logging ended at 20:32:23 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:34:06 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001C3EDA946D0>
+INFO:root:Logging ended at 20:34:06 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:35:31 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001A4574E06D0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:38:17 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001C0D02746D0>
+INFO:root:Logging ended at 20:38:17 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:40:11 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001DF946A47C0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:41:35 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000025D362C47C0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:42:24 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000019955D047C0>
+INFO:root:Logging ended at 20:42:24 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 20:45:19 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001EF713947C0>
+INFO:root:Logging ended at 20:45:19 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:03:58 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:04:25 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002C04E6546D0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:05:11 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000153D12747C0>
+INFO:root:Logging ended at 21:05:11 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:07:01 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000204370148B0>
+INFO:root:Logging ended at 21:07:01 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:08:41 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000287512B75B0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:09:08 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000014DAA9948B0>
+INFO:root:Logging ended at 21:09:08 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:09:56 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000231A99647C0>
+INFO:root:Logging ended at 21:09:56 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:11:21 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000027948CC49A0>
+INFO:root:Logging ended at 21:11:21 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:15:09 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000281770047C0>
+INFO:root:Logging ended at 21:15:09 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:18:34 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001F9F43F48B0>
+INFO:root:Logging ended at 21:18:34 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:22:12 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001B8D65B75B0>
+INFO:root:Logging ended at 21:22:12 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:23:37 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000257D6C746D0>
+INFO:root:Logging ended at 21:23:37 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:24:15 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000266D18847C0>
+INFO:root:Logging ended at 21:24:15 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:26:58 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002B1179547C0>
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:30:10 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001D790D546D0>
+INFO:root:Logging ended at 21:30:10 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:30:27 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000014DCAA147C0>
+INFO:root:Logging ended at 21:30:27 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:36:16 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001BD594C75B0>
+INFO:root:Logging ended at 21:36:16 on 17/04/2023
+CRITICAL:root:
+
+-----------Restart-----------
+INFO:root:Logging begins at 21:36:26 on 17/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000016B3D5C47C0>
+INFO:root:Logging ended at 21:36:26 on 17/04/2023
