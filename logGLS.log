@@ -488,3 +488,17 @@ INFO:root:There are 2 columns and 2 rows in the 2D array.
 INFO:root:Logging ended at 13:23:37 on 18/04/2023
 
 
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:50:51 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000024AE9B847C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Surprised'), ('3-6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Surprised'}, {'DieRange': '3-6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+

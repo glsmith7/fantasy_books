@@ -2,6 +2,7 @@ import sql_wrapper_GLS
 import sqlite3
 import logging_tools_GLS
 import pytest
+import table_tools_GLS
 
 def test_connect_to_database():
     path = "./tests/testSQL.db3"
@@ -73,7 +74,7 @@ def test_get_column_names():
     the_results = sql_wrapper_GLS.retrieve_from_database(to_test, query)
 
     # check results
-    list_of_column_names = sql_wrapper_GLS.give_column_names(the_results)
+    list_of_column_names = table_tools_GLS.give_column_names(the_results)
 
     assert list_of_column_names == result_should_equal_this
 
@@ -89,14 +90,14 @@ def test_get_2d_array():
     # get column names
     query = "PRAGMA table_info(TestTable01);"
     the_results = sql_wrapper_GLS.retrieve_from_database(dB, query)
-    list_of_column_names = sql_wrapper_GLS.give_column_names(the_results)
+    list_of_column_names = table_tools_GLS.give_column_names(the_results)
 
     # create SQL query for entire table
     query = "SELECT * from 'TestTable01'"
     results = sql_wrapper_GLS.retrieve_from_database(dB,query)
 
     # get 2D database
-    results = sql_wrapper_GLS.get_2d_array(list_of_column_names,results)
+    results = table_tools_GLS.get_2d_array(list_of_column_names,results)
 
     assert results == result_should_equal_this
 
@@ -109,14 +110,14 @@ def test_get_table_as_array():
     table_name = "TestTable01"
 
     # test with default search (the entire table)
-    results = sql_wrapper_GLS.get_table_as_array(path, table_name)
+    results = table_tools_GLS.get_table_as_array(path, table_name)
     assert results == result_should_equal_this
 
     # test with keyword search (an SQL search query included)
-    results = sql_wrapper_GLS.get_table_as_array(path, table_name, query="SELECT * FROM 'TestTable01' WHERE TestUniqueID = 1")
+    results = table_tools_GLS.get_table_as_array(path, table_name, query="SELECT * FROM 'TestTable01' WHERE TestUniqueID = 1")
     assert results == [{'TestUniqueID': 1, 'DiceFormula': '1d6+1', 'DescriptionString': 'One', 'TestInteger01': 1123}]
 
     # test with keyword search (an SQL search query included, with "_replace_" to represent the table name
-    results = sql_wrapper_GLS.get_table_as_array(path, table_name, query="SELECT * FROM '_replace_' WHERE TestUniqueID = 2")
+    results = table_tools_GLS.get_table_as_array(path, table_name, query="SELECT * FROM '_replace_' WHERE TestUniqueID = 2")
     assert results == [{'TestUniqueID': 2, 'DiceFormula': '2d6+2', 'DescriptionString': 'Two', 'TestInteger01': 2123}]
 
