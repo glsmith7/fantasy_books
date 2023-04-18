@@ -1,0 +1,490 @@
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 12:44:29 on 18/04/2023
+ERROR:root:Database name does not exist.
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 12:46:59 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001FBB00848B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 12:46:59 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 12:50:51 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000022201F147C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 12:51:48 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000020C738048B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 12:51:48 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 12:57:54 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001E9678948B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 12:58:39 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000143857F46D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 12:58:39 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 12:59:27 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000028769C747C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:00:21 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000026B477248B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:00:21 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:01:09 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001CBF52A48B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:01:58 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:02:40 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002328B0247C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:02:40 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:03:30 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002163D7F47C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:03:30 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:03:52 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001FA7B7047C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:03:52 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:04:19 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000026FF69648B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:04:19 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:05:00 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000020AA72447C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:05:00 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:05:24 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002967F2575B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:05:24 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:06:08 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001DAB17346D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:06:08 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:06:23 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000014C432C47C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:06:23 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:06:33 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000195B11946D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:06:33 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:07:46 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000024961C346D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:08:02 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001B06F1D75B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:08:02 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:08:43 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002426AE775B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:08:43 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:09:27 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000018C05FF46D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:10:10 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001789CDC75B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:11:21 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001CB282647C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2–', 'Surprised'), ('3–6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2–', 'Result': 'Surprised'}, {'DieRange': '3–6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:13:14 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001C792DE46D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Surprised'), ('3-6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Surprised'}, {'DieRange': '3-6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:13:14 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:16:52 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001BD75EE46D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Surprised'), ('3-6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Surprised'}, {'DieRange': '3-6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:16:52 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:21:39 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000020EB38E47C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Surprised'), ('3-6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Surprised'}, {'DieRange': '3-6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:22:41 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000205B3D646D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Surprised'), ('3-6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Surprised'}, {'DieRange': '3-6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:22:41 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:23:01 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000026BDBB875B0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Surprised'), ('3-6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Surprised'}, {'DieRange': '3-6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:23:01 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:23:11 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000023A8B2047C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Surprised'), ('3-6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Surprised'}, {'DieRange': '3-6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:23:11 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 13:23:37 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001A979F547C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Surprised'), ('3-6+', 'Ready')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Surprised'}, {'DieRange': '3-6+', 'Result': 'Ready'}]
+
+INFO:root:There are 2 columns and 2 rows in the 2D array.
+
+INFO:root:Logging ended at 13:23:37 on 18/04/2023
+
+
