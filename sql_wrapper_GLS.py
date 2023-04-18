@@ -39,6 +39,8 @@ def retrieve_from_database(connection, query):
     cursor = connection.cursor()
     cursor.execute(query)
     search_result = cursor.fetchall()
+
+    log.logging.info ("Search result of SQL database returned as: " + str(search_result) + "\n")
     return search_result
 
 def print_SQL_results (search_result):
@@ -50,6 +52,7 @@ def give_column_names(results):
     for row in results:
         col_names.append(row[1])
     
+    log.logging.info ("Column names returned as: " + str(col_names) + "\n")
     return col_names
 
 def get_2d_array(columns, results):
@@ -69,9 +72,9 @@ def get_2d_array(columns, results):
         
         results[j] = d # set the row of results to the dictionary value
     
-    rows_and_columns_log_message = "There are {} columns and {} rows.".format(len(columns),len(results))
-    log.logging.info ("2D array is returned as: " + str(results))
-    log.logging.info (rows_and_columns_log_message)
+    rows_and_columns_log_message = "There are {} columns and {} rows in the 2D array.".format(len(columns),len(results))
+    log.logging.info ("2D array is returned as: " + str(results) + "\n")
+    log.logging.info (rows_and_columns_log_message + "\n")
 
     return results
 

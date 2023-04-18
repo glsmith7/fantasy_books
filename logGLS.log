@@ -1,8 +1,0 @@
-CRITICAL:root:
-
------------Restart-----------
-INFO:root:Logging begins at 21:48:24 on 17/04/2023
-INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000019B4D1F48B0>
-INFO:root:2D array is returned as: [{'TestUniqueID': 1, 'DiceFormula': '1d6+1', 'DescriptionString': 'One', 'TestInteger01': 1123}, {'TestUniqueID': 2, 'DiceFormula': '2d6+2', 'DescriptionString': 'Two', 'TestInteger01': 2123}, {'TestUniqueID': 3, 'DiceFormula': '3d6+3', 'DescriptionString': 'Three', 'TestInteger01': 3123}, {'TestUniqueID': 4, 'DiceFormula': '4d6+4', 'DescriptionString': 'Four', 'TestInteger01': 4123}]
-INFO:root:There are 4 columns and 4 rows.
-INFO:root:Logging ended at 21:48:24 on 17/04/2023
