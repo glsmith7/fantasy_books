@@ -103,9 +103,6 @@ def get_table_as_array(path, table_name, query = "Select * FROM(_replace_)", ):
     
     return final_array
 
-
-
-
 def main():
      log.setup_logging()
      log.start_logging()
