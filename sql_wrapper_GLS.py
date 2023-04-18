@@ -41,6 +41,10 @@ def retrieve_from_database(connection, query):
     search_result = cursor.fetchall()
     return search_result
 
+def print_SQL_results (search_result):
+    for row in search_result:
+        print (row[1])
+
 def give_column_names(results):
     col_names = []
     for row in results:
@@ -65,11 +69,17 @@ def get_2d_array(columns, results):
         
         results[j] = d # set the row of results to the dictionary value
     
+    rows_and_columns_log_message = "There are {} columns and {} rows.".format(len(columns),len(results))
+    log.logging.info ("2D array is returned as: " + str(results))
+    log.logging.info (rows_and_columns_log_message)
+
     return results
 
 def get_table_as_array(path, table_name, query = "Select * FROM(_replace_)", ): 
     """ Combines various subroutines to get a 2D array in a single called step.
-    path = path to an SQLite database."""
+    path = path to an SQLite database.
+    table_name = table name
+    query = optional SQL query. If omitted, returns entire table. If query includes "_replace_", the _replace_ string will be automatically replaced with the table name."""
 
     dB = connect_to_database(path)
     
@@ -78,10 +88,12 @@ def get_table_as_array(path, table_name, query = "Select * FROM(_replace_)", ):
     column_results = retrieve_from_database(dB, query_column)
     column_names = give_column_names(column_results)
     
-    # get the full table
+    # replace the placeholder with tablename if it was included. Otherwise use the passed SQL query as is
     query = query.replace("_replace_",table_name)
-    query_full_table = query
-    full_table_results = retrieve_from_database(dB, query_full_table)
+    
+    # get the full table
+    
+    full_table_results = retrieve_from_database(dB, query)
 
     # create 2D array with column names as dictionary key words
     final_array = get_2d_array (column_names, full_table_results)
@@ -89,9 +101,7 @@ def get_table_as_array(path, table_name, query = "Select * FROM(_replace_)", ):
     return final_array
 
 
-def print_search_results(search_result):
-    for row in search_result:
-        print (row[1])
+
 
 def main():
      log.setup_logging()
@@ -99,7 +109,7 @@ def main():
      print ("Begin main.")
 
      path = "./SQLite_db/trialSQL.db3"
-     print (get_table_as_array(path,"TestTable01",query="SELECT * FROM '_replace_' WHERE TestUniqueID = 1"))
+     print (get_table_as_array(path,"TestTable01",query="SELECT * FROM '_replace_'"))
 
      print ("End of program")
      log.end_logging()
