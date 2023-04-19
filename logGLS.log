@@ -1176,3 +1176,37 @@ INFO:root:There are 3 columns and 5 rows in the 2D array.
 INFO:root:Logging ended at 20:54:07 on 18/04/2023
 
 
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 20:57:33 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000022B63274B80>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'String', 0, None, 1), (1, 'Results', 'String', 0, None, 0), (2, 'Order', 'INTEGER', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Results', 'Order']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'First', 1), ('3-5', 'Second', 2), (6, 'Third', 3), ('7-11', 'Fourth', 4), ('12+', 'Fifth', 5)]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Results': 'First', 'Order': 1}, {'DieRange': '3-5', 'Results': 'Second', 'Order': 2}, {'DieRange': 6, 'Results': 'Third', 'Order': 3}, {'DieRange': '7-11', 'Results': 'Fourth', 'Order': 4}, {'DieRange': '12+', 'Results': 'Fifth', 'Order': 5}]
+
+INFO:root:There are 3 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 20:57:33 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 20:58:25 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000014CF5764B80>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'String', 0, None, 1), (1, 'Results', 'String', 0, None, 0), (2, 'Order', 'INTEGER', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Results', 'Order']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'First', 1), ('3-5', 'Second', 2), (6, 'Third', 3), ('7-11', 'Fourth', 4), ('12+', 'Fifth', 5)]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Results': 'First', 'Order': 1}, {'DieRange': '3-5', 'Results': 'Second', 'Order': 2}, {'DieRange': 6, 'Results': 'Third', 'Order': 3}, {'DieRange': '7-11', 'Results': 'Fourth', 'Order': 4}, {'DieRange': '12+', 'Results': 'Fifth', 'Order': 5}]
+
+INFO:root:There are 3 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 20:58:25 on 18/04/2023
+
+

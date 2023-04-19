@@ -172,9 +172,12 @@ def table_roll (table,roll):
         if roll >= row['DieLow'] and roll <= row['DieHigh']:
             to_return = row
             break
-    if not to_return:
+
+    if not to_return: # ie nothing has been put into to_return because no row matches
+
         error_text = "Nothing was found on table {} when rolling {} on it.".format(table, roll)
         raise KeyError (error_text)
+    
     return to_return
 
 def main():
@@ -186,11 +189,12 @@ def main():
      path = "./tests/testSQL.db3"
      table_name = "TestTableReactionRollStandard"
 
+     # table_name = "ReactionRollStandard"
      # path = "./sqlite_db/ACKS_SQL_01.db3"
      table_as_array = (get_table_as_array(path,table_name,query="SELECT * FROM '_replace_'"))
      final_dictionary = (convert_die_range_to_low_and_high(table_as_array))
      print (final_dictionary)
-     dice_roll = 12
+     dice_roll = 6
      print (table_roll(final_dictionary,dice_roll))
      
 
