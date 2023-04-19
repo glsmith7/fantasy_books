@@ -1,6 +1,8 @@
 import sql_wrapper_GLS as sqlW
 import logging_tools_GLS as log
 import re # reg expressions
+import d20
+import settings_GLS as s
 
 def give_column_names(results):
     col_names = []
@@ -180,22 +182,41 @@ def table_roll (table,roll):
     
     return to_return
 
+def roll_table_one_step (table_name, roll='', result=None, query = s.SQL_QUERY_DEFAULT, path= s.PATH_DEFAULT):
+
+    """ Rolls on a given table. One passess either roll= (a dice rolling string expression) or result= (an integer value of dice roll already performed)
+    
+    query = defaults to the entire table, but other SQL code can be passed if desired. Path is defaulted, but can likewise be set prn.
+    
+    """
+
+    table_as_array = (get_table_as_array(path,table_name,query))
+    final_dictionary = (convert_die_range_to_low_and_high(table_as_array))
+    
+    if not result: # ie result is not empty
+        # roll dice
+        result_rolling_string = d20.roll(roll)
+        result = result_rolling_string.total
+    
+    returned_row = (table_roll(final_dictionary,result)) 
+
+    return returned_row
+    
+
 def main():
      log.setup_logging()
      log.start_logging()
      print ("Begin main.")
 
     # search factors
-     path = "./tests/testSQL.db3"
-     table_name = "TestTableReactionRollStandard"
+    #  path = s.PATH_DEFAULT
+    #  table_name = "TestTableReactionRollStandard"
 
      # table_name = "ReactionRollStandard"
      # path = "./sqlite_db/ACKS_SQL_01.db3"
-     table_as_array = (get_table_as_array(path,table_name,query="SELECT * FROM '_replace_'"))
-     final_dictionary = (convert_die_range_to_low_and_high(table_as_array))
-     print (final_dictionary)
-     dice_roll = 6
-     print (table_roll(final_dictionary,dice_roll))
+
+     print (roll_table_one_step("ReactionRollStandard",result=6))
+
      
 
      print ("End of program")

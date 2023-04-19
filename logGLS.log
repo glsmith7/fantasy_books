@@ -1210,3 +1210,778 @@ INFO:root:There are 3 columns and 5 rows in the 2D array.
 INFO:root:Logging ended at 20:58:25 on 18/04/2023
 
 
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:39:37 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001B4A7124E50>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'First'), ('3-5', 'Second'), ('6', 'Third'), ('7-11', 'Fourth'), ('12+', 'Fifth')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'First'}, {'DieRange': '3-5', 'Result': 'Second'}, {'DieRange': '6', 'Result': 'Third'}, {'DieRange': '7-11', 'Result': 'Fourth'}, {'DieRange': '12+', 'Result': 'Fifth'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:39:59 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000022992654E50>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'First'), ('3-5', 'Second'), ('6', 'Third'), ('7-11', 'Fourth'), ('12+', 'Fifth')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'First'}, {'DieRange': '3-5', 'Result': 'Second'}, {'DieRange': '6', 'Result': 'Third'}, {'DieRange': '7-11', 'Result': 'Fourth'}, {'DieRange': '12+', 'Result': 'Fifth'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:39:59 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:45:19 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002866C9F4E50>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:45:19 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:45:24 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000024D37A14E50>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:45:24 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:45:34 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001D427F3CD60>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:45:34 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:46:22 on 18/04/2023
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:48:34 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001EB605B4C70>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:51:17 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002458F6D4C70>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:51:38 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002449AC64C70>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:51:38 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:51:44 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000019F871A4C70>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:51:44 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:51:47 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000198784D4D60>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:51:47 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:52:41 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001AC15DF4C70>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:52:41 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:52:44 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002A398EA4C70>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:52:44 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:52:50 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000179F0DC4D60>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:52:50 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:53:18 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000024967C68C70>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:53:25 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:53:31 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001D462A14C70>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:53:31 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:53:42 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002096C2B4D60>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:53:42 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:56:04 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000016B9C812110>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:57:18 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002A8C88D2110>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:58:44 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002BDBB6625C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:58:46 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:58:54 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001D6DBF32110>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:58:54 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:58:58 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001D6F1A762F0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:58:58 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:59:17 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000015B0E0523E0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:59:17 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:59:24 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000235D99D6110>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:59:24 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:59:28 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001F7127463E0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:59:28 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:59:32 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000016A5110E110>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:59:32 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:59:39 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001531DF627A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:59:39 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 21:59:49 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000151FD3565C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 21:59:49 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:00:46 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002285E1CE5C0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:01:52 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000272FAFC67A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:01:52 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:01:56 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001E58FCC24D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:01:56 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:02:07 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001CAA292E7A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:03:16 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001BABC86E3E0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:03:16 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:03:21 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000021D52F8E4D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:03:21 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:03:43 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001ADE4DB23E0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:03:43 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:03:48 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000002899D7E24D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:03:48 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:03:54 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000017E23E327A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:03:54 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:03:58 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000019B648327A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:03:58 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:04:03 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000015B331E27A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:04:03 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:06:07 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001DA88E227A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'First'), ('3-5', 'Second'), ('6', 'Third'), ('7-11', 'Fourth'), ('12+', 'Fifth')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'First'}, {'DieRange': '3-5', 'Result': 'Second'}, {'DieRange': '6', 'Result': 'Third'}, {'DieRange': '7-11', 'Result': 'Fourth'}, {'DieRange': '12+', 'Result': 'Fifth'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:06:07 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:09:33 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001991D1C27A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'First'), ('3-5', 'Second'), ('6', 'Third'), ('7-11', 'Fourth'), ('12+', 'Fifth')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'First'}, {'DieRange': '3-5', 'Result': 'Second'}, {'DieRange': '6', 'Result': 'Third'}, {'DieRange': '7-11', 'Result': 'Fourth'}, {'DieRange': '12+', 'Result': 'Fifth'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:09:33 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:16:30 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000020C930F27A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'First'), ('3-5', 'Second'), ('6', 'Third'), ('7-11', 'Fourth'), ('12+', 'Fifth')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'First'}, {'DieRange': '3-5', 'Result': 'Second'}, {'DieRange': '6', 'Result': 'Third'}, {'DieRange': '7-11', 'Result': 'Fourth'}, {'DieRange': '12+', 'Result': 'Fifth'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:16:30 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:16:36 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000026A68A9E4D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'First'), ('3-5', 'Second'), ('6', 'Third'), ('7-11', 'Fourth'), ('12+', 'Fifth')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'First'}, {'DieRange': '3-5', 'Result': 'Second'}, {'DieRange': '6', 'Result': 'Third'}, {'DieRange': '7-11', 'Result': 'Fourth'}, {'DieRange': '12+', 'Result': 'Fifth'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:16:36 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:18:06 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x0000026112E8E7A0>
+INFO:root:Search result of SQL database returned as: []
+
+INFO:root:Column names returned as: []
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:18:36 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001627EA6E7A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:18:36 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:18:46 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x00000148AE43A4D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:18:46 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:23:32 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001ADE21064D0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:23:32 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:27:58 on 18/04/2023
+INFO:root:SLQ connection established: <sqlite3.Connection object at 0x000001D76D7867A0>
+INFO:root:Search result of SQL database returned as: [(0, 'DieRange', 'TEXT', 0, None, 1), (1, 'Result', 'TEXT', 0, None, 0)]
+
+INFO:root:Column names returned as: ['DieRange', 'Result']
+
+INFO:root:Search result of SQL database returned as: [('2-', 'Hostile, attacks'), ('3-5', 'Unfriendly, may attack'), ('6-8', 'Neutral, uncertain'), ('9-11', 'Indifferent, uninterested'), ('12+', 'Friendly, helpful')]
+
+INFO:root:2D array is returned as: [{'DieRange': '2-', 'Result': 'Hostile, attacks'}, {'DieRange': '3-5', 'Result': 'Unfriendly, may attack'}, {'DieRange': '6-8', 'Result': 'Neutral, uncertain'}, {'DieRange': '9-11', 'Result': 'Indifferent, uninterested'}, {'DieRange': '12+', 'Result': 'Friendly, helpful'}]
+
+INFO:root:There are 2 columns and 5 rows in the 2D array.
+
+INFO:root:Logging ended at 22:27:58 on 18/04/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Logging begins at 22:28:06 on 18/04/2023

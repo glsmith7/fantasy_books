@@ -1,11 +1,17 @@
-import sql_wrapper_GLS
-import sqlite3
-import logging_tools_GLS
 import pytest
+import sqlite3
+
+#GLS modules
+import logging_tools_GLS
+import sql_wrapper_GLS
 import table_tools_GLS
+import test_settings_GLS as s
+
+
+
 
 def test_connect_to_database():
-    path = "./tests/testSQL.db3"
+    path = s.PATH_DEFAULT
     to_test = sql_wrapper_GLS.connect_to_database(path)
 
     assert type(to_test) is sqlite3.Connection
@@ -39,7 +45,7 @@ def test_reading_database():
         assert (fourth_column) == the_results[x][3]
     # connect
 
-    path = "./tests/testSQL.db3"
+    path = s.PATH_DEFAULT
     to_test = sql_wrapper_GLS.connect_to_database(path)
 
     # create SQL query
