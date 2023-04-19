@@ -1,5 +1,6 @@
 import sql_wrapper_GLS as sqlW
 import logging_tools_GLS as log
+import re # reg expressions
 
 def give_column_names(results):
     col_names = []
@@ -72,58 +73,95 @@ def convert_die_range_to_low_and_high(d):
 # determine what kind of value in each row, returns true or false
 
     def die_is_low_range(die_range): # eg, "2-", two or lower
-        pass
+        reg_ex_string = r"\-$" # ie minus sign at end of string
+
+        if (re.search(reg_ex_string,die_range)):
+            return True
+        else:
+            return False
+        
 
     def die_is_high_range(die_range): # eg "12+", twelve or higher
-        pass
+        reg_ex_string = r"\+$" # ie plus sign at end of string
+
+        if (re.search(reg_ex_string,die_range)):
+            return True
+        else:
+            return False
     
     def die_is_mid_range(die_range): # eg "7-9", ie, between 7 and 12.
-        pass
+        reg_ex_string = r"\-" # ie minus sign anywhere but end (at end will have been caught already)
+
+        if (re.search(reg_ex_string,die_range)):
+            return True
+        else:
+            return False
 
     def die_is_single_digit(die_range): # e.g., 10, ie, 10 and only 10.
-        pass
+        
+        reg_ex_string = "^(\d)+$" # ie a NUMBER of one or more digits in length, with nothing else in the string (e.g., +,-)
+
+        if (re.search(reg_ex_string,die_range)):
+            return True # note logic is reverse of the others
+        else:
+            return False
 
 # Edit the rows by adding dice ranges to the dictionary and returning the edited row
 
     def create_low_range_entries(row):
+        die_range = row["DieRange"]
+        reg_ex_string = r"\-$" # ie minus sign at end of string
+        split_die_string = re.split(reg_ex_string, die_range, 1)
+        
+        row ["DieLow"] = -1000
+        row ["DieHigh"] = split_die_string[0]
         return row
 
     def create_high_range_entries(row):
+        die_range = row["DieRange"]
+        reg_ex_string = r"\+$" # ie plus at end of string
+        split_die_string = re.split(reg_ex_string, die_range, 1)
+
+        row ["DieLow"] = split_die_string[0]
+        row ["DieHigh"] = +1000
         return row
 
     def create_mid_range_entries(row):
+        die_range = row["DieRange"]
+        reg_ex_string = r"\-" # ie minus within string
+        split_die_string = re.split(reg_ex_string, die_range, 1)
+
+        row ["DieLow"] = split_die_string[0]
+        row ["DieHigh"] = split_die_string[1]
         return row
 
     def create_single_digit_entries(row):
+        die_range = row["DieRange"]
+        row ["DieLow"] = die_range # only one number so both take its value
+        row ["DieHigh"] = die_range
         return row
 
-### Main routine
+### Main die range parsing routine
 
     for row in d:
         die_range = row["DieRange"]
+        if type (die_range) != "str": die_range = str(die_range) # single digits will be read as integers, not strings so we convert.
     
-    if die_is_low_range (die_range):
-        row = create_low_range_entries(row)
+        if die_is_low_range (die_range):
+            row = create_low_range_entries(row)
     
-    elif die_is_high_range(die_range):
-        row = create_high_range_entries(row)
+        elif die_is_high_range(die_range):
+            row = create_high_range_entries(row)
 
-    elif die_is_mid_range(die_range):
-        row = create_mid_range_entries(row)
-    
-    elif die_is_single_digit(die_range):
-        row = create_single_digit_entries(row)
-
-    else:
-        raise ValueError("The dice entry was not trapped anywhere. SQL table error?")
-       
-     
-        # if row ['DieRange'] == "2-":
-        #     print (row)
-        #     row['DieLow'] = -1000
-        #     row['DieLhigh'] = 2
-        #     print (row)
+        elif die_is_mid_range(die_range):
+            row = create_mid_range_entries(row)
         
+        elif die_is_single_digit(die_range):
+            row = create_single_digit_entries(row)
+
+        else:
+            raise ValueError("The dice entry was not trapped anywhere. SQL table error?")
+       
     return d
 
 def main():
@@ -131,8 +169,11 @@ def main():
      log.start_logging()
      print ("Begin main.")
 
-     path = "./SQLite_db/ACKS_SQL_01.db3"
-     table_as_array = (get_table_as_array(path,"Surprise",query="SELECT * FROM '_replace_'"))
+     path = "./tests/testSQL.db3"
+     table_as_array = (get_table_as_array(path,"TestTableReactionRollStandard",query="SELECT * FROM '_replace_'"))
+     print (table_as_array)
+
+     
      final_dictionary = (convert_die_range_to_low_and_high(table_as_array))
      
      print (final_dictionary)
