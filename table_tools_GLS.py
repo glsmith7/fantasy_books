@@ -182,6 +182,7 @@ def main():
      log.start_logging()
      print ("Begin main.")
 
+    # search factors
      path = "./tests/testSQL.db3"
      table_name = "TestTableReactionRollStandard"
 
