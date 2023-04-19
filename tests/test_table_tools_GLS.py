@@ -13,7 +13,7 @@ def test_get_column_names():
     # connect
     path = s.PATH_DEFAULT
     to_test = sql_wrapper_GLS.connect_to_database(path)
-    result_should_equal_this = s.test_get_column_names_constant
+  
     # create SQL query
     query = "PRAGMA table_info(TestTable01);"
     the_results = sql_wrapper_GLS.retrieve_from_database(to_test, query)
@@ -21,13 +21,10 @@ def test_get_column_names():
     # check results
     list_of_column_names = table_tools_GLS.give_column_names(the_results)
 
-    assert list_of_column_names == result_should_equal_this
+    assert list_of_column_names == s.test_get_column_names_constant
 
 def test_get_2d_array():
-    
-    # desired results
-    result_should_equal_this = s.test_get_2d_array_constant
-
+   
     # connect
     path = s.PATH_DEFAULT
     dB = sql_wrapper_GLS.connect_to_database(path)
@@ -44,7 +41,7 @@ def test_get_2d_array():
     # get 2D database
     results = table_tools_GLS.get_2d_array(list_of_column_names,results)
 
-    assert results == result_should_equal_this
+    assert results == s.test_get_2d_array_constant
     
 
 def test_get_table_as_array():
