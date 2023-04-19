@@ -48,8 +48,6 @@ def test_get_2d_array():
     
 
 def test_get_table_as_array():
-     # desired results
-    result_should_equal_this = s.test_get_table_as_array_constant_01
     
     # search factors
     path = s.PATH_DEFAULT
@@ -57,7 +55,7 @@ def test_get_table_as_array():
 
     # test with default search (the entire table)
     results = table_tools_GLS.get_table_as_array(path, table_name)
-    assert results == result_should_equal_this
+    assert results == s.test_get_table_as_array_constant_01
 
     # test with keyword search (an SQL search query included)
     results = table_tools_GLS.get_table_as_array(path, table_name, query="SELECT * FROM 'TestTable01' WHERE TestUniqueID = 1")
@@ -68,9 +66,7 @@ def test_get_table_as_array():
     assert results == s.test_get_table_as_array_constant_03
 
 def test_die_range_conversion():
-      # desired results
-    result_should_equal_this = s.test_die_range_conversation_constant
-    
+     
     # search factors
     path = s.PATH_DEFAULT
     table_name = "TestTableReactionRollStandard"
@@ -78,7 +74,7 @@ def test_die_range_conversion():
     # test with
     results = table_tools_GLS.get_table_as_array(path, table_name)
     final_results = table_tools_GLS.convert_die_range_to_low_and_high(results)
-    assert final_results == result_should_equal_this
+    assert final_results == s.test_die_range_conversation_constant
 
 def test_rolling_on_table_and_getting_row():
      path = s.PATH_DEFAULT
@@ -96,12 +92,11 @@ def test_rolling_on_table_and_getting_row():
          counter += 1
 
 def test_roll_table_one_step():
-    desired_results_1 = s.test_roll_table_one_step_constant_1
-    desired_results_2 = s.test_roll_table_one_step_constant_2
+ 
     feed_result_on_table = table_tools_GLS.roll_table_one_step("TestTableReactionRollStandard",path = s.PATH_DEFAULT,result=6)
 
-    assert feed_result_on_table == desired_results_1
+    assert feed_result_on_table == s.test_roll_table_one_step_constant_1
 
     roll_result_on_table = table_tools_GLS.roll_table_one_step("TestTableReactionRollStandard",path = s.PATH_DEFAULT,roll="1d2") # 1d2 so always 1-2 to be sure matches
 
-    assert roll_result_on_table == desired_results_2
+    assert roll_result_on_table == s.test_roll_table_one_step_constant_2
