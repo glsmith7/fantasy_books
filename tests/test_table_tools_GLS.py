@@ -65,7 +65,7 @@ def test_get_table_as_array():
 
 def test_die_range_conversion():
       # desired results
-    result_should_equal_this = [{'DieRange': '2-', 'Results': 'First', 'DieLow': -1000, 'DieHigh': '2'}, {'DieRange': '3-5', 'Results': 'Second', 'DieLow': '3', 'DieHigh': '5'}, {'DieRange': 6, 'Results': 'Third', 'DieLow': 6, 'DieHigh': 6}, {'DieRange': '7-11', 'Results': 'Fourth', 'DieLow': '7', 'DieHigh': '11'}, {'DieRange': '12+', 'Results': 'Fifth', 'DieLow': '12', 'DieHigh': 1000}]
+    result_should_equal_this = [{'DieRange': '2-', 'Results': 'First', 'DieLow': -1000, 'DieHigh': '2'}, {'DieRange': '3-5', 'Results': 'Second', 'DieLow': '3', 'DieHigh': '5'}, {'DieRange': '6', 'Results': 'Third', 'DieLow': 6, 'DieHigh': 6}, {'DieRange': '7-11', 'Results': 'Fourth', 'DieLow': '7', 'DieHigh': '11'}, {'DieRange': '12+', 'Results': 'Fifth', 'DieLow': '12', 'DieHigh': 1000}]
     
     # search factors
     path = "./tests/testSQL.db3"

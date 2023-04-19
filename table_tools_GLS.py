@@ -107,6 +107,7 @@ def convert_die_range_to_low_and_high(d):
             return False
 
 # Edit the rows by adding dice ranges to the dictionary and returning the edited row
+# note all values are converted from their string form to their integer form for storage and later comparison to die rolls.
 
     def create_low_range_entries(row):
         die_range = row["DieRange"]
@@ -114,7 +115,7 @@ def convert_die_range_to_low_and_high(d):
         split_die_string = re.split(reg_ex_string, die_range, 1)
         
         row ["DieLow"] = -1000
-        row ["DieHigh"] = split_die_string[0]
+        row ["DieHigh"] = int (split_die_string[0])
         return row
 
     def create_high_range_entries(row):
@@ -122,7 +123,7 @@ def convert_die_range_to_low_and_high(d):
         reg_ex_string = r"\+$" # ie plus at end of string
         split_die_string = re.split(reg_ex_string, die_range, 1)
 
-        row ["DieLow"] = split_die_string[0]
+        row ["DieLow"] = int(split_die_string[0])
         row ["DieHigh"] = +1000
         return row
 
@@ -131,14 +132,15 @@ def convert_die_range_to_low_and_high(d):
         reg_ex_string = r"\-" # ie minus within string
         split_die_string = re.split(reg_ex_string, die_range, 1)
 
-        row ["DieLow"] = split_die_string[0]
-        row ["DieHigh"] = split_die_string[1]
+        row ["DieLow"] = int (split_die_string[0])
+        row ["DieHigh"] = int (split_die_string[1])
         return row
 
     def create_single_digit_entries(row):
+        row["DieRange"] = str(row["DieRange"]) 
         die_range = row["DieRange"]
-        row ["DieLow"] = die_range # only one number so both take its value
-        row ["DieHigh"] = die_range
+        row ["DieLow"] = int(die_range) # only one number so both take its value
+        row ["DieHigh"] = int(die_range)
         return row
 
 ### Main die range parsing routine
@@ -164,19 +166,32 @@ def convert_die_range_to_low_and_high(d):
        
     return d
 
+def table_roll (table,roll):
+    to_return={}
+    for row in table:
+        if roll >= row['DieLow'] and roll <= row['DieHigh']:
+            to_return = row
+            break
+    if not to_return:
+        error_text = "Nothing was found on table {} when rolling {} on it.".format(table, roll)
+        raise KeyError (error_text)
+    return to_return
+
 def main():
      log.setup_logging()
      log.start_logging()
      print ("Begin main.")
 
      path = "./tests/testSQL.db3"
-     table_as_array = (get_table_as_array(path,"TestTableReactionRollStandard",query="SELECT * FROM '_replace_'"))
-     print (table_as_array)
+     table_name = "TestTableReactionRollStandard"
 
-     
+     # path = "./sqlite_db/ACKS_SQL_01.db3"
+     table_as_array = (get_table_as_array(path,table_name,query="SELECT * FROM '_replace_'"))
      final_dictionary = (convert_die_range_to_low_and_high(table_as_array))
-     
      print (final_dictionary)
+     dice_roll = 12
+     print (table_roll(final_dictionary,dice_roll))
+     
 
      print ("End of program")
      log.end_logging()
