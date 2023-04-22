@@ -31,10 +31,6 @@ def retrieve_from_database(connection, query):
     if type(connection) is not sqlite3.Connection:
         log.logging.error ("There is no open connection to a database.")
         return sqlite3.DatabaseError ("There is no open connection to a database.")
-    
-    # if sqlite3.complete_statement(query) == False:
-    #       log.logging.error ("Incomplete or improper SQL query")
-    #       return sqlite3.DatabaseError ("Not a complete SQL statement?")
           
     cursor = connection.cursor()
     cursor.execute(query)
