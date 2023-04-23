@@ -17,6 +17,7 @@ def test_OOP_database_and_tables_en_masse():
 
     sql_test = t.SQL_object_GLS(test_path) # tests base class
     assert type(sql_test) == t.SQL_object_GLS
+    sql_test.connection.close()
 
     RPG_table_test = t.RPG_table(test_table,query = test_query, path = test_path) # tests subclass
     assert type (RPG_table_test) == t.RPG_table
@@ -26,5 +27,4 @@ def test_OOP_database_and_tables_en_masse():
     assert RPG_table_test.column_names == ['DieRange', 'Result']
     assert RPG_table_test.database_results == [{'DieRange': '2-', 'Result': 'First', 'DieLow': -1000, 'DieHigh': 2}, {'DieRange': '3-5', 'Result': 'Second', 'DieLow': 3, 'DieHigh': 5}, {'DieRange': '6', 'Result': 'Third', 'DieLow': 6, 'DieHigh': 6}, {'DieRange': '7-11', 'Result': 'Fourth', 'DieLow': 7, 'DieHigh': 11}, {'DieRange': '12+', 'Result': 'Fifth', 'DieLow': 12, 'DieHigh': 1000}]
 
-    
-    # RPG_table_test.connection.close()
+    RPG_table_test.connection.close()

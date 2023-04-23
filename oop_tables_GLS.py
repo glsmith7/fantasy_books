@@ -50,7 +50,8 @@ class RPG_table(SQL_object_GLS):
         self.retrieve_from_database()
         self.give_column_names()
         self.get_2d_array()
-        self.convert_die_range_to_low_and_high()
+        if "DieRange" in self.column_names:
+            self.convert_die_range_to_low_and_high()
 
     def retrieve_from_database(self):
         
@@ -233,8 +234,9 @@ def main():
     print (t.query)
     print (t.column_names)
     print (t.database_results)
+    print (t.database_results[0]['Militia', 'Human'])
 
-
+    t.connection.close()
     print ("End main of sql_table_object-GLS")
     log.end_logging()
 if __name__ == "__main__":
