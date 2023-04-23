@@ -234,7 +234,7 @@ def main():
     print (t.query)
     print (t.column_names)
     print (t.database_results)
-    print (t.database_results[0]['Militia', 'Human'])
+    print (t.database_results[0]['Human'])
 
     t.connection.close()
     print ("End main of sql_table_object-GLS")
