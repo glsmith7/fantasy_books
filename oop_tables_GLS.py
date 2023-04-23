@@ -224,7 +224,7 @@ def main():
 
     print ("Running main of sql_table_object_GLS.")
    
-    t = RPG_table("ReactionRollStandard")
+    t = RPG_table("TestTableReactionRollStandard")
     print (t)
     print (t.path)
     print (t.connection)

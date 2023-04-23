@@ -2,7 +2,7 @@
 
 PATH_DEFAULT = "./tests/testSQL.db3"
 SQL_QUERY_DEFAULT = "SELECT * FROM '_replace_'"
-
+TABLE_NAME_DEFAULT = "TestTableReactionRollStandard"
 
 # Test Constants for test_table_tools_GLS
 test_get_column_names_constant = ['TestUniqueID','DiceFormula','DescriptionString','TestInteger01']

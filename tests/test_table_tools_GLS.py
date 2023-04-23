@@ -1,11 +1,13 @@
 import sqlite3
 import pytest
+import sys
+sys.path.append('../') # to see parallel folders for module import
 
 # GLS modules
 import logging_tools_GLS
 import sql_wrapper_GLS
 import table_tools_GLS
-import test_settings_GLS as s
+import tests.test_settings_GLS as s
 
 
 def test_get_column_names():

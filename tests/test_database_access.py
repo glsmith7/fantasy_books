@@ -5,7 +5,7 @@ import sqlite3
 import logging_tools_GLS
 import sql_wrapper_GLS
 import table_tools_GLS
-import test_settings_GLS as s
+import tests.test_settings_GLS as s
 
 
 
