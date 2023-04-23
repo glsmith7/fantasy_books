@@ -34,12 +34,13 @@ class SQL_object_GLS:
     
 class RPG_table(SQL_object_GLS):
 
-    def __init__ (self,table_name,query = s.SQL_QUERY_DEFAULT):
-        super().__init__()
+    def __init__ (self,table_name,query = s.SQL_QUERY_DEFAULT,path=s.PATH_DEFAULT):
+        super().__init__(path)
         self.pick_table (table_name,query)
         
 
     def pick_table (self,table_name,query= s.SQL_QUERY_DEFAULT): # can be used to pick a new table
+        
         self.table_name = table_name
         self.query = query
         self.query = self.query.replace("_replace_",self.table_name)
@@ -224,7 +225,7 @@ def main():
 
     print ("Running main of sql_table_object_GLS.")
    
-    t = RPG_table("TestTableReactionRollStandard")
+    t = RPG_table(s.TABLE_NAME_DEFAULT)
     print (t)
     print (t.path)
     print (t.connection)
@@ -233,8 +234,6 @@ def main():
     print (t.column_names)
     print (t.database_results)
 
-    for x in range (1,20):
-        print ("Roll #{} is {}".format ((x), t.roll((d20.roll("2d6").total))))    
 
     print ("End main of sql_table_object-GLS")
     log.end_logging()
