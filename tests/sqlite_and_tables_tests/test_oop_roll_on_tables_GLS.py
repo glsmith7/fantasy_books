@@ -5,7 +5,7 @@ sys.path.append('../') # to see parallel folders for module import
 
 # GLS modules
 # import logging_tools_GLS
-import oop_tables_GLS as t
+import oop_roll_on_tables_GLS as t
 import tests.test_settings_GLS as s
 
 # @pytest.mark.skip(reason = "Testing")

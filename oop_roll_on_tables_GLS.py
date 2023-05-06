@@ -8,7 +8,8 @@ import d20
 import settings_GLS as s
 
 class SQL_object_GLS:
-          
+    ''' A connection to an SQLite database object '''
+
     def __init__ (self, path = s.PATH_DEFAULT):
        
         self.path = path
@@ -33,14 +34,14 @@ class SQL_object_GLS:
              log.logging.info ("SLQ connection established: " + str(self.connection))
     
 class RPG_table(SQL_object_GLS):
-
+    ''' SQL database object that represents an RPG table. '''
     def __init__ (self,table_name,query = s.SQL_QUERY_DEFAULT,path=s.PATH_DEFAULT):
         super().__init__(path)
         self.pick_table (table_name,query)
         
 
     def pick_table (self,table_name,query= s.SQL_QUERY_DEFAULT): # can be used to pick a new table
-        
+        '''Name of specific table in SQL database'''
         self.table_name = table_name
         self.query = query
         self.query = self.query.replace("_replace_",self.table_name)
@@ -54,7 +55,7 @@ class RPG_table(SQL_object_GLS):
             self.convert_die_range_to_low_and_high()
 
     def retrieve_from_database(self):
-        
+        ''' Returns the SQL query results'''
         if type(self.connection) is not sqlite3.Connection:
             log.logging.error ("There is no open connection to a database.")
             raise sqlite3.DatabaseError ("There is no open connection to a database.")
@@ -68,6 +69,7 @@ class RPG_table(SQL_object_GLS):
         log.logging.info ("Search result of SQL database returned as: " + str(self.database_results) + "\n")
     
     def give_column_names(self):
+        ''' Retrieves and stores the column names for the table '''
         query_column_names = "PRAGMA table_info({});".format(self.table_name) # returns column names from SQLite
         cursor = self.connection.cursor()
         cursor.execute(query_column_names)
@@ -114,6 +116,7 @@ class RPG_table(SQL_object_GLS):
         # determine what kind of value in each row, returns true or false
 
         def die_is_low_range(die_range): # eg, "2-", two or lower
+            
             reg_ex_string = r"\-$" # ie minus sign at end of string
 
             if (re.search(reg_ex_string,die_range)):
@@ -188,7 +191,7 @@ class RPG_table(SQL_object_GLS):
 
         for row in self.database_results:
             die_range = row["DieRange"]
-            if type (die_range) != "str": die_range = str(die_range) # single digits will be read as integers, not strings so we convert.
+            if type (die_range) != "str": die_range = str(die_range) # single digits will be read as integers, not strings, so we convert.
         
             if die_is_low_range (die_range):
                 row = create_low_range_entries(row)
@@ -206,15 +209,16 @@ class RPG_table(SQL_object_GLS):
                 raise ValueError("The dice entry was not trapped anywhere. SQL table error?")
 
     def roll (self,roll):
+
         to_return={}
         for row in self.database_results:
             if roll >= row['DieLow'] and roll <= row['DieHigh']:
-                to_return = row
+                to_return = row # ie, this row was rolled.
                 break
 
         if not to_return: # ie nothing has been put into to_return because no row matches
 
-            error_text = "Nothing was found on table {} when rolling {} on it.".format(table, roll)
+            error_text = "Nothing was found on table {} when rolling {} on it.".format(self.table_name, roll)
             raise KeyError (error_text)
         
         return to_return        
@@ -239,5 +243,6 @@ def main():
     t.connection.close()
     print ("End main of sql_table_object-GLS")
     log.end_logging()
+
 if __name__ == "__main__":
     main()

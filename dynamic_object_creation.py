@@ -1,4 +1,4 @@
-from oop_tables_GLS import RPG_table
+from oop_roll_on_tables_GLS import RPG_table
 import troop_object_settings as s
 import logging_tools_GLS as log
 import pickle
