@@ -26,7 +26,6 @@ def connect_to_database(path=s.PATH_DEFAULT):
     else:
          log.logging.info ("SQL connection established: " + str(connection))
          
-    print (type(connection))
     return connection
    
 def _begin_query(table_name=None, query=None, connection=None, path = s.PATH_DEFAULT): 
@@ -49,7 +48,8 @@ def _begin_query(table_name=None, query=None, connection=None, path = s.PATH_DEF
 
     if not table_name and not query:
         raise KeyError ("Need a query or a table_name! If table_name alone passed, returns entire table. Query returns specific SQL query.")
-    
+        log.logging.error ("KeyError: Need a query or a table_name! If table_name alone passed, returns entire table. Query returns specific SQL query.")
+
     elif table_name and query: # ie query and a table have been passed
         log.logging.warning ("Table_name _and_ query were passed. The query supercedes the table_name, so the table name has been ignored.")
 
@@ -58,6 +58,7 @@ def _begin_query(table_name=None, query=None, connection=None, path = s.PATH_DEF
      
     cursor = connection.cursor()               
     cursor.execute(query)
+    log.logging.debug ("A cursor object is returned:" + str(cursor))
     return cursor
 
 
@@ -65,9 +66,8 @@ def query_database(table_name=None, query=None, connection=None, path = s.PATH_D
 
     cursor = _begin_query (query=query, connection=connection, path = path,table_name=table_name) # common beginning to get cursor
     search_result = cursor.fetchall() 
-    cursor.close()
     log.logging.info ("Search result of SQL database returned as: " + str(search_result) + "\n")
-    
+
     return search_result
 
 def get_column_names (table_name=None, query = None, connection=None, path = s.PATH_DEFAULT):
@@ -75,7 +75,6 @@ def get_column_names (table_name=None, query = None, connection=None, path = s.P
 
     cursor = _begin_query (table_name=table_name, query=query, path = path, connection = connection, ) # common beginning to get cursor
     column_names = list (map (lambda x: x[0], cursor.description))
-    cursor.close()
     log.logging.info ("Columns of SQL database returned as: " + str(column_names) + "\n")
 
     return column_names
@@ -86,14 +85,20 @@ def print_results (search_result):
 
 def main():
     print ("Running main of sql_wrapper_GLS.")
+    log.setup_logging()
+    log.start_logging
+    log.logging.info ("Begin of main.")
+
     connect_A = connect_to_database(s.PATH_DEFAULT)
     table_name = "MercenaryTableRealms"
     the_query = "SELECT * FROM MercenaryTableRealms WHERE Race LIKE '%Kobold%'"
     
-    print (get_column_names(table_name = table_name))
+    print (get_column_names(table_name = table_name,connection=connect_A))
     print("----")
-    print (query_database(query = the_query))
-
+    print (query_database(query = the_query,connection=connect_A))
+     
+    connect_A.close()
+    log.end_logging()
 if __name__ == "__main__":
     main()
 
