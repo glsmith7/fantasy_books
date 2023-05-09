@@ -45,7 +45,7 @@ def get_table_as_array(path, table_name, query = "Select * FROM(_replace_)", ):
     
     # get column names
     query_column = "PRAGMA table_info({});".format(table_name)
-    column_results = sqlW.retrieve_from_database(dB, query_column)
+    column_results = sqlW.query_database(dB, query_column)
     column_names = give_column_names(column_results)
     
     # replace the placeholder with tablename if it was included. Otherwise use the passed SQL query as is
@@ -53,7 +53,7 @@ def get_table_as_array(path, table_name, query = "Select * FROM(_replace_)", ):
     
     # get the full table
     
-    full_table_results = sqlW.retrieve_from_database(dB, query)
+    full_table_results = sqlW.query_database(dB, query)
 
     # create 2D array with column names as dictionary key words
     table_as_array = get_2d_array (column_names, full_table_results)
@@ -195,11 +195,10 @@ def roll_table_one_step (table_name, roll='', result=None, query = s.SQL_QUERY_D
     
     if not result: # ie result is not empty
         # roll dice
-        result_rolling_string = d20.roll(roll)
-        result = result_rolling_string.total
+        
+        result = d20.roll("2d6").total
     
     returned_row = (table_roll(final_dictionary,result)) 
-
     return returned_row
     
 
@@ -207,18 +206,10 @@ def main():
      log.setup_logging()
      log.start_logging()
      print ("Begin main.")
-
-    # search factors
-    #  path = s.PATH_DEFAULT
-    #  table_name = "TestTableReactionRollStandard"
-
-     # table_name = "ReactionRollStandard"
-     # path = "./sqlite_db/ACKS_SQL_01.db3"
-
-     print (roll_table_one_step("ReactionRollStandard",result=6))
-
-     
-
+     for x in range (1,100):
+        the_roll = (d20.roll("2d6").total)
+        print (str(the_roll) + " :" + roll_table_one_step("ReactionRollStandard",result=the_roll)['Result'])
+   
      print ("End of program")
      log.end_logging()
 
