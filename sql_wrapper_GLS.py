@@ -71,16 +71,42 @@ def query_database(table_name=None, query=None, connection=None, path = s.PATH_D
     return search_result
 
 def get_column_names (table_name=None, query = None, connection=None, path = s.PATH_DEFAULT):
-    ''' Gets column names. Can be passed a connection, if not, then creates one. Path can be passed, or defaults to default in settings_GLS.py'''
+    ''' Gets column names. Can be passed a connection, if not, then creates one. Path can be passed, or defaults to default in settings_GLS.py
+    This will not usually be used alone, but available just to make simpler if need just column names for some reason.'''
+    column_names, _ , _ = get_table_as_dict(table_name=table_name, query=query, connection=connection, path = path)
 
-    cursor = _begin_query (table_name=table_name, query=query, path = path, connection = connection) # common beginning to get cursor
-    column_names = list (map (lambda x: x[0], cursor.description))
-    log.logging.info ("Columns of SQL database returned as: " + str(column_names) + "\n")
+    log.logging.info ("Columns of SQL database returned from get_column_names as: " + "\n\t" + str(column_names) + "\n")
 
     return column_names
 
+def get_row_names (table_name=None, query = None, connection=None, path = s.PATH_DEFAULT):
+    ''' Gets row names. Can be passed a connection, if not, then creates one. Path can be passed, or defaults to default in settings_GLS.py
+    This will not usually be used alone, but available just to make simpler if need just row names for some reason.'''
+
+    _, row_names, _ = get_table_as_dict(table_name=table_name, query=query, connection=connection, path = path)
+    
+    log.logging.info ("Columns of SQL database returned from get_row_names as: " + "\n\t" +  str(row_names) + "\n")
+
+    return row_names
+
 def get_table_as_dict (table_name=None, query = None, connection=None, path = s.PATH_DEFAULT):
-    ''' Gets entire table as dictionary. Can be passed a connection, if not, then creates one. Path can be passed, or defaults to default in settings_GLS.py'''
+    
+    ''' Gets entire table as dictionary. Can be passed a connection, if not, then creates one. Path can be passed, or defaults to default in settings_GLS.py
+    Given this table:
+       
+    Col A   B   C
+    X   1   2   3
+    Y   4   5   6
+    Z   7   8   9
+    
+    Returns these values in order:
+        1) column_names - returns list of column names, i.e., ['A','B','C'] (note that "Col" is not returned)
+        2) row_names - returns list of row names, i.e., ['X','Y','Z']
+        3) dict_final = 2D dictionary with each row keyed to a subdictionary that is keyed to each column for every line
+
+    {'X': {'A': 1, 'B': 2, 'C': 3}, 'Y': {'A': 4, 'B': 5, 'C': 6}, 'Z': {'A': 7, 'B': 8, 'C': 9}}
+    
+    '''
 
     cursor = _begin_query (table_name=table_name, query=query, connection=connection, path = path)
     
@@ -94,24 +120,29 @@ def get_table_as_dict (table_name=None, query = None, connection=None, path = s.
 
     # Dictionary keys created for each line of the table using the columns
     result_list = [dict(zip(column_names, r)) for r in whole_table]
+    log.logging.info ("Initial SQL database returned as list of dictionaries in get_table_as_dict: " + "\t\n" + str (result_list) + "\n")
 
-    # Extract list of row names (far left cell of each row, ie., the first column)
+    # Extract list of row names 
     row_names = []
     for x in range (0,len(result_list)):
-        row_names.append(result_list[x][column_names[0]])
+        row_names.append(result_list[x][column_names[0]]) # (far left cell of each row, ie., the first column)
 
     # create 2D dictionary
     final_dict = {}  
     for y in range (0,len(row_names)):
-        result_list[y].pop(column_names[0]) # use COLUMN as the key to remove the duplicate value that is now the row_name. Will always be first (i.e., leftmost) column that should be popped.
-        final_dict.update ({row_names[y] : result_list[y]}) # dictionary key of row gives the sub-dictionary for the rest of the row.
-                  
-    print ("Row names:" + str(row_names))
-    print ("Final_dict:" + str (final_dict))
+        result_list[y].pop(column_names[0]) # use COLUMN as the key to remove the duplicate value that is now the row_name. Will always be first (i.e., leftmost) column 
+        final_dict.update ({row_names[y] : result_list[y]}) # dictionary key of row will serve as the the sub-dictionary for the rest of the row.
     
-    return column_names,row_names, final_dict
+    # delete the first element of "column names" (i.e., 0,0 position of table, it has already been used for what we need above)
+    column_names.pop(0)
 
-    # log.logging.info ("Table as Dict of SQL database returned as: " + "\n" + str (result_list) + "\n")
+    # log
+    log.logging.info ("Columns of SQL database returned as list from get_table_as_dict: " + "\n\t" + str (column_names) + "\n")
+    log.logging.info ("Rows of SQL database returned as list from get_table_as_dict: " + "\n\t" + str (row_names) + "\n")
+    log.logging.info ("Table of SQL database returned as 2D-Dict from get_table_as_dict: " + "\n\t" + str (final_dict) + "\n")
+
+    # return
+    return column_names,row_names, final_dict
 
 def print_results (search_result):
     for row in search_result:
@@ -124,17 +155,16 @@ def main():
     log.logging.info ("Begin of main.")
 
     connect_A = connect_to_database(s.PATH_DEFAULT)
-    table_name = "TestTable01"
-    the_query = "SELECT * FROM TestTable01"
+    table_name = "TestTable02"
+    the_query = "SELECT * FROM TestTable02"
     
-    print (get_column_names(table_name = table_name,connection=connect_A))
-    print("----")
-    print (query_database(query = the_query,connection=connect_A))
-    print ("----")
+    # print (get_column_names(table_name = table_name,connection=connect_A))
     get_table_as_dict(query = the_query,connection=connect_A)
+    get_row_names(query = the_query,connection=connect_A)
+    get_column_names(query = the_query,connection=connect_A)
+    
 
     connect_A.close()
     log.end_logging()
 if __name__ == "__main__":
     main()
-
