@@ -36,10 +36,10 @@ class Test(Static):
         table.add_columns(*ROWS[0])
         for row in ROWS[1:]:
             # Adding styled and justified `Text` objects instead of plain strings.
-            styled_row = [
-                Text(str(cell), style="italic #03AC13", justify="right") for cell in row
-            ]
-            table.add_row(*styled_row)
+            # styled_row = [
+            #     Text(str(cell), style="italic #03AC13", justify="right") for cell in row
+            # ]
+            table.add_row(*row)
 
 class MercenaryApp(App):
     BINDINGS = [

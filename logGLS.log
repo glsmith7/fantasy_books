@@ -1,1 +1,9 @@
-DEBUG:	|05/09/2023 01:39:19|proactor_events|__init__|633 - Using proactor: IocpProactor
+INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|connect_to_database|39 - SLQ connection established: <sqlite3.Connection object at 0x000001B1B622FA60>
+INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|retrieve_from_database|74 - Search result of SQL database returned as: [('X', 1, 2, 3), ('Y', 4, 5, 6), ('Z', 7, 8, 9)]
+
+INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|give_column_names|87 - Column names returned as: ['Row', 'A', 'B', 'C']
+
+INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|get_2d_array|106 - 2D array is returned as: [{'Row': 'X', 'A': 1, 'B': 2, 'C': 3}, {'Row': 'Y', 'A': 4, 'B': 5, 'C': 6}, {'Row': 'Z', 'A': 7, 'B': 8, 'C': 9}]
+
+INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|get_2d_array|107 - There are 4 columns and 3 rows in the 2D array.
+

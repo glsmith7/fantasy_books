@@ -1,3 +1,8 @@
+# logging boilerplate
+import logging
+import logging_tools_GLS
+logger = logging.getLogger(__name__)
+
 def ac_convert(AC,AC_from='becmi', AC_to='acks'):
 
     ''' converts between D&D/AD&D/5E and ACKS styles of AC. Takes up to three:
@@ -115,3 +120,9 @@ def attack_convert(attack,attack_from='THACO', attack_to='acks'):
     attack_to_return = convert_to_desired_attack(THACO,attack_to)
 
     return attack_to_return
+
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()

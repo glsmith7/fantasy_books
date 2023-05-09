@@ -1,11 +1,16 @@
 import sqlite3
 import os
-import logging_tools_GLS as log
 import datetime
 import array
 import re
 import d20
 import settings_GLS as s
+
+# logging boilerplate
+import logging
+import logging_tools_GLS
+logger = logging.getLogger(__name__)
+
 
 class SQL_object_GLS:
     ''' A connection to an SQLite database object '''
@@ -18,7 +23,7 @@ class SQL_object_GLS:
     def connect_to_database(self,path):
         
         if os.path.isfile(path) == False:
-            log.logging.error ("Database name does not exist.")
+            logger.error ("Database name does not exist.")
             raise FileNotFoundError
 
         try:
@@ -26,12 +31,12 @@ class SQL_object_GLS:
 
         except OSError as err:
        
-            log.logging.error ("The error" + err + " occurred.")
+            logger.error ("The error" + err + " occurred.")
             return(print(f"The error '{err}' occurred"))
             raise
 
         else:
-             log.logging.info ("SLQ connection established: " + str(self.connection))
+             logger.info ("SLQ connection established: " + str(self.connection))
     
 class RPG_table(SQL_object_GLS):
     ''' SQL database object that represents an RPG table. '''
@@ -57,7 +62,7 @@ class RPG_table(SQL_object_GLS):
     def retrieve_from_database(self):
         ''' Returns the SQL query results'''
         if type(self.connection) is not sqlite3.Connection:
-            log.logging.error ("There is no open connection to a database.")
+            logger.error ("There is no open connection to a database.")
             raise sqlite3.DatabaseError ("There is no open connection to a database.")
           
         # self.query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'TestTable01' ORDER BY ORDINAL_POSITION"
@@ -66,7 +71,7 @@ class RPG_table(SQL_object_GLS):
         cursor.execute(self.query)
         self.database_results = cursor.fetchall()
 
-        log.logging.info ("Search result of SQL database returned as: " + str(self.database_results) + "\n")
+        logger.info ("Search result of SQL database returned as: " + str(self.database_results) + "\n")
     
     def give_column_names(self):
         ''' Retrieves and stores the column names for the table '''
@@ -79,7 +84,7 @@ class RPG_table(SQL_object_GLS):
         for row in column_results:
             self.column_names.append(row[1])
     
-        log.logging.info ("Column names returned as: " + str(self.column_names) + "\n")
+        logger.info ("Column names returned as: " + str(self.column_names) + "\n")
 
     def get_2d_array(self):
    
@@ -98,8 +103,8 @@ class RPG_table(SQL_object_GLS):
             self.database_results[j] = d # set the row of results to the dictionary value
     
         rows_and_columns_log_message = "There are {} columns and {} rows in the 2D array.".format(len(self.column_names),len(self.database_results))
-        log.logging.info ("2D array is returned as: " + str(self.database_results) + "\n")
-        log.logging.info (rows_and_columns_log_message + "\n")
+        logger.info ("2D array is returned as: " + str(self.database_results) + "\n")
+        logger.info (rows_and_columns_log_message + "\n")
     
     def convert_die_range_to_low_and_high(self):
         """
@@ -225,8 +230,7 @@ class RPG_table(SQL_object_GLS):
   ################################
 
 def main():
-    log.setup_logging()
-    log.start_logging()
+    
 
     print ("Running main of sql_table_object_GLS.")
    
@@ -242,7 +246,6 @@ def main():
 
     t.connection.close()
     print ("End main of sql_table_object-GLS")
-    log.end_logging()
 
 if __name__ == "__main__":
     main()
