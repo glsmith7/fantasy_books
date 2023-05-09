@@ -124,8 +124,8 @@ def main():
     log.logging.info ("Begin of main.")
 
     connect_A = connect_to_database(s.PATH_DEFAULT)
-    table_name = "MercenaryTableRealms"
-    the_query = "SELECT * FROM MercenaryTableRealms WHERE Race LIKE '%Human%'"
+    table_name = "TestTable01"
+    the_query = "SELECT * FROM TestTable01"
     
     print (get_column_names(table_name = table_name,connection=connect_A))
     print("----")

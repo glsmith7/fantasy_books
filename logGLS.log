@@ -988,3 +988,31 @@ DEBUG:root:A cursor object is returned:<sqlite3.Cursor object at 0x00000261D7CB9
 INFO:root:Logging ended at 20:53:18 on 08/05/2023
 
 
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Begin of main.
+INFO:root:SQL connection established: <sqlite3.Connection object at 0x000001F6C00108B0>
+DEBUG:root:A cursor object is returned:<sqlite3.Cursor object at 0x000001F6C0019540>
+INFO:root:Columns of SQL database returned as: ['Mercenary Type', 'Continent', 'Empire', 'Kingdom', 'Principality', 'Duchy', 'County', 'March', 'Barony', 'Restrictions', 'Race', 'Default Equipment']
+
+DEBUG:root:A cursor object is returned:<sqlite3.Cursor object at 0x000001F6C00195C0>
+INFO:root:Search result of SQL database returned as: [('Bowmen', 135000, 11000, 2700, 645, 145, 35, 7, 1, 'None', 'Human,Elf, Goblin, Orc', 'Short bow, short sword, leather armor'), ('Camel Archers', 45000, 3700, 905, 215, 50, 10, 2, 0, 'Desert terrain only', 'Human,Nomad', 'Composite bow, scimitar, shield, leather armor, camel'), ('Camel Lancers', 28000, 2200, 540, 130, 30, 7, 1, 0, 'Desert terrain only', 'Human,Nomad', 'Composite bow, lance, scimitar, shield, chainmail armor, leather barded camel'), ('Cataphract Cavalry', 28000, 2200, 540, 130, 30, 7, 1, 0, 'None', 'Human, Elf', 'Composite bow, lance, sword, shield, plate armor, lamellar barded med. warhorse'), ('Crossbowmen', 135000, 11000, 2700, 645, 145, 35, 7, 1, 'None', 'Human,Dwarf, Orc', 'Arbalest, short sword, chainmail armor'), ('Heavy Cavalry', 34000, 2750, 680, 160, 36, 8, 2, 0, 'None', 'Human', 'Lance, sword, shield, plate armor, chain barded medium warhorse'), ('Heavy Infantry', 170000, 13000, 3400, 800, 180, 40, 8, 2, 'None', 'Human, Elf, Dwarf, Orc, Gnoll, Hobgob, Lizardman, Bugbear, Ogre', 'Spear, sword, shield, banded plate armor'), ('Horse Archers', 45000, 3700, 905, 215, 50, 10, 2, 0, 'None', 'Human,Elf,Hobgob', 'Composite bow, scimitar, shield, leather armor, light warhorse'), ('Light Cavalry', 70000, 5500, 1350, 325, 75, 17, 3, 1, 'None', 'Human,Elf, Hobgob', '3 javelins, sword, shield, leather armor, light warhorse'), ('Light Infantry', 340000, 28000, 6800, 1600, 360, 85, 17, 3, 'None', 'Human,Nomad,Elf, Kobold, Goblin, Orc, Gnoll, Hobgob, Lizardman, Bugbear, Ogre', '3 javelins, short sword, shield, leather armor'), ('Longbowmen', 70000, 5500, 1350, 325, 75, 17, 3, 1, 'None', 'Human,Elf, Hobgob, Gnoll', 'Long bow, sword, chainmail armor'), ('Medium Cavalry', 45000, 3700, 905, 215, 50, 10, 2, 0, 'None', 'Human,Hobgob', 'Lance, sword, shield, lamellar armor, medium warhorse'), ('Slingers', 135000, 11000, 2700, 645, 145, 35, 7, 1, 'None', 'Human,Nomad,Goblin', 'Sling, short sword, shield, leather armor'), ('War Elephants', 4400, 345, 85, 20, 5, 1, 0, 0, 'Tropical climates only', 'Human', 'Lamellar barded elephant, 6 x composite bows, lances, and leather armor')]
+
+DEBUG:root:A cursor object is returned:<sqlite3.Cursor object at 0x000001F6C00196C0>
+INFO:root:Logging ended at 20:55:30 on 08/05/2023
+
+
+CRITICAL:root:
+-----------Restart-----------
+INFO:root:Begin of main.
+INFO:root:SQL connection established: <sqlite3.Connection object at 0x000002511E9D08B0>
+DEBUG:root:A cursor object is returned:<sqlite3.Cursor object at 0x000002511E9D9540>
+INFO:root:Columns of SQL database returned as: ['TestUniqueID', 'DiceFormula', 'DescriptionString', 'TestInteger01']
+
+DEBUG:root:A cursor object is returned:<sqlite3.Cursor object at 0x000002511E9D9540>
+INFO:root:Search result of SQL database returned as: [(1, '1d6+1', 'One', 1123), (2, '2d6+2', 'Two', 2123), (3, '3d6+3', 'Three', 3123), (4, '4d6+4', 'Four', 4123)]
+
+DEBUG:root:A cursor object is returned:<sqlite3.Cursor object at 0x000002511E9D9540>
+INFO:root:Logging ended at 20:56:09 on 08/05/2023
+
+
