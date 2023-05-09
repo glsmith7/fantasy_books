@@ -63,10 +63,11 @@ def _begin_query(table_name=None, query=None, connection=None, path = s.PATH_DEF
 
 
 def query_database(table_name=None, query=None, connection=None, path = s.PATH_DEFAULT,):
+    ''' Does the entire query from connect to return whatever the search was'''
 
     cursor = _begin_query (query=query, connection=connection, path = path,table_name=table_name) # common beginning to get cursor
     search_result = cursor.fetchall() 
-    log.logging.info ("Search result of SQL database returned as: " + str(search_result) + "\n")
+    log.logging.info ("Search result of SQL database returned as: " + str(search_result) + "for search query:" + str(query) + "\n")
 
     return search_result
 
