@@ -6,9 +6,13 @@ from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer
 from textual.widgets import Button, Header, Footer, Static, Placeholder, DataTable
 
+# logging boilerplate
+import logging
+import logging_tools_GLS
+logger = logging.getLogger(__name__)
+
 ROWS = [
     ("lane", "swimmer", "country", "time"),
-    (4, "Joseph Schooling", "Singapore", 50.39),
     (2, "Michael Phelps", "United States", 51.14),
     (5, "Chad le Clos", "South Africa", 51.14),
     (6, "László Cseh", "Hungary", 51.14),

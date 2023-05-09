@@ -2,16 +2,22 @@
 
 import sqlite3
 import os
-import logging_tools_GLS as log
 import datetime
 import array
 import settings_GLS as s
+
+# logging boilerplate
+import logging
+import logging_tools_GLS
+logger = logging.getLogger(__name__)
+
+####
 
 def connect_to_database(path=s.PATH_DEFAULT):
     ''' Returns an SQL connection object. If not path passed, uses default.'''
 
     if os.path.isfile(path) == False:
-        log.logging.error ("Database name does not exist.")
+        logger.exception ("Database name does not exist.")
         raise FileNotFoundError
 
     try:
@@ -19,12 +25,12 @@ def connect_to_database(path=s.PATH_DEFAULT):
 
     except OSError as err:
        
-        log.logging.error ("The error" + err + " occurred.")
+        logger.exception ("The error" + err + " occurred.")
         return(print(f"The error '{err}' occurred"))
         raise
 
     else:
-         log.logging.info ("SQL connection established: " + str(connection))
+         logger.info ("SQL connection established: " + str(connection))
          
     return connection
    
@@ -43,22 +49,22 @@ def _begin_query(table_name=None, query=None, connection=None, path = s.PATH_DEF
         connection = connect_to_database(path)
 
     if type(connection) is not sqlite3.Connection:
-        log.logging.error ("There is no open connection to a database.")
+        logger.exception ("There is no open connection to a database.")
         return sqlite3.DatabaseError ("There is no open connection to a database.")
 
     if not table_name and not query:
         raise KeyError ("Need a query or a table_name! If table_name alone passed, returns entire table. Query returns specific SQL query.")
-        log.logging.error ("KeyError: Need a query or a table_name! If table_name alone passed, returns entire table. Query returns specific SQL query.")
+        logger.exception ("KeyError: Need a query or a table_name! If table_name alone passed, returns entire table. Query returns specific SQL query.")
 
     elif table_name and query: # ie query and a table have been passed
-        log.logging.warning ("Table_name _and_ query were passed. The query supercedes the table_name, so the table name has been ignored.")
+        logger.warning ("Table_name _and_ query were passed. The query supercedes the table_name, so the table name has been ignored.")
 
     elif not query:
         query = 'select * from ' + table_name # returns entire table. If query is passed, will use the query and ignore the table.
      
     cursor = connection.cursor()               
     cursor.execute(query)
-    log.logging.debug ("A cursor object is returned:" + str(cursor))
+    logger.debug ("A cursor object is returned:" + str(cursor))
     return cursor
 
 
@@ -67,7 +73,7 @@ def query_database(table_name=None, query=None, connection=None, path = s.PATH_D
 
     cursor = _begin_query (query=query, connection=connection, path = path,table_name=table_name) # common beginning to get cursor
     search_result = cursor.fetchall() 
-    log.logging.info ("Search result of SQL database returned as: " + str(search_result) + "for search query:" + str(query) + "\n")
+    logger.info ("Search result of SQL database returned as: " + str(search_result) + "for search query:" + str(query) + "\n")
 
     return search_result
 
@@ -76,7 +82,7 @@ def get_column_names (table_name=None, query = None, connection=None, path = s.P
     This will not usually be used alone, but available just to make simpler if need just column names for some reason.'''
     column_names, _ , _ = get_table_as_dict(table_name=table_name, query=query, connection=connection, path = path)
 
-    log.logging.info ("Columns of SQL database returned from get_column_names as: " + "\n\t" + str(column_names) + "\n")
+    logger.info ("Columns of SQL database returned from get_column_names as: " + "\n\t" + str(column_names) + "\n")
 
     return column_names
 
@@ -86,7 +92,7 @@ def get_row_names (table_name=None, query = None, connection=None, path = s.PATH
 
     _, row_names, _ = get_table_as_dict(table_name=table_name, query=query, connection=connection, path = path)
     
-    log.logging.info ("Columns of SQL database returned from get_row_names as: " + "\n\t" +  str(row_names) + "\n")
+    logger.info ("Columns of SQL database returned from get_row_names as: " + "\n\t" +  str(row_names) + "\n")
 
     return row_names
 
@@ -121,7 +127,7 @@ def get_table_as_dict (table_name=None, query = None, connection=None, path = s.
 
     # Dictionary keys created for each line of the table using the columns
     result_list = [dict(zip(column_names, r)) for r in whole_table]
-    log.logging.info ("Initial SQL database returned as list of dictionaries in get_table_as_dict: " + "\t\n" + str (result_list) + "\n")
+    logger.info ("Initial SQL database returned as list of dictionaries in get_table_as_dict: " + "\n\t" + str (result_list) + "\n")
 
     # Extract list of row names 
     row_names = []
@@ -138,9 +144,9 @@ def get_table_as_dict (table_name=None, query = None, connection=None, path = s.
     column_names.pop(0)
 
     # log
-    log.logging.info ("Columns of SQL database returned as list from get_table_as_dict: " + "\n\t" + str (column_names) + "\n")
-    log.logging.info ("Rows of SQL database returned as list from get_table_as_dict: " + "\n\t" + str (row_names) + "\n")
-    log.logging.info ("Table of SQL database returned as 2D-Dict from get_table_as_dict: " + "\n\t" + str (final_dict) + "\n")
+    logger.info ("Columns of SQL database returned as list from get_table_as_dict: " + "\n\t" + str (column_names) + "\n")
+    logger.info ("Rows of SQL database returned as list from get_table_as_dict: " + "\n\t" + str (row_names) + "\n")
+    logger.info ("Table of SQL database returned as 2D-Dict from get_table_as_dict: " + "\n\t" + str (final_dict) + "\n")
 
     # return
     return column_names,row_names, final_dict
@@ -151,9 +157,8 @@ def print_results (search_result):
 
 def main():
     print ("Running main of sql_wrapper_GLS.")
-    log.setup_logging()
-    log.start_logging
-    log.logging.info ("Begin of main.")
+    
+    logger.info ("Begin of main.")
 
     connect_A = connect_to_database(s.PATH_DEFAULT)
     table_name = "TestTable02"
@@ -166,6 +171,5 @@ def main():
     
 
     connect_A.close()
-    log.end_logging()
 if __name__ == "__main__":
     main()

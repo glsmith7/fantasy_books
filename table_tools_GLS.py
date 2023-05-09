@@ -1,15 +1,19 @@
 import sql_wrapper_GLS as sqlW
-import logging_tools_GLS as log
 import re # reg expressions
 import d20
 import settings_GLS as s
+
+# logging boilerplate
+import logging
+import logging_tools_GLS
+logger = logging.getLogger(__name__)
 
 def give_column_names(results):
     col_names = []
     for row in results:
         col_names.append(row[1])
     
-    log.logging.info ("Column names returned as: " + str(col_names) + "\n")
+    logger.info ("Column names returned as: " + str(col_names) + "\n")
     return col_names
 
 def get_2d_array(columns, results):
@@ -30,8 +34,8 @@ def get_2d_array(columns, results):
         results[j] = d # set the row of results to the dictionary value
     
     rows_and_columns_log_message = "There are {} columns and {} rows in the 2D array.".format(len(columns),len(results))
-    log.logging.info ("2D array is returned as: " + str(results) + "\n")
-    log.logging.info (rows_and_columns_log_message + "\n")
+    logger.info ("2D array is returned as: " + str(results) + "\n")
+    logger.info (rows_and_columns_log_message + "\n")
 
     return results
 
@@ -203,15 +207,14 @@ def roll_table_one_step (table_name, roll='', result=None, query = s.SQL_QUERY_D
     
 
 def main():
-     log.setup_logging()
-     log.start_logging()
+    
      print ("Begin main.")
      for x in range (1,100):
         the_roll = (d20.roll("2d6").total)
         print (str(the_roll) + " :" + roll_table_one_step("ReactionRollStandard",result=the_roll)['Result'])
    
      print ("End of program")
-     log.end_logging()
+    
 
 if __name__ == "__main__":
     main()
