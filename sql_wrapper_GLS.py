@@ -87,29 +87,30 @@ def get_table_as_dict (table_name=None, query = None, connection=None, path = s.
     # get column names
     
     column_names = list (map (lambda x: x[0], cursor.description))
-    print ("Column names 2:" + str(column_names))
     
     # get unedited whole table
 
     whole_table = cursor.fetchall()
 
-    # Dictionary keys for each line of the table using the columns
+    # Dictionary keys created for each line of the table using the columns
     result_list = [dict(zip(column_names, r)) for r in whole_table]
 
-    # List of row names (far left cell of each row, ie., the first column)
+    # Extract list of row names (far left cell of each row, ie., the first column)
     row_names = []
     for x in range (0,len(result_list)):
         row_names.append(result_list[x][column_names[0]])
 
-    final_dict = {}
+    # create 2D dictionary
+    final_dict = {}  
     for y in range (0,len(row_names)):
-        final_dict.update ({row_names[y] : result_list[y]})
+        result_list[y].pop(column_names[0]) # use COLUMN as the key to remove the duplicate value that is now the row_name. Will always be first (i.e., leftmost) column that should be popped.
+        final_dict.update ({row_names[y] : result_list[y]}) # dictionary key of row gives the sub-dictionary for the rest of the row.
                   
-    print ("fdfdfdfdf")
     print ("Row names:" + str(row_names))
     print ("Final_dict:" + str (final_dict))
-    print ("Test:" + str (final_dict['Heavy Cavalry']['March']))
     
+    return column_names,row_names, final_dict
+
     # log.logging.info ("Table as Dict of SQL database returned as: " + "\n" + str (result_list) + "\n")
 
 def print_results (search_result):
