@@ -73,11 +73,44 @@ def query_database(table_name=None, query=None, connection=None, path = s.PATH_D
 def get_column_names (table_name=None, query = None, connection=None, path = s.PATH_DEFAULT):
     ''' Gets column names. Can be passed a connection, if not, then creates one. Path can be passed, or defaults to default in settings_GLS.py'''
 
-    cursor = _begin_query (table_name=table_name, query=query, path = path, connection = connection, ) # common beginning to get cursor
+    cursor = _begin_query (table_name=table_name, query=query, path = path, connection = connection) # common beginning to get cursor
     column_names = list (map (lambda x: x[0], cursor.description))
     log.logging.info ("Columns of SQL database returned as: " + str(column_names) + "\n")
 
     return column_names
+
+def get_table_as_dict (table_name=None, query = None, connection=None, path = s.PATH_DEFAULT):
+    ''' Gets entire table as dictionary. Can be passed a connection, if not, then creates one. Path can be passed, or defaults to default in settings_GLS.py'''
+
+    cursor = _begin_query (table_name=table_name, query=query, connection=connection, path = path)
+    
+    # get column names
+    
+    column_names = list (map (lambda x: x[0], cursor.description))
+    print ("Column names 2:" + str(column_names))
+    
+    # get unedited whole table
+
+    whole_table = cursor.fetchall()
+
+    # Dictionary keys for each line of the table using the columns
+    result_list = [dict(zip(column_names, r)) for r in whole_table]
+
+    # List of row names (far left cell of each row, ie., the first column)
+    row_names = []
+    for x in range (0,len(result_list)):
+        row_names.append(result_list[x][column_names[0]])
+
+    final_dict = {}
+    for y in range (0,len(row_names)):
+        final_dict.update ({row_names[y] : result_list[y]})
+                  
+    print ("fdfdfdfdf")
+    print ("Row names:" + str(row_names))
+    print ("Final_dict:" + str (final_dict))
+    print ("Test:" + str (final_dict['Heavy Cavalry']['March']))
+    
+    # log.logging.info ("Table as Dict of SQL database returned as: " + "\n" + str (result_list) + "\n")
 
 def print_results (search_result):
     for row in search_result:
@@ -91,12 +124,14 @@ def main():
 
     connect_A = connect_to_database(s.PATH_DEFAULT)
     table_name = "MercenaryTableRealms"
-    the_query = "SELECT * FROM MercenaryTableRealms WHERE Race LIKE '%Kobold%'"
+    the_query = "SELECT * FROM MercenaryTableRealms WHERE Race LIKE '%Human%'"
     
     print (get_column_names(table_name = table_name,connection=connect_A))
     print("----")
     print (query_database(query = the_query,connection=connect_A))
-     
+    print ("----")
+    get_table_as_dict(query = the_query,connection=connect_A)
+
     connect_A.close()
     log.end_logging()
 if __name__ == "__main__":
