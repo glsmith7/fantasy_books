@@ -284,11 +284,23 @@ class RPG_table(SQL_object_GLS):
 
 def main():
     
-    table_pick = s.TABLE_NAME_DEFAULT
 
     print ("Running main of sql_table_object_GLS.")
-    t = RPG_table(table_pick)
+   
+    t = RPG_table(s.TABLE_NAME_DEFAULT)
     
+    print (t)
+    print (t.path)
+    print (t.connection)
+    print (t.table_name)
+    print (t.query)
+    print (t.column_names)
+    print (t.row_names)
+    print (t.database_results)
+    print (t.final_table)
+    print (t.roll(12))
+    
+    t.pick_table(table_name="TestTable02")
     print (t.final_table)
     
     t.connection.close()
