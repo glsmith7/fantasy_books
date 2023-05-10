@@ -1,10 +1,9 @@
-INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|connect_to_database|39 - SLQ connection established: <sqlite3.Connection object at 0x0000029E12061030>
-INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|_retrieve_from_database|75 - Search result of SQL database returned as: [('2-', 'Punitive Conviction'), ('3-5', 'Conviction'), ('6-8', 'Conviction on Lesser Charge'), ('9-11', 'Acquittal'), ('12+', 'Acquittal with Damages')]
+INFO:	|05/09/2023 07:36:49|oop_roll_on_tables_GLS|connect_to_database|39 - SLQ connection established: <sqlite3.Connection object at 0x000002B6AA21D5D0>
+INFO:	|05/09/2023 07:36:49|oop_roll_on_tables_GLS|_retrieve_from_database|75 - Search result of SQL database returned as: [('2-', 'First'), ('3-5', 'Second'), ('6-8', 'Third'), ('9-11', 'Fourth'), ('12+', 'Fifth')]
 
-INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|get_column_names|89 - Column names returned as: ['DieRange', 'Result']
+INFO:	|05/09/2023 07:36:49|oop_roll_on_tables_GLS|get_column_names|89 - Column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|_get_2d_array|115 - Pre row-conversion 2D array is returned as: [{'DieRange': '2-', 'Result': 'Punitive Conviction'}, {'DieRange': '3-5', 'Result': 'Conviction'}, {'DieRange': '6-8', 'Result': 'Conviction on Lesser Charge'}, {'DieRange': '9-11', 'Result': 'Acquittal'}, {'DieRange': '12+', 'Result': 'Acquittal with Damages'}]
+INFO:	|05/09/2023 07:36:49|oop_roll_on_tables_GLS|_get_2d_array|115 - Pre row-conversion 2D array is returned as: [{'DieRange': '2-', 'Result': 'First'}, {'DieRange': '3-5', 'Result': 'Second'}, {'DieRange': '6-8', 'Result': 'Third'}, {'DieRange': '9-11', 'Result': 'Fourth'}, {'DieRange': '12+', 'Result': 'Fifth'}]
 
-INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|_get_2d_array|116 - There are 2 columns and 5 rows in the 2D array.
+INFO:	|05/09/2023 07:36:49|oop_roll_on_tables_GLS|_get_2d_array|116 - There are 2 columns and 5 rows in the 2D array.
 
-ERROR:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|roll|259 - Nothing was found on table ReactionRollCrime when rolling 10000 on it.

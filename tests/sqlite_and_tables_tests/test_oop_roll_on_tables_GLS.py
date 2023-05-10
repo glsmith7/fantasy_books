@@ -24,7 +24,9 @@ def test_OOP_database_and_tables_en_masse():
 
     assert RPG_table_test.table_name == "TestTableReactionRollStandard"
     assert RPG_table_test.query == "SELECT * FROM 'TestTableReactionRollStandard'"
-    assert RPG_table_test.column_names == ['DieRange', 'Result']
-    assert RPG_table_test.database_results == [{'DieRange': '2-', 'Result': 'First', 'DieLow': -1000, 'DieHigh': 2}, {'DieRange': '3-5', 'Result': 'Second', 'DieLow': 3, 'DieHigh': 5}, {'DieRange': '6', 'Result': 'Third', 'DieLow': 6, 'DieHigh': 6}, {'DieRange': '7-11', 'Result': 'Fourth', 'DieLow': 7, 'DieHigh': 11}, {'DieRange': '12+', 'Result': 'Fifth', 'DieLow': 12, 'DieHigh': 1000}]
-
+    assert RPG_table_test.column_names == ['Result']
+    assert RPG_table_test.row_names == ['2-', '3-5', '6-8', '9-11', '12+']
+    assert RPG_table_test.database_results == [{'Result': 'First', 'DieLow': -1000, 'DieHigh': 2}, {'Result': 'Second', 'DieLow': 3, 'DieHigh': 5}, {'Result': 'Third', 'DieLow': 6, 'DieHigh': 8}, {'Result': 'Fourth', 'DieLow': 9, 'DieHigh': 11}, {'Result': 'Fifth', 'DieLow': 12, 'DieHigh': 1000}]
+    assert RPG_table_test.final_table == {'2-': {'Result': 'First', 'DieLow': -1000, 'DieHigh': 2}, '3-5': {'Result': 'Second', 'DieLow': 3, 'DieHigh': 5}, '6-8': {'Result': 'Third', 'DieLow': 6, 'DieHigh': 8}, '9-11': {'Result': 'Fourth', 'DieLow': 9, 'DieHigh': 11}, '12+': {'Result': 'Fifth', 'DieLow': 12, 'DieHigh': 1000}}
+    assert RPG_table_test.roll(12) == {'Result': 'Fifth', 'DieLow': 12, 'DieHigh': 1000}
     RPG_table_test.connection.close()

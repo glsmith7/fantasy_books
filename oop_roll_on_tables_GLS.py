@@ -279,8 +279,10 @@ def main():
     print (t.query)
     print (t.column_names)
     print (t.row_names)
+    print (t.database_results)
     print (t.final_table)
-    print (t.roll(10000))
+    print (t.roll(12))
+    
     
     t.connection.close()
     print ("End main of sql_table_object-GLS")
