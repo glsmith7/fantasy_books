@@ -1,9 +1,10 @@
-INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|connect_to_database|39 - SLQ connection established: <sqlite3.Connection object at 0x000001B1B622FA60>
-INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|retrieve_from_database|74 - Search result of SQL database returned as: [('X', 1, 2, 3), ('Y', 4, 5, 6), ('Z', 7, 8, 9)]
+INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|connect_to_database|39 - SLQ connection established: <sqlite3.Connection object at 0x0000029E12061030>
+INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|_retrieve_from_database|75 - Search result of SQL database returned as: [('2-', 'Punitive Conviction'), ('3-5', 'Conviction'), ('6-8', 'Conviction on Lesser Charge'), ('9-11', 'Acquittal'), ('12+', 'Acquittal with Damages')]
 
-INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|give_column_names|87 - Column names returned as: ['Row', 'A', 'B', 'C']
+INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|get_column_names|89 - Column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|get_2d_array|106 - 2D array is returned as: [{'Row': 'X', 'A': 1, 'B': 2, 'C': 3}, {'Row': 'Y', 'A': 4, 'B': 5, 'C': 6}, {'Row': 'Z', 'A': 7, 'B': 8, 'C': 9}]
+INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|_get_2d_array|115 - Pre row-conversion 2D array is returned as: [{'DieRange': '2-', 'Result': 'Punitive Conviction'}, {'DieRange': '3-5', 'Result': 'Conviction'}, {'DieRange': '6-8', 'Result': 'Conviction on Lesser Charge'}, {'DieRange': '9-11', 'Result': 'Acquittal'}, {'DieRange': '12+', 'Result': 'Acquittal with Damages'}]
 
-INFO:	|05/09/2023 02:00:44|oop_roll_on_tables_GLS|get_2d_array|107 - There are 4 columns and 3 rows in the 2D array.
+INFO:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|_get_2d_array|116 - There are 2 columns and 5 rows in the 2D array.
 
+ERROR:	|05/09/2023 07:16:27|oop_roll_on_tables_GLS|roll|259 - Nothing was found on table ReactionRollCrime when rolling 10000 on it.
