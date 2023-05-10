@@ -1,6 +1,9 @@
 # logging_tools_GLS.py
 import logging
 import datetime as dt
+import os
+
+ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__)))
 
 # Adopted from https://stackoverflow.com/a/35804945/1691778
 # Adds a new logging method to the logging module
@@ -36,24 +39,3 @@ logging.basicConfig(format = '%(levelname)s:\t|%(asctime)s|%(module)s|%(funcName
 fileHandler = logging.FileHandler ("logGLS.log")
 logger_base = logging.getLogger(__name__)
 logger_base.addHandler (fileHandler)
-
-# Use the TRACE level
-# logger_base.trace("A trace message")
-# logger_base.debug("A debug message")
-# logger_base.info("An info message")
-# logger_base.warning("A warning message")
-# logger_base.error("An error message")
-# logger_base.critical("A critical message")
-
-# def setup_logging():
-     
-#      logging.basicConfig (filename='logGLS.log',filemode ='a',level=logging.DEBUG)
-#      logging.critical ("\n-----------Restart-----------")
-
-# def start_logging():
-#      start_time = dt.datetime.now().strftime("%H:%M:%S on %d/%m/%Y") # current time as string
-#      logging.info ("Logging begins at " + start_time)
-    
-# def end_logging():
-#      end_time = dt.datetime.now().strftime("%H:%M:%S on %d/%m/%Y") # current time as string
-#      logging.info ("Logging ended at " + end_time + "\n\n")
