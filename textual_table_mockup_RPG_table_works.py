@@ -3,13 +3,10 @@ from textual.widgets import DataTable, Header, Footer
 import sys
 import oop_roll_on_tables_GLS as rpg
 global TITLE, ROWS
-
-
-
 class TableApp(App):
 
     BINDINGS = [
-        ("q", "quit", "Quit Program"),
+        ("q,Q", "quit", "Quit Program"),
     ]
     
     def compose(self) -> ComposeResult:
