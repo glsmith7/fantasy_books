@@ -2,6 +2,7 @@ import sqlite3
 import os
 import re
 import d20
+import copy
 
 # logging boilerplate
 import settings_GLS as s
@@ -43,19 +44,52 @@ class RPG_table(SQL_object_GLS):
 
     The two key public methods are:
 
-    1) pick_table (table_name, query, path) - table name MUST be provided, query defaults to return entire table, path defaults to settings. 
-    
-    This gives the following object values (* indicates those most likely to be retrieved in other code)
-        table_name *
-        final_table (SQL dictionary with columns and rows as keys.) *
-        column_names 
-        row_names
-        query
-        database_results (SQL dictionary with columns as keys)
-        connection: inherited from super class, is an SQL connection.
-        
+    ######################################################################
 
-    2) roll (<int>) - returns the row of a table with "DiceRange" column based on the roll value. Will give KeyError if there is no DiceRange column in the original SQL file.
+    A-1) pick_table (table_name, query, path) - table name MUST be provided, query defaults to return entire table, path defaults to settings. 
+    
+    This creates the following object values:
+        
+        1) column_names (List of column names excluding the 0,0 cell)
+        2) column_names_full (List of ALL column names, including the 0,0 cell)
+        3) row_names (List of names of each row, excluding the 0,0 cell--i.e., first row)
+
+        4) final_table (SQL converted to dictionary with columns and rows as keys.) 
+        5) table_list  (SQL converted to lists--gives contents only, not the row or column names)
+        6) table_list_rows (SQL converted to list--gives the leftmost column as well, i.e., the row names. Column names are not included) 
+
+        Given a table like this:
+
+                Row A   B   C
+                X   1   2   3
+                Y   4   5   6
+                Z   7   8   9
+        
+        Values would be:
+
+        1) column_names - ['A','B','C'] (note that "Row" is not returned)
+        2) column_names_full ['Row','A','B','C']
+        3) row_names - ['X','Y','Z'] (note that "Row" is not returned)
+
+        4) final_table = {'X': {'A': 1, 'B': 2, 'C': 3}, 'Y': {'A': 4, 'B': 5, 'C': 6}, 'Z': {'A': 7, 'B': 8, 'C': 9}} 
+                        -- each value be accessed by calling final_table[row_label][column_label]
+
+        5) table_list = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] (note no labels)
+        6) table_list_rows = [['X', 1, 2, 3], ['Y', 4, 5, 6], ['Z', 7, 8, 9]] (note each row is labeled)
+
+######################################################################    
+     A-2) The pick_table method also creates these values which refer to elements of the SQL database:
+
+        table_name (name in SQL database)
+        query (Exact query sent to SQL database)
+        connection (inherited from super class, is an SQL connection.)
+        database_results (SQL dictionary with columns as keys)
+        
+######################################################################
+        
+      B) roll (<int>) - returns the row of a table with "DiceRange" column based on the roll value. Will give KeyError if there is no DiceRange column in the original SQL file.
+        
+######################################################################
         '''
 
     def __init__ (self,table_name,query = s.SQL_QUERY_DEFAULT,path=s.PATH_DEFAULT):
@@ -72,10 +106,14 @@ class RPG_table(SQL_object_GLS):
         self._retrieve_from_database()
         self.get_column_names()
         self._get_2d_array()
+
         if "DieRange" in self.column_names:
             self._convert_die_range_to_low_and_high()
+
         self._get_row_names()
         self._finalize_table()
+        self._convert_database_dict_to_list()
+        self._add_labels_to_rows_list()
 
     def _retrieve_from_database(self):
         ''' Returns the SQL query results'''
@@ -88,9 +126,9 @@ class RPG_table(SQL_object_GLS):
         cursor = self.connection.cursor()
         cursor.execute(self.query)
         self.database_results = cursor.fetchall()
+        
 
         logger.info ("Search result of SQL database returned as: " + str(self.database_results) + "\n")
-
 
     def get_column_names(self):
         ''' Retrieves and stores the column names for the table '''
@@ -98,12 +136,15 @@ class RPG_table(SQL_object_GLS):
         cursor = self.connection.cursor()
         cursor.execute(query_column_names)
         column_results = cursor.fetchall()
-
+        # self.column_names_full = column_results
         self.column_names = []
         for row in column_results:
             self.column_names.append(row[1])
-    
+
+        self.column_names_full = copy.deepcopy(self.column_names) # stores full with the 0,0 cell as the first column name. Will be removed below.
+
         logger.info ("Column names returned as: " + str(self.column_names) + "\n")
+        logger.info ("Full column names returned as: " + str(self.column_names_full) + "\n")
 
     def _get_row_names(self):
         ''' Uses database_results to get the row names'''
@@ -250,6 +291,26 @@ class RPG_table(SQL_object_GLS):
 
             else:
                 raise ValueError("The dice entry was not trapped anywhere. SQL table error?")
+    
+    
+    def _convert_database_dict_to_list(self):
+        ''' Gives a list of lists for each row of table (does not include the first column or the first row; ie., this is the actual data not including labels)
+        
+        Unlike _add_labels_to_rows_list, this DOES NOT include the row label in the 0 position of each list.'''
+        self.table_list=[]
+        for item in self.database_results:
+            self.table_list.append(list(item.values()))
+
+    def _add_labels_to_rows_list(self):
+        ''' Gives a list of lists for each row of table (does not include the first row; ie., the column headers).
+        
+        Unlike _convert_database_dict_to_list, this DOES include the row label in the 0 position of each list (far left)'''
+        self.table_list_rows = copy.deepcopy(self.table_list)
+        count = 0
+        for row in self.table_list_rows:
+            row.insert(0,self.row_names[count])
+            count +=1
+
 
     def roll (self,roll):
         ''' Rolls on a table with a given number; if a DiceLow and DiceHigh field exists, then returns a value. Otherwise errors'''
@@ -289,8 +350,16 @@ def main():
     print ("Running main of sql_table_object_GLS.")
     t = RPG_table(table_pick)
     
+    print (t.column_names)
+    print ("----")
+    print (t.column_names_full)
+    print ("----")
     print (t.final_table)
-    
+    print ("----")
+    print ((t.table_list))
+    print ("----")
+    print (t.table_list_rows)
+
     t.connection.close()
     print ("End main of sql_table_object-GLS")
 
