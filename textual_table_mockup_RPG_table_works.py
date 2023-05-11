@@ -4,7 +4,7 @@ import sys
 import oop_roll_on_tables_GLS as rpg
 global TITLE, ROWS
 class TableApp(App):
-
+    # CSS_PATH = 'mercenary_recruit.css'
     BINDINGS = [
         ("q,Q", "quit", "Quit Program"),
     ]

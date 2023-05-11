@@ -1,4 +1,3 @@
-import sql_wrapper_GLS as sql
 import settings_GLS as s
 import sys
 from rich.text import Text
