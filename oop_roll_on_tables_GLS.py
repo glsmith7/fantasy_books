@@ -101,10 +101,9 @@ class RPG_table(SQL_object_GLS):
         ''' Combines all subroutines to prepare an RPG table for reference.'''
 
         self.table_name = table_name
-        self.query = query
-        self.query = self.query.replace("_replace_",self.table_name)
+        self.query = query.replace("_replace_",self.table_name)
         self._retrieve_from_database()
-        self.get_column_names()
+        # self.get_column_names()
         self._get_2d_array()
 
         if "DieRange" in self.column_names:
@@ -121,30 +120,26 @@ class RPG_table(SQL_object_GLS):
             logger.error ("There is no open connection to a database.")
             raise sqlite3.DatabaseError ("There is no open connection to a database.")
           
-        # self.query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'TestTable01' ORDER BY ORDINAL_POSITION"
-        
         cursor = self.connection.cursor()
         cursor.execute(self.query)
-        self.database_results = cursor.fetchall()
-        
-
-        logger.info ("Search result of SQL database returned as: " + str(self.database_results) + "\n")
-
-    def get_column_names(self):
-        ''' Retrieves and stores the column names for the table '''
-        query_column_names = "PRAGMA table_info({});".format(self.table_name) # returns column names from SQLite
-        cursor = self.connection.cursor()
-        cursor.execute(query_column_names)
-        column_results = cursor.fetchall()
-        # self.column_names_full = column_results
-        self.column_names = []
-        for row in column_results:
-            self.column_names.append(row[1])
-
+        self.column_names = [description[0] for description in cursor.description]
         self.column_names_full = copy.deepcopy(self.column_names) # stores full with the 0,0 cell as the first column name. Will be removed below.
 
+        self.database_results = cursor.fetchall()
+
+        logger.info ("Search result of SQL database returned as: " + str(self.database_results) + "\n")
         logger.info ("Column names returned as: " + str(self.column_names) + "\n")
         logger.info ("Full column names returned as: " + str(self.column_names_full) + "\n")
+    # def get_column_names(self):
+    #     ''' Retrieves and stores the column names for the table '''
+    #     cursor = self.connection.cursor()
+    #     self.column_names = []
+    #     for row in self.database_results:
+    #         self.column_names.append(row[1])
+
+        
+
+       
 
     def _get_row_names(self):
         ''' Uses database_results to get the row names'''
