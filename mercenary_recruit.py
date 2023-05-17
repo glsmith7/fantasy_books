@@ -34,7 +34,7 @@ class RaceSelectScreen(Screen):
     CSS_PATH = 'radio_set.css'
         
     def compose(self) -> ComposeResult:
-        the_default = 'Human' # change to whatever is the current choice once figure out how to do that.
+        the_default = s.DEFAULT_RACE # change to whatever is the current choice once figure out how to do that.
         the_table = rpg.RPG_table('RacesAvailable')
         list_of_race_options = the_table.database_results
         
@@ -46,10 +46,8 @@ class RaceSelectScreen(Screen):
                     else:    
                         yield RadioButton(row['Race'], value=True)
         
-
     def on_mount (self) -> None:
         self.query_one('#race_select').focus('Human')
-        pass
 
 class MercTable(DataTable):
 
