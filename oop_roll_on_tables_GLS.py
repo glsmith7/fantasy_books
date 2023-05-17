@@ -103,7 +103,6 @@ class RPG_table(SQL_object_GLS):
         self.table_name = table_name
         self.query = query.replace("_replace_",self.table_name)
         self._retrieve_from_database()
-        # self.get_column_names()
         self._get_2d_array()
 
         if "DieRange" in self.column_names:
