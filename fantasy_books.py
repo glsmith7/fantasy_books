@@ -1,7 +1,50 @@
 import oop_roll_on_tables_GLS as r
 
+def create_fantasy_book(type=None):
+    ''' Returns a book object. Type can be default (normal), esoteric, or authority'''
+    if type == "esoteric":
+        return EsotericBook()
+    elif type == "authority":
+        return AuthoritativeBook()
+    else:
+        return FantasyBook()
+    
+def generate_book_details_from_tables(b,table_for_value):
+    ''' Checks table aaDiceTypeToRoll to see what dice to roll, and then rolls and checks the result on the given table.
+    All tables that use this should have:
+    1) An entry in SQL table aaDiceTypeToRoll with the same table name that matches table to roll on.
+    2) The SQL table to be rolled on should have only two columns: one called 'DieRange' and the other 'Result'. '''
+
+    # what dice to roll on the table   
+    dice = r.what_dice_to_roll(table_for_value) # returns a list
+    if dice == []:
+        raise ValueError("Empty dice list returned -- does aaDiceTypeToRoll have an entry for this table?")
+    else:
+        dice_string = dice[0] # dice[0] is the only thing returned, and this makes it a string rather than list as dice is.
+        roll_result = r.d20.roll(dice_string) 
+
+    # actually do the roll now that we know what dice we're rolling
+    t = r.RPG_table(table_for_value)
+    rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
+    return rolled_row['Result'] 
+
+def randomize_book_statistics(a):
+    ''' Loops through all variables and assigns randomly based on random SQL table rolls.'''
+
+    the_list_of_tables = [ # SQL table name first, then self.variable for the book object
+        ("BookScope","scope"),
+        ("BookOriginalLanguage","original_language")
+        ]
+
+    for i,j in the_list_of_tables:
+        setattr(a,j,generate_book_details_from_tables(a,i)) # sets variable J of object a to the rolled results on table i for each element.
+
 class FantasyBook():
     ''' Fantasy book object.'''
+
+    # remember to add any variables added here to the self.XXXX list below, AND to the routine randomize_book_statistics 
+    # if the value is to be set from a random table.
+
     def __init__(self,         
         topic = "",
         title = "",
@@ -87,44 +130,11 @@ class AuthoritativeBook(FantasyBook):
         self.authoritative_field = authoritative_field
         self.authority_rank = authority_rank
 
-def create_fantasy_book(type=None):
-    ''' Returns a book object. Type can be default (normal), esoteric, or authority'''
-    if type == "esoteric":
-        return EsotericBook()
-    elif type == "authority":
-        return AuthoritativeBook()
-    else:
-        return FantasyBook()
-    
-def generate_book_details(b,table_for_value):
-
-    # what dice to roll on the table   
-    dice = r.what_dice_to_roll(table_for_value) # returns a list
-    if dice == []:
-        raise ValueError("Empty dice list returned -- does aaDiceTypeToRoll have an entry for this table?")
-
-    dice_string = dice[0] # dice[0] is the only thing returned, and this makes it a string rather than list as dice is.
-    
-    
-    roll_result = r.d20.roll(dice_string) 
-
-    # actually do the roll
-    t = r.RPG_table(table_for_value)
-    rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
-    return rolled_row['Result']
-
-def loop_thru(a):
-    the_list_of_tables = [
-        ("BookScope","scope"),
-        ("BookOriginalLanguage","original_language")
-        ]
-
-    for i,j in the_list_of_tables:
-        setattr(a,j,generate_book_details(a,i)) # sets variable J of object a to the rolled results on table i for each element.
-        
+############################
+# main()
 
 a = create_fantasy_book()
-loop_thru(a)
+randomize_book_statistics(a)
 print (a.scope)
 print (a.original_language)
 
