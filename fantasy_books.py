@@ -1,4 +1,10 @@
 import oop_roll_on_tables_GLS as r
+ 
+global the_list_of_tables 
+the_list_of_tables = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
+        ("BookScope","scope"),
+        ("BookOriginalLanguage","original_language")
+        ]
 
 def create_fantasy_book(type=None):
     ''' Returns a book object. Type can be default (normal), esoteric, or authority'''
@@ -28,16 +34,15 @@ def generate_book_details_from_tables(b,table_for_value):
     rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
     return rolled_row['Result'] 
 
-def randomize_book_statistics(a):
+def randomize_book_details(the_book):
     ''' Loops through all variables and assigns randomly based on random SQL table rolls.'''
-
-    the_list_of_tables = [ # SQL table name first, then self.variable for the book object
-        ("BookScope","scope"),
-        ("BookOriginalLanguage","original_language")
-        ]
-
+    
     for i,j in the_list_of_tables:
-        setattr(a,j,generate_book_details_from_tables(a,i)) # sets variable J of object a to the rolled results on table i for each element.
+        setattr(the_book,j,generate_book_details_from_tables(the_book,i)) # sets variable J of object the_book to the rolled results on table i for each element.
+
+    complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
+
+    setattr(the_book,"complexity",generate_book_details_from_tables(the_book,complexity_table_list[the_book.scope]))
 
 class FantasyBook():
     ''' Fantasy book object.'''
@@ -134,10 +139,7 @@ class AuthoritativeBook(FantasyBook):
 # main()
 
 a = create_fantasy_book()
-randomize_book_statistics(a)
+randomize_book_details(a)
 print (a.scope)
 print (a.original_language)
-
-
-
-
+print (a.complexity)
