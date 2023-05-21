@@ -1,23 +1,44 @@
-DEBUG:	|05/16/2023 11:49:03|proactor_events|__init__|633 - Using proactor: IocpProactor
-INFO:	|05/16/2023 11:49:03|oop_roll_on_tables_GLS|connect_to_database|38 - SLQ connection established: <sqlite3.Connection object at 0x0000025872FF4310>
-INFO:	|05/16/2023 11:49:03|oop_roll_on_tables_GLS|_retrieve_from_database|129 - Search result of SQL database returned as: [('Bowmen', 'Short bow, short sword, leather armor', '8d20'), ('Camel Archers', 'Composite bow, scimitar, shield, leather armor, camel', '4d20'), ('Camel Lancers', 'Composite bow, lance, scimitar, shield, chainmail armor, leather barded camel', '3d20'), ('Cataphract Cavalry', 'Composite bow, lance, sword, shield, plate armor, lamellar barded med. warhorse', '3d10'), ('Crossbowmen', 'Arbalest, short sword, chainmail armor', '8d20'), ('Heavy Cavalry', 'Lance, sword, shield, plate armor, chain barded medium warhorse', '4d10'), ('Heavy Infantry', 'Spear, sword, shield, banded plate armor', '2d100'), ('Horse Archers', 'Composite bow, scimitar, shield, leather armor, light warhorse', '4d20'), ('Light Cavalry', '3 javelins, sword, shield, leather armor, light warhorse', '4d20'), ('Light Infantry', '3 javelins, short sword, shield, leather armor', '4d100'), ('Longbowmen', 'Long bow, sword, chainmail armor', '4d20'), ('Medium Cavalry', 'Lance, sword, shield, lamellar armor, medium warhorse', '3d20'), ('Slingers', 'Sling, short sword, shield, leather armor', '8d20'), ('War Elephants', 'Lamellar barded elephant, 6 x composite bows, lances, and leather armor', '1d10')]
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|connect_to_database|38 - SLQ connection established: <sqlite3.Connection object at 0x000001ED8C218310>
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|129 - Search result of SQL database returned as: [('1d100',)]
 
-INFO:	|05/16/2023 11:49:03|oop_roll_on_tables_GLS|_retrieve_from_database|130 - Column names returned as: ['mercenary_type', 'equipment', 'class_1']
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|130 - Column names returned as: ['DiceFormula']
 
-INFO:	|05/16/2023 11:49:03|oop_roll_on_tables_GLS|_retrieve_from_database|131 - Full column names returned as: ['mercenary_type', 'equipment', 'class_1']
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|131 - Full column names returned as: ['DiceFormula']
 
-INFO:	|05/16/2023 11:49:03|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'mercenary_type': 'Bowmen', 'equipment': 'Short bow, short sword, leather armor', 'class_1': '8d20'}, {'mercenary_type': 'Camel Archers', 'equipment': 'Composite bow, scimitar, shield, leather armor, camel', 'class_1': '4d20'}, {'mercenary_type': 'Camel Lancers', 'equipment': 'Composite bow, lance, scimitar, shield, chainmail armor, leather barded camel', 'class_1': '3d20'}, {'mercenary_type': 'Cataphract Cavalry', 'equipment': 'Composite bow, lance, sword, shield, plate armor, lamellar barded med. warhorse', 'class_1': '3d10'}, {'mercenary_type': 'Crossbowmen', 'equipment': 'Arbalest, short sword, chainmail armor', 'class_1': '8d20'}, {'mercenary_type': 'Heavy Cavalry', 'equipment': 'Lance, sword, shield, plate armor, chain barded medium warhorse', 'class_1': '4d10'}, {'mercenary_type': 'Heavy Infantry', 'equipment': 'Spear, sword, shield, banded plate armor', 'class_1': '2d100'}, {'mercenary_type': 'Horse Archers', 'equipment': 'Composite bow, scimitar, shield, leather armor, light warhorse', 'class_1': '4d20'}, {'mercenary_type': 'Light Cavalry', 'equipment': '3 javelins, sword, shield, leather armor, light warhorse', 'class_1': '4d20'}, {'mercenary_type': 'Light Infantry', 'equipment': '3 javelins, short sword, shield, leather armor', 'class_1': '4d100'}, {'mercenary_type': 'Longbowmen', 'equipment': 'Long bow, sword, chainmail armor', 'class_1': '4d20'}, {'mercenary_type': 'Medium Cavalry', 'equipment': 'Lance, sword, shield, lamellar armor, medium warhorse', 'class_1': '3d20'}, {'mercenary_type': 'Slingers', 'equipment': 'Sling, short sword, shield, leather armor', 'class_1': '8d20'}, {'mercenary_type': 'War Elephants', 'equipment': 'Lamellar barded elephant, 6 x composite bows, lances, and leather armor', 'class_1': '1d10'}]
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_get_2d_array|158 - Pre row-conversion 2D array is returned as: [{'DiceFormula': '1d100'}]
 
-INFO:	|05/16/2023 11:49:03|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 3 columns and 14 rows in the 2D array.
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_get_2d_array|159 - There are 1 columns and 1 rows in the 2D array.
 
-INFO:	|05/16/2023 11:49:06|oop_roll_on_tables_GLS|connect_to_database|38 - SLQ connection established: <sqlite3.Connection object at 0x0000025872FF7100>
-INFO:	|05/16/2023 11:49:06|oop_roll_on_tables_GLS|_retrieve_from_database|129 - Search result of SQL database returned as: [(1, 'Human'), (2, 'Nomad'), (3, 'Dwarf'), (4, 'Elf'), (5, 'Goblin'), (6, 'Orc'), (7, 'Gnoll'), (8, 'Kobold'), (9, 'Ogre'), (10, 'Hobgoblin'), (11, 'Lizardman'), (12, 'Bugbear')]
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|connect_to_database|38 - SLQ connection established: <sqlite3.Connection object at 0x000001ED8C21BB50>
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|129 - Search result of SQL database returned as: [('1-55', 1), ('56-80', 2), ('81-95', 3), ('96-100', 4)]
 
-INFO:	|05/16/2023 11:49:06|oop_roll_on_tables_GLS|_retrieve_from_database|130 - Column names returned as: ['Ordinal', 'Race']
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|130 - Column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/16/2023 11:49:06|oop_roll_on_tables_GLS|_retrieve_from_database|131 - Full column names returned as: ['Ordinal', 'Race']
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|131 - Full column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/16/2023 11:49:06|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'Ordinal': 1, 'Race': 'Human'}, {'Ordinal': 2, 'Race': 'Nomad'}, {'Ordinal': 3, 'Race': 'Dwarf'}, {'Ordinal': 4, 'Race': 'Elf'}, {'Ordinal': 5, 'Race': 'Goblin'}, {'Ordinal': 6, 'Race': 'Orc'}, {'Ordinal': 7, 'Race': 'Gnoll'}, {'Ordinal': 8, 'Race': 'Kobold'}, {'Ordinal': 9, 'Race': 'Ogre'}, {'Ordinal': 10, 'Race': 'Hobgoblin'}, {'Ordinal': 11, 'Race': 'Lizardman'}, {'Ordinal': 12, 'Race': 'Bugbear'}]
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_get_2d_array|158 - Pre row-conversion 2D array is returned as: [{'DieRange': '1-55', 'Result': 1}, {'DieRange': '56-80', 'Result': 2}, {'DieRange': '81-95', 'Result': 3}, {'DieRange': '96-100', 'Result': 4}]
 
-INFO:	|05/16/2023 11:49:06|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 2 columns and 12 rows in the 2D array.
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_get_2d_array|159 - There are 2 columns and 4 rows in the 2D array.
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|connect_to_database|38 - SLQ connection established: <sqlite3.Connection object at 0x000001ED8C21BC40>
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|129 - Search result of SQL database returned as: [('1d100',)]
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|130 - Column names returned as: ['DiceFormula']
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|131 - Full column names returned as: ['DiceFormula']
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_get_2d_array|158 - Pre row-conversion 2D array is returned as: [{'DiceFormula': '1d100'}]
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_get_2d_array|159 - There are 1 columns and 1 rows in the 2D array.
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|connect_to_database|38 - SLQ connection established: <sqlite3.Connection object at 0x000001ED8C21B970>
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|129 - Search result of SQL database returned as: [('1-30', 'Classical (Latin)'), ('31-65', 'Common (Greek)'), ('66-85', 'Regional (Attic)'), ('86-90', 'Dwarven'), ('91-95', 'Elvish'), ('96-100', 'Ancient (Egyptian)')]
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|130 - Column names returned as: ['DieRange', 'Result']
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_retrieve_from_database|131 - Full column names returned as: ['DieRange', 'Result']
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_get_2d_array|158 - Pre row-conversion 2D array is returned as: [{'DieRange': '1-30', 'Result': 'Classical (Latin)'}, {'DieRange': '31-65', 'Result': 'Common (Greek)'}, {'DieRange': '66-85', 'Result': 'Regional (Attic)'}, {'DieRange': '86-90', 'Result': 'Dwarven'}, {'DieRange': '91-95', 'Result': 'Elvish'}, {'DieRange': '96-100', 'Result': 'Ancient (Egyptian)'}]
+
+INFO:	|05/20/2023 11:52:02|oop_roll_on_tables_GLS|_get_2d_array|159 - There are 2 columns and 6 rows in the 2D array.
 

@@ -129,17 +129,8 @@ class RPG_table(SQL_object_GLS):
         logger.info ("Search result of SQL database returned as: " + str(self.database_results) + "\n")
         logger.info ("Column names returned as: " + str(self.column_names) + "\n")
         logger.info ("Full column names returned as: " + str(self.column_names_full) + "\n")
-    # def get_column_names(self):
-    #     ''' Retrieves and stores the column names for the table '''
-    #     cursor = self.connection.cursor()
-    #     self.column_names = []
-    #     for row in self.database_results:
-    #         self.column_names.append(row[1])
-
-        
-
+    
        
-
     def _get_row_names(self):
         ''' Uses database_results to get the row names'''
         self.row_names = []
@@ -332,18 +323,18 @@ class RPG_table(SQL_object_GLS):
             raise KeyError (error_text)
         
         return to_return
-    
-  
 
   ################################
+def what_dice_to_roll(table) -> list:
+    ''' table is name of the table to roll on in the master table "aaDiceTypeToRoll".
+    Returns the dice rolling string for a given table.'''
 
-def main():
-    
-    table_pick = s.TABLE_NAME_DEFAULT
+    query = "select DiceFormula from aaDiceTypeToRoll where TableName like '{}'".format(table)
+    t = RPG_table(query=query, table_name="aaDiceTypeToRoll")
+    t.connection.close
 
-    print ("Running main of sql_table_object_GLS.")
-    t = RPG_table(table_pick)
-    
+    return t.row_names
+def print_the_table_data(t):
     print (t.column_names)
     print ("----")
     print (t.column_names_full)
@@ -353,8 +344,24 @@ def main():
     print ((t.table_list))
     print ("----")
     print (t.table_list_rows)
+def main():
+    
+    table_pick = s.TABLE_NAME_DEFAULT
 
-    t.connection.close()
+    print ("Running main of sql_table_object_GLS.")
+    # t = RPG_table(table_pick)
+    
+    
+    dice = what_dice_to_roll("BookScope") # returns a list
+    roll_result = d20.roll(dice[0])
+    print (roll_result.total)    # T[0] is the only thing returned, and this makes it a string rather than list.
+
+    t = RPG_table("BookScope")
+
+    print (t.roll(roll_result.total)) # .total sends only the integer total, nil else.
+
+    
+    
     print ("End main of sql_table_object-GLS")
 
 if __name__ == "__main__":
