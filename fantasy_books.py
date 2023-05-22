@@ -1,6 +1,7 @@
 import oop_roll_on_tables_GLS as r
+import random as random
  
-global the_list_of_tables, list_of_names_tables, name_tables, name_tables_len, name_table_amalgamated
+global the_list_of_tables, list_of_names_tables, name_tables, name_tables_len, name_table_amalgamated, author_title_tables
 
 the_list_of_tables = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
         ("BookScope","scope"),
@@ -17,25 +18,25 @@ list_of_names_tables = [
 name_tables = {}
 name_tables_len = {}
 name_table_amalgamated = []
+author_title_tables = []
 
 def init_program_load_tables():
         
-    
     for i in list_of_names_tables:
         name_tables[i] = r.MadLibTable(i)
         name_tables_len[i] = name_tables[i].number_of_rows
         name_table_amalgamated.extend (name_tables[i].content)
-    
-    print ("Loaded")
 
-def create_fantasy_book(type=None):
+    author_title_tables.extend (r.MadLibTable('_titles_person').content)
+
+def create_fantasy_book(type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, or authority'''
     if type == "esoteric":
-        return EsotericBook()
+        return EsotericBook(**kwargs)
     elif type == "authority":
-        return AuthoritativeBook()
+        return AuthoritativeBook(**kwargs)
     else:
-        return FantasyBook()
+        return FantasyBook(**kwargs)
     
 def generate_book_details_from_tables(b,table_for_value):
     ''' Checks table aaDiceTypeToRoll to see what dice to roll, and then rolls and checks the result on the given table.
@@ -66,18 +67,12 @@ def randomize_book_details(the_book):
     
     # some with more specific rolling requirements.
     randomize_book_complexity(the_book)
-    randomize_book_author(the_book)
-    randomzie_book_title(the_book)
+
 
 def randomize_book_complexity(the_book):
     complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
     setattr(the_book,"complexity",generate_book_details_from_tables(the_book,complexity_table_list[the_book.scope-1])) # Minus 1 since index of list starts at zero.
 
-def randomize_book_author(the_book):
-    pass
-
-def randomzie_book_title(the_book):
-    pass
 class FantasyBook():
     ''' Fantasy book object.'''
 
@@ -87,6 +82,7 @@ class FantasyBook():
     def __init__(self,         
         topic = "",
         title = "",
+        sex = "",
         author = "",
         original_language = "",
         translated_language = "N/A",
@@ -113,7 +109,8 @@ class FantasyBook():
 
         self.topic = topic
         self.title = title
-        self.author = author
+        self.sex_set(sex)
+        self.author_set(author)
         self.translator = translator
         self.original_language = original_language
         self.translated_language = translated_language
@@ -147,8 +144,34 @@ class FantasyBook():
         except ValueError:
             print ("The book _{}_ is not in {} library.".format(self.title, library))
     
-    def author_set(self):
-        pass
+    def sex_set (self, sex):
+        if not sex:
+            self.sex = random.choice(["Male", "Male","Female"]) # makes males 2/3 of the time for historical reasons.
+        else:
+            self.sex = sex
+
+    def author_set(self,author_name):
+        global author_title_tables
+
+        if not author_name:
+            author = str(random.choice(name_table_amalgamated)[0])
+            title = str(random.choice(author_title_tables)[0])
+            
+            # male/female titles are separated by a slash in the SQL database  
+            if title.__contains__("/"):
+                title_split = title.split("/",2)
+                
+                if self.sex == "Male":
+                    title = title_split[0]
+                else:
+                    title = title_split[1]
+
+            self.author = title + " " + author
+
+        else:
+            self.author = author_name
+            
+    
 class EsotericBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
     def __init__ (self,
@@ -187,5 +210,6 @@ for z in range(0,number_to_run):
     print ("Scope:" + str(a.scope))
     print ("Lang:" + str(a.original_language))
     print ("Complex:" + str(a.complexity))
+    print ("Sex:" + str(a.sex))
     print ("Author:" + str(a.author))
     print ("---")
