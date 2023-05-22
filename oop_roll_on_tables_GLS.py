@@ -10,7 +10,16 @@ import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
 
-
+def print_the_table_data(t):
+    print (t.column_names)
+    print ("----")
+    print (t.column_names_full)
+    print ("----")
+    print (t.final_table)
+    print ("----")
+    print ((t.table_list))
+    print ("----")
+    print (t.table_list_rows)
 class SQL_object_GLS:
     ''' A connection to an SQLite database object '''
 
@@ -36,7 +45,7 @@ class SQL_object_GLS:
 
         else:
              logger.info ("SLQ connection established: " + str(self.connection))
-    
+
 class RPG_table(SQL_object_GLS):
     ''' Subclass of SQL database object that represents an RPG table. 
     
@@ -332,35 +341,83 @@ def what_dice_to_roll(table) -> list:
     query = "select DiceFormula from aaDiceTypeToRoll where TableName like '{}'".format(table)
     t = RPG_table(query=query, table_name="aaDiceTypeToRoll")
     t.connection.close
-
     return t.row_names
-def print_the_table_data(t):
-    print (t.column_names)
-    print ("----")
-    print (t.column_names_full)
-    print ("----")
-    print (t.final_table)
-    print ("----")
-    print ((t.table_list))
-    print ("----")
-    print (t.table_list_rows)
-def main():
-    
+def testing_01():
+
     table_pick = s.TABLE_NAME_DEFAULT
 
-    print ("Running main of sql_table_object_GLS.")
-    # t = RPG_table(table_pick)
-    
-    
+    print ("Running testing_01 of sql_table_object_GLS.")
+        
     dice = what_dice_to_roll("BookScope") # returns a list
     roll_result = d20.roll(dice[0])
     print (roll_result.total)    # T[0] is the only thing returned, and this makes it a string rather than list.
-
     t = RPG_table("BookScope")
-
     print (t.roll(roll_result.total)) # .total sends only the integer total, nil else.
 
+    print ("End testing_01 of sql_table_object-GLS")
+##########################################################################
+
+class MadLibTable(SQL_object_GLS):
+    ''' Creates a table with a single column of values to be selected at random. Each row is unique.
+    At creation each table as self.number_of_rows created.
+    .rand_row() gives a random row value. '''
     
+    def __init__ (self,table_name,query=s.SQL_QUERY_DEFAULT,path=s.PATH_DEFAULT):
+
+        super().__init__(path)
+        self.table_name = table_name
+
+        row_num_query = "SELECT count(0) from " + self.table_name
+        self.number_of_rows = self._get_number_of_rows(row_num_query)
+        self.content = self._get_content_of_table()
+
+    def __add__ (self,other):
+        print ("Test add")
+        pass
+
+    def _get_content_of_table (self):
+        query_self = "Select * from " + self.table_name
+        cursor = self.connection.cursor()
+        cursor.execute(query_self)
+        self_results =  cursor.fetchall()
+        return self_results
+    
+    def _get_number_of_rows(self, row_num_query):
+        if type(self.connection) is not sqlite3.Connection:
+                logger.error ("There is no open connection to a database.")
+                raise sqlite3.DatabaseError ("There is no open connection to a database.")
+          
+        cursor = self.connection.cursor()
+        cursor.execute(row_num_query)
+        return cursor.fetchall()
+
+    def rand_row(self,number_to_return=1):
+        ''' returns the value of random row(s) of the MadLibTable
+        number_to_return defaults to 1, but can return any number of rows. Returns a list of tuple(s)'''
+
+        row_query = "select * from " + self.table_name + " order by RANDOM() LIMIT " + str(number_to_return)
+        cursor = self.connection.cursor()
+        cursor.execute(row_query)
+        sql_results =  cursor.fetchall()
+        
+        results_to_return = []
+        for i in range (0,number_to_return):
+            results_to_return.append(sql_results[number_to_return-i-1]) # -1 since results return start at index 0.
+        return results_to_return
+    
+
+def main():
+    
+    # table_pick = s.TABLE_NAME_DEFAULT
+
+    
+    for i in range(0,1):
+        a = MadLibTable(table_name="_names_famous")
+        b = MadLibTable(table_name="_names_test")
+        print (a.rand_row(1))
+        print (a.content)
+        print (b.content)
+        print (a.content + b.content)
     
     print ("End main of sql_table_object-GLS")
 

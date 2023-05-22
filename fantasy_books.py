@@ -1,10 +1,32 @@
 import oop_roll_on_tables_GLS as r
  
-global the_list_of_tables 
+global the_list_of_tables, list_of_names_tables, name_tables, name_tables_len, name_table_amalgamated
+
 the_list_of_tables = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
         ("BookScope","scope"),
-        ("BookOriginalLanguage","original_language")
+        ("BookOriginalLanguage","original_language"),
         ]
+
+list_of_names_tables = [
+        "_names_anglo_saxon", 
+        "_names_famous", 
+        "_names_french", 
+        "_names_norse", 
+        "_names_saints", ]
+
+name_tables = {}
+name_tables_len = {}
+name_table_amalgamated = []
+
+def init_program_load_tables():
+        
+    
+    for i in list_of_names_tables:
+        name_tables[i] = r.MadLibTable(i)
+        name_tables_len[i] = name_tables[i].number_of_rows
+        name_table_amalgamated.extend (name_tables[i].content)
+    
+    print ("Loaded")
 
 def create_fantasy_book(type=None):
     ''' Returns a book object. Type can be default (normal), esoteric, or authority'''
@@ -24,7 +46,7 @@ def generate_book_details_from_tables(b,table_for_value):
     # what dice to roll on the table   
     dice = r.what_dice_to_roll(table_for_value) # returns a list
     if dice == []:
-        raise ValueError("Empty dice list returned -- does aaDiceTypeToRoll have an entry for this table?")
+        raise ValueError("Empty dice list returned -- does SQL table 'aaDiceTypeToRoll' have an entry for this table?")
     else:
         dice_string = dice[0] # dice[0] is the only thing returned, and this makes it a string rather than list as dice is.
         roll_result = r.d20.roll(dice_string) 
@@ -37,13 +59,25 @@ def generate_book_details_from_tables(b,table_for_value):
 def randomize_book_details(the_book):
     ''' Loops through all variables and assigns randomly based on random SQL table rolls.'''
     
+    # generate from the global
+
     for i,j in the_list_of_tables:
         setattr(the_book,j,generate_book_details_from_tables(the_book,i)) # sets variable J of object the_book to the rolled results on table i for each element.
+    
+    # some with more specific rolling requirements.
+    randomize_book_complexity(the_book)
+    randomize_book_author(the_book)
+    randomzie_book_title(the_book)
 
+def randomize_book_complexity(the_book):
     complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
+    setattr(the_book,"complexity",generate_book_details_from_tables(the_book,complexity_table_list[the_book.scope-1])) # Minus 1 since index of list starts at zero.
 
-    setattr(the_book,"complexity",generate_book_details_from_tables(the_book,complexity_table_list[the_book.scope]))
+def randomize_book_author(the_book):
+    pass
 
+def randomzie_book_title(the_book):
+    pass
 class FantasyBook():
     ''' Fantasy book object.'''
 
@@ -60,10 +94,11 @@ class FantasyBook():
         format = "b",
         materials = "a",
         libraries_it_is_in = [],
+        number_extant_copies = 0,
+        number_extant_available_to_place = 0,
         scope = 0,
         complexity = 5,
         age = 2,
-        number_extant_copies = 0,
         number_pages = 0,
         reading_time = 0,
         reference_time = 0,
@@ -73,7 +108,8 @@ class FantasyBook():
         rarity_modifier = 0,
         value = 0,
         weight = 0,
-        number_volumes = 0,):
+        number_volumes = 0,
+        ):
 
         self.topic = topic
         self.title = title
@@ -88,6 +124,7 @@ class FantasyBook():
         self.materials = materials
         self.libraries_it_is_in = libraries_it_is_in
         self.number_extant_copies = number_extant_copies
+        self.number_extant_available_to_place = number_extant_available_to_place
         self.number_pages = number_pages
         self.reading_time = reading_time
         self.reference_time = reference_time
@@ -101,18 +138,17 @@ class FantasyBook():
 
     def add(self,library):
         ''' Add this book to a given library'''
-        #if self.libraries_it_is_in:
         self.libraries_it_is_in.append(library)
-        #else:
-         #   self.libraries_it_is_in = library
-
+    
     def remove (self,library):
         ''' Remove this book from a given library'''
         try:
             self.libraries_it_is_in.remove(library)
         except ValueError:
             print ("The book _{}_ is not in {} library.".format(self.title, library))
-        
+    
+    def author_set(self):
+        pass
 class EsotericBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
     def __init__ (self,
@@ -135,11 +171,21 @@ class AuthoritativeBook(FantasyBook):
         self.authoritative_field = authoritative_field
         self.authority_rank = authority_rank
 
+
 ############################
 # main()
 
-a = create_fantasy_book()
-randomize_book_details(a)
-print (a.scope)
-print (a.original_language)
-print (a.complexity)
+# SELECT count(0) from aaDiceTypeToRoll is SQL for number of lines in a table.
+init_program_load_tables()
+
+number_to_run = 1
+
+for z in range(0,number_to_run):
+
+    a = create_fantasy_book()
+    randomize_book_details(a)
+    print ("Scope:" + str(a.scope))
+    print ("Lang:" + str(a.original_language))
+    print ("Complex:" + str(a.complexity))
+    print ("Author:" + str(a.author))
+    print ("---")
