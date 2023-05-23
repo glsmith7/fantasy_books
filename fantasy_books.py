@@ -1,4 +1,5 @@
 import oop_roll_on_tables_GLS as r
+import 
 import random as random
  
 global the_list_of_tables
@@ -19,7 +20,7 @@ list_of_names_tables_male = [
         "_names_famous_male", 
         "_names_french_male", 
         "_names_norse_male", 
-        "_names_saints_male", 
+        # "_names_saints_male", 
         ]
 
 list_of_names_tables_female = [
@@ -29,8 +30,21 @@ list_of_names_tables_female = [
         "_names_famous_female", 
         "_names_french_female", 
         "_names_norse_female", 
-        "_names_saints_female", 
+        # "_names_saints_female", 
         ]
+
+list_of_surnames_tables = [
+        "_names_arabic_surnames",
+        "_names_anglo_saxon_surnames", 
+        "_names_english_surnames",
+        "_names_famous_surnames", 
+        "_names_french_surnames", 
+        "_names_norse_surnames_female",
+		"_names_norse_surnames_male",
+        "_names_saints_surnames", 
+        ]
+
+
 
 name_tables_male, name_tables_len_male = {}, {}
 name_tables_female, name_tables_len_female = {}, {}
@@ -184,11 +198,16 @@ class FantasyBook():
 
         else:
             if self.sex == "Male":
-                author = str(random.choice(name_table_amalgamated_male)[0])
+                first_name = random.choice(name_table_amalgamated_male)
+                author_name = str(first_name[0]) # first item is the name
+                author_nationality = str(first_name[1])
             else:
-                author = str(random.choice(name_table_amalgamated_female)[0])
+                first_name = random.choice(name_table_amalgamated_female)
+                author_name = str(first_name[0]) # first item is the name
+                author_nationality = str(first_name[1])
 
-      
+        # title of the author
+        print (author_nationality)
         title = str(random.choice(author_title_tables)[0])
             
         # male/female titles are separated by a slash in the SQL database  
@@ -201,10 +220,12 @@ class FantasyBook():
                 title = title_split[1]
         
         # put it all together
+        full_author = ""
+        print ("Title:" + title)
+        if title != "None": full_author = full_author.join([title," "])
+        full_author += (author_name)
+        self.author = full_author
 
-        self.author = title + " " + author
-
-        
             
     
 class EsotericBook(FantasyBook):
@@ -236,7 +257,7 @@ class AuthoritativeBook(FantasyBook):
 # SELECT count(0) from aaDiceTypeToRoll is SQL for number of lines in a table.
 init_program_load_tables()
 
-number_to_run = 1
+number_to_run = 100
 
 for z in range(0,number_to_run):
 
