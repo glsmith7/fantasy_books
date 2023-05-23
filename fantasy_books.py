@@ -12,7 +12,7 @@ global complexity_table_list
 
 the_list_of_tables_for_randomize = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
         ("BookScope","scope"),
-        ("BookOriginalLanguage","original_language"),
+        ("BookOriginalLanguage","current_language"),
         ]
 
 list_of_names_tables_male = [
@@ -105,8 +105,8 @@ class FantasyBook():
         author_epithet = "",
         author_full = "",
         author_nationality = "",
-        original_language = "",
-        translated_language = "N/A",
+        current_language = "",
+        original_language = "N/A",
         translator = "N/A",
         format = "",
         materials = "",
@@ -128,7 +128,7 @@ class FantasyBook():
         number_volumes = 0,
         ):
         
-        self.randomize_book_details() # scope, original language
+        self.randomize_book_details() # scope, current_language
 
         self.topic_set(topic)
         self.topic_title_set(topic_title_form)
@@ -138,7 +138,7 @@ class FantasyBook():
         self.author_epithet_set (author_epithet)
         self.author_full_set (author_full)
         self.translator = translator
-        self.translated_language = translated_language
+        self.original_language = original_language
         self.complexity_set(complexity)
         self.age_set(age)
         self.format_set(format)
@@ -163,7 +163,7 @@ class FantasyBook():
 
     def age_set(self,age):
         if not age:
-            table_name = "BookAge_" + self.original_language
+            table_name = "BookAge_" + self.current_language
             dice_string = self.book_details_result_from_tables(table_name)
             self.age = d20.roll(dice_string).total
         else:
