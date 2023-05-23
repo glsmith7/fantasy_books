@@ -405,6 +405,21 @@ class MadLibTable(SQL_object_GLS):
             results_to_return.append(sql_results[number_to_return-i-1]) # -1 since results return start at index 0.
         return results_to_return
     
+class LookUpTable(SQL_object_GLS):
+       
+    
+    def __init__ (self,table_name,query=s.SQL_QUERY_DEFAULT,path=s.PATH_DEFAULT):
+
+        super().__init__(path)
+        self.table_name = table_name
+        self.content = self._get_results(query)
+
+    def _get_results (self, query):
+
+        cursor = self.connection.cursor()
+        cursor.execute(query)
+        self_results =  cursor.fetchall()
+        return self_results
 
 def main():
     

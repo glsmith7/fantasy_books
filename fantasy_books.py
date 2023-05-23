@@ -96,6 +96,7 @@ class FantasyBook():
 
     def __init__(self,         
         topic = "",
+        topic_title_form = "",
         title = "",
         sex = "",
         author_name = "",
@@ -128,8 +129,8 @@ class FantasyBook():
         
         self.randomize_book_details() # scope, 
 
-        self.topic = topic
-        self.title = title
+        self.topic_set(topic)
+        self.topic_title_set(topic_title_form)
         self.sex_set(sex)
         self.author_set(author_name)
         self.author_title_set (author_title)
@@ -225,6 +226,11 @@ class FantasyBook():
         rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
         return rolled_row['Result'] 
     
+    def look_up_table (self,table_name,search_term):
+        query = 'SELECT title_string from {} where Result LIKE "{}"'.format(table_name, search_term)
+        t = r.LookUpTable(table_name = table_name, query = query)
+        return t.content[0] # gets the tuple that returns out of the list.
+    
     def complexity_set(self,complexity):
         if not complexity:
             complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since index of list starts at zero.
@@ -232,6 +238,7 @@ class FantasyBook():
         
         else:
             self.complexity = complexity
+    
     def randomize_book_details(self):
         ''' Loops through all variables and assigns randomly based on random SQL table rolls.'''
     
@@ -251,7 +258,20 @@ class FantasyBook():
         else:
             self.sex = sex
     
+    def topic_set (self, topic):
 
+        if not topic:
+            topic = self.book_details_result_from_tables("BookTopicsACKS")
+        self.topic = topic
+    
+    def  topic_title_set(self,topic_title_form):
+        if not topic_title_form:
+
+            t = self.look_up_table(table_name= "_topic_for_titles", search_term = self.topic)
+            self.topic_title_form = t[0] # first and only item of tuple to get rid of ('Response') and give Response
+        
+        else:
+            self.topic_title_form = topic_title_form
     
 class EsotericBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
@@ -288,4 +308,6 @@ for z in range(0,number_to_run):
     print ("Complex:" + str(a.complexity))
     print ("Sex:" + str(a.sex))
     print ("Author:" + str(a.author_full))
+    print ("Topic:" + str(a.topic))
+    print ("Topic title:" + str(a.topic_title_form))
     print ("---")
