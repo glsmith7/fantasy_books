@@ -1,72 +1,81 @@
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932E95D0>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932E9300>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932EB3D0>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932E8F40>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932E8C70>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932E8D60>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932E87C0>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1d100',)]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAD5D0>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAFA60>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAD210>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AACF40>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAFF10>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AACC70>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AACD60>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAC8B0>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AACA90>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAC400>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAC4F0>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAFB50>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAFD30>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAC040>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAC220>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAF790>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1d100',)]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DiceFormula']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DiceFormula']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DiceFormula']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DiceFormula']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DiceFormula': '1d100'}]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DiceFormula': '1d100'}]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 1 columns and 1 rows in the 2D array.
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 1 columns and 1 rows in the 2D array.
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932E8D60>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1-55', 1), ('56-80', 2), ('81-95', 3), ('96-100', 4)]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAF3D0>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1-55', 1), ('56-80', 2), ('81-95', 3), ('96-100', 4)]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DieRange', 'Result']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DieRange', 'Result']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DieRange': '1-55', 'Result': 1}, {'DieRange': '56-80', 'Result': 2}, {'DieRange': '81-95', 'Result': 3}, {'DieRange': '96-100', 'Result': 4}]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DieRange': '1-55', 'Result': 1}, {'DieRange': '56-80', 'Result': 2}, {'DieRange': '81-95', 'Result': 3}, {'DieRange': '96-100', 'Result': 4}]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 2 columns and 4 rows in the 2D array.
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 2 columns and 4 rows in the 2D array.
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932EBF10>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1d100',)]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAF4C0>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1d100',)]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DiceFormula']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DiceFormula']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DiceFormula']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DiceFormula']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DiceFormula': '1d100'}]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DiceFormula': '1d100'}]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 1 columns and 1 rows in the 2D array.
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 1 columns and 1 rows in the 2D array.
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932EBD30>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1-30', 'Latin'), ('31-65', 'English'), ('66-85', 'Greek'), ('86-90', 'Dwarven'), ('91-95', 'Elvish'), ('96', 'Egyptian'), ('97', 'Coptic'), ('98', 'Akkadian'), ('99', 'Arabic'), ('100', 'Enochian')]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594AAF790>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1-30', 'Latin'), ('31-65', 'English'), ('66-85', 'Greek'), ('86-90', 'Dwarven'), ('91-95', 'Elvish'), ('96', 'Egyptian'), ('97', 'Coptic'), ('98', 'Akkadian'), ('99', 'Arabic'), ('100', 'Enochian')]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DieRange', 'Result']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DieRange', 'Result']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DieRange': '1-30', 'Result': 'Latin'}, {'DieRange': '31-65', 'Result': 'English'}, {'DieRange': '66-85', 'Result': 'Greek'}, {'DieRange': '86-90', 'Result': 'Dwarven'}, {'DieRange': '91-95', 'Result': 'Elvish'}, {'DieRange': '96', 'Result': 'Egyptian'}, {'DieRange': '97', 'Result': 'Coptic'}, {'DieRange': '98', 'Result': 'Akkadian'}, {'DieRange': '99', 'Result': 'Arabic'}, {'DieRange': '100', 'Result': 'Enochian'}]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DieRange': '1-30', 'Result': 'Latin'}, {'DieRange': '31-65', 'Result': 'English'}, {'DieRange': '66-85', 'Result': 'Greek'}, {'DieRange': '86-90', 'Result': 'Dwarven'}, {'DieRange': '91-95', 'Result': 'Elvish'}, {'DieRange': '96', 'Result': 'Egyptian'}, {'DieRange': '97', 'Result': 'Coptic'}, {'DieRange': '98', 'Result': 'Akkadian'}, {'DieRange': '99', 'Result': 'Arabic'}, {'DieRange': '100', 'Result': 'Enochian'}]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 2 columns and 10 rows in the 2D array.
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 2 columns and 10 rows in the 2D array.
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932EB970>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1d100',)]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594963B50>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1d100',)]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DiceFormula']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DiceFormula']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DiceFormula']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DiceFormula']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DiceFormula': '1d100'}]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DiceFormula': '1d100'}]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 1 columns and 1 rows in the 2D array.
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 1 columns and 1 rows in the 2D array.
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x000001C7932E8220>
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1-25', '0.75'), ('26-50', '1'), ('51-91', '2'), ('92-99', '3'), ('100', '4')]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|connect_to_database|47 - SLQ connection established: <sqlite3.Connection object at 0x0000028594963C40>
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|138 - Search result of SQL database returned as: [('1-6', '0.75'), ('7-21', '1'), ('22-61', '2'), ('62-91', '3'), ('92-99', '4'), ('100', '5')]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DieRange', 'Result']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|139 - Column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DieRange', 'Result']
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_retrieve_from_database|140 - Full column names returned as: ['DieRange', 'Result']
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DieRange': '1-25', 'Result': '0.75'}, {'DieRange': '26-50', 'Result': '1'}, {'DieRange': '51-91', 'Result': '2'}, {'DieRange': '92-99', 'Result': '3'}, {'DieRange': '100', 'Result': '4'}]
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|167 - Pre row-conversion 2D array is returned as: [{'DieRange': '1-6', 'Result': '0.75'}, {'DieRange': '7-21', 'Result': '1'}, {'DieRange': '22-61', 'Result': '2'}, {'DieRange': '62-91', 'Result': '3'}, {'DieRange': '92-99', 'Result': '4'}, {'DieRange': '100', 'Result': '5'}]
 
-INFO:	|05/22/2023 04:09:48|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 2 columns and 5 rows in the 2D array.
+INFO:	|05/22/2023 06:23:16|oop_roll_on_tables_GLS|_get_2d_array|168 - There are 2 columns and 6 rows in the 2D array.
 

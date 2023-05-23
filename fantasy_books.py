@@ -1,32 +1,58 @@
 import oop_roll_on_tables_GLS as r
 import random as random
  
-global the_list_of_tables, list_of_names_tables, name_tables, name_tables_len, name_table_amalgamated, author_title_tables
+global the_list_of_tables
+global list_of_names_tables_male, list_of_names_tables_female
+global name_tables_male, name_tables_len_male, name_table_amalgamated_male 
+global name_tables_female, name_tables_len_female, name_table_amalgamated_female
+global author_title_tables
 
 the_list_of_tables = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
         ("BookScope","scope"),
         ("BookOriginalLanguage","original_language"),
         ]
 
-list_of_names_tables = [
-        "_names_anglo_saxon", 
-        "_names_famous", 
-        "_names_french", 
-        "_names_norse", 
-        "_names_saints", ]
+list_of_names_tables_male = [
+        "_names_arabic_male",
+        "_names_anglo_saxon_male", 
+        "_names_english_male",
+        "_names_famous_male", 
+        "_names_french_male", 
+        "_names_norse_male", 
+        "_names_saints_male", 
+        ]
 
-name_tables = {}
-name_tables_len = {}
-name_table_amalgamated = []
+list_of_names_tables_female = [
+        "_names_arabic_female",
+        "_names_anglo_saxon_female", 
+        "_names_english_female",
+        "_names_famous_female", 
+        "_names_french_female", 
+        "_names_norse_female", 
+        "_names_saints_female", 
+        ]
+
+name_tables_male, name_tables_len_male = {}, {}
+name_tables_female, name_tables_len_female = {}, {}
+name_table_amalgamated_male, name_table_amalgamated_female = [], []
+
 author_title_tables = []
 
 def init_program_load_tables():
         
-    for i in list_of_names_tables:
-        name_tables[i] = r.MadLibTable(i)
-        name_tables_len[i] = name_tables[i].number_of_rows
-        name_table_amalgamated.extend (name_tables[i].content)
+    # names of male and female
 
+    for i in list_of_names_tables_male:
+        name_tables_male[i] = r.MadLibTable(i)
+        name_tables_len_male[i] = name_tables_male[i].number_of_rows
+        name_table_amalgamated_male.extend (name_tables_male[i].content)
+
+    for i in list_of_names_tables_female:
+        name_tables_female[i] = r.MadLibTable(i)
+        name_tables_len_female[i] = name_tables_female[i].number_of_rows
+        name_table_amalgamated_female.extend (name_tables_female[i].content)
+
+    # titles
     author_title_tables.extend (r.MadLibTable('_titles_person').content)
 
 def create_fantasy_book(type=None, **kwargs):
@@ -151,25 +177,34 @@ class FantasyBook():
             self.sex = sex
 
     def author_set(self,author_name):
-        global author_title_tables
 
-        if not author_name:
-            author = str(random.choice(name_table_amalgamated)[0])
-            title = str(random.choice(author_title_tables)[0])
-            
-            # male/female titles are separated by a slash in the SQL database  
-            if title.__contains__("/"):
-                title_split = title.split("/",2)
-                
-                if self.sex == "Male":
-                    title = title_split[0]
-                else:
-                    title = title_split[1]
-
-            self.author = title + " " + author
+        # name of author
+        if author_name:
+            self.author = author_name
 
         else:
-            self.author = author_name
+            if self.sex == "Male":
+                author = str(random.choice(name_table_amalgamated_male)[0])
+            else:
+                author = str(random.choice(name_table_amalgamated_female)[0])
+
+      
+        title = str(random.choice(author_title_tables)[0])
+            
+        # male/female titles are separated by a slash in the SQL database  
+        if title.__contains__("/"):
+            title_split = title.split("/",2)
+            
+            if self.sex == "Male":
+                title = title_split[0]
+            else:
+                title = title_split[1]
+        
+        # put it all together
+
+        self.author = title + " " + author
+
+        
             
     
 class EsotericBook(FantasyBook):
