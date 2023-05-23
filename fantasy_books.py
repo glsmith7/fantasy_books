@@ -98,12 +98,16 @@ class FantasyBook():
         topic = "",
         title = "",
         sex = "",
-        author = "",
+        author_name = "",
+        author_title = "",
+        author_epithet = "",
+        author_full = "",
+        author_nationality = "",
         original_language = "",
         translated_language = "N/A",
         translator = "N/A",
-        format = "b",
-        materials = "a",
+        format = "",
+        materials = "",
         libraries_it_is_in = [],
         number_extant_copies = 0,
         number_extant_available_to_place = 0,
@@ -127,7 +131,10 @@ class FantasyBook():
         self.topic = topic
         self.title = title
         self.sex_set(sex)
-        self.author_set(author)
+        self.author_set(author_name)
+        self.author_title_set (author_title)
+        self.author_epithet_set (author_epithet)
+        self.author_full_set (author_full)
         self.translator = translator
         self.original_language = original_language
         self.translated_language = translated_language
@@ -149,6 +156,56 @@ class FantasyBook():
         self.weight = weight
         self.number_volumes = number_volumes
 
+    def add(self,library):
+        ''' Add this book to a given library'''
+        self.libraries_it_is_in.append(library)
+
+    def author_set(self,author_name):
+        
+        if not author_name:        
+            
+            # first name
+            if self.sex == "Male": first_name = random.choice(name_table_amalgamated_male)
+            else: first_name = random.choice(name_table_amalgamated_female)
+            self.author_nationality = str(first_name[1]) # the second row (i.e. index 1 since starts at 0) is the table for this type of name's surname.
+            
+            # surname
+            last_name = random.choice(surnames_tables[self.author_nationality])
+            author_name = str(first_name[0]) + " " + str(last_name[0]) # first (0 index) item is the name
+            
+        self.author_name = author_name
+    
+    def author_title_set(self, author_title):
+         # title of the author
+        if not author_title:
+
+            author_title = str(random.choice(author_title_tables)[0])
+            
+           
+            #  # male/female titles are separated by a slash in the SQL database  
+            if author_title.__contains__("/"):
+                title_split = author_title.split("/",2)
+                
+                if self.sex == "Male":
+                    author_title = title_split[0]
+                else:
+                    author_title = title_split[1]
+        
+        author_title = string.capwords(author_title)
+        self.author_title = author_title
+    
+    def author_epithet_set (self, author_epithet):
+        pass
+
+    def author_full_set (self, author_full):
+        # put it all together
+        if not author_full:
+
+            if self.author_title != "None": author_full = author_full.join([self.author_title," "])
+            author_full += (self.author_name)
+        
+        self.author_full = author_full
+
     def book_details_result_from_tables(self,table_for_value):
         ''' Checks table aaDiceTypeToRoll to see what dice to roll, and then rolls and checks the result on the given table.
         All tables that use this should have:
@@ -168,17 +225,6 @@ class FantasyBook():
         rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
         return rolled_row['Result'] 
     
-    def add(self,library):
-        ''' Add this book to a given library'''
-        self.libraries_it_is_in.append(library)
-
-
-    def randomize_book_details(self):
-        ''' Loops through all variables and assigns randomly based on random SQL table rolls.'''
-    
-        for i,j in the_list_of_tables_for_randomize:
-            setattr(self,j,self.book_details_result_from_tables(i)) # sets variable J of object the_book to the rolled results on table i for each element.
-    
     def complexity_set(self,complexity):
         if not complexity:
             complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since index of list starts at zero.
@@ -186,6 +232,11 @@ class FantasyBook():
         
         else:
             self.complexity = complexity
+    def randomize_book_details(self):
+        ''' Loops through all variables and assigns randomly based on random SQL table rolls.'''
+    
+        for i,j in the_list_of_tables_for_randomize:
+            setattr(self,j,self.book_details_result_from_tables(i)) # sets variable J of object the_book to the rolled results on table i for each element.
 
     def remove (self,library):
         ''' Remove this book from a given library'''
@@ -199,40 +250,8 @@ class FantasyBook():
             self.sex = random.choice(["Male", "Male","Female"]) # makes males 2/3 of the time for historical reasons.
         else:
             self.sex = sex
+    
 
-    def author_set(self,author_name):
-        # title of the author
-        title = str(random.choice(author_title_tables)[0])
-        title = string.capwords(title)
-        #  # male/female titles are separated by a slash in the SQL database  
-        if title.__contains__("/"):
-            title_split = title.split("/",2)
-            
-            if self.sex == "Male":
-                title = title_split[0]
-            else:
-                title = title_split[1]
-        
-
-        # name of author
-        if author_name:
-            self.author = author_name
-            
-            # first name
-        else:
-            if self.sex == "Male": first_name = random.choice(name_table_amalgamated_male)
-            else: first_name = random.choice(name_table_amalgamated_female)
-            author_nationality = str(first_name[1]) # the second row (i.e. index 1 since starts at 0) is the table for this type of name's surname.
-            
-            # surname
-            last_name = random.choice(surnames_tables[author_nationality])
-            author_name = str(first_name[0]) + " " + str(last_name[0]) # first (0 index) item is the name
-        
-        # put it all together
-        full_author = ""
-        if title != "None": full_author = full_author.join([title," "])
-        full_author += (author_name)
-        self.author = full_author
     
 class EsotericBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
@@ -259,7 +278,7 @@ class AuthoritativeBook(FantasyBook):
 ############################
 # main()
 init_program_load_tables()
-number_to_run = 1
+number_to_run = 10
 
 for z in range(0,number_to_run):
 
@@ -268,5 +287,5 @@ for z in range(0,number_to_run):
     print ("Lang:" + str(a.original_language))
     print ("Complex:" + str(a.complexity))
     print ("Sex:" + str(a.sex))
-    print ("Author:" + str(a.author))
+    print ("Author:" + str(a.author_full))
     print ("---")
