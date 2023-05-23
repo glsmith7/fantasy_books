@@ -1,6 +1,7 @@
 import oop_roll_on_tables_GLS as r
 import random as random
 import string as string
+import d20
 
 global the_list_of_tables
 global list_of_names_tables_male, list_of_names_tables_female
@@ -127,7 +128,7 @@ class FantasyBook():
         number_volumes = 0,
         ):
         
-        self.randomize_book_details() # scope, 
+        self.randomize_book_details() # scope, original language
 
         self.topic_set(topic)
         self.topic_title_set(topic_title_form)
@@ -137,11 +138,10 @@ class FantasyBook():
         self.author_epithet_set (author_epithet)
         self.author_full_set (author_full)
         self.translator = translator
-        self.original_language = original_language
         self.translated_language = translated_language
         self.complexity_set(complexity)
-        self.age = age
-        self.format = format
+        self.age_set(age)
+        self.format_set(format)
         self.materials = materials
         self.libraries_it_is_in = libraries_it_is_in
         self.number_extant_copies = number_extant_copies
@@ -160,6 +160,15 @@ class FantasyBook():
     def add(self,library):
         ''' Add this book to a given library'''
         self.libraries_it_is_in.append(library)
+
+    def age_set(self,age):
+        if not age:
+            table_name = "BookAge_" + self.original_language
+            dice_string = self.book_details_result_from_tables(table_name)
+            self.age = d20.roll(dice_string).total
+        else:
+            self.age = age
+
 
     def author_set(self,author_name):
         
@@ -226,6 +235,21 @@ class FantasyBook():
         rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
         return rolled_row['Result'] 
     
+    def format_set(self,format):
+        if not format:
+            target_table = "BookAge_Format_"
+            if self.age < 11: target_table += "0001-0010"
+            elif self.age < 51: target_table += "0011-0050"
+            elif self.age < 101: target_table += "0051-0100"
+            elif self.age < 501: target_table += "0101-0500"
+            elif self.age < 1001: target_table += "0501-1000"
+            elif self.age < 2001: target_table += "1001-2000"
+            elif self.age < 10001: target_table += "2001-10000"
+
+            self.format = self.book_details_result_from_tables(target_table)
+        else:
+            self.format = format
+
     def look_up_table (self,table_name,search_term):
         query = 'SELECT title_string from {} where Result LIKE "{}"'.format(table_name, search_term)
         t = r.LookUpTable(table_name = table_name, query = query)
@@ -268,7 +292,9 @@ class FantasyBook():
         if not topic_title_form:
 
             t = self.look_up_table(table_name= "_topic_for_titles", search_term = self.topic)
-            self.topic_title_form = t[0] # first and only item of tuple to get rid of ('Response') and give Response
+            t = t[0].split(";") # first and only item of tuple to get rid of ('Response') and give Response. This is split by semicolons to make a list of various options.
+            t = random.choice(t) # a random option is then chosen
+            self.topic_title_form = t 
         
         else:
             self.topic_title_form = topic_title_form
@@ -298,7 +324,7 @@ class AuthoritativeBook(FantasyBook):
 ############################
 # main()
 init_program_load_tables()
-number_to_run = 10
+number_to_run = 100
 
 for z in range(0,number_to_run):
 
@@ -310,4 +336,6 @@ for z in range(0,number_to_run):
     print ("Author:" + str(a.author_full))
     print ("Topic:" + str(a.topic))
     print ("Topic title:" + str(a.topic_title_form))
+    print ("Age:" + str(a.age))
+    print ("Format:" + str(a.format))
     print ("---")
