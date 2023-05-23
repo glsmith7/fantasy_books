@@ -1,5 +1,6 @@
 import oop_roll_on_tables_GLS as r
 import random as random
+import string as string
 
 global the_list_of_tables
 global list_of_names_tables_male, list_of_names_tables_female
@@ -8,7 +9,7 @@ global name_tables_female, name_tables_len_female, name_table_amalgamated_female
 global author_title_tables
 global complexity_table_list
 
-the_list_of_tables = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
+the_list_of_tables_for_randomize = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
         ("BookScope","scope"),
         ("BookOriginalLanguage","original_language"),
         ]
@@ -34,22 +35,25 @@ list_of_names_tables_female = [
         ]
 
 list_of_surnames_tables = [
-        "_names_arabic_surnames",
-        "_names_anglo_saxon_surnames", 
-        "_names_english_surnames",
-        "_names_famous_surnames", 
-        "_names_french_surnames", 
-        "_names_norse_surnames_female",
-		"_names_norse_surnames_male",
-        "_names_saints_surnames", 
+        ("_names_arabic_surnames"),
+        ("_names_anglo_saxon_surnames"), 
+        ("_names_english_surnames"),
+        ("_names_famous_surnames"), 
+        ("_names_french_surnames"), 
+        ("_names_norse_surnames_female"),
+		("_names_norse_surnames_male"),
+        ("_names_roman_surnames"),
+        
         ]
 complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
 
 name_tables_male, name_tables_len_male = {}, {}
 name_tables_female, name_tables_len_female = {}, {}
+surnames_tables = {}
 name_table_amalgamated_male, name_table_amalgamated_female = [], []
 
 author_title_tables = []
+
 
 def init_program_load_tables():
         
@@ -64,6 +68,11 @@ def init_program_load_tables():
         name_tables_female[i] = r.MadLibTable(i)
         name_tables_len_female[i] = name_tables_female[i].number_of_rows
         name_table_amalgamated_female.extend (name_tables_female[i].content)
+
+    # surnames
+    for i in list_of_surnames_tables:
+        x = r.MadLibTable(i)
+        surnames_tables[i] = x.content 
 
     # titles
     author_title_tables.extend (r.MadLibTable('_titles_person').content)
@@ -122,7 +131,7 @@ class FantasyBook():
         self.translator = translator
         self.original_language = original_language
         self.translated_language = translated_language
-        self.set_complexity(complexity)
+        self.complexity_set(complexity)
         self.age = age
         self.format = format
         self.materials = materials
@@ -167,15 +176,14 @@ class FantasyBook():
     def randomize_book_details(self):
         ''' Loops through all variables and assigns randomly based on random SQL table rolls.'''
     
-        for i,j in the_list_of_tables:
+        for i,j in the_list_of_tables_for_randomize:
             setattr(self,j,self.book_details_result_from_tables(i)) # sets variable J of object the_book to the rolled results on table i for each element.
     
-    def set_complexity(self,complexity):
+    def complexity_set(self,complexity):
         if not complexity:
             complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since index of list starts at zero.
-
             setattr(self,"complexity",complexity_from_table[0]) # index 0 converts to string eg 1, instead of list ['1']
-            print ("pause")
+        
         else:
             self.complexity = complexity
 
@@ -193,26 +201,10 @@ class FantasyBook():
             self.sex = sex
 
     def author_set(self,author_name):
-
-        # name of author
-        if author_name:
-            self.author = author_name
-
-        else:
-            if self.sex == "Male":
-                first_name = random.choice(name_table_amalgamated_male)
-                author_name = str(first_name[0]) # first item is the name
-                author_nationality = str(first_name[1])
-            else:
-                first_name = random.choice(name_table_amalgamated_female)
-                author_name = str(first_name[0]) # first item is the name
-                author_nationality = str(first_name[1])
-
         # title of the author
-        print (author_nationality)
         title = str(random.choice(author_title_tables)[0])
-            
-        # male/female titles are separated by a slash in the SQL database  
+        title = string.capwords(title)
+        #  # male/female titles are separated by a slash in the SQL database  
         if title.__contains__("/"):
             title_split = title.split("/",2)
             
@@ -221,14 +213,26 @@ class FantasyBook():
             else:
                 title = title_split[1]
         
+
+        # name of author
+        if author_name:
+            self.author = author_name
+            
+            # first name
+        else:
+            if self.sex == "Male": first_name = random.choice(name_table_amalgamated_male)
+            else: first_name = random.choice(name_table_amalgamated_female)
+            author_nationality = str(first_name[1]) # the second row (i.e. index 1 since starts at 0) is the table for this type of name's surname.
+            
+            # surname
+            last_name = random.choice(surnames_tables[author_nationality])
+            author_name = str(first_name[0]) + " " + str(last_name[0]) # first (0 index) item is the name
+        
         # put it all together
         full_author = ""
-        print ("Title:" + title)
         if title != "None": full_author = full_author.join([title," "])
         full_author += (author_name)
         self.author = full_author
-
-            
     
 class EsotericBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
@@ -255,7 +259,7 @@ class AuthoritativeBook(FantasyBook):
 ############################
 # main()
 init_program_load_tables()
-number_to_run = 100
+number_to_run = 1
 
 for z in range(0,number_to_run):
 
