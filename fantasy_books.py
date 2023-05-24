@@ -9,10 +9,14 @@ global name_tables_male, name_tables_len_male, name_table_amalgamated_male
 global name_tables_female, name_tables_len_female, name_table_amalgamated_female
 global author_title_tables
 global complexity_table_list
+global CHANCE_OF_BEING_TRANSLATION, ANCIENT_LANGUAGE_WHICH_WOULD_NOT_HAVE_TRANSLATED 
+
+CHANCE_OF_BEING_TRANSLATION = 10 # ten percent chance; can be changed as wished.
+ANCIENT_LANGUAGE_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
 
 the_list_of_tables_for_randomize = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
         ("BookScope","scope"),
-        ("BookOriginalLanguage","current_language"),
+        ("BookCurrentLanguage","current_language"),
         ]
 
 list_of_names_tables_male = [
@@ -106,8 +110,8 @@ class FantasyBook():
         author_full = "",
         author_nationality = "",
         current_language = "",
-        original_language = "N/A",
-        translator = "N/A",
+        original_language = "",
+        translator = "",
         format = "",
         materials = "",
         libraries_it_is_in = [],
@@ -129,16 +133,17 @@ class FantasyBook():
         ):
         
         self.randomize_book_details() # scope, current_language
-
+        self.translator = translator
+        self.age = age
+        self.translator_set(translator) # must be called before original_language_set
+        self.original_language_set(original_language)
         self.topic_set(topic)
         self.topic_title_set(topic_title_form)
         self.sex_set(sex)
-        self.author_set(author_name)
+        self.author_name_set(author_name)
         self.author_title_set (author_title)
         self.author_epithet_set (author_epithet)
         self.author_full_set (author_full)
-        self.translator = translator
-        self.original_language = original_language
         self.complexity_set(complexity)
         self.age_set(age)
         self.format_set(format)
@@ -165,12 +170,13 @@ class FantasyBook():
         if not age:
             table_name = "BookAge_" + self.current_language
             dice_string = self.book_details_result_from_tables(table_name)
-            self.age = d20.roll(dice_string).total
+            if self.translator: self.age = d20.roll("1d100+20").total # bonus to age if is translation.
+            self.age += d20.roll(dice_string).total
         else:
             self.age = age
 
 
-    def author_set(self,author_name):
+    def author_name_set(self,author_name):
         
         if not author_name:        
             
@@ -235,6 +241,14 @@ class FantasyBook():
         rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
         return rolled_row['Result'] 
     
+    def complexity_set(self,complexity):
+        if not complexity:
+            complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since index of list starts at zero.
+            setattr(self,"complexity",complexity_from_table[0]) # index 0 converts to string eg 1, instead of list ['1']
+        
+        else:
+            self.complexity = complexity
+    
     def format_set(self,format):
         if not format:
             target_table = "BookAge_Format_"
@@ -255,14 +269,24 @@ class FantasyBook():
         t = r.LookUpTable(table_name = table_name, query = query)
         return t.content[0] # gets the tuple that returns out of the list.
     
-    def complexity_set(self,complexity):
-        if not complexity:
-            complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since index of list starts at zero.
-            setattr(self,"complexity",complexity_from_table[0]) # index 0 converts to string eg 1, instead of list ['1']
-        
-        else:
-            self.complexity = complexity
     
+    def original_language_set(self, original_language):
+        if self.translator == "N/A" or \
+           self.translator == "None" or \
+           self.translator == "":
+            
+            self.original_language = "N/A"
+            return
+
+        if not original_language: # original language is empty
+            original_language = self.book_details_result_from_tables("BookOriginalLanguage")
+
+            while original_language == self.current_language:  
+                original_language = self.book_details_result_from_tables("BookOriginalLanguage") # reroll until not the same
+        
+        self.original_language = original_language
+        
+
     def randomize_book_details(self):
         ''' Loops through all variables and assigns randomly based on random SQL table rolls.'''
     
@@ -298,7 +322,15 @@ class FantasyBook():
         
         else:
             self.topic_title_form = topic_title_form
-    
+
+    def translator_set (self, translator):
+        is_it_a_translation = d20.roll("1d100").total
+        if is_it_a_translation > CHANCE_OF_BEING_TRANSLATION or self.current_language == ANCIENT_LANGUAGE_WHICH_WOULD_NOT_HAVE_TRANSLATED:
+            self.translator = "N/A"
+        else:
+            self.translator = "Some dude"
+
+
 class EsotericBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
     def __init__ (self,
@@ -330,12 +362,16 @@ for z in range(0,number_to_run):
 
     a = create_fantasy_book()
     print ("Scope:" + str(a.scope))
-    print ("Lang:" + str(a.original_language))
+    print ("Current Lang:" + str(a.current_language))
+    print ("Original Lang:" + str(a.original_language))
+    print ("Translator:" + a.translator)
     print ("Complex:" + str(a.complexity))
     print ("Sex:" + str(a.sex))
     print ("Author:" + str(a.author_full))
     print ("Topic:" + str(a.topic))
     print ("Topic title:" + str(a.topic_title_form))
+    # print ("Actual title:" + a.title)
     print ("Age:" + str(a.age))
     print ("Format:" + str(a.format))
+
     print ("---")
