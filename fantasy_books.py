@@ -12,7 +12,7 @@ global complexity_table_list
 global CHANCE_OF_BEING_TRANSLATION, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED, CHANCE_OF_EPITHET 
 
 CHANCE_OF_BEING_TRANSLATION = 10 # ten percent chance; can be changed as wished.
-CHANCE_OF_EPITHET = 25
+CHANCE_OF_EPITHET = 15
 ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
 
 list_of_words_to_not_capitalize = [
