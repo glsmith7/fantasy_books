@@ -3,23 +3,25 @@ import random as random
 import string as string
 import d20
 
-global the_list_of_tables
 global list_of_names_tables_male, list_of_names_tables_female
 global name_tables_male, name_tables_len_male, name_table_amalgamated_male 
 global name_tables_female, name_tables_len_female, name_table_amalgamated_female
-global author_title_tables
+global author_title_tables, epithets_tables
+global list_of_words_to_not_capitalize
 global complexity_table_list
-global CHANCE_OF_BEING_TRANSLATION, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED 
+global CHANCE_OF_BEING_TRANSLATION, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED, CHANCE_OF_EPITHET 
 
 CHANCE_OF_BEING_TRANSLATION = 10 # ten percent chance; can be changed as wished.
-ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient,Elvish'
+CHANCE_OF_EPITHET = 25
+ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
 
-# the_list_of_tables_for_randomize = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
-#         ("BookScope","scope"),
-#         ("BookCurrentLanguage","current_language"),
-#         ]
+list_of_words_to_not_capitalize = [
+    ("The","the"),
+    ("Of","of"),
+    ("De","de"),
+    ("D'","d'"),
 
-
+]
 list_of_names_tables_male = [
         "_names_arabic_male",
         "_names_anglo_saxon_male", 
@@ -51,6 +53,7 @@ list_of_surnames_tables = [
         ("_names_roman_surnames"),
         
         ]
+
 complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
 
 name_tables_male, name_tables_len_male = {}, {}
@@ -59,6 +62,7 @@ surnames_tables = {}
 name_table_amalgamated_male, name_table_amalgamated_female = [], []
 
 author_title_tables = []
+epithets_tables = []
 
 
 def init_program_load_tables():
@@ -83,24 +87,27 @@ def init_program_load_tables():
     # titles
     author_title_tables.extend (r.MadLibTable('_titles_person').content)
 
-def create_fantasy_book(type=None, **kwargs):
+    # epithets
+    epithets_tables.extend (r.MadLibTable('_epithets').content)
+
+def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, or authority'''
-    if type == "esoteric":
+    book_type = string.capwords(str(book_type))
+    if book_type == "Esoteric":
         return EsotericBook(**kwargs)
-    elif type == "authority":
+    elif book_type == "Authority":
         return AuthoritativeBook(**kwargs)
     else:
         return FantasyBook(**kwargs)
     
-
-
 class FantasyBook():
     ''' Fantasy book object.'''
 
     # remember to add any variables added here to the self.XXXX list below, AND to the routine randomize_book_statistics 
     # if the value is to be set from a random table.
 
-    def __init__(self,         
+    def __init__(self,
+        book_type = "Standard",         
         topic = "",
         topic_title_form = "",
         title = "",
@@ -135,6 +142,7 @@ class FantasyBook():
         ):
 
         # set all values to whatever they were passed in 
+        self.book_type = book_type
         self.topic = topic
         self.topic_title_form = topic_title_form
         self.title = title
@@ -175,12 +183,11 @@ class FantasyBook():
         self.topic_set(self.topic)
         self.topic_title_set(self.topic_title_form)
         self.sex_set(self.sex)
+        self.author_epithet_set (self.author_epithet)
         self.author_name_set(self.author_name)
         self.author_title_set (self.author_title)
-        self.author_epithet_set (self.author_epithet)
         self.author_full_set (self.author_full)
         self.complexity_set(self.complexity)
-        
         self.format_set(self.format)
 
         self.materials = materials
@@ -212,7 +219,26 @@ class FantasyBook():
             self.age = self.age + d20.roll(dice_string).total
         else:
             self.age = age
+    
+    def author_epithet_set (self, author_epithet):
+        if not author_epithet:
+            if CHANCE_OF_EPITHET > d20.roll("1d100").total:
+                author_epithet = random.choice(epithets_tables) # a random option is then chosen
+                author_epithet = author_epithet[0]
+                          
+        self.author_epithet = author_epithet
+             
 
+    def author_full_set (self, author_full):
+        # put it all together
+        if not author_full:
+
+            if self.author_title != "" and self.author_title != "None": author_full = author_full.join([self.author_title," "])
+            author_full += (self.author_name)
+            if self.author_epithet != "" and self.author_epithet != "None": author_full = author_full + " " + self.author_epithet
+        
+        self.author_full = author_full
+    
     def author_name_set(self,author_name):
         
         if not author_name:        
@@ -227,7 +253,7 @@ class FantasyBook():
             author_name = str(first_name[0]) + " " + str(last_name[0]) # first (0 index) item is the name
             
         self.author_name = author_name
-    
+
     def author_title_set(self, author_title):
          # title of the author
         if not author_title:
@@ -246,18 +272,6 @@ class FantasyBook():
         
         author_title = string.capwords(author_title)
         self.author_title = author_title
-    
-    def author_epithet_set (self, author_epithet):
-        pass
-
-    def author_full_set (self, author_full):
-        # put it all together
-        if not author_full:
-
-            if self.author_title != "None": author_full = author_full.join([self.author_title," "])
-            author_full += (self.author_name)
-        
-        self.author_full = author_full
 
     def book_details_result_from_tables(self,table_for_value):
         ''' Checks table aaDiceTypeToRoll to see what dice to roll, and then rolls and checks the result on the given table.
@@ -314,6 +328,7 @@ class FantasyBook():
     
     
     def original_language_set(self, original_language):
+        
         if self.is_a_translation == "False":
             return
 
@@ -324,13 +339,6 @@ class FantasyBook():
                 original_language = self.book_details_result_from_tables("BookOriginalLanguage") # reroll until not the same
         
         self.original_language = original_language
-        
-
-    # def randomize_book_details(self):
-    #     ''' Loops through all variables and assigns randomly based on random SQL table rolls.'''
-    
-    #     for i,j in the_list_of_tables_for_randomize:
-    #         setattr(self,j,self.book_details_result_from_tables(i)) # sets variable J of object the_book to the rolled results on table i for each element.
 
     def remove (self,library):
         ''' Remove this book from a given library'''
@@ -381,11 +389,13 @@ class FantasyBook():
 class EsotericBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
     def __init__ (self,
+        book_type = "Esoteric",
         esoteric_complexity = 0, 
         esoteric_scope = 0, 
         esoteric_topic = []):
 
         super().__init__(self)
+        self.book_type = book_type
         self.esoteric_complexity = esoteric_complexity
         self.esoteric_scope = esoteric_scope
         self.esoteric_topic = esoteric_topic
@@ -393,27 +403,32 @@ class EsotericBook(FantasyBook):
 class AuthoritativeBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
     def __init__ (self,
+        book_type = "Authoritative",
         authoritative_field = "", 
         authority_rank = 0,
                 ):
         super().__init__(self)
+        self.book_type = book_type
         self.authoritative_field = authoritative_field
         self.authority_rank = authority_rank
 
 ############################
 # main()
 init_program_load_tables()
-number_to_run = 100
+number_to_run = 10
 
 for z in range(0,number_to_run):
 
     a = create_fantasy_book()
+    print ("Book type:" + str(a.book_type))
     print ("Scope:" + str(a.scope))
     print ("Current Lang:" + str(a.current_language))
     print ("Original Lang:" + str(a.original_language))
     print ("Translator:" + a.translator)
     print ("Complex:" + str(a.complexity))
     print ("Sex:" + str(a.sex))
+    print ("Epithet:" + str(a.author_epithet))
+    print ("Author title:" + str(a.author_title))
     print ("Author:" + str(a.author_full))
     print ("Topic:" + str(a.topic))
     print ("Topic title:" + str(a.topic_title_form))
