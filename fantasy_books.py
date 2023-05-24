@@ -11,7 +11,7 @@ global author_title_tables
 global complexity_table_list
 global CHANCE_OF_BEING_TRANSLATION, ANCIENT_LANGUAGE_WHICH_WOULD_NOT_HAVE_TRANSLATED 
 
-CHANCE_OF_BEING_TRANSLATION = 10 # ten percent chance; can be changed as wished.
+CHANCE_OF_BEING_TRANSLATION = 50 # ten percent chance; can be changed as wished.
 ANCIENT_LANGUAGE_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
 
 the_list_of_tables_for_randomize = [ # SQL table name first, then self.variable for the book object. Make sure has a aaDiceTypeToRoll table entry for each table.
@@ -111,6 +111,7 @@ class FantasyBook():
         author_nationality = "",
         current_language = "",
         original_language = "",
+        is_a_translation = "False",
         translator = "",
         format = "",
         materials = "",
@@ -131,22 +132,55 @@ class FantasyBook():
         weight = 0,
         number_volumes = 0,
         ):
-        
-        self.randomize_book_details() # scope, current_language
+
+        # set all values to whatever they were passed in 
+        self.topic = topic
+        self.topic_title_form = topic_title_form
+        self.title = title
+        self.sex = sex
+        self.author_name = author_name
+        self.author_title = author_title
+        self.author_epithet = author_epithet
+        self.author_full = author_full
+        self.author_nationality = author_nationality
+        self.current_language = current_language
+        self.original_language = original_language
+        self.is_a_translation = is_a_translation
         self.translator = translator
+        self.format = format
+        self.materials = materials
+        self.libraries_it_is_in = libraries_it_is_in
+        self.number_extant_copies = number_extant_copies
+        self.number_extant_available_to_place = number_extant_available_to_place
+        self.scope = scope
+        self.complexity = complexity
         self.age = age
-        self.translator_set(translator) # must be called before original_language_set
-        self.original_language_set(original_language)
-        self.topic_set(topic)
-        self.topic_title_set(topic_title_form)
-        self.sex_set(sex)
-        self.author_name_set(author_name)
-        self.author_title_set (author_title)
-        self.author_epithet_set (author_epithet)
-        self.author_full_set (author_full)
-        self.complexity_set(complexity)
-        self.age_set(age)
-        self.format_set(format)
+        self.number_pages = number_pages
+        self.reading_time = reading_time
+        self.reference_time = reference_time
+        self.production_value = production_value
+        self.literary_value_base = literary_value_base
+        self.literary_value_modified = literary_value_modified
+        self.rarity_modifier = rarity_modifier
+        self.value = value
+        self.weight = weight
+        self.number_volumes = number_volumes
+
+
+        self.randomize_book_details() # scope, current_language
+        
+        self.translator_set(self.translator) # must be called before original_language_set
+        self.original_language_set(self.original_language)
+        self.topic_set(self.topic)
+        self.topic_title_set(self.topic_title_form)
+        self.sex_set(self.sex)
+        self.author_name_set(self.author_name)
+        self.author_title_set (self.author_title)
+        self.author_epithet_set (self.author_epithet)
+        self.author_full_set (self.author_full)
+        self.complexity_set(self.complexity)
+        self.age_set(self.age)
+        self.format_set(self.format)
         self.materials = materials
         self.libraries_it_is_in = libraries_it_is_in
         self.number_extant_copies = number_extant_copies
@@ -170,8 +204,12 @@ class FantasyBook():
         if not age:
             table_name = "BookAge_" + self.current_language
             dice_string = self.book_details_result_from_tables(table_name)
-            if self.translator: self.age = d20.roll("1d100+20").total # bonus to age if is translation.
+            if self.is_a_translation: 
+                self.age = d20.roll("1d100+20").total # bonus to age if is translation.
+                print ("1st: " + str(self.age))
+            
             self.age += d20.roll(dice_string).total
+            print ("2nd: " + str(self.age))
         else:
             self.age = age
 
@@ -271,11 +309,7 @@ class FantasyBook():
     
     
     def original_language_set(self, original_language):
-        if self.translator == "N/A" or \
-           self.translator == "None" or \
-           self.translator == "":
-            
-            self.original_language = "N/A"
+        if not self.is_a_translation:
             return
 
         if not original_language: # original language is empty
@@ -324,11 +358,13 @@ class FantasyBook():
             self.topic_title_form = topic_title_form
 
     def translator_set (self, translator):
-        is_it_a_translation = d20.roll("1d100").total
-        if is_it_a_translation > CHANCE_OF_BEING_TRANSLATION or self.current_language == ANCIENT_LANGUAGE_WHICH_WOULD_NOT_HAVE_TRANSLATED:
+        roll_to_see_if_it_is_a_translation = d20.roll("1d100").total
+        if roll_to_see_if_it_is_a_translation > CHANCE_OF_BEING_TRANSLATION or self.current_language == ANCIENT_LANGUAGE_WHICH_WOULD_NOT_HAVE_TRANSLATED:
             self.translator = "N/A"
+            self.is_a_translation = "False"
         else:
             self.translator = "Some dude"
+            self.is_a_translation = "True"
 
 
 class EsotericBook(FantasyBook):
