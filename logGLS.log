@@ -1,8 +1,72 @@
-INFO:	|05/28/2023 03:32:47|rpg_tables|connect_to_database|189 - SLQ connection established: <sqlite3.Connection object at 0x0000028589257010>
-INFO:	|05/28/2023 03:32:47|rpg_tables|__init__|68 - RPG_tableReactionRollStandard providing:   DieRange                     Result  DieLow DieHigh
+INFO:	|05/28/2023 04:01:24|rpg_tables|connect_to_database|186 - SLQ connection established: <sqlite3.Connection object at 0x0000023229FA94E0>
+INFO:	|05/28/2023 04:01:24|rpg_tables|__init__|64 - RPG_table: _ReactionRollStandard_ providing: 
+  DieRange                     Result  DieLow DieHigh
 0       2-           Hostile, attacks -1000.0       2
 1      3-5     Unfriendly, may attack       3       5
 2      6-8         Neutral, uncertain       6       8
 3     9-11  Indifferent, uninterested       9      11
 4      12+          Friendly, helpful      12    1000
 
+INFO:	|05/28/2023 04:01:24|rpg_tables|connect_to_database|186 - SLQ connection established: <sqlite3.Connection object at 0x0000023229FAA110>
+INFO:	|05/28/2023 04:01:24|rpg_tables|__init__|64 - RPG_table: _ReactionRollStandard_ providing: 
+  DieRange                     Result  DieLow DieHigh
+0       2-           Hostile, attacks -1000.0       2
+1      3-5     Unfriendly, may attack       3       5
+2      6-8         Neutral, uncertain       6       8
+3     9-11  Indifferent, uninterested       9      11
+4      12+          Friendly, helpful      12    1000
+
+INFO:	|05/28/2023 04:01:24|rpg_tables|__add__|79 - RPG_table: ReactionRollStandard combining with: ReactionRollStandard
+INFO:	|05/28/2023 04:01:24|rpg_tables|__add__|83 - First DataForm: _ReactionRollStandard_ providing: 
+  DieRange                     Result  DieLow DieHigh
+0       2-           Hostile, attacks -1000.0       2
+1      3-5     Unfriendly, may attack       3       5
+2      6-8         Neutral, uncertain       6       8
+3     9-11  Indifferent, uninterested       9      11
+4      12+          Friendly, helpful      12    1000
+
+INFO:	|05/28/2023 04:01:24|rpg_tables|__add__|84 - Second DataForm: _ReactionRollStandard_ providing: 
+  DieRange                     Result  DieLow DieHigh
+0       2-           Hostile, attacks -1000.0       2
+1      3-5     Unfriendly, may attack       3       5
+2      6-8         Neutral, uncertain       6       8
+3     9-11  Indifferent, uninterested       9      11
+4      12+          Friendly, helpful      12    1000
+
+INFO:	|05/28/2023 04:01:24|rpg_tables|connect_to_database|186 - SLQ connection established: <sqlite3.Connection object at 0x0000023229FAA2F0>
+INFO:	|05/28/2023 04:01:24|rpg_tables|__init__|64 - RPG_table: _ReactionRollStandard_ providing: 
+  DieRange                     Result  DieLow DieHigh
+0       2-           Hostile, attacks -1000.0       2
+1      3-5     Unfriendly, may attack       3       5
+2      6-8         Neutral, uncertain       6       8
+3     9-11  Indifferent, uninterested       9      11
+4      12+          Friendly, helpful      12    1000
+
+INFO:	|05/28/2023 04:01:24|rpg_tables|__add__|98 - Composite table: _ReactionRollStandard COMBINED WITH ReactionRollStandard_ providing: 
+  DieRange                     Result  DieLow DieHigh
+0       2-           Hostile, attacks -1000.0       2
+1      3-5     Unfriendly, may attack       3       5
+2      6-8         Neutral, uncertain       6       8
+3     9-11  Indifferent, uninterested       9      11
+4      12+          Friendly, helpful      12    1000
+5       2-           Hostile, attacks -1000.0       2
+6      3-5     Unfriendly, may attack       3       5
+7      6-8         Neutral, uncertain       6       8
+8     9-11  Indifferent, uninterested       9      11
+9      12+          Friendly, helpful      12    1000
+
+
+INFO:	|05/28/2023 04:01:24|rpg_tables|madlib|119 - Single madlib value called on RPG_table OBJECT _ReactionRollStandard COMBINED WITH ReactionRollStandard_ returned: 12+
+INFO:	|05/28/2023 04:01:24|rpg_tables|madlib|123 - Multiple madlib values called on RPG_table OBJECT _ReactionRollStandard COMBINED WITH ReactionRollStandard_ returned: ['9-11']
+INFO:	|05/28/2023 04:01:24|rpg_tables|madlib|123 - Multiple madlib values called on RPG_table OBJECT _ReactionRollStandard COMBINED WITH ReactionRollStandard_ returned: ['9-11', '9-11']
+INFO:	|05/28/2023 04:01:24|rpg_tables|connect_to_database|186 - SLQ connection established: <sqlite3.Connection object at 0x0000023229FAA5C0>
+INFO:	|05/28/2023 04:01:24|rpg_tables|__init__|64 - RPG_table: _ReactionRollStandard_ providing: 
+  DieRange                     Result  DieLow DieHigh
+0       2-           Hostile, attacks -1000.0       2
+1      3-5     Unfriendly, may attack       3       5
+2      6-8         Neutral, uncertain       6       8
+3     9-11  Indifferent, uninterested       9      11
+4      12+          Friendly, helpful      12    1000
+
+INFO:	|05/28/2023 04:01:24|rpg_tables|madlib|119 - Single madlib value called on RPG_table OBJECT _ReactionRollStandard_ returned: 3-5
+INFO:	|05/28/2023 04:01:24|rpg_tables|madlib|193 - Madlib value from FUNCTION returned: 3-5

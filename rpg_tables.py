@@ -1,11 +1,7 @@
-# import copy as copy
 import d20 as d20
-# import datetime as dt
-# import numpy as np
 import os as os
 import pandas
 import random as random
-# import re as regex
 import sqlite3 as sqlite3
 import string as string
 
@@ -65,7 +61,7 @@ class RPG_table ():
         self.column_labels = list (self.df.columns)
         self.description = self.table_name
         self.display_all = self.df.to_string()
-        logger.info ("RPG_table" + (self.description) + " providing: " + self.display_all + "\n")
+        logger.info ("RPG_table: _" + (self.description) + "_ providing: " + "\n" + self.display_all + "\n")
 
     def __add__ (self, the_other):
         """ Places the values for the second table below the values for first table, and renumbers the row numbers so that this can happen. """
@@ -80,12 +76,12 @@ class RPG_table ():
         first_descript = self.description
         second_descript= the_other.description
         
-        logger.info ("RPG_table" + first_descript + " combining with: " + second_descript + "\n")
+        logger.info ("RPG_table: " + (str(first_descript) + " combining with: " + second_descript ))
 
         first_df = self.df
         second_df = the_other.df.rename (index=renumber_rows)
-        logger.info ("First DataForm" + str(self) + " providing: " + self.display_all + "\n")
-        logger.info ("Second DataForm" + str(the_other) + " providing: " + the_other.display_all + "\n")
+        logger.info ("First DataForm: _" + str(self.description) + "_ providing: " + "\n" + self.display_all + "\n")
+        logger.info ("Second DataForm: _" + str(the_other.description) + "_ providing: " + "\n" + the_other.display_all + "\n")
         
 
         _ = RPG_table(table_name=self.table_name, path=self.path)
@@ -93,12 +89,13 @@ class RPG_table ():
         _.df = pandas.concat([first_df,second_df])
 
         _.description = first_descript + " COMBINED WITH " + second_descript # description used, not table name, since if calling multiple additions \
-                                                                                # need table_name to still work as individual table in the SQL database
+                                                                             # need table_name to still work as individual table in the SQL database
         _.num_rows = _.df.shape[0]
         _.num_columns = _.df.shape[1]
         _.row_labels = list(_.df.index)
         _.column_labels = list (_.df.columns)
         _.display_all = _.df.to_string()
+        logger.info ("Composite table: _" + str(_.description) + "_ providing: " + "\n" + _.display_all + "\n\n")
 
         return _
     
@@ -119,11 +116,11 @@ class RPG_table ():
         
         if n==1:
              return_list = rand_result.iat[0,0] # get it out of a list for easier use
-             logger.info ("Single madlib value called on OBJECT " + str(self) + " providing: " + str(return_list) + "\n")
+             logger.info ("Single madlib value called on RPG_table OBJECT _" + (self.description) + "_ returned: " + str(return_list))
         else: 
             for i in range (0,n):
                 return_list.append(rand_result.iat[i,0])
-                logger.info ("Multiple madlib values called on OBJECT " + str(self) + " providing: " + str(return_list) + "\n")
+                logger.info ("Multiple madlib values called on RPG_table OBJECT _" + (self.description) + "_ returned: " + str(return_list))
 
         return return_list
     
@@ -193,7 +190,7 @@ def madlib(table_name, path = s.PATH_DEFAULT):
      ''' Returns a single value from a table whose title is passed. A shortcut function to avoid having to use the whole OOP technique when a single random value is
      all that is needed. Eg, x = madlib("TableName")'''
      value = (RPG_table(table_name=table_name, path=path).madlib(1))
-     logger.info ("Madlib value returned as: " + str(value) + "\n")
+     logger.info ("Madlib value from FUNCTION returned: " + str(value))
      return value
 
 def what_dice_to_roll(table_name, path = s.PATH_DEFAULT) -> list:
@@ -210,14 +207,24 @@ def what_dice_to_roll(table_name, path = s.PATH_DEFAULT) -> list:
     cursor = conn.cursor()
     cursor.execute(query)
     results = cursor.fetchall()
-    logger.info ("Search result of SQL database returned as: " + str(results) + "\n")
+    logger.info ("Search result of SQL database returned as: " + str(results))
     conn.close()
     return results[0][0] # returns a plain dice string
 
 ##############################
 # main
 
-g=RPG_table("ReactionRollStandard")
+if __name__ == "__main__":
+    g=RPG_table("ReactionRollStandard")
+    h=RPG_table("ReactionRollStandard")
+
+    i=g+h
+    print (i.display_all)
+    print (i.madlib())
+    print (i.madlib(2))
+    print (madlib("ReactionRollStandard"))
+
+
 
 
 
