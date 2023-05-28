@@ -1,11 +1,11 @@
-import copy as copy
+# import copy as copy
 import d20 as d20
-import datetime as dt
-import numpy as np
+# import datetime as dt
+# import numpy as np
 import os as os
 import pandas
 import random as random
-import re as regex
+# import re as regex
 import sqlite3 as sqlite3
 import string as string
 
@@ -18,6 +18,36 @@ logger = logging.getLogger(__name__)
 #########################################################
 
 class RPG_table ():
+
+    def __add__ (self, the_other):
+        
+        first_num_rows = self.num_rows
+        second_num_rows = the_other.num_rows
+        temp_add_row = {}
+        for i in range (first_num_rows,(first_num_rows+second_num_rows)):
+             temp_add_row[i-first_num_rows] = (i)
+
+        print (temp_add_row)
+
+        first_df = self.df
+        second_df = the_other.df
+        second_df = second_df.rename (index=temp_add_row)
+
+        first_name = self.table_name
+        second_name = the_other.table_name
+
+        temp = RPG_table(table_name=self.table_name, path=self.path)
+    
+
+        temp.df = pandas.concat([first_df,second_df])
+        temp.table_name = first_name + " COMBINED WITH " + second_name
+        temp.num_rows = temp.df.shape[0]
+        temp.num_columns = temp.df.shape[1]
+        temp.row_labels = list(temp.df.index)
+        temp.column_labels = list (temp.df.columns)
+        temp.display_all = temp.df.to_string()
+
+        return temp
 
     def __init__ (self, table_name, path = s.PATH_DEFAULT):
         self.path = path
@@ -120,6 +150,12 @@ def connect_to_database(path):
             logger.info ("SLQ connection established: " + str(connection))
             return connection
 
+def madlibs(table_name, path = s.PATH_DEFAULT):
+     ''' Returns a single value from a table whose title is passed. A shortcut function to avoid having to use the whole OOP technique when a single random value is
+     all that is needed.'''
+     value = (RPG_table(table_name=table_name, path=path).madlib(1))
+     return value
+
 def what_dice_to_roll(table, path = s.PATH_DEFAULT) -> list:
     ''' table is name of the table to roll on in the master table "aaDiceTypeToRoll".
     Returns the dice rolling string for a given table.'''
@@ -142,8 +178,14 @@ def what_dice_to_roll(table, path = s.PATH_DEFAULT) -> list:
 # main
 
 
-# g = RPG_table(table_name="_names_anglo_saxon_female")
-print (RPG_table(table_name="_names_anglo_saxon_female").madlib(1))
+g = RPG_table(table_name="_names_anglo_saxon_female")
+h = RPG_table(table_name="_names_anglo_saxon_male")
+
+i = g + h
+print (i.display_all)
+print (i.table_name)
+
+
 
 
 
