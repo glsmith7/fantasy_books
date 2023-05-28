@@ -4,13 +4,15 @@ import pandas
 import random as random
 import sqlite3 as sqlite3
 import string as string
+from termcolor import colored
 
 # logging boilerplate
 import settings_GLS as s
 import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
-
+import coloredlogs
+coloredlogs.install (level=logging.INFO, logger=logger)
 #########################################################
 
 class RPG_table ():
@@ -31,6 +33,7 @@ class RPG_table ():
         .display_all - a text list of the entire table (equivalent to calling RPG_table.df.string())
 
         '''
+    
         self.path = path
         self.table_name = table_name
         self.conn = connect_to_database(self.path)
@@ -61,7 +64,7 @@ class RPG_table ():
         self.column_labels = list (self.df.columns)
         self.description = self.table_name
         self.display_all = self.df.to_string()
-        logger.info ("RPG_table: _" + (self.description) + "_ providing: " + "\n" + self.display_all + "\n")
+        logger.debug ("RPG_table: _" + (self.description) + "_ providing: " + "\n" + self.display_all + "\n")
 
     def __add__ (self, the_other):
         """ Places the values for the second table below the values for first table, and renumbers the row numbers so that this can happen. """
@@ -76,12 +79,12 @@ class RPG_table ():
         first_descript = self.description
         second_descript= the_other.description
         
-        logger.info ("RPG_table: " + (str(first_descript) + " combining with: " + second_descript ))
+        logger.debug ("RPG_table: " + (str(first_descript) + " combining with: " + second_descript ))
 
         first_df = self.df
         second_df = the_other.df.rename (index=renumber_rows)
-        logger.info ("First DataForm: _" + str(self.description) + "_ providing: " + "\n" + self.display_all + "\n")
-        logger.info ("Second DataForm: _" + str(the_other.description) + "_ providing: " + "\n" + the_other.display_all + "\n")
+        logger.debug ("First DataForm: _" + str(self.description) + "_ providing: " + "\n" + self.display_all + "\n")
+        logger.debug ("Second DataForm: _" + str(the_other.description) + "_ providing: " + "\n" + the_other.display_all + "\n")
         
 
         _ = RPG_table(table_name=self.table_name, path=self.path)
@@ -95,7 +98,7 @@ class RPG_table ():
         _.row_labels = list(_.df.index)
         _.column_labels = list (_.df.columns)
         _.display_all = _.df.to_string()
-        logger.info ("Composite table: _" + str(_.description) + "_ providing: " + "\n" + _.display_all + "\n\n")
+        logger.debug ("Composite table: _" + str(_.description) + "_ providing: " + "\n" + _.display_all + "\n\n")
 
         return _
     
@@ -116,11 +119,11 @@ class RPG_table ():
         
         if n==1:
              return_list = rand_result.iat[0,0] # get it out of a list for easier use
-             logger.info ("Single madlib value called on RPG_table OBJECT _" + (self.description) + "_ returned: " + str(return_list))
+             logger.debug ("Single madlib value called on RPG_table OBJECT _" + (self.description) + "_ returned: " + str(return_list))
         else: 
             for i in range (0,n):
                 return_list.append(rand_result.iat[i,0])
-                logger.info ("Multiple madlib values called on RPG_table OBJECT _" + (self.description) + "_ returned: " + str(return_list))
+                logger.debug ("Multiple madlib values called on RPG_table OBJECT _" + (self.description) + "_ returned: " + str(return_list))
 
         return return_list
     
@@ -183,14 +186,14 @@ def connect_to_database(path):
         raise
 
     else:
-            logger.info ("SLQ connection established: " + str(connection))
+            logger.debug ("SLQ connection established: " + str(connection))
             return connection
 
 def madlib(table_name, path = s.PATH_DEFAULT):
      ''' Returns a single value from a table whose title is passed. A shortcut function to avoid having to use the whole OOP technique when a single random value is
      all that is needed. Eg, x = madlib("TableName")'''
      value = (RPG_table(table_name=table_name, path=path).madlib(1))
-     logger.info ("Madlib value from FUNCTION returned: " + str(value))
+     logger.debug ("Madlib value from FUNCTION returned: " + str(value))
      return value
 
 def what_dice_to_roll(table_name, path = s.PATH_DEFAULT) -> list:
@@ -207,7 +210,7 @@ def what_dice_to_roll(table_name, path = s.PATH_DEFAULT) -> list:
     cursor = conn.cursor()
     cursor.execute(query)
     results = cursor.fetchall()
-    logger.info ("Search result of SQL database returned as: " + str(results))
+    logger.debug ("Search result of SQL database returned as: " + str(results))
     conn.close()
     return results[0][0] # returns a plain dice string
 
@@ -223,19 +226,6 @@ if __name__ == "__main__":
     print (i.madlib())
     print (i.madlib(2))
     print (madlib("ReactionRollStandard"))
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -3,6 +3,7 @@ import logging
 import datetime as dt
 import os
 
+
 ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__)))
 
 # Adopted from https://stackoverflow.com/a/35804945/1691778
