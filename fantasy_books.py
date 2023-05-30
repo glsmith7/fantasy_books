@@ -39,47 +39,17 @@ global titles_adjective_1_list, titles_communication, titles_conjunction_about, 
 global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2, titles_places_cities, titles_places_nations, titles_religious_starter
 global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
 global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
- 			
 
+# names of male and female
+global name_table_amalgamated_male, name_tables_male
+global name_table_amalgamated_female,name_tables_female
 
 list_of_words_to_not_capitalize = [
     ("The","the"),
     ("Of","of"),
     ("De","de"),
     ("D'","d'"),
-
 ]
-list_of_names_tables_male = [
-        "_names_anglo_saxon_male",
-        "_names_arabic_male",
-        "_names_english_male",
-        "_names_famous_male", 
-        "_names_french_male", 
-        "_names_norse_male",
-        "_names_roman_male", 
-        ]
-
-list_of_names_tables_female = [
-        "_names_arabic_female",
-        "_names_anglo_saxon_female", 
-        "_names_english_female",
-        "_names_famous_female", 
-        "_names_french_female", 
-        "_names_norse_female",
-        "_names_roman_female", 
-        ]
-
-list_of_surnames_tables = [
-        ("_names_arabic_surnames"),
-        ("_names_anglo_saxon_surnames"), 
-        ("_names_english_surnames"),
-        ("_names_famous_surnames"), 
-        ("_names_french_surnames"), 
-        ("_names_norse_surnames_female"),
-		("_names_norse_surnames_male"),
-        ("_names_roman_surnames"),
-        ]
-
 complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
 
 surnames_tables = {}
@@ -131,30 +101,57 @@ titles_the_1 = r.RPG_table('_books_titles_the_1')
 
 # book title templates
 
+
 titles_template_list_general = r.RPG_table('_book_titles_templates_general')
 titles_template_list_history = r.RPG_table('_book_titles_templates_history')
 titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
 titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
 
-def init_program_load_tables():
-    
-    # names of male and female
-    global name_table_amalgamated_male, name_tables_male
-    global name_table_amalgamated_female,name_tables_female
+# name tables load
 
 
-    for i in list_of_names_tables_male:
-        name_tables_male[i] = r.RPG_table(i)
-        name_table_amalgamated_male = (name_tables_male[i]) + name_table_amalgamated_male
+list_of_names_tables_male = [
+        "_names_anglo_saxon_male",
+        "_names_arabic_male",
+        "_names_english_male",
+        "_names_famous_male", 
+        "_names_french_male", 
+        "_names_norse_male",
+        "_names_roman_male", 
+        ]
 
-    for i in list_of_names_tables_female:
-        name_tables_female[i] = r.RPG_table(i)
-        name_table_amalgamated_female += (name_tables_female[i])
+list_of_names_tables_female = [
+        "_names_arabic_female",
+        "_names_anglo_saxon_female", 
+        "_names_english_female",
+        "_names_famous_female", 
+        "_names_french_female", 
+        "_names_norse_female",
+        "_names_roman_female", 
+        ]
 
-        # surnames
-    for i in list_of_surnames_tables:
-        surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
+list_of_surnames_tables = [
+        ("_names_arabic_surnames"),
+        ("_names_anglo_saxon_surnames"), 
+        ("_names_english_surnames"),
+        ("_names_famous_surnames"), 
+        ("_names_french_surnames"), 
+        ("_names_norse_surnames_female"),
+        ("_names_norse_surnames_male"),
+        ("_names_roman_surnames"),
+        ]
 
+for i in list_of_names_tables_male:
+    name_tables_male[i] = r.RPG_table(i)
+    name_table_amalgamated_male = (name_tables_male[i]) + name_table_amalgamated_male
+
+for i in list_of_names_tables_female:
+    name_tables_female[i] = r.RPG_table(i)
+    name_table_amalgamated_female += (name_tables_female[i])
+
+    # surnames
+for i in list_of_surnames_tables:
+    surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
 
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, or authority'''
@@ -491,7 +488,7 @@ class FantasyBook():
         else:
             self.current_language = current_language
 
-    def format_set(self,format):
+    def format_set(self, format):
         if not format:
             target_table = "BookAge_Format_"
             if self.age_at_discovery < 11: target_table += "0001_0010"
@@ -613,8 +610,7 @@ class AuthoritativeBook(FantasyBook):
 
 ############################
 # main()
-init_program_load_tables()
-number_to_run = 100
+number_to_run = 10
 
 for z in range(0,number_to_run):
 
