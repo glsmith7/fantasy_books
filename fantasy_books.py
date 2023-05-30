@@ -261,8 +261,8 @@ class FantasyBook():
     def author_epithet_set (self, author_epithet):
         if not author_epithet:
             if CHANCE_OF_EPITHET > d20.roll("1d100").total:
-                author_epithet = epithets_tables.df.sample(n=1) # a random option is then chosen
-                # author_epithet = author_epithet[0]
+                author_epithet = epithets_table.df.sample() # a random option is then chosen
+                author_epithet = author_epithet.iloc[0,0]
                           
         self.author_epithet = author_epithet
              
@@ -298,9 +298,7 @@ class FantasyBook():
 
          # title of the author
         if not author_title:
-            print (author_title_table.display_all)
-            author_title = author_title_table.df.sample()
-            author_title = str(author_title.iloc[0,0])
+            author_title = str(author_title_table.df.sample().iloc[0,0])
            
             #  # male/female titles are separated by a slash in the SQL database  
             if author_title.__contains__("/"):
@@ -330,31 +328,20 @@ class FantasyBook():
 
         # actually do the roll now that we know what dice we're rolling
         t = r.RPG_table(table_for_value)
-        print (t)
         rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
-        print (rolled_row)
         return rolled_row 
     
-    def book_title_set(self,book_title):
-
-        adjective_1 = random.choice(str((adjective_1_list)))
-        noun_1 = random.choice(str(noun_1_list))
-        noun_2 = random.choice(str(noun_2_list)) 
-        study_of = random.choice(str(titles_study_of_list))
-        study_in = random.choice(str(titles_study_in_list))
-        study_on = random.choice(str(titles_study_on_list))
-        template = random.choice(titles_template_list)
+    def book_title_set(self,book_title,adjective_1=None, noun_1=None, noun_2=None, study_of=None, study_in=None, study_on=None, template=None,final_title=None):
+        if not adjective_1: adjective_1 = adjective_1_list.df.sample().iloc[0,0]
+        if not noun_1: noun_1 = noun_1_list.df.sample().iloc[0,0]
+        if not noun_2: noun_2 = noun_2_list.df.sample().iloc[0,0]
+        if not study_of: study_of = titles_study_of_list.df.sample().iloc[0,0]
+        if not study_in: study_in = titles_study_in_list.df.sample().iloc[0,0]
+        if not study_on: study_on = titles_study_on_list.df.sample().iloc[0,0]
+        if not template: template = titles_template_list.df.sample().iloc[0,0]
         topic = self.topic_title_form
 
-# convert tuples to strings?????
-        final_title = template.format(adjective_1=adjective_1, noun_1 = noun_1, noun_2 = noun_2, study_of = study_of, study_in = study_in, study_on = study_on, topic = topic)
-        print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX adject:" + str(adjective_1[0]))
-        print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: noun-1:" + str(noun_1[0]))
-        print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: noun-2:" + str(noun_2[0]))
-        print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: study of:" + str(study_of[0]))
-        print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: study on:" + str(study_on[0]))
-        print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: study in:" + str(study_in[0]))
-        print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: template:" + str(template))
+        if not final_title: final_title = template.format(adjective_1=adjective_1, noun_1 = noun_1, noun_2 = noun_2, study_of = study_of, study_in = study_in, study_on = study_on, topic = topic)
 
         self.book_title = final_title
 
@@ -375,13 +362,13 @@ class FantasyBook():
     def format_set(self,format):
         if not format:
             target_table = "BookAge_Format_"
-            if self.age < 11: target_table += "0001-0010"
-            elif self.age < 51: target_table += "0011-0050"
-            elif self.age < 101: target_table += "0051-0100"
-            elif self.age < 501: target_table += "0101-0500"
-            elif self.age < 1001: target_table += "0501-1000"
-            elif self.age < 2001: target_table += "1001-2000"
-            elif self.age < 10001: target_table += "2001-10000"
+            if self.age_at_discovery < 11: target_table += "0001_0010"
+            elif self.age_at_discovery < 51: target_table += "0011_0050"
+            elif self.age_at_discovery < 101: target_table += "0051_0100"
+            elif self.age_at_discovery < 501: target_table += "0101_0500"
+            elif self.age_at_discovery < 1001: target_table += "0501_1000"
+            elif self.age_at_discovery < 2001: target_table += "1001_2000"
+            elif self.age_at_discovery < 10001: target_table += "2001_10000"
 
             self.format = self.book_details_result_from_tables(target_table)
         else:
@@ -499,6 +486,6 @@ for z in range(0,number_to_run):
     print ("Topic:" + str(a.topic))
     print ("Topic title:" + str(a.topic_title_form))
     print ("Actual title:" + a.book_title)
-    print ("Age:" + str(a.age))
+    print ("Age:" + str(a.age_at_discovery))
     print ("Format:" + str(a.format))
     print ("---")
