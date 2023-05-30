@@ -3,10 +3,17 @@ import random as random
 import string as string
 import d20
 
+# logging boilerplate
+import settings_GLS as s
+import logging
+import logging_tools_GLS
+logger = logging.getLogger(__name__)
+#########################################################
+
 global list_of_names_tables_male, list_of_names_tables_female
 global name_tables_male, name_tables_len_male, name_table_amalgamated_male 
 global name_tables_female, name_tables_len_female, name_table_amalgamated_female
-global author_title_tables, epithets_tables
+global author_title_table, epithets_tables
 global list_of_words_to_not_capitalize
 global complexity_table_list
 global adjective_1_list, noun_1_list, noun_2_list, titles_study_of_list, titles_study_in_list, titles_study_on_list, titles_template_list
@@ -25,12 +32,13 @@ list_of_words_to_not_capitalize = [
 
 ]
 list_of_names_tables_male = [
+        "_names_anglo_saxon_male",
         "_names_arabic_male",
-        "_names_anglo_saxon_male", 
         "_names_english_male",
         "_names_famous_male", 
         "_names_french_male", 
-        "_names_norse_male", 
+        "_names_norse_male",
+        "_names_roman_male", 
         # "_names_saints_male", 
         ]
 
@@ -40,7 +48,8 @@ list_of_names_tables_female = [
         "_names_english_female",
         "_names_famous_female", 
         "_names_french_female", 
-        "_names_norse_female", 
+        "_names_norse_female",
+        "_names_roman_female",
         # "_names_saints_female", 
         ]
 
@@ -61,9 +70,7 @@ complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","Bo
 name_tables_male, name_tables_len_male = {}, {}
 name_tables_female, name_tables_len_female = {}, {}
 surnames_tables = {}
-name_table_amalgamated_male, name_table_amalgamated_female = [], []
 
-author_title_tables = []
 epithets_tables = []
 adjective_1_list = []
 noun_1_list = []
@@ -73,41 +80,47 @@ titles_study_in_list = []
 titles_study_on_list = []
 titles_template_list = []
 
+# titles
+author_title_table = r.RPG_table('_titles_person')
+
+#epithets
+epithets_table = r.RPG_table('_epithets')
+
+# book title lists
+adjective_1_list = r.RPG_table('_book_titles_adjective_1')
+noun_1_list = r.RPG_table('_book_titles_noun_1')
+noun_2_list = r.RPG_table('_book_titles_noun_2')
+titles_study_of_list = r.RPG_table('_book_titles_study_of')
+titles_study_in_list = r.RPG_table('_book_titles_study_in')
+titles_study_on_list = r.RPG_table('_book_titles_study_on')
+titles_template_list = r.RPG_table('_book_title_templates')
+
+# blank lists for later use
+name_table_amalgamated_male = r.RPG_table('_names_empty')
+name_table_amalgamated_male.description = "Male Names Amalgamated"
+name_table_amalgamated_female = r.RPG_table('_names_empty')
+name_table_amalgamated_female.description = "Female Names Amalgamated"
+
+
 def init_program_load_tables():
-        
+    
     # names of male and female
+    global name_table_amalgamated_male
+    global name_table_amalgamated_female
+
 
     for i in list_of_names_tables_male:
-        name_tables_male[i] = r.MadLibTable(i)
-        name_tables_len_male[i] = name_tables_male[i].number_of_rows
-        name_table_amalgamated_male.extend (name_tables_male[i].content)
+        name_tables_male[i] = r.RPG_table(i)
+        name_table_amalgamated_male = (name_tables_male[i]) + name_table_amalgamated_male
 
     for i in list_of_names_tables_female:
-        name_tables_female[i] = r.MadLibTable(i)
-        name_tables_len_female[i] = name_tables_female[i].number_of_rows
-        name_table_amalgamated_female.extend (name_tables_female[i].content)
+        name_tables_female[i] = r.RPG_table(i)
+        name_table_amalgamated_female += (name_tables_female[i])
 
-    # surnames
+        # surnames
     for i in list_of_surnames_tables:
-        x = r.MadLibTable(i)
-        surnames_tables[i] = x.content 
+        surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
 
-    # titles
-    author_title_tables.extend (r.MadLibTable('_titles_person').content)
-
-    # epithets
-    epithets_tables.extend (r.MadLibTable('_epithets').content)
-    
-    # book title lists
-    adjective_1_list.extend (r.MadLibTable('_book_titles_adjective_1').content)
-    noun_1_list.extend (r.MadLibTable('_book_titles_noun_1').content)
-    noun_2_list.extend (r.MadLibTable('_book_titles_noun_2').content)
-    titles_study_of_list.extend (r.MadLibTable('_book_titles_study_of').content)
-    titles_study_in_list.extend (r.MadLibTable('_book_titles_study_in').content)
-    titles_study_on_list.extend (r.MadLibTable('_book_titles_study_on').content)
-    titles_template_list.extend (r.MadLibTable('_book_title_templates').content)
-
-    
 
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, or authority'''
@@ -147,7 +160,7 @@ class FantasyBook():
         number_extant_available_to_place = 0,
         scope = 0,
         complexity = 0,
-        age = 0,
+        age_at_discovery = 0,
         number_pages = 0,
         reading_time = 0,
         reference_time = 0,
@@ -158,6 +171,8 @@ class FantasyBook():
         value = 0,
         weight = 0,
         number_volumes = 0,
+        year_discovered = 0,
+        year_written = 0,
         ):
 
         # set all values to whatever they were passed in 
@@ -182,7 +197,7 @@ class FantasyBook():
         self.number_extant_available_to_place = number_extant_available_to_place
         self.scope = scope
         self.complexity = complexity
-        self.age = age
+        self.age_at_discovery = age_at_discovery
         self.number_pages = number_pages
         self.reading_time = reading_time
         self.reference_time = reference_time
@@ -193,10 +208,12 @@ class FantasyBook():
         self.value = value
         self.weight = weight
         self.number_volumes = number_volumes
+        self.year_discovered = year_discovered
+        self.year_written = year_written
 
         self.scope_set(self.scope)
         self.current_language_set(self.current_language)
-        self.age_set(self.age)
+        self.age_set(self.age_at_discovery)
         self.translator_set(self.translator) # must be called before original_language_set
         self.original_language_set(self.original_language)
         self.topic_set(self.topic)
@@ -223,6 +240,8 @@ class FantasyBook():
         self.value = value
         self.weight = weight
         self.number_volumes = number_volumes
+        self.year_discovered = year_discovered
+        self.year_written = year_written
 
     def add(self,library):
         ''' Add this book to a given library'''
@@ -230,20 +249,20 @@ class FantasyBook():
 
     def age_set(self,age):
         if not age:
-            table_name = "BookAge_" + self.current_language
+            table_name = "BookAge_" + self.current_language # Ancient, Dwarvish, Elvish, Classical, Common are options
             dice_string = self.book_details_result_from_tables(table_name)
             if self.is_a_translation == "True": 
-                self.age = d20.roll("1d100+20").total # bonus to age if is translation.
+                self.age_at_discovery = d20.roll("1d100+20").total # bonus to age if is translation.
             
-            self.age = self.age + d20.roll(dice_string).total
+            self.age_at_discovery = self.age_at_discovery + d20.roll(dice_string).total
         else:
-            self.age = age
+            self.age_at_discovery = age
     
     def author_epithet_set (self, author_epithet):
         if not author_epithet:
             if CHANCE_OF_EPITHET > d20.roll("1d100").total:
-                author_epithet = random.choice(epithets_tables) # a random option is then chosen
-                author_epithet = author_epithet[0]
+                author_epithet = epithets_tables.df.sample(n=1) # a random option is then chosen
+                # author_epithet = author_epithet[0]
                           
         self.author_epithet = author_epithet
              
@@ -263,22 +282,25 @@ class FantasyBook():
         if not author_name:        
             
             # first name
-            if self.sex == "Male": first_name = random.choice(name_table_amalgamated_male)
-            else: first_name = random.choice(name_table_amalgamated_female)
-            self.author_nationality = str(first_name[1]) # the second row (i.e. index 1 since starts at 0) is the table for this type of name's surname.
+            if self.sex == "Male": first_name = name_table_amalgamated_male.df.sample()
+            else: first_name = name_table_amalgamated_female.df.sample()
+            self.author_nationality = (first_name.iloc[0,1]) # the second column (i.e. index 1 since starts at 0) is the table for this type of name's surname.
             
             # surname
-            last_name = random.choice(surnames_tables[self.author_nationality])
-            author_name = str(first_name[0]) + " " + str(last_name[0]) # first (0 index) item is the name
+            last_name_table = (surnames_tables[self.author_nationality])
+            last_name = last_name_table.df.sample()
+            author_name = str(first_name.iloc[0,0]) + " " + str(last_name.iloc[0,0]) # first (0 index) item is the name
             
         self.author_name = author_name
 
     def author_title_set(self, author_title):
+        global author_title_table
+
          # title of the author
         if not author_title:
-
-            author_title = str(random.choice(author_title_tables)[0])
-            
+            print (author_title_table.display_all)
+            author_title = author_title_table.df.sample()
+            author_title = str(author_title.iloc[0,0])
            
             #  # male/female titles are separated by a slash in the SQL database  
             if author_title.__contains__("/"):
@@ -303,13 +325,15 @@ class FantasyBook():
         if dice == []:
             raise ValueError("Empty dice list returned -- does SQL table 'aaDiceTypeToRoll' have an entry for this table?")
         else:
-            dice_string = dice[0] # dice[0] is the only thing returned, and this makes it a string rather than list as dice is.
+            dice_string = dice# [0] # dice[0] is the only thing returned, and this makes it a string rather than list as dice is.
             roll_result = r.d20.roll(dice_string) 
 
         # actually do the roll now that we know what dice we're rolling
         t = r.RPG_table(table_for_value)
+        print (t)
         rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
-        return rolled_row['Result'] 
+        print (rolled_row)
+        return rolled_row 
     
     def book_title_set(self,book_title):
 
@@ -337,7 +361,7 @@ class FantasyBook():
     def complexity_set(self,complexity):
         if not complexity:
             complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since index of list starts at zero.
-            setattr(self,"complexity",complexity_from_table[0]) # index 0 converts to string eg 1, instead of list ['1']
+            self.complexity = complexity_from_table # index 0 converts to string eg 1, instead of list ['1']
         
         else:
             self.complexity = complexity
@@ -365,8 +389,8 @@ class FantasyBook():
 
     def look_up_table (self,table_name,search_term):
         query = 'SELECT title_string from {} where Result LIKE "{}"'.format(table_name, search_term)
-        t = r.LookUpTable(table_name = table_name, query = query)
-        return t.content[0] # gets the tuple that returns out of the list.
+        t = r.LookUpTable(query = query)
+        return t.result
     
     
     def original_language_set(self, original_language):
@@ -411,7 +435,7 @@ class FantasyBook():
         if not topic_title_form:
 
             t = self.look_up_table(table_name= "_topic_for_titles", search_term = self.topic)
-            t = t[0].split(";") # first and only item of tuple to get rid of ('Response') and give Response. This is split by semicolons to make a list of various options.
+            t = t.split(";") # list is made by separating by semicolons
             t = random.choice(t) # a random option is then chosen
             self.topic_title_form = t 
         

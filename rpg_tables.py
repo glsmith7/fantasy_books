@@ -4,19 +4,25 @@ import pandas
 import random as random
 import sqlite3 as sqlite3
 import string as string
-from termcolor import colored
 
 # logging boilerplate
 import settings_GLS as s
 import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
-import coloredlogs
-coloredlogs.install (level=logging.INFO, logger=logger)
 #########################################################
+class LookUpTable(): 
+    
+    def __init__ (self,query,path=s.PATH_DEFAULT):
+
+        self.path = path
+        self.conn = connect_to_database(self.path)
+        self.query = query
+        self.df = pandas.read_sql_query(self.query, self.conn)
+        self.result = self.df.iat[0,0]
+        self.conn.close()
 
 class RPG_table ():
-
     
     def __init__ (self, table_name, path = s.PATH_DEFAULT):
         ''' Opens an SQL database, returns the full value of a table therein, and also creates "DieLow" and "DieHigh" columns for tables with a "DieRange" column. 
@@ -71,10 +77,9 @@ class RPG_table ():
 
         first_num_rows = self.num_rows
         second_num_rows = the_other.num_rows
-        renumber_rows = {}
 
-        for i in range (first_num_rows,(first_num_rows+second_num_rows)): # creates dictionary of second table to renumber the rows so can be added at bottom of rist table
-             renumber_rows[i-first_num_rows] = (i)
+        # for i in range (first_num_rows,(first_num_rows+second_num_rows)): # creates dictionary of second table to renumber the rows so can be added at bottom of rist table
+        #      renumber_rows[i-first_num_rows] = (i)
 
         first_descript = self.description
         second_descript= the_other.description
@@ -82,14 +87,14 @@ class RPG_table ():
         logger.debug ("RPG_table: " + (str(first_descript) + " combining with: " + second_descript ))
 
         first_df = self.df
-        second_df = the_other.df.rename (index=renumber_rows)
+        second_df = the_other.df
         logger.debug ("First DataForm: _" + str(self.description) + "_ providing: " + "\n" + self.display_all + "\n")
         logger.debug ("Second DataForm: _" + str(the_other.description) + "_ providing: " + "\n" + the_other.display_all + "\n")
         
 
         _ = RPG_table(table_name=self.table_name, path=self.path)
     
-        _.df = pandas.concat([first_df,second_df])
+        _.df = pandas.concat([second_df, first_df], ignore_index=True)
 
         _.description = first_descript + " COMBINED WITH " + second_descript # description used, not table name, since if calling multiple additions \
                                                                              # need table_name to still work as individual table in the SQL database
@@ -226,10 +231,3 @@ if __name__ == "__main__":
     print (i.madlib())
     print (i.madlib(2))
     print (madlib("ReactionRollStandard"))
-
-
-
-
-
-
-
