@@ -16,7 +16,9 @@ global name_tables_female, name_tables_len_female, name_table_amalgamated_female
 global author_title_table, epithets_tables
 global list_of_words_to_not_capitalize
 global complexity_table_list
-global adjective_1_list, noun_1_list, noun_2_list, titles_study_of_list, titles_study_in_list, titles_study_on_list, titles_template_list
+global adjective_1_list, noun_1_list, noun_2_list, titles_study_of_list, titles_study_in_list, titles_study_on_list
+global titles_template_list, titles_history_of_list, titles_conjunction_about, titles_conjunction_by, titles_fixed
+global titles_negative_subject, titles_places_cities, titles_places_nations, titles_religious_starter, titles_study_verbing, titles_the_1
 
 global CHANCE_OF_BEING_TRANSLATION, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED, CHANCE_OF_EPITHET 
 
@@ -71,14 +73,6 @@ name_tables_male, name_tables_len_male = {}, {}
 name_tables_female, name_tables_len_female = {}, {}
 surnames_tables = {}
 
-epithets_tables = []
-adjective_1_list = []
-noun_1_list = []
-noun_2_list = []
-titles_study_of_list = []
-titles_study_in_list = []
-titles_study_on_list = []
-titles_template_list = []
 
 # titles
 author_title_table = r.RPG_table('_titles_person')
@@ -93,7 +87,22 @@ noun_2_list = r.RPG_table('_book_titles_noun_2')
 titles_study_of_list = r.RPG_table('_book_titles_study_of')
 titles_study_in_list = r.RPG_table('_book_titles_study_in')
 titles_study_on_list = r.RPG_table('_book_titles_study_on')
-titles_template_list = r.RPG_table('_book_title_templates')
+titles_template_list = r.RPG_table('_book_titles_templates')
+titles_history_of_list = r.RPG_table('_book_titles_history')
+titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
+titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
+titles_fixed = r.RPG_table('_book_titles_fixed')
+titles_negative_subject = r.RPG_table('_book_titles_negative_subject')
+titles_places_cities = r.RPG_table('_book_titles_places_cities')
+titles_places_nations = r.RPG_table('_book_titles_places_nations')
+titles_religious_starter = r.RPG_table('_book_titles_religious_starter')
+titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
+titles_the_1 = r.RPG_table('_books_titles_the_1')
+# XXXXX = r.RPG_table('XXXXX')
+# XXXXX = r.RPG_table('XXXXX')
+# XXXXX = r.RPG_table('XXXXX')
+
+
 
 # blank lists for later use
 name_table_amalgamated_male = r.RPG_table('_names_empty')
@@ -421,7 +430,7 @@ class FantasyBook():
     def  topic_title_set(self,topic_title_form):
         if not topic_title_form:
 
-            t = self.look_up_table(table_name= "_topic_for_titles", search_term = self.topic)
+            t = self.look_up_table(table_name= "_book_titles_topics", search_term = self.topic)
             t = t.split(";") # list is made by separating by semicolons
             t = random.choice(t) # a random option is then chosen
             self.topic_title_form = t 
