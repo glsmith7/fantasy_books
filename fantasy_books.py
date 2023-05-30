@@ -23,7 +23,8 @@ global author_title_table, epithets_tables
 
 # titles
 global titles_adjective_1_list, titles_noun_1_list, titles_noun_2_list, titles_study_of_list, titles_study_in_list, titles_study_on_list
-global titles_template_list, titles_history_of, titles_conjunction_about, titles_conjunction_by, titles_fixed
+global titles_template_list_general, titles_template_list_history, titles_template_list_theology, titles_template_list_occult
+global titles_history_of, titles_conjunction_about, titles_conjunction_by, titles_fixed
 global titles_negative_subject, titles_places_cities, titles_places_nations, titles_religious_starter, titles_study_verbing, titles_the_1
 global titles_person_1, titles_person_2, titles_communication, titles_biography_starter, titles_person_evil
 global titles_person_famous_male, titles_person_famous_female, titles_person_famous_amalgamated, titles_saints_male, titles_saints_female, titles_saints_amalgamated
@@ -93,7 +94,10 @@ titles_noun_2_list = r.RPG_table('_book_titles_noun_2')
 titles_study_of_list = r.RPG_table('_book_titles_study_of')
 titles_study_in_list = r.RPG_table('_book_titles_study_in')
 titles_study_on_list = r.RPG_table('_book_titles_study_on')
-titles_template_list = r.RPG_table('_book_titles_templates')
+titles_template_list_general = r.RPG_table('_book_titles_templates_general')
+titles_template_list_history = r.RPG_table('_book_titles_templates_history')
+titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
+titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
 titles_history_of = r.RPG_table('_book_titles_history')
 titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
 titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
@@ -308,18 +312,11 @@ class FantasyBook():
     def author_name_set(self,author_name):
         
         if not author_name:        
+             
+            author_name, author_nationality = self.name_generate(sex = self.sex)
             
-            # first name
-            if self.sex == "Male": first_name = name_table_amalgamated_male.df.sample()
-            else: first_name = name_table_amalgamated_female.df.sample()
-            self.author_nationality = (first_name.iloc[0,1]) # the second column (i.e. index 1 since starts at 0) is the table for this type of name's surname.
-            
-            # surname
-            last_name_table = (surnames_tables[self.author_nationality])
-            last_name = last_name_table.df.sample()
-            author_name = str(first_name.iloc[0,0]) + " " + str(last_name.iloc[0,0]) # first (0 index) item is the name
-            
-        self.author_name = author_name
+            self.author_name = author_name
+            self.author_nationality = author_nationality
 
     def author_title_set(self, author_title):
         global author_title_table
@@ -389,15 +386,33 @@ class FantasyBook():
             ):
         
         global titles_adjective_1_list, titles_noun_1_list, titles_noun_2_list, titles_study_of_list, titles_study_in_list, titles_study_on_list
-        global titles_template_list, titles_history_of, titles_conjunction_about, titles_conjunction_by, titles_fixed
+        global titles_template_list_general, titles_template_list_history, titles_template_list_theology, titles_template_list_occult
+        global titles_history_of, titles_conjunction_about, titles_conjunction_by, titles_fixed
         global titles_negative_subject, titles_places_cities, titles_places_nations, titles_religious_starter, titles_study_verbing, titles_the_1
         global titles_person_1, titles_person_2, titles_communication, titles_biography_starter, titles_person_evil
         global titles_person_famous_male, titles_person_famous_female, titles_person_famous_amalgamated, titles_saints_male, titles_saints_female, titles_saints_amalgamated
 
+        avoid_special_class_of_title = True
+
         if final_title: self.book_title = final_title
         
         else:
-            if not template: template = titles_template_list.df.sample().iloc[0,0]
+            if not template: template = titles_template_list_general.df.sample().iloc[0,0]
+            topic = self.topic_title_form
+
+            if "theology" in topic.lower():
+                while ("religious" not in template) and ("biography" not in template):
+                    template = titles_template_list_theology.df.sample().iloc[0,0]
+
+            if "history" in topic.lower():
+                while ("history" not in template) and ("biography" not in template):
+                    template = titles_template_list_history.df.sample().iloc[0,0]
+
+            if ("occult" in topic.lower()) or ("apostasy" in topic.lower()) or ("black lore" in topic.lower()):
+                while ("occult" not in template) and ("negative" not in template) and {"evil" not in template} and ("biography" not in template):
+                    template = titles_template_list_occult.df.sample().iloc[0,0]
+            
+            
             if not adjective_1 and "{adjective_1}" in template: adjective_1 = titles_adjective_1_list.df.sample().iloc[0,0]
             if not noun_1 and "{noun_1}" in template: noun_1 = titles_noun_1_list.df.sample().iloc[0,0]
             if not noun_2 and "{noun_2}" in template: noun_2 = titles_noun_2_list.df.sample().iloc[0,0]
@@ -425,7 +440,7 @@ class FantasyBook():
             # if not person_1 and "{person_1}" in template: study_on = titles_person_1.df.sample().iloc[0,0]
             # if not person_2 and "{person_2}" in template: study_on = titles_person_2.df.sample().iloc[0,0]
 
-            topic = self.topic_title_form
+            
             self.template = template
 
             self.book_title = template.format(
@@ -492,6 +507,20 @@ class FantasyBook():
         query = 'SELECT title_string from {} where Result LIKE "{}"'.format(table_name, search_term)
         t = r.LookUpTable(query = query)
         return t.result   
+    
+    def name_generate(self,sex="Male"):
+        # first name
+        if sex == None: sex = random.choice(["Male", "Male","Female"]) # makes males 2/3 of the time for historical reasons.
+        if sex == "Male": first_name = name_table_amalgamated_male.df.sample()
+        else: first_name = name_table_amalgamated_female.df.sample()
+        author_nationality = (first_name.iloc[0,1]) # the second column (i.e. index 1 since starts at 0) is the table for this type of name's surname.
+                
+        # surname
+        last_name_table = (surnames_tables[author_nationality])
+        last_name = last_name_table.df.sample()
+        author_name = str(first_name.iloc[0,0]) + " " + str(last_name.iloc[0,0]) # first (0 index) item is the name
+
+        return author_name, author_nationality
     
     def original_language_set(self, original_language):
         
@@ -596,6 +625,7 @@ for z in range(0,number_to_run):
     print ("Epithet:" + str(a.author_epithet))
     print ("Author title:" + str(a.author_title))
     print ("Author:" + str(a.author_full))
+    print ("Author nationality:" + str(a.author_nationality))
     print ("Topic:" + str(a.topic))
     print ("Topic title:" + str(a.topic_title_form))
     print ("Actual title:" + a.book_title)
