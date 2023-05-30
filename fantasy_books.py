@@ -9,6 +9,18 @@ import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
 #########################################################
+# USER SETABLE CONSTANTS
+#########################################################
+
+global CHANCE_OF_BEING_TRANSLATION, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED, CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME,CHANCE_OF_FEMALE_AUTHOR
+
+ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
+CHANCE_OF_BEING_TRANSLATION = 10 # ten percent chance; can be changed as wished.
+CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15
+CHANCE_OF_TITLE_IN_AUTHOR_NAME = 100
+CHANCE_OF_FEMALE_AUTHOR = 50
+
+#########################################################
 
 # general
 
@@ -21,19 +33,14 @@ global name_tables_male, name_table_amalgamated_male
 global name_tables_female, name_table_amalgamated_female
 global author_title_table, epithets_tables
 
-# titles
-global titles_adjective_1_list, titles_noun_1_list, titles_noun_2_list, titles_study_of_list, titles_study_in_list, titles_study_on_list
-global titles_template_list_general, titles_template_list_history, titles_template_list_theology, titles_template_list_occult
-global titles_history_of, titles_conjunction_about, titles_conjunction_by, titles_fixed
-global titles_negative_subject, titles_places_cities, titles_places_nations, titles_religious_starter, titles_study_verbing, titles_the_1
-global titles_person_1, titles_person_2, titles_communication, titles_biography_starter, titles_person_evil
-global titles_person_famous_male, titles_person_famous_female, titles_person_famous_amalgamated, titles_saints_male, titles_saints_female, titles_saints_amalgamated
- 			
-global CHANCE_OF_BEING_TRANSLATION, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED, CHANCE_OF_EPITHET 
+# book titles
 
-CHANCE_OF_BEING_TRANSLATION = 10 # ten percent chance; can be changed as wished.
-CHANCE_OF_EPITHET = 15
-ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
+global titles_adjective_1_list, titles_communication, titles_conjunction_about, titles_conjunction_by, titles_fixed, titles_history_of, titles_negative_subject
+global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2, titles_places_cities, titles_places_nations, titles_religious_starter
+global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
+global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
+ 			
+
 
 list_of_words_to_not_capitalize = [
     ("The","the"),
@@ -79,53 +86,21 @@ surnames_tables = {}
 name_tables_male = {}
 name_tables_female = {}
 
-
-
-# titles
+# title of author
 author_title_table = r.RPG_table('_titles_person')
 
-#epithets
+#epithets of author
 epithets_table = r.RPG_table('_epithets')
 
-# book title lists
-titles_adjective_1_list = r.RPG_table('_book_titles_adjective_1')
-titles_noun_1_list = r.RPG_table('_book_titles_noun_1')
-titles_noun_2_list = r.RPG_table('_book_titles_noun_2')
-titles_study_of_list = r.RPG_table('_book_titles_study_of')
-titles_study_in_list = r.RPG_table('_book_titles_study_in')
-titles_study_on_list = r.RPG_table('_book_titles_study_on')
-titles_template_list_general = r.RPG_table('_book_titles_templates_general')
-titles_template_list_history = r.RPG_table('_book_titles_templates_history')
-titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
-titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
-titles_history_of = r.RPG_table('_book_titles_history')
-titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
-titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
-titles_fixed = r.RPG_table('_book_titles_fixed')
-titles_negative_subject = r.RPG_table('_book_titles_negative_subject')
-titles_places_cities = r.RPG_table('_book_titles_places_cities')
-titles_places_nations = r.RPG_table('_book_titles_places_nations')
-titles_religious_starter = r.RPG_table('_book_titles_religious_starter')
-titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
-titles_the_1 = r.RPG_table('_books_titles_the_1')
+# saints names
 titles_saints_male=r.RPG_table('_names_saints_male')
 titles_saints_female=r.RPG_table('_names_saints_female')
 titles_saints_amalgamated= titles_saints_male + titles_saints_female
 
+# famous names
 titles_person_famous_male=r.RPG_table('_names_famous_male')
 titles_person_famous_female=r.RPG_table('_names_famous_female')
 titles_person_famous_amalgamated=titles_person_famous_male + titles_person_famous_female
-
-
-titles_communication=r.RPG_table('_book_titles_communication')
-titles_biography_starter=r.RPG_table('_book_titles_biography_starter')
-titles_person_evil=r.RPG_table('_names_famous_evil')
-
-# titles_person_1 =r.RPG_table('XXXX')
-# titles_person_2=r.RPG_table('XXXX') 			
-# XXXXX = r.RPG_table('XXXXX')
-# XXXXX = r.RPG_table('XXXXX')
-# XXXXX = r.RPG_table('XXXXX')
 
 # blank lists for later use
 name_table_amalgamated_male = r.RPG_table('_names_empty')
@@ -133,6 +108,33 @@ name_table_amalgamated_male.description = "Male Names Amalgamated"
 name_table_amalgamated_female = r.RPG_table('_names_empty')
 name_table_amalgamated_female.description = "Female Names Amalgamated"
 
+# book title fragments
+titles_adjective_1_list = r.RPG_table('_book_titles_adjective_1')
+titles_biography_starter=r.RPG_table('_book_titles_biography_starter')
+titles_communication=r.RPG_table('_book_titles_communication')
+titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
+titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
+titles_fixed = r.RPG_table('_book_titles_fixed')
+titles_history_of = r.RPG_table('_book_titles_history')
+titles_negative_subject = r.RPG_table('_book_titles_negative_subject')
+titles_noun_1_list = r.RPG_table('_book_titles_noun_1')
+titles_noun_2_list = r.RPG_table('_book_titles_noun_2')
+titles_person_evil=r.RPG_table('_names_famous_evil')
+titles_places_cities = r.RPG_table('_book_titles_places_cities')
+titles_places_nations = r.RPG_table('_book_titles_places_nations')
+titles_religious_starter = r.RPG_table('_book_titles_religious_starter')
+titles_study_in_list = r.RPG_table('_book_titles_study_in')
+titles_study_of_list = r.RPG_table('_book_titles_study_of')
+titles_study_on_list = r.RPG_table('_book_titles_study_on')
+titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
+titles_the_1 = r.RPG_table('_books_titles_the_1')
+
+# book title templates
+
+titles_template_list_general = r.RPG_table('_book_titles_templates_general')
+titles_template_list_history = r.RPG_table('_book_titles_templates_history')
+titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
+titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
 
 def init_program_load_tables():
     
@@ -292,7 +294,7 @@ class FantasyBook():
     
     def author_epithet_set (self, author_epithet):
         if not author_epithet:
-            if CHANCE_OF_EPITHET > d20.roll("1d100").total:
+            if CHANCE_OF_EPITHET_IN_AUTHOR_NAME > d20.roll("1d100").total:
                 author_epithet = epithets_table.df.sample() # a random option is then chosen
                 author_epithet = author_epithet.iloc[0,0]
                           
@@ -323,7 +325,10 @@ class FantasyBook():
 
          # title of the author
         if not author_title:
-            author_title = str(author_title_table.df.sample().iloc[0,0])
+
+            if CHANCE_OF_TITLE_IN_AUTHOR_NAME > d20.roll("1d100").total:
+
+                author_title = str(author_title_table.df.sample().iloc[0,0])
            
             #  # male/female titles are separated by a slash in the SQL database  
             if author_title.__contains__("/"):
@@ -412,7 +417,8 @@ class FantasyBook():
                 while ("occult" not in template) and ("negative" not in template) and {"evil" not in template} and ("biography" not in template):
                     template = titles_template_list_occult.df.sample().iloc[0,0]
             
-            
+            # refactor this code eventually into loop with eval()
+
             if not adjective_1 and "{adjective_1}" in template: adjective_1 = titles_adjective_1_list.df.sample().iloc[0,0]
             if not noun_1 and "{noun_1}" in template: noun_1 = titles_noun_1_list.df.sample().iloc[0,0]
             if not noun_2 and "{noun_2}" in template: noun_2 = titles_noun_2_list.df.sample().iloc[0,0]
@@ -434,11 +440,8 @@ class FantasyBook():
             if not history_of and "{history_of}" in template: history_of = titles_history_of.df.sample().iloc[0,0]
             if not the_1 and "{the_1}" in template: the_1 = titles_the_1.df.sample().iloc[0,0]
 
-            if "{person_1}" in template: person_1 = "PERSON 1"
-            if "{person_2}" in template: person_2 = "PERSON 2"
-            # if not XXX and "{XXXX}" in template: study_on = titles_fixed.df.sample().iloc[0,0]
-            # if not person_1 and "{person_1}" in template: study_on = titles_person_1.df.sample().iloc[0,0]
-            # if not person_2 and "{person_2}" in template: study_on = titles_person_2.df.sample().iloc[0,0]
+            if not person_1 and "{person_1}" in template: person_1, _ = self.name_generate() # second is nationality which we don't need, ditto below.
+            if not person_2 and "{person_2}" in template: person_2, _ = self.name_generate()
 
             
             self.template = template
@@ -550,7 +553,8 @@ class FantasyBook():
     
     def sex_set (self, sex):
         if not sex:
-            self.sex = random.choice(["Male", "Male","Female"]) # makes males 2/3 of the time for historical reasons.
+            if d20.roll("1d100").total <= CHANCE_OF_FEMALE_AUTHOR: self.sex = "Female"
+            else: self.sex = "Male"
         else:
             self.sex = sex
     
