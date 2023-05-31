@@ -254,8 +254,7 @@ class FantasyBook():
         self.scope_set(self.scope)
         self.current_language_set(self.current_language)
         self.age_set(self.age_at_discovery)
-        self.translator_set(self.translator) # must be called before original_language_set
-        
+        self.translator_set() # must be called before original_language_set
         self.original_language_set(self.original_language)
         self.topic_set(self.topic)
         self.topic_title_set(self.topic_title_form)
@@ -431,8 +430,8 @@ class FantasyBook():
             if not history_of and "{history_of}" in template: history_of = titles_history_of.df.sample().iloc[0,0]
             if not the_1 and "{the_1}" in template: the_1 = titles_the_1.df.sample().iloc[0,0]
 
-            if not person_1 and "{person_1}" in template: person_1, _ = self.name_generate() # second is nationality which we don't need, ditto below.
-            if not person_2 and "{person_2}" in template: person_2, _ = self.name_generate()
+            if not person_1 and "{person_1}" in template: person_1, _ , _ = self.name_generate() # 2nd,3rd are nation, sex which we don't need
+            if not person_2 and "{person_2}" in template: person_2, _, _ = self.name_generate()
 
             
             self.template = template
@@ -495,12 +494,10 @@ class FantasyBook():
 
     def literary_value_set (self):
         target_table = "BookLiteraryValueScope" + str(self.scope)
-        COMPLEX = self.complexity
-        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX ---> " + str(COMPLEX))
         self.literary_value_base = self.look_up_table(
             table_name=target_table,
             search_column="Complexity",
-            search_term = COMPLEX,
+            search_term = self.complexity,
             result_column="LiteraryValue"
             )
 
@@ -519,9 +516,14 @@ class FantasyBook():
         else:
             self.materials = materials
 
-    def name_generate(self,sex="Male"):
+    def name_generate(self,sex=None):
         # first name
-        if sex == None: sex = random.choice(["Male", "Male","Female"]) # makes males 2/3 of the time for historical reasons.
+        if sex == None:
+            if d20.roll("1d100").total <  CHANCE_OF_FEMALE_AUTHOR: 
+                sex = "Female"
+            else: 
+                sex = "Male"
+
         if sex == "Male": first_name = name_table_amalgamated_male.df.sample()
         else: first_name = name_table_amalgamated_female.df.sample()
         author_nationality = (first_name.iloc[0,1]) # the second column (i.e. index 1 since starts at 0) is the table for this type of name's surname.
@@ -531,13 +533,13 @@ class FantasyBook():
         last_name = last_name_table.df.sample()
         author_name = str(first_name.iloc[0,0]) + " " + str(last_name.iloc[0,0]) # first (0 index) item is the name
 
-        return author_name, author_nationality, author_sex
+        return author_name, author_nationality, sex
     
     def person_title_generate (self,sex):
-        
         global author_title_table
+        author_title = ''
 
-        if CHANCE_OF_TITLE_IN_AUTHOR_NAME > d20.roll("1d100").total:
+        if CHANCE_OF_TITLE_IN_AUTHOR_NAME >= d20.roll("1d100").total:
 
             author_title = str(author_title_table.df.sample().iloc[0,0])
            
@@ -550,7 +552,7 @@ class FantasyBook():
                 else:
                     author_title = title_split[1]
         
-        return string.capwords(author_title)
+        return string.capwords(str(author_title))
     
     def number_pages_set(self):
         self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
@@ -630,7 +632,7 @@ class FantasyBook():
         else:
             self.topic_title_form = topic_title_form
 
-    def translator_set (self, translator):
+    def translator_set (self):
         roll_to_see_if_it_is_a_translation = d20.roll("1d100").total
         if roll_to_see_if_it_is_a_translation > CHANCE_OF_BEING_TRANSLATION or ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED.__contains__(self.current_language):
             self.translator = "N/A"
