@@ -261,8 +261,7 @@ class FantasyBook():
         self.materials_set(self.materials)
         self.libraries_it_is_in = libraries_it_is_in
         self.rarity_set()
-        self.number_extant_available_to_place = number_extant_available_to_place
-        self.number_pages = number_pages
+        self.number_pages_set()
         self.reading_time = reading_time
         self.reference_time = reference_time
         self.production_value = production_value
@@ -529,6 +528,9 @@ class FantasyBook():
 
         return author_name, author_nationality
     
+    def number_pages_set(self):
+        self.number_pages = int((self.scope * 1000) // self.complexity) # note integer division // 
+
     def original_language_set(self, original_language):
         
         if self.is_a_translation == "False":
@@ -548,7 +550,7 @@ class FantasyBook():
         dice_string_determine_number_copies = self.book_details_result_from_tables("BookRarityCopies", roll_result= the_roll)
         number_of_copies_roll = d20.roll(dice_string_determine_number_copies).total
         self.number_extant_copies = number_of_copies_roll
-        self.number_extant_available_to_place = self.number_extant_copies - 1 # ie, less this one.
+        self.number_extant_available_to_place = (self.number_extant_copies - 1) # ie, less this one.
         self.rarity_modifier = self.book_details_result_from_tables("BookRarityModifier",roll_result=the_roll)
 
     def remove (self,library):
@@ -626,7 +628,7 @@ class AuthoritativeBook(FantasyBook):
 
 ############################
 # main()
-number_to_run = 1000
+number_to_run = 10
 
 for z in range(0,number_to_run):
 
@@ -650,6 +652,8 @@ for z in range(0,number_to_run):
     print ("Template:" + str(a.template))
     print ("Materials:" + str(a.materials))
     print ("Extant copies:" + str(a.number_extant_copies))
+    print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
     print ("Rarity modifier: " + str(a.rarity_modifier))
+    print ("Number pages:" + str(a.number_pages))
 
     print ("---")
