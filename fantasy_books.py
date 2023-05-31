@@ -313,7 +313,15 @@ class FantasyBook():
         
         self.author_full = author_full
     
-    
+    def author_name_set(self,author_name):
+        
+        if not author_name:        
+             
+            author_name, author_nationality, _ = self.name_generate(sex = self.sex)
+            
+            self.author_name = author_name
+            self.author_nationality = author_nationality
+
     def author_title_set(self, author_title):
         if not author_title:
             self.author_title = self.person_title_generate(sex = self.sex)
