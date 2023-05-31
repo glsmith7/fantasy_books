@@ -260,7 +260,7 @@ class FantasyBook():
         self.book_title_set(self.book_title)
         self.materials_set(self.materials)
         self.libraries_it_is_in = libraries_it_is_in
-        self.number_extant_copies = number_extant_copies
+        self.rarity_set()
         self.number_extant_available_to_place = number_extant_available_to_place
         self.number_pages = number_pages
         self.reading_time = reading_time
@@ -268,7 +268,6 @@ class FantasyBook():
         self.production_value = production_value
         self.literary_value_base = literary_value_base
         self.literary_value_modified = literary_value_modified
-        self.rarity_modifier = rarity_modifier
         self.value = value
         self.weight = weight
         self.number_volumes = number_volumes
@@ -340,23 +339,28 @@ class FantasyBook():
         author_title = string.capwords(author_title)
         self.author_title = author_title
 
-    def book_details_result_from_tables(self,table_for_value):
+    def book_details_result_from_tables(self,table_for_value,roll_result=None):
         ''' Checks table aaDiceTypeToRoll to see what dice to roll, and then rolls and checks the result on the given table.
         All tables that use this should have:
         1) An entry in SQL table aaDiceTypeToRoll with the same table name that matches table to roll on.
-        2) The SQL table to be rolled on should have only two columns: one called 'DieRange' and the other 'Result'. '''
+        2) The SQL table to be rolled on should have only two columns: one called 'DieRange' and the other 'Result'. 
+
+        If roll_result is passed in as an integer value, then the table looks up as if that roll had been made (i.e., not random).
+        '''
 
         # what dice to roll on the table   
-        dice = r.what_dice_to_roll(table_for_value) # returns a list
-        if dice == []:
-            raise ValueError("Empty dice list returned -- does SQL table 'aaDiceTypeToRoll' have an entry for this table?")
-        else:
-            dice_string = dice# [0] # dice[0] is the only thing returned, and this makes it a string rather than list as dice is.
-            roll_result = r.d20.roll(dice_string) 
+       
+        if not roll_result:
+            dice_string = r.what_dice_to_roll(table_for_value) # returns a list
+            
+            if dice_string == []:
+                raise ValueError("Empty dice list returned -- does SQL table 'aaDiceTypeToRoll' have an entry for this table?")
+            else:
+                roll_result = r.d20.roll(dice_string).total 
 
-        # actually do the roll now that we know what dice we're rolling
+        # actually pass the roll value now that we know what dice have given
         t = r.RPG_table(table_for_value)
-        rolled_row = t.roll(roll_result.total) # .total sends only the integer total, nil else.
+        rolled_row = t.roll(roll_result)
         return rolled_row 
     
     def book_title_set(
@@ -538,6 +542,15 @@ class FantasyBook():
         
         self.original_language = original_language
 
+    def rarity_set(self):
+        the_roll = d20.roll("1d100").total # this same value needed twice, so must roll it first so can be passed.
+
+        dice_string_determine_number_copies = self.book_details_result_from_tables("BookRarityCopies", roll_result= the_roll)
+        number_of_copies_roll = d20.roll(dice_string_determine_number_copies).total
+        self.number_extant_copies = number_of_copies_roll
+
+        self.rarity_modifier = self.book_details_result_from_tables("BookRarityModifier",roll_result=the_roll)
+
     def remove (self,library):
         ''' Remove this book from a given library'''
         try:
@@ -613,7 +626,7 @@ class AuthoritativeBook(FantasyBook):
 
 ############################
 # main()
-number_to_run = 10
+number_to_run = 1000
 
 for z in range(0,number_to_run):
 
@@ -636,5 +649,7 @@ for z in range(0,number_to_run):
     print ("Format:" + str(a.format))
     print ("Template:" + str(a.template))
     print ("Materials:" + str(a.materials))
+    print ("Extant copies:" + str(a.number_extant_copies))
+    print ("Rarity modifier: " + str(a.rarity_modifier))
 
     print ("---")

@@ -165,8 +165,10 @@ class RPG_table ():
                 logging.exception(error_text)
                 raise Exception(error_text) from err
                
+        if to_return == 0: return 0 # note if rolls value of 0, this will be interpreted as "not to_return" below even though 0 =! {}
+
         if not to_return: # ie nothing has been put into to_return because no row matches
-            error_text = "Nothing was found on table {} when rolling {} on it.".format(self.table_name, roll)
+            error_text = "Nothing was found on table {} when rolling {} on it.".format(self.table_name, roll) 
             logging.error(error_text)
             raise KeyError (error_text)
         
@@ -201,10 +203,9 @@ def madlib(table_name, path = s.PATH_DEFAULT):
      logger.debug ("Madlib value from FUNCTION returned: " + str(value))
      return value
 
-def what_dice_to_roll(table_name, path = s.PATH_DEFAULT) -> list:
+def what_dice_to_roll(table_name, path = s.PATH_DEFAULT):
     ''' table is name of the table to roll on in the master table "aaDiceTypeToRoll".
     Returns the dice rolling string for a given table.'''
-
     conn = connect_to_database(path)
     query = "select DiceFormula from aaDiceTypeToRoll where TableName like '{}'".format(table_name)
     
@@ -218,6 +219,7 @@ def what_dice_to_roll(table_name, path = s.PATH_DEFAULT) -> list:
     logger.debug ("Search result of SQL database returned as: " + str(results))
     conn.close()
     return results[0][0] # returns a plain dice string
+    
 
 ##############################
 # main
