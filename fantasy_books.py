@@ -14,14 +14,16 @@ logger = logging.getLogger(__name__)
 
 global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED 
 global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
+global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 
 ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
-CHANCE_OF_BEING_TRANSLATION = 10 # ten percent chance; can be changed as wished.
-CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15
-CHANCE_OF_TITLE_IN_AUTHOR_NAME = 100
-CHANCE_OF_FEMALE_AUTHOR = 50
+CHANCE_OF_BEING_TRANSLATION = 10 # # 0-100%
+CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
+CHANCE_OF_TITLE_IN_AUTHOR_NAME = 100 # 0-100%
+CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
 TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = "1d100+20" 
-
+WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
+WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
 #########################################################
 
 # general
@@ -183,15 +185,16 @@ class FantasyBook():
         author_nationality = "",
         current_language = "",
         original_language = "",
-        is_a_translation = "False",
+        is_a_translation = False,
         translator = "",
+        translator_nationality = "",
         format = "",
         materials = "",
         libraries_it_is_in = [],
         number_extant_copies = 0,
         number_extant_available_to_place = 0,
-        scope = 0,
-        complexity = 0,
+        scope = '',
+        complexity = '',
         age_at_discovery = 0,
         number_pages = 0,
         reading_time = 0,
@@ -200,11 +203,12 @@ class FantasyBook():
         literary_value_base = 0,
         literary_value_modified = 0,
         rarity_modifier = 0,
-        value = 0,
         weight = 0,
         number_volumes = 0,
         year_discovered = 0,
         year_written = 0,
+        market_value = 0,
+        weight_per_page = 0,
         ):
 
         # set all values to whatever they were passed in 
@@ -222,6 +226,7 @@ class FantasyBook():
         self.original_language = original_language
         self.is_a_translation = is_a_translation
         self.translator = translator
+        self.translator_nationality = translator_nationality
         self.format = format
         self.materials = materials
         self.libraries_it_is_in = libraries_it_is_in
@@ -237,16 +242,18 @@ class FantasyBook():
         self.literary_value_base = literary_value_base
         self.literary_value_modified = literary_value_modified
         self.rarity_modifier = rarity_modifier
-        self.value = value
         self.weight = weight
         self.number_volumes = number_volumes
         self.year_discovered = year_discovered
         self.year_written = year_written
+        self.market_value = market_value
+        self.weight_per_page = weight_per_page
 
         self.scope_set(self.scope)
         self.current_language_set(self.current_language)
         self.age_set(self.age_at_discovery)
         self.translator_set(self.translator) # must be called before original_language_set
+        
         self.original_language_set(self.original_language)
         self.topic_set(self.topic)
         self.topic_title_set(self.topic_title_form)
@@ -264,11 +271,9 @@ class FantasyBook():
         self.number_pages_set()
         self.reading_time_set()
         self.production_value_set()
-        self.literary_value_base = literary_value_base
-        self.literary_value_modified = literary_value_modified
-        self.value = value
-        self.weight = weight
-        self.number_volumes = number_volumes
+        self.literary_value_set()
+        self.weight_set()
+        self.number_volumes_set()
         self.year_discovered = year_discovered
         self.year_written = year_written
 
@@ -474,8 +479,9 @@ class FantasyBook():
 
     def complexity_set(self,complexity):
         if not complexity:
-            complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since index of list starts at zero.
-            self.complexity = complexity_from_table # index 0 converts to string eg 1, instead of list ['1']
+            complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since list index starts at zero.
+            if complexity_from_table >= 1: complexity_from_table = int(complexity_from_table) # doesn't integerize 0.75
+            self.complexity = complexity_from_table 
         
         else:
             self.complexity = complexity
@@ -500,6 +506,20 @@ class FantasyBook():
             self.format = self.book_details_result_from_tables(target_table)
         else:
             self.format = format
+
+    def literary_value_set (self):
+        target_table = "BookLiteraryValueScope" + str(self.scope)
+        COMPLEX = self.complexity
+        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX ---> " + str(COMPLEX))
+        self.literary_value_base = self.look_up_table(
+            table_name=target_table,
+            search_column="Complexity",
+            search_term = COMPLEX,
+            result_column="LiteraryValue"
+            )
+
+        self.literary_value_modified = ceil(self.literary_value_base * self.rarity_modifier)
+        self.market_value = ceil(self.literary_value_modified + self.production_value)
 
     def look_up_table (self,result_column,table_name,search_column,search_term):
         query = 'SELECT {} from {} where {} LIKE "{}"'.format(result_column,table_name,search_column,search_term)
@@ -532,7 +552,7 @@ class FantasyBook():
 
     def original_language_set(self, original_language):
         
-        if self.is_a_translation == "False":
+        if self.is_a_translation == False:
             return
 
         if not original_language: # original language is empty
@@ -588,7 +608,7 @@ class FantasyBook():
             topic = self.book_details_result_from_tables("BookTopicsACKS")
         self.topic = topic
     
-    def  topic_title_set(self,topic_title_form):
+    def topic_title_set(self,topic_title_form):
         if not topic_title_form:
 
             t = self.look_up_table(
@@ -609,11 +629,29 @@ class FantasyBook():
         roll_to_see_if_it_is_a_translation = d20.roll("1d100").total
         if roll_to_see_if_it_is_a_translation > CHANCE_OF_BEING_TRANSLATION or ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED.__contains__(self.current_language):
             self.translator = "N/A"
-            self.is_a_translation = "False"
+            self.is_a_translation = False
         else:
-            self.translator = "Some dude"
+            self.translator, self.translator_nationality = self.name_generate()
             self.is_a_translation = "True"
 
+    def number_volumes_set(self):
+        if self.format == "Codex":
+            self.number_of_volumes = ceil(self.number_pages/750)
+            self.weight = self.weight + (self.number_of_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
+        
+        elif self.format == "Scroll":
+            self.number_of_volumes = ceil(self.number_pages/250)
+            self.weight = self.weight + (self.number_of_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
+        
+        elif self.format == "Tablet":
+            self.number_of_volumes = 1 # ie, never multivolume
+
+        else:
+            raise ValueError("Format has a problem: is not a Codex, Scroll, or Tablet.")
+
+    def weight_set(self):
+        self.weight_per_page = self.look_up_table(result_column="Result",table_name="BookWeight",search_column="Material",search_term=self.materials)
+        self.weight = ceil(self.weight_per_page * self.number_pages)
 
 class EsotericBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
@@ -643,7 +681,7 @@ class AuthoritativeBook(FantasyBook):
 
 ############################
 # main()
-number_to_run = 10
+number_to_run = 100
 
 for z in range(0,number_to_run):
 
@@ -652,7 +690,7 @@ for z in range(0,number_to_run):
     print ("Scope:" + str(a.scope))
     print ("Current Lang:" + str(a.current_language))
     print ("Original Lang:" + str(a.original_language))
-    print ("Translator:" + a.translator)
+    print ("Translator:" + str(a.translator))
     print ("Complex:" + str(a.complexity))
     print ("Sex:" + str(a.sex))
     print ("Epithet:" + str(a.author_epithet))
@@ -673,5 +711,10 @@ for z in range(0,number_to_run):
     print ("Reading time:" + str(a.reading_time))
     print ("Cost per page:" + str(a.cost_per_page))
     print ("Production value:" + str(a.production_value))
-
+    print ("Lit value base:" + str(a.literary_value_base))
+    print ("Lit value mod:" + str(a.literary_value_modified))
+    print ("Market value: " + str (a.market_value))
+    print ("Weight per page: " + str (a.weight_per_page))
+    print ("Weight: " + str(a.weight))
+    print ("Volumes: " + str(a.number_volumes))
     print ("---")
