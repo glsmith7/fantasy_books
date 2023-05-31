@@ -2,7 +2,7 @@ import rpg_tables as r
 import random as random
 import string as string
 import d20
-
+from math import ceil
 # logging boilerplate
 import settings_GLS as s
 import logging
@@ -262,9 +262,8 @@ class FantasyBook():
         self.libraries_it_is_in = libraries_it_is_in
         self.rarity_set()
         self.number_pages_set()
-        self.reading_time = reading_time
-        self.reference_time = reference_time
-        self.production_value = production_value
+        self.reading_time_set()
+        self.production_value_set()
         self.literary_value_base = literary_value_base
         self.literary_value_modified = literary_value_modified
         self.value = value
@@ -502,8 +501,8 @@ class FantasyBook():
         else:
             self.format = format
 
-    def look_up_table (self,table_name,search_term):
-        query = 'SELECT title_string from {} where Result LIKE "{}"'.format(table_name, search_term)
+    def look_up_table (self,result_column,table_name,search_column,search_term):
+        query = 'SELECT {} from {} where {} LIKE "{}"'.format(result_column,table_name,search_column,search_term)
         t = r.LookUpTable(query = query)
         return t.result   
     
@@ -529,7 +528,7 @@ class FantasyBook():
         return author_name, author_nationality
     
     def number_pages_set(self):
-        self.number_pages = int((self.scope * 1000) // self.complexity) # note integer division // 
+        self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
 
     def original_language_set(self, original_language):
         
@@ -544,6 +543,12 @@ class FantasyBook():
         
         self.original_language = original_language
 
+    def production_value_set(self):
+        target_table = "BookProductionValue" + self.format
+
+        self.cost_per_page = self.look_up_table(result_column="Cost",table_name=target_table,search_column="Material",search_term=self.materials)
+        self.production_value = ceil(self.cost_per_page * self.number_pages)
+        
     def rarity_set(self):
         the_roll = d20.roll("1d100").total # this same value needed twice, so must roll it first so can be passed.
 
@@ -552,6 +557,10 @@ class FantasyBook():
         self.number_extant_copies = number_of_copies_roll
         self.number_extant_available_to_place = (self.number_extant_copies - 1) # ie, less this one.
         self.rarity_modifier = self.book_details_result_from_tables("BookRarityModifier",roll_result=the_roll)
+
+    def reading_time_set(self):
+        self.reading_time = ceil(self.number_pages//180)
+        self.reference_time = self.reading_time
 
     def remove (self,library):
         ''' Remove this book from a given library'''
@@ -582,7 +591,13 @@ class FantasyBook():
     def  topic_title_set(self,topic_title_form):
         if not topic_title_form:
 
-            t = self.look_up_table(table_name= "_book_titles_topics", search_term = self.topic)
+            t = self.look_up_table(
+                result_column="title_string",
+                table_name= "_book_titles_topics", 
+                search_column="Result",
+                search_term = self.topic 
+                )
+            
             t = t.split(";") # list is made by separating by semicolons
             t = random.choice(t) # a random option is then chosen
             self.topic_title_form = t 
@@ -655,5 +670,8 @@ for z in range(0,number_to_run):
     print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
     print ("Rarity modifier: " + str(a.rarity_modifier))
     print ("Number pages:" + str(a.number_pages))
+    print ("Reading time:" + str(a.reading_time))
+    print ("Cost per page:" + str(a.cost_per_page))
+    print ("Production value:" + str(a.production_value))
 
     print ("---")
