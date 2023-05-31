@@ -188,6 +188,7 @@ class FantasyBook():
         is_a_translation = False,
         translator = "",
         translator_nationality = "",
+        translator_sex = '',
         format = "",
         materials = "",
         libraries_it_is_in = [],
@@ -227,6 +228,7 @@ class FantasyBook():
         self.is_a_translation = is_a_translation
         self.translator = translator
         self.translator_nationality = translator_nationality
+        self.translator_sex = translator_sex
         self.format = format
         self.materials = materials
         self.libraries_it_is_in = libraries_it_is_in
@@ -311,36 +313,12 @@ class FantasyBook():
         
         self.author_full = author_full
     
-    def author_name_set(self,author_name):
-        
-        if not author_name:        
-             
-            author_name, author_nationality = self.name_generate(sex = self.sex)
-            
-            self.author_name = author_name
-            self.author_nationality = author_nationality
-
+    
     def author_title_set(self, author_title):
-        global author_title_table
-
-         # title of the author
         if not author_title:
-
-            if CHANCE_OF_TITLE_IN_AUTHOR_NAME > d20.roll("1d100").total:
-
-                author_title = str(author_title_table.df.sample().iloc[0,0])
-           
-            #  # male/female titles are separated by a slash in the SQL database  
-            if author_title.__contains__("/"):
-                title_split = author_title.split("/",2)
-                
-                if self.sex == "Male":
-                    author_title = title_split[0]
-                else:
-                    author_title = title_split[1]
-        
-        author_title = string.capwords(author_title)
-        self.author_title = author_title
+            self.author_title = self.person_title_generate(sex = self.sex)
+        else:
+            self.author_title = author_title
 
     def book_details_result_from_tables(self,table_for_value,roll_result=None):
         ''' Checks table aaDiceTypeToRoll to see what dice to roll, and then rolls and checks the result on the given table.
@@ -545,7 +523,26 @@ class FantasyBook():
         last_name = last_name_table.df.sample()
         author_name = str(first_name.iloc[0,0]) + " " + str(last_name.iloc[0,0]) # first (0 index) item is the name
 
-        return author_name, author_nationality
+        return author_name, author_nationality, author_sex
+    
+    def person_title_generate (self,sex):
+        
+        global author_title_table
+
+        if CHANCE_OF_TITLE_IN_AUTHOR_NAME > d20.roll("1d100").total:
+
+            author_title = str(author_title_table.df.sample().iloc[0,0])
+           
+        #  # male/female titles are separated by a slash in the SQL database  
+            if author_title.__contains__("/"):
+                title_split = author_title.split("/",2)
+                
+                if sex == "Male":
+                    author_title = title_split[0]
+                else:
+                    author_title = title_split[1]
+        
+        return string.capwords(author_title)
     
     def number_pages_set(self):
         self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
@@ -631,7 +628,8 @@ class FantasyBook():
             self.translator = "N/A"
             self.is_a_translation = False
         else:
-            self.translator, self.translator_nationality = self.name_generate()
+            self.translator, self.translator_nationality, self.translator_sex = self.name_generate()
+            self.translator_title = self.person_title_generate(sex = self.translator_sex)
             self.is_a_translation = "True"
 
     def number_volumes_set(self):
@@ -657,8 +655,8 @@ class EsotericBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
     def __init__ (self,
         book_type = "Esoteric",
-        esoteric_complexity = 0, 
-        esoteric_scope = 0, 
+        esoteric_complexity = '', 
+        esoteric_scope = '', 
         esoteric_topic = []):
 
         super().__init__(self)
@@ -671,8 +669,8 @@ class AuthoritativeBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
     def __init__ (self,
         book_type = "Authoritative",
-        authoritative_field = "", 
-        authority_rank = 0,
+        authoritative_field = '', 
+        authority_rank = '',
                 ):
         super().__init__(self)
         self.book_type = book_type
