@@ -3,6 +3,8 @@ import random as random
 import string as string
 import d20
 from math import ceil
+from lorem_text import lorem
+
 # logging boilerplate
 import settings_GLS as s
 import logging
@@ -15,6 +17,7 @@ logger = logging.getLogger(__name__)
 global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED 
 global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
 global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
+global CHANCE_OF_INCOMPLETE_WORK
 
 ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
 CHANCE_OF_BEING_TRANSLATION = 10 # # 0-100%
@@ -24,6 +27,7 @@ CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
 TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = "1d100+20" 
 WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
 WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
+CHANCE_OF_INCOMPLETE_WORK = 100 # 0-100%
 #########################################################
 
 # general
@@ -157,12 +161,14 @@ for i in list_of_surnames_tables:
     surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
 
 def create_fantasy_book(book_type=None, **kwargs):
-    ''' Returns a book object. Type can be default (normal), esoteric, or authority'''
+    ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
     book_type = string.capwords(str(book_type))
     if book_type == "Esoteric":
         return EsotericBook(**kwargs)
     elif book_type == "Authority":
         return AuthoritativeBook(**kwargs)
+    elif book_type == "Magic":
+        return MagicBook(**kwargs)
     else:
         return FantasyBook(**kwargs)
     
@@ -177,6 +183,7 @@ class FantasyBook():
         topic = "",
         topic_title_form = "",
         book_title = "",
+        book_title_flavor_for_translation = '',
         sex = "",
         author_name = "",
         author_title = "",
@@ -212,6 +219,7 @@ class FantasyBook():
         year_written = 0,
         market_value = 0,
         weight_per_page = 0,
+        percentage_complete = 0,
         ):
 
         # set all values to whatever they were passed in 
@@ -219,6 +227,7 @@ class FantasyBook():
         self.topic = topic
         self.topic_title_form = topic_title_form
         self.book_title = book_title
+        self.book_title_flavor_for_translation = book_title_flavor_for_translation
         self.sex = sex
         self.author_name = author_name
         self.author_title = author_title
@@ -301,10 +310,8 @@ class FantasyBook():
         if not author_epithet:
             if CHANCE_OF_EPITHET_IN_AUTHOR_NAME > d20.roll("1d100").total:
                 author_epithet = epithets_table.df.sample() # a random option is then chosen
-                author_epithet = author_epithet.iloc[0,0]
-                          
-        self.author_epithet = author_epithet
-             
+                author_epithet = author_epithet.iloc[0,0]         
+        self.author_epithet = author_epithet            
 
     def author_full_set (self, author_full):
         # put it all together
@@ -646,6 +653,8 @@ class FantasyBook():
             self.translator_title = self.person_title_generate(sex = self.translator_sex)
             self.is_a_translation = "True"
             self.translator_full_name = self.translator_title + " " + self.translator
+        
+        ### Give a title in foreign language
 
     def number_volumes_set(self):
         if self.format == "Codex":
@@ -692,6 +701,13 @@ class AuthoritativeBook(FantasyBook):
         self.authoritative_field = authoritative_field
         self.authority_rank = authority_rank
 
+class MagicBook(FantasyBook):
+    ''' Subclass of fantasy book, that has a few extra values.'''
+    def __init__ (self,
+        book_type = "Magic",
+    ):
+        super().__init__(self)
+
 ############################
 # main()
 number_to_run = 100
@@ -733,4 +749,5 @@ for z in range(0,number_to_run):
     print ("Weight per page: " + str (a.weight_per_page))
     print ("Weight: " + str(a.weight))
     print ("Volumes: " + str(a.number_volumes))
+    print ("Title Latin: " + string.capwords(lorem.words(d20.roll("1d10+2").total)))
     print ("---")
