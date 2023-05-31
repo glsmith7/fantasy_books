@@ -548,7 +548,7 @@ class FantasyBook():
         dice_string_determine_number_copies = self.book_details_result_from_tables("BookRarityCopies", roll_result= the_roll)
         number_of_copies_roll = d20.roll(dice_string_determine_number_copies).total
         self.number_extant_copies = number_of_copies_roll
-
+        self.number_extant_available_to_place = self.number_extant_copies - 1 # ie, less this one.
         self.rarity_modifier = self.book_details_result_from_tables("BookRarityModifier",roll_result=the_roll)
 
     def remove (self,library):
