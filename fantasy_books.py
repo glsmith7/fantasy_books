@@ -12,13 +12,15 @@ logger = logging.getLogger(__name__)
 # USER SETABLE CONSTANTS
 #########################################################
 
-global CHANCE_OF_BEING_TRANSLATION, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED, CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME,CHANCE_OF_FEMALE_AUTHOR
+global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED 
+global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
 
 ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
 CHANCE_OF_BEING_TRANSLATION = 10 # ten percent chance; can be changed as wished.
 CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15
 CHANCE_OF_TITLE_IN_AUTHOR_NAME = 100
 CHANCE_OF_FEMALE_AUTHOR = 50
+TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = "1d100+20" 
 
 #########################################################
 
@@ -29,9 +31,11 @@ global complexity_table_list
 
 # names
 global list_of_names_tables_male, list_of_names_tables_female
-global name_tables_male, name_table_amalgamated_male 
-global name_tables_female, name_table_amalgamated_female
 global author_title_table, epithets_tables
+
+# names of male and female
+global name_table_amalgamated_male, name_tables_male
+global name_table_amalgamated_female,name_tables_female
 
 # book titles
 
@@ -40,9 +44,6 @@ global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2,
 global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
 global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
 
-# names of male and female
-global name_table_amalgamated_male, name_tables_male
-global name_table_amalgamated_female,name_tables_female
 
 list_of_words_to_not_capitalize = [
     ("The","the"),
@@ -257,7 +258,7 @@ class FantasyBook():
         self.complexity_set(self.complexity)
         self.format_set(self.format)
         self.book_title_set(self.book_title)
-        self.materials = materials
+        self.materials_set(self.materials)
         self.libraries_it_is_in = libraries_it_is_in
         self.number_extant_copies = number_extant_copies
         self.number_extant_available_to_place = number_extant_available_to_place
@@ -283,7 +284,7 @@ class FantasyBook():
             table_name = "BookAge_" + self.current_language # Ancient, Dwarvish, Elvish, Classical, Common are options
             dice_string = self.book_details_result_from_tables(table_name)
             if self.is_a_translation == "True": 
-                self.age_at_discovery = d20.roll("1d100+20").total # bonus to age if is translation.
+                self.age_at_discovery = d20.roll(TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL).total # bonus to age if is translation.
             
             self.age_at_discovery = self.age_at_discovery + d20.roll(dice_string).total
         else:
@@ -469,11 +470,6 @@ class FantasyBook():
                 the_1 = the_1
             )
 
-
-
-
-
-
     def complexity_set(self,complexity):
         if not complexity:
             complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since index of list starts at zero.
@@ -508,6 +504,13 @@ class FantasyBook():
         t = r.LookUpTable(query = query)
         return t.result   
     
+    def materials_set (self, materials):
+        if not materials:
+            target_table = "BookMaterials" + self.format
+            self.materials = self.book_details_result_from_tables(target_table)
+        else:
+            self.materials = materials
+
     def name_generate(self,sex="Male"):
         # first name
         if sex == None: sex = random.choice(["Male", "Male","Female"]) # makes males 2/3 of the time for historical reasons.
@@ -632,4 +635,6 @@ for z in range(0,number_to_run):
     print ("Age:" + str(a.age_at_discovery))
     print ("Format:" + str(a.format))
     print ("Template:" + str(a.template))
+    print ("Materials:" + str(a.materials))
+
     print ("---")
