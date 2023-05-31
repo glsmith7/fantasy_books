@@ -189,6 +189,8 @@ class FantasyBook():
         translator = "",
         translator_nationality = "",
         translator_sex = '',
+        translator_title = '',
+        translator_full_name = '',
         format = "",
         materials = "",
         libraries_it_is_in = [],
@@ -229,6 +231,8 @@ class FantasyBook():
         self.translator = translator
         self.translator_nationality = translator_nationality
         self.translator_sex = translator_sex
+        self.translator_title = translator_title
+        self.translator_full_name = translator_full_name
         self.format = format
         self.materials = materials
         self.libraries_it_is_in = libraries_it_is_in
@@ -535,6 +539,22 @@ class FantasyBook():
 
         return author_name, author_nationality, sex
     
+    def number_pages_set(self):
+        self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
+
+    def original_language_set(self, original_language):
+        
+        if self.is_a_translation == False:
+            return
+
+        if not original_language: # original language is empty
+            original_language = self.book_details_result_from_tables("BookOriginalLanguage")
+
+            while original_language == self.current_language:  
+                original_language = self.book_details_result_from_tables("BookOriginalLanguage") # reroll until not the same
+        
+        self.original_language = original_language
+
     def person_title_generate (self,sex):
         global author_title_table
         author_title = ''
@@ -554,22 +574,6 @@ class FantasyBook():
         
         return string.capwords(str(author_title))
     
-    def number_pages_set(self):
-        self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
-
-    def original_language_set(self, original_language):
-        
-        if self.is_a_translation == False:
-            return
-
-        if not original_language: # original language is empty
-            original_language = self.book_details_result_from_tables("BookOriginalLanguage")
-
-            while original_language == self.current_language:  
-                original_language = self.book_details_result_from_tables("BookOriginalLanguage") # reroll until not the same
-        
-        self.original_language = original_language
-
     def production_value_set(self):
         target_table = "BookProductionValue" + self.format
 
@@ -641,6 +645,7 @@ class FantasyBook():
             self.translator, self.translator_nationality, self.translator_sex = self.name_generate()
             self.translator_title = self.person_title_generate(sex = self.translator_sex)
             self.is_a_translation = "True"
+            self.translator_full_name = self.translator_title + " " + self.translator
 
     def number_volumes_set(self):
         if self.format == "Codex":
@@ -699,6 +704,9 @@ for z in range(0,number_to_run):
     print ("Current Lang:" + str(a.current_language))
     print ("Original Lang:" + str(a.original_language))
     print ("Translator:" + str(a.translator))
+    print ("Translator title:" + str(a.translator_title))
+    print ("Translator sex:" + str(a.translator_sex))
+    print ("Translator full name:" + str(a.translator_full_name))
     print ("Complex:" + str(a.complexity))
     print ("Sex:" + str(a.sex))
     print ("Epithet:" + str(a.author_epithet))
