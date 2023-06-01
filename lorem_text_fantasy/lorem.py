@@ -6,7 +6,22 @@ global WORDS
 WORDS = ()
 
 def import_language(lang):
-    print ("HERE I AM")
+    dictionary_languages = {
+        "Latin" : "latin.txt",
+        "Greek" : "greek.txt",
+        "Akkadian": "akkadian.txt",
+        "Ancient" : "akkadian.txt",
+        "Runes" : "runes.txt",
+        "Dwarven" : "runes.txt",
+        "Dwarf" : "runes.txt",
+        "Elvish" : "sindarin.txt",
+        "Elf" : "sindarin.txt",
+        "Sindarin": "sindarin.txt",
+    }
+
+    # with open('latin.txt') as f:
+    #     latin_words = f.readlines
+
     latin_words = (
     "exercitationem",
     "perferendis",
@@ -191,6 +206,7 @@ def import_language(lang):
     "maxime",
     "corrupti",
 )
+    print (latin_words)
     
     return latin_words
 
