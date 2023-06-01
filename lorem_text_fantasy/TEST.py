@@ -13,10 +13,11 @@ WORDS = ()
 def import_language():
     dictionary_languages = {
         "Latin" : "latin.txt",
-        # "Greek" : "greek.txt",
-        # "Akkadian": "akkadian.txt",
-        # "Dwarven" : "runes.txt",
-        # "Elvish" : "sindarin.txt",
+        "Greek" : "greek.txt",
+        "Akkadian": "akkadian.txt",
+        "Dwarven" : "runes.txt",
+        "Elvish" : "sindarin.txt",
+        "Hebrew": "hebrew.txt",
     }
     vocab_dictionary = {}
     for language,file in dictionary_languages.items():
@@ -30,6 +31,6 @@ def import_language():
     return vocab_dictionary
 
 WORDS = import_language()
-print (WORDS)
+print (WORDS["Greek"])
 
 
