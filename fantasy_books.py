@@ -4,7 +4,7 @@ import string as string
 import os
 import d20
 from math import ceil
-from lorem_text_fantasy import lorem
+from lorem_text_fantasy import lorem as lf
 
 # logging boilerplate
 import settings_GLS as s
@@ -17,7 +17,6 @@ global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCI
 global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
 global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
-global WORDS, ROOT_DIR, THIS_FOLDER
 global vocab_dictionary
 vocal_dictionary = {}
 
@@ -120,13 +119,14 @@ titles_study_on_list = r.RPG_table('_book_titles_study_on')
 titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
 titles_the_1 = r.RPG_table('_books_titles_the_1')
 
-# book title templates
 
+# book title templates
 
 titles_template_list_general = r.RPG_table('_book_titles_templates_general')
 titles_template_list_history = r.RPG_table('_book_titles_templates_history')
 titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
 titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
+
 
 # name tables load
 
@@ -161,6 +161,7 @@ list_of_surnames_tables = [
         ("_names_roman_surnames"),
         ]
 
+
 for i in list_of_names_tables_male:
     name_tables_male[i] = r.RPG_table(i)
     name_table_amalgamated_male = (name_tables_male[i]) + name_table_amalgamated_male
@@ -188,15 +189,10 @@ def create_fantasy_book(book_type=None, **kwargs):
         return FantasyBook(**kwargs)
 
 def import_language_words():
-    global WORDS, ROOT_DIR, THIS_FOLDER
-
+    
     ROOT_DIR = os.getcwd() # os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
     THIS_FOLDER = os.path.join((ROOT_DIR), 'lorem_text_fantasy')
     vocab_dictionary = {}
-
-    print (ROOT_DIR)
-    print (THIS_FOLDER)
-    # print (THIS_FOLDER)
 
     for language,file in dictionary_languages.items():
         TARGET_LANGUAGE_FILE = os.path.join(THIS_FOLDER, file)
@@ -790,4 +786,10 @@ class MagicBook(FantasyBook):
 #     print ("Title Latin: " + string.capwords(lorem.words(d20.roll("1d10+2").total)))
 #     print ("---")
 
-print (vocab_dictionary)
+for i in range (0,100):
+    x = (lf.words(vocab_dictionary["Akkadian"],count=100,limit=50)) 
+    print (x)
+
+# print ("𐎠𐎯𐎯𐎫𐎤 𐎦𐎮𐎫𐎣 𐎤𐎭𐎤𐎱𐎦𐏀 𐎤𐎭𐎤𐎱𐎦𐏀 𐎠𐎯𐎯𐎫𐎤 𐎦𐎮𐎫𐎣 𐎤𐎭𐎤𐎱𐎦𐏀 𐎤𐎭𐎤𐎱𐎦𐏀 𐎠𐎯𐎯!!")
+# for item in vocab_dictionary["Akkadian"]:
+#     print (item, end='')
