@@ -10,31 +10,26 @@ THIS_FOLDER = os.path.join(ROOT_DIR, 'lorem_text_fantasy')
 
 WORDS = ()
 
-def import_language(lang):
+def import_language():
     dictionary_languages = {
         "Latin" : "latin.txt",
-        "Greek" : "greek.txt",
-        "Akkadian": "akkadian.txt",
-        "Ancient" : "akkadian.txt",
-        "Runes" : "runes.txt",
-        "Dwarven" : "runes.txt",
-        "Dwarf" : "runes.txt",
-        "Elvish" : "sindarin.txt",
-        "Elf" : "sindarin.txt",
-        "Sindarin": "sindarin.txt",
+        # "Greek" : "greek.txt",
+        # "Akkadian": "akkadian.txt",
+        # "Dwarven" : "runes.txt",
+        # "Elvish" : "sindarin.txt",
     }
-    latin_words = []
-    TARGET_LANGUAGE_FILE = os.path.join(THIS_FOLDER, 'latin.txt')
+    vocab_dictionary = {}
+    for language,file in dictionary_languages.items():
+        TARGET_LANGUAGE_FILE = os.path.join(THIS_FOLDER, file)
+        the_words_imported = []
+        with open(TARGET_LANGUAGE_FILE,encoding = 'utf8', mode='r') as f:
+            for line in f.readlines():
+                the_words_imported.append(line.strip())
+            vocab_dictionary[language] = the_words_imported
 
-    with open(TARGET_LANGUAGE_FILE,encoding = 'utf8', mode='r') as f:
-        for line in f.readlines():
-            latin_words.append(line.strip())
-    f.close()
+    return vocab_dictionary
 
-    return latin_words
-
-WORDS = import_language("Latin")
+WORDS = import_language()
 print (WORDS)
-print (len(WORDS))
 
 
