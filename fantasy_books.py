@@ -1,24 +1,29 @@
 import rpg_tables as r
 import random as random
 import string as string
+import os
 import d20
 from math import ceil
-from lorem_text import lorem
+from lorem_text_fantasy import lorem
 
 # logging boilerplate
 import settings_GLS as s
 import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
-#########################################################
-# USER SETABLE CONSTANTS
-#########################################################
 
+################ GLOBALS #####################
 global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED 
 global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
 global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
+global WORDS, ROOT_DIR, THIS_FOLDER
+global vocab_dictionary
+vocal_dictionary = {}
 
+#########################################################
+# USER SETABLE CONSTANTS
+#########################################################
 ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
 CHANCE_OF_BEING_TRANSLATION = 10 # # 0-100%
 CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
@@ -28,6 +33,15 @@ TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = "1d100+20"
 WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
 WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
 CHANCE_OF_INCOMPLETE_WORK = 100 # 0-100%
+
+dictionary_languages = {
+        "Latin" : "latin.txt",
+        "Greek" : "greek.txt",
+        "Akkadian": "akkadian.txt",
+        "Dwarven" : "runes.txt",
+        "Elvish" : "sindarin.txt",
+        "Hebrew": "hebrew.txt",
+    }
 #########################################################
 
 # general
@@ -116,7 +130,6 @@ titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
 
 # name tables load
 
-
 list_of_names_tables_male = [
         "_names_anglo_saxon_male",
         "_names_arabic_male",
@@ -160,6 +173,8 @@ for i in list_of_names_tables_female:
 for i in list_of_surnames_tables:
     surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
 
+######################## FUNCTIONS ########################
+
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
     book_type = string.capwords(str(book_type))
@@ -171,7 +186,30 @@ def create_fantasy_book(book_type=None, **kwargs):
         return MagicBook(**kwargs)
     else:
         return FantasyBook(**kwargs)
-    
+
+def import_language_words():
+    global WORDS, ROOT_DIR, THIS_FOLDER
+
+    ROOT_DIR = os.getcwd() # os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
+    THIS_FOLDER = os.path.join((ROOT_DIR), 'lorem_text_fantasy')
+    vocab_dictionary = {}
+
+    print (ROOT_DIR)
+    print (THIS_FOLDER)
+    # print (THIS_FOLDER)
+
+    for language,file in dictionary_languages.items():
+        TARGET_LANGUAGE_FILE = os.path.join(THIS_FOLDER, file)
+        the_words_imported = []
+        with open(TARGET_LANGUAGE_FILE,encoding = 'utf8', mode='r') as f:
+            for line in f.readlines():
+                the_words_imported.append(line.strip())
+            vocab_dictionary[language] = the_words_imported
+
+    return vocab_dictionary
+
+######################## CLASSES ########################
+vocab_dictionary = import_language_words()
 class FantasyBook():
     ''' Fantasy book object.'''
 
@@ -708,46 +746,48 @@ class MagicBook(FantasyBook):
     ):
         super().__init__(self)
 
-############################
-# main()
-number_to_run = 100
+######################## main() ########################
 
-for z in range(0,number_to_run):
+# number_to_run = 10
 
-    a = create_fantasy_book()
-    print ("Book type:" + str(a.book_type))
-    print ("Scope:" + str(a.scope))
-    print ("Current Lang:" + str(a.current_language))
-    print ("Original Lang:" + str(a.original_language))
-    print ("Translator:" + str(a.translator))
-    print ("Translator title:" + str(a.translator_title))
-    print ("Translator sex:" + str(a.translator_sex))
-    print ("Translator full name:" + str(a.translator_full_name))
-    print ("Complex:" + str(a.complexity))
-    print ("Sex:" + str(a.sex))
-    print ("Epithet:" + str(a.author_epithet))
-    print ("Author title:" + str(a.author_title))
-    print ("Author:" + str(a.author_full))
-    print ("Author nationality:" + str(a.author_nationality))
-    print ("Topic:" + str(a.topic))
-    print ("Topic title:" + str(a.topic_title_form))
-    print ("Actual title:" + a.book_title)
-    print ("Age:" + str(a.age_at_discovery))
-    print ("Format:" + str(a.format))
-    print ("Template:" + str(a.template))
-    print ("Materials:" + str(a.materials))
-    print ("Extant copies:" + str(a.number_extant_copies))
-    print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
-    print ("Rarity modifier: " + str(a.rarity_modifier))
-    print ("Number pages:" + str(a.number_pages))
-    print ("Reading time:" + str(a.reading_time))
-    print ("Cost per page:" + str(a.cost_per_page))
-    print ("Production value:" + str(a.production_value))
-    print ("Lit value base:" + str(a.literary_value_base))
-    print ("Lit value mod:" + str(a.literary_value_modified))
-    print ("Market value: " + str (a.market_value))
-    print ("Weight per page: " + str (a.weight_per_page))
-    print ("Weight: " + str(a.weight))
-    print ("Volumes: " + str(a.number_volumes))
-    print ("Title Latin: " + string.capwords(lorem.words(d20.roll("1d10+2").total)))
-    print ("---")
+# for z in range(0,number_to_run):
+
+#     a = create_fantasy_book()
+#     print ("Book type:" + str(a.book_type))
+#     print ("Scope:" + str(a.scope))
+#     print ("Current Lang:" + str(a.current_language))
+#     print ("Original Lang:" + str(a.original_language))
+#     print ("Translator:" + str(a.translator))
+#     print ("Translator title:" + str(a.translator_title))
+#     print ("Translator sex:" + str(a.translator_sex))
+#     print ("Translator full name:" + str(a.translator_full_name))
+#     print ("Complex:" + str(a.complexity))
+#     print ("Sex:" + str(a.sex))
+#     print ("Epithet:" + str(a.author_epithet))
+#     print ("Author title:" + str(a.author_title))
+#     print ("Author:" + str(a.author_full))
+#     print ("Author nationality:" + str(a.author_nationality))
+#     print ("Topic:" + str(a.topic))
+#     print ("Topic title:" + str(a.topic_title_form))
+#     print ("Actual title:" + a.book_title)
+#     print ("Age:" + str(a.age_at_discovery))
+#     print ("Format:" + str(a.format))
+#     print ("Template:" + str(a.template))
+#     print ("Materials:" + str(a.materials))
+#     print ("Extant copies:" + str(a.number_extant_copies))
+#     print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
+#     print ("Rarity modifier: " + str(a.rarity_modifier))
+#     print ("Number pages:" + str(a.number_pages))
+#     print ("Reading time:" + str(a.reading_time))
+#     print ("Cost per page:" + str(a.cost_per_page))
+#     print ("Production value:" + str(a.production_value))
+#     print ("Lit value base:" + str(a.literary_value_base))
+#     print ("Lit value mod:" + str(a.literary_value_modified))
+#     print ("Market value: " + str (a.market_value))
+#     print ("Weight per page: " + str (a.weight_per_page))
+#     print ("Weight: " + str(a.weight))
+#     print ("Volumes: " + str(a.number_volumes))
+#     print ("Title Latin: " + string.capwords(lorem.words(d20.roll("1d10+2").total)))
+#     print ("---")
+
+print (vocab_dictionary)
