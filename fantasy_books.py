@@ -189,7 +189,12 @@ def create_fantasy_book(book_type=None, **kwargs):
         return FantasyBook(**kwargs)
 
 def import_language_words():
-    
+    ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
+        titles are generated with a lorem_ipsum algorithm from random words in *.txt files in the folder lorem_ipsum_fantasy.
+        This is called just once as the program starts, and then the lists are passed to the lorem_ipsum_fantasy package.
+
+        More languages and the like can be added in the dictionary_languages dictionary at the beginning of the program with the other constants. Key is the language; value is the name of the text file.
+    '''
     ROOT_DIR = os.getcwd() # os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
     THIS_FOLDER = os.path.join((ROOT_DIR), 'lorem_text_fantasy')
     vocab_dictionary = {}
@@ -786,10 +791,7 @@ class MagicBook(FantasyBook):
 #     print ("Title Latin: " + string.capwords(lorem.words(d20.roll("1d10+2").total)))
 #     print ("---")
 
-for i in range (0,100):
-    x = (lf.words(vocab_dictionary["Akkadian"],count=100,limit=50)) 
-    print (x)
-
-# print ("𐎠𐎯𐎯𐎫𐎤 𐎦𐎮𐎫𐎣 𐎤𐎭𐎤𐎱𐎦𐏀 𐎤𐎭𐎤𐎱𐎦𐏀 𐎠𐎯𐎯𐎫𐎤 𐎦𐎮𐎫𐎣 𐎤𐎭𐎤𐎱𐎦𐏀 𐎤𐎭𐎤𐎱𐎦𐏀 𐎠𐎯𐎯!!")
-# for item in vocab_dictionary["Akkadian"]:
-#     print (item, end='')
+# Akkadian titles, works:
+# for i in range (0,100):
+#     x = (lf.words(vocab_dictionary["Akkadian"],count=100,limit=50)) 
+#     print (x)
