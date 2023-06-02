@@ -39,12 +39,12 @@ def paragraphs(words,count=5):
     return "\n".join(paras)
 
 
-def words(words,count=5,limit=0):
+def words(words,count=5,limit=0,spaces=True):
     """
     Returns lorem ipsum words separated by a single space.
     count = number of words
     words = the list of the specific language being randomly used.
-
+    spaces = whether "words" should have spaces between them (e.g., kanji looks better without)
     limit =  not usually need, but for some things (e.g., Akkadian) it does wonky things if there are more 50 characters in the string. So this is the number of characters to return; string is truncated to that length.
     a sample call would look like --> x = (lorem.words(vocab_dictionary["Akkadian"],limit=50)) 
     """  
@@ -60,5 +60,9 @@ def words(words,count=5,limit=0):
         word_list = word_list[:count]
 
     to_return = " ".join(word_list)
+
+    # special cases
+    if not spaces: to_return = to_return.replace(" ","")
     if limit > 0: to_return=to_return[0:limit]
+
     return to_return

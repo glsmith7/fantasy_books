@@ -19,7 +19,10 @@ global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
 global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
 global vocab_dictionary
+global lang_no_spaces, lang_limit_40_chars
+
 vocab_dictionary = {}
+
 
 #########################################################
 # USER SETABLE CONSTANTS
@@ -34,18 +37,37 @@ WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
 WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
 CHANCE_OF_INCOMPLETE_WORK = 100 # 0-100%
 
+# uses first:
 DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
+
+# if the above gives less than 3 words, this formula is used instead
 DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 
+# "Common" is just English. Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory
 
 dictionary_languages = {
-        "Classical" : "latin.txt",
-        "Regional" : "greek.txt",
+        #"Classical" : "latin.txt",
+        "Common": "english.txt", # uses just English; file is empty and does nothing but prevent bugs. :-)
+        "Classical": "latin.txt", 
+        "Regional" : "greek.txt", 
         "Ancient": "akkadian.txt",
         "Dwarven" : "runes.txt",
         "Elvish" : "sindarin.txt",
-        "Hebrew": "hebrew.txt",
+        #"Akkadian": "akkadian.txt",   # commented ones have no equivalence in ACKS tables for language.        
+        #"Arabic": "arabic.txt",        # ... adjust to taste, however.
+        #"Armenian": "armenian.txt",
+        #"Chinese": "chinese.txt",
+        #"Cyrilic": "cyrilic.txt",
+        #"Georgian": "georgian.txt",
+        #"Gothic": "gothic_latin.txt",
+        #"Hebrew": "hebrew.txt",
+        #"Hindi": "hindi.txt"
+        #"Kanji":"kanji.txt",
+        "Classical": "kanji.txt",
     }
+lang_no_spaces = ["Kanji"]
+lang_limit_40_chars = ["Akkadian","Ancient","Gothic"] # name given to self.current_language for each book.
+
 #########################################################
 
 # general
@@ -552,10 +574,18 @@ class FantasyBook():
 
         
         if not flavor_text_title:
-            if self.current_language == "Ancient":
-                limit_chars = 40 # Akkadian requires only 50 chars or weird stuff happens.
+
+            # Limit number chars (like Akkadian, gothic_latin)
+            if  self.current_language in lang_limit_40_chars:
+                limit_chars = 40 # These requires only 50 chars or weird stuff happens. ? Unicode issue
             else:
                 limit_chars = 0 # all the rest no limit
+
+            # no spaces between:
+            if self.current_language in lang_no_spaces:
+                spaces = False # No spaces between works; Kanji looks better, for example.
+            else:
+                spaces = True # all the rest have spaces
 
             if self.current_language == "Common":
                 flavor_text_title = self.book_title
@@ -566,7 +596,12 @@ class FantasyBook():
                     num_words_in_flavor_title = eval(DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE)
                     if num_words_in_flavor_title <3: num_words_in_flavor_title = eval(DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS)
 
-                    flavor_text_title = lf.words(vocab_dictionary[self.current_language],count=num_words_in_flavor_title, limit=limit_chars)
+                    flavor_text_title = str(
+                        lf.words(vocab_dictionary[self.current_language],
+                        count=num_words_in_flavor_title,
+                        limit=limit_chars,
+                        spaces = spaces)
+                    )
 
                 except:
                     flavor_text_title = "No flavor text designated for this language type."
@@ -781,7 +816,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-number_to_run = 100
+number_to_run = 10
 
 for z in range(0,number_to_run):
 
