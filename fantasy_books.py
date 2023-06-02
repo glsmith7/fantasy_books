@@ -356,7 +356,8 @@ class FantasyBook():
         self.literary_value_set()
         self.weight_set()
         self.number_volumes_set()
-        self.flavor_text_title_set(book_title_flavor_for_translation)
+        self.flavor_text_title_set(self.book_title_flavor_for_translation)
+        self.percentage_of_text_missing_set(self.percentage_complete)
         self.year_discovered = year_discovered
         self.year_written = year_written
 
@@ -571,6 +572,7 @@ class FantasyBook():
             self.format = self.book_details_result_from_tables(target_table)
         else:
             self.format = format
+    
     def flavor_text_title_set(self, flavor_text_title):
 
         
@@ -669,6 +671,9 @@ class FantasyBook():
         
         self.original_language = original_language
 
+    def percentage_of_text_missing_set(percentage_missing):
+        pass
+    
     def person_title_generate (self,sex):
         global author_title_table
         author_title = ''
