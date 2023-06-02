@@ -46,7 +46,7 @@ DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 # "Common" is just English. Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory
 
 dictionary_languages = {
-        #"Classical" : "latin.txt",
+        "Classical" : "latin.txt",
         "Common": "english.txt", # uses just English; file is empty and does nothing but prevent bugs. :-)
         "Classical": "latin.txt", 
         "Regional" : "greek.txt", 
@@ -63,9 +63,10 @@ dictionary_languages = {
         #"Hebrew": "hebrew.txt",
         #"Hindi": "hindi.txt"
         #"Kanji":"kanji.txt",
-        "Classical": "kanji.txt",
+        #"Korean":"korean.txt",
+        #"Classical": "korean.txt",
     }
-lang_no_spaces = ["Kanji"]
+lang_no_spaces = ["Chinese","Kanji","Korean"]
 lang_limit_40_chars = ["Akkadian","Ancient","Gothic"] # name given to self.current_language for each book.
 
 #########################################################
