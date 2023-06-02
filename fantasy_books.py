@@ -54,7 +54,7 @@ dictionary_languages = {
         "Dwarven" : "runes.txt",
         "Elvish" : "sindarin.txt",
         #"Akkadian": "akkadian.txt",   # commented ones have no equivalence in ACKS tables for language.        
-        #"Arabic": "arabic.txt",        # ... adjust to taste, however.
+        #"Arabic": "arabic.txt",       # ... adjust to taste, however.
         #"Armenian": "armenian.txt",
         #"Chinese": "chinese.txt",
         #"Cyrilic": "cyrilic.txt",
