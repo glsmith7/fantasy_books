@@ -46,11 +46,11 @@ def words(words,count=5,limit=0):
     words = the list of the specific language being randomly used.
 
     limit =  not usually need, but for some things (e.g., Akkadian) it does wonky things if there are more 50 characters in the string. So this is the number of characters to return; string is truncated to that length.
-    x = (words(vocab_dictionary["Akkadian"],limit=50)) 
-    """
+    a sample call would look like --> x = (lorem.words(vocab_dictionary["Akkadian"],limit=50)) 
+    """  
     word_list = []
     c = len(word_list)
-    if count > c:
+    if count > c: 
         count -= c
         while count > 0:
             c = min(count, len(words))
@@ -58,6 +58,7 @@ def words(words,count=5,limit=0):
             word_list += random.sample(words, c)
     else:
         word_list = word_list[:count]
+
     to_return = " ".join(word_list)
     if limit > 0: to_return=to_return[0:limit]
     return to_return

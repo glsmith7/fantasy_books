@@ -17,8 +17,9 @@ global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCI
 global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
 global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
+global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
 global vocab_dictionary
-vocal_dictionary = {}
+vocab_dictionary = {}
 
 #########################################################
 # USER SETABLE CONSTANTS
@@ -33,10 +34,14 @@ WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
 WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
 CHANCE_OF_INCOMPLETE_WORK = 100 # 0-100%
 
+DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
+DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
+
+
 dictionary_languages = {
-        "Latin" : "latin.txt",
-        "Greek" : "greek.txt",
-        "Akkadian": "akkadian.txt",
+        "Classical" : "latin.txt",
+        "Regional" : "greek.txt",
+        "Ancient": "akkadian.txt",
         "Dwarven" : "runes.txt",
         "Elvish" : "sindarin.txt",
         "Hebrew": "hebrew.txt",
@@ -302,6 +307,7 @@ class FantasyBook():
         self.year_written = year_written
         self.market_value = market_value
         self.weight_per_page = weight_per_page
+        self.percentage_complete = percentage_complete
 
         self.scope_set(self.scope)
         self.current_language_set(self.current_language)
@@ -327,6 +333,7 @@ class FantasyBook():
         self.literary_value_set()
         self.weight_set()
         self.number_volumes_set()
+        self.flavor_text_title_set(book_title_flavor_for_translation)
         self.year_discovered = year_discovered
         self.year_written = year_written
 
@@ -541,6 +548,31 @@ class FantasyBook():
             self.format = self.book_details_result_from_tables(target_table)
         else:
             self.format = format
+    def flavor_text_title_set(self, flavor_text_title):
+
+        
+        if not flavor_text_title:
+            if self.current_language == "Ancient":
+                limit_chars = 40 # Akkadian requires only 50 chars or weird stuff happens.
+            else:
+                limit_chars = 0 # all the rest no limit
+
+            if self.current_language == "Common":
+                flavor_text_title = self.book_title
+            else:
+                try:
+                    
+                    num_words_in_english_title = len(self.book_title.split())
+                    num_words_in_flavor_title = eval(DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE)
+                    if num_words_in_flavor_title <3: num_words_in_flavor_title = eval(DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS)
+
+                    flavor_text_title = lf.words(vocab_dictionary[self.current_language],count=num_words_in_flavor_title, limit=limit_chars)
+
+                except:
+                    flavor_text_title = "No flavor text designated for this language type."
+                flavor_text_title = flavor_text_title.capitalize()
+
+        self.book_title_flavor_for_translation = flavor_text_title
 
     def literary_value_set (self):
         target_table = "BookLiteraryValueScope" + str(self.scope)
@@ -749,47 +781,47 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-# number_to_run = 10
+number_to_run = 100
 
-# for z in range(0,number_to_run):
+for z in range(0,number_to_run):
 
-#     a = create_fantasy_book()
-#     print ("Book type:" + str(a.book_type))
-#     print ("Scope:" + str(a.scope))
-#     print ("Current Lang:" + str(a.current_language))
-#     print ("Original Lang:" + str(a.original_language))
-#     print ("Translator:" + str(a.translator))
-#     print ("Translator title:" + str(a.translator_title))
-#     print ("Translator sex:" + str(a.translator_sex))
-#     print ("Translator full name:" + str(a.translator_full_name))
-#     print ("Complex:" + str(a.complexity))
-#     print ("Sex:" + str(a.sex))
-#     print ("Epithet:" + str(a.author_epithet))
-#     print ("Author title:" + str(a.author_title))
-#     print ("Author:" + str(a.author_full))
-#     print ("Author nationality:" + str(a.author_nationality))
-#     print ("Topic:" + str(a.topic))
-#     print ("Topic title:" + str(a.topic_title_form))
-#     print ("Actual title:" + a.book_title)
-#     print ("Age:" + str(a.age_at_discovery))
-#     print ("Format:" + str(a.format))
-#     print ("Template:" + str(a.template))
-#     print ("Materials:" + str(a.materials))
-#     print ("Extant copies:" + str(a.number_extant_copies))
-#     print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
-#     print ("Rarity modifier: " + str(a.rarity_modifier))
-#     print ("Number pages:" + str(a.number_pages))
-#     print ("Reading time:" + str(a.reading_time))
-#     print ("Cost per page:" + str(a.cost_per_page))
-#     print ("Production value:" + str(a.production_value))
-#     print ("Lit value base:" + str(a.literary_value_base))
-#     print ("Lit value mod:" + str(a.literary_value_modified))
-#     print ("Market value: " + str (a.market_value))
-#     print ("Weight per page: " + str (a.weight_per_page))
-#     print ("Weight: " + str(a.weight))
-#     print ("Volumes: " + str(a.number_volumes))
-#     print ("Title Latin: " + string.capwords(lorem.words(d20.roll("1d10+2").total)))
-#     print ("---")
+    a = create_fantasy_book()
+    print ("Book type:" + str(a.book_type))
+    print ("Scope:" + str(a.scope))
+    print ("Current Lang:" + str(a.current_language))
+    # print ("Original Lang:" + str(a.original_language))
+    # print ("Translator:" + str(a.translator))
+    # print ("Translator title:" + str(a.translator_title))
+    # print ("Translator sex:" + str(a.translator_sex))
+    # print ("Translator full name:" + str(a.translator_full_name))
+    # print ("Complex:" + str(a.complexity))
+    # print ("Sex:" + str(a.sex))
+    # print ("Epithet:" + str(a.author_epithet))
+    # print ("Author title:" + str(a.author_title))
+    # print ("Author:" + str(a.author_full))
+    # print ("Author nationality:" + str(a.author_nationality))
+    # print ("Topic:" + str(a.topic))
+    # print ("Topic title:" + str(a.topic_title_form))
+    print ("Actual title:" + a.book_title)
+    # print ("Age:" + str(a.age_at_discovery))
+    # print ("Format:" + str(a.format))
+    # print ("Template:" + str(a.template))
+    # print ("Materials:" + str(a.materials))
+    # print ("Extant copies:" + str(a.number_extant_copies))
+    # print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
+    # print ("Rarity modifier: " + str(a.rarity_modifier))
+    # print ("Number pages:" + str(a.number_pages))
+    # print ("Reading time:" + str(a.reading_time))
+    # print ("Cost per page:" + str(a.cost_per_page))
+    # print ("Production value:" + str(a.production_value))
+    # print ("Lit value base:" + str(a.literary_value_base))
+    # print ("Lit value mod:" + str(a.literary_value_modified))
+    # print ("Market value: " + str (a.market_value))
+    # print ("Weight per page: " + str (a.weight_per_page))
+    # print ("Weight: " + str(a.weight))
+    # print ("Volumes: " + str(a.number_volumes))
+    print ("Title Flavor: " + str(a.book_title_flavor_for_translation))
+    print ("---")
 
 # Akkadian titles, works:
 # for i in range (0,100):
