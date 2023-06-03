@@ -1,10 +1,10 @@
-import rpg_tables as r
-import random as random
-import string as string
-import os
 import d20
-from math import ceil
 from lorem_text_fantasy import lorem as lf
+from math import ceil
+import os
+import random as random
+import rpg_tables as r
+import string as string
 
 # logging boilerplate
 import settings_GLS as s
@@ -13,7 +13,7 @@ import logging_tools_GLS
 logger = logging.getLogger(__name__)
 
 ################ GLOBALS #####################
-global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED 
+global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO 
 global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
 global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
@@ -25,9 +25,9 @@ vocab_dictionary = {}
 
 
 #########################################################
-# USER SETABLE CONSTANTS
+# USER SETABLE variables
 #########################################################
-ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED = 'Ancient'
+ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO = 'Ancient'
 CHANCE_OF_BEING_TRANSLATION = 10 # # 0-100%
 CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
 CHANCE_OF_TITLE_IN_AUTHOR_NAME = 50 # 0-100%
@@ -35,7 +35,7 @@ CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
 TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = "1d100+20" 
 WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
 WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
-CHANCE_OF_INCOMPLETE_WORK = 100
+CHANCE_OF_INCOMPLETE_WORK = 5 # 0-100%
 
 # uses first:
 DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
@@ -43,7 +43,8 @@ DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_t
 # if the above gives less than 3 words, this formula is used instead
 DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 
-# "Common" is just English. Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory
+# "Common" is just English. 
+# Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
 
 dictionary_languages = {
         "Classical" : "latin.txt",
@@ -69,7 +70,7 @@ dictionary_languages = {
 lang_no_spaces = ["Chinese","Kanji","Korean"]
 lang_limit_40_chars = ["Akkadian","Ancient","Gothic"] # name given to self.current_language for each book.
 
-#########################################################
+##################### End of user-settable variables ###########################
 
 # general
 
@@ -86,8 +87,10 @@ global name_table_amalgamated_female,name_tables_female
 
 # book titles
 
-global titles_adjective_1_list, titles_communication, titles_conjunction_about, titles_conjunction_by, titles_fixed, titles_history_of, titles_negative_subject
-global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2, titles_places_cities, titles_places_nations, titles_religious_starter
+global titles_adjective_1_list, titles_communication, titles_conjunction_about, titles_conjunction_by, titles_fixed
+global titles_history_of, titles_negative_subject
+global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2
+global titles_places_cities, titles_places_nations, titles_religious_starter
 global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
 global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
 
@@ -147,14 +150,12 @@ titles_study_on_list = r.RPG_table('_book_titles_study_on')
 titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
 titles_the_1 = r.RPG_table('_books_titles_the_1')
 
-
 # book title templates
 
 titles_template_list_general = r.RPG_table('_book_titles_templates_general')
 titles_template_list_history = r.RPG_table('_book_titles_templates_history')
 titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
 titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
-
 
 # name tables load
 
@@ -189,7 +190,7 @@ list_of_surnames_tables = [
         ("_names_roman_surnames"),
         ]
 
-
+# load name table dictionaries
 for i in list_of_names_tables_male:
     name_tables_male[i] = r.RPG_table(i)
     name_table_amalgamated_male = (name_tables_male[i]) + name_table_amalgamated_male
@@ -238,7 +239,8 @@ def import_language_words():
     return vocab_dictionary
 
 ######################## CLASSES ########################
-vocab_dictionary = import_language_words()
+
+vocab_dictionary = import_language_words() # this is here because must come after definition of function
 class FantasyBook():
     ''' Fantasy book object.'''
 
@@ -688,7 +690,6 @@ class FantasyBook():
         self.weight = round(self.weight * fraction_complete)
         self.market_value = round(self.market_value * fraction_complete)
         self.fraction_complete = round(fraction_complete,2)
-
     
     def person_title_generate (self,sex):
         global author_title_table
@@ -773,7 +774,7 @@ class FantasyBook():
 
     def translator_set (self):
         roll_to_see_if_it_is_a_translation = d20.roll("1d100").total
-        if roll_to_see_if_it_is_a_translation > CHANCE_OF_BEING_TRANSLATION or ANCIENT_LANGUAGES_WHICH_WOULD_NOT_HAVE_TRANSLATED.__contains__(self.current_language):
+        if (roll_to_see_if_it_is_a_translation > CHANCE_OF_BEING_TRANSLATION) or (ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO.__contains__(self.current_language)):
             self.translator = "N/A"
             self.is_a_translation = False
         else:
@@ -838,7 +839,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-number_to_run = 10
+number_to_run = 100
 
 for z in range(0,number_to_run):
 
@@ -870,6 +871,7 @@ for z in range(0,number_to_run):
     print ("Rarity modifier: " + str(a.rarity_modifier))
     print ("Number pages:" + str(a.number_pages))
     print ("Reading time:" + str(a.reading_time))
+    print ("Reference time:" + str(a.reference_time))
     print ("Cost per page:" + str(a.cost_per_page))
     print ("Production value:" + str(a.production_value))
     print ("Lit value base:" + str(a.literary_value_base))
@@ -880,8 +882,3 @@ for z in range(0,number_to_run):
     print ("Volumes: " + str(a.number_volumes))
     print ("Percent complete: " + str(a.fraction_complete))
     print ("---")
-
-# Akkadian titles, works:
-# for i in range (0,100):
-#     x = (lf.words(vocab_dictionary["Akkadian"],count=100,limit=50)) 
-#     print (x)
