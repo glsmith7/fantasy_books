@@ -460,6 +460,13 @@ class FantasyBook():
             the_1=None,
 
             ):
+        
+        global titles_adjective_1_list, titles_noun_1_list, titles_noun_2_list, titles_study_of_list, titles_study_in_list, titles_study_on_list
+        global titles_template_list_general, titles_template_list_history, titles_template_list_theology, titles_template_list_occult
+        global titles_history_of, titles_conjunction_about, titles_conjunction_by, titles_fixed
+        global titles_negative_subject, titles_places_cities, titles_places_nations, titles_religious_starter, titles_study_verbing, titles_the_1
+        global titles_person_1, titles_person_2, titles_communication, titles_biography_starter, titles_person_evil
+        global titles_person_famous_male, titles_person_famous_female, titles_person_famous_amalgamated, titles_saints_male, titles_saints_female, titles_saints_amalgamated
 
         avoid_special_class_of_title = True
 
@@ -778,20 +785,18 @@ class FantasyBook():
 
     def number_volumes_set(self):
         if self.format == "Codex":
-            self.number_volumes = ceil(self.number_pages/750)
-            self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
+            self.number_of_volumes = ceil(self.number_pages/750)
+            self.weight = self.weight + (self.number_of_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
         
         elif self.format == "Scroll":
-            self.number_volumes = ceil(self.number_pages/250)
-            self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
+            self.number_of_volumes = ceil(self.number_pages/250)
+            self.weight = self.weight + (self.number_of_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
         
         elif self.format == "Tablet":
-            self.number_volumes = 1 # ie, never multivolume
+            self.number_of_volumes = 1 # ie, never multivolume
 
         else:
             raise ValueError("Format has a problem: is not a Codex, Scroll, or Tablet.")
-        
-
 
     def weight_set(self):
         self.weight_per_page = self.look_up_table(result_column="Result",table_name="BookWeight",search_column="Material",search_term=self.materials)
@@ -873,5 +878,5 @@ for z in range(0,number_to_run):
     print ("Weight per page: " + str (a.weight_per_page))
     print ("Weight: " + str(a.weight))
     print ("Volumes: " + str(a.number_volumes))
-    print ("Fraction complete: " + str(a.fraction_complete))
+    print ("Percent complete: " + str(a.fraction_complete))
     print ("---")

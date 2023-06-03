@@ -21,7 +21,28 @@ global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_W
 global vocab_dictionary
 global lang_no_spaces, lang_limit_40_chars
 
-vocab_dictionary = {}
+# general
+
+global list_of_words_to_not_capitalize
+global complexity_table_list
+
+# names
+global list_of_names_tables_male, list_of_names_tables_female
+global author_title_table, epithets_table
+global surnames_tables
+
+# names of male and female
+global name_table_amalgamated_male, name_tables_male
+global name_table_amalgamated_female, name_tables_female
+
+# book titles
+
+global titles_adjective_1_list, titles_communication, titles_conjunction_about, titles_conjunction_by, titles_fixed
+global titles_history_of, titles_negative_subject
+global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2
+global titles_places_cities, titles_places_nations, titles_religious_starter
+global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
+global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology
 
 #########################################################
 # USER SETABLE variables
@@ -71,136 +92,6 @@ lang_limit_40_chars = ["Akkadian","Ancient","Gothic"] # name given to self.curre
 
 ##################### End of user-settable variables ###########################
 
-# general
-
-global list_of_words_to_not_capitalize
-global complexity_table_list
-
-# names
-global list_of_names_tables_male, list_of_names_tables_female
-global author_title_table, epithets_tables
-
-# names of male and female
-global name_table_amalgamated_male, name_tables_male
-global name_table_amalgamated_female,name_tables_female
-
-# book titles
-
-global titles_adjective_1_list, titles_communication, titles_conjunction_about, titles_conjunction_by, titles_fixed
-global titles_history_of, titles_negative_subject
-global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2
-global titles_places_cities, titles_places_nations, titles_religious_starter
-global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
-global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
-
-list_of_words_to_not_capitalize = [
-    ("The","the"),
-    ("Of","of"),
-    ("De","de"),
-    ("D'","d'"),
-]
-complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
-
-surnames_tables = {}
-name_tables_male = {}
-name_tables_female = {}
-
-# title of author
-author_title_table = r.RPG_table('_titles_person')
-
-#epithets of author
-epithets_table = r.RPG_table('_epithets')
-
-# saints names
-titles_saints_male=r.RPG_table('_names_saints_male')
-titles_saints_female=r.RPG_table('_names_saints_female')
-titles_saints_amalgamated= titles_saints_male + titles_saints_female
-
-# famous names
-titles_person_famous_male=r.RPG_table('_names_famous_male')
-titles_person_famous_female=r.RPG_table('_names_famous_female')
-titles_person_famous_amalgamated=titles_person_famous_male + titles_person_famous_female
-
-# blank lists for later use
-name_table_amalgamated_male = r.RPG_table('_names_empty')
-name_table_amalgamated_male.description = "Male Names Amalgamated"
-name_table_amalgamated_female = r.RPG_table('_names_empty')
-name_table_amalgamated_female.description = "Female Names Amalgamated"
-
-# book title fragments
-titles_adjective_1_list = r.RPG_table('_book_titles_adjective_1')
-titles_biography_starter=r.RPG_table('_book_titles_biography_starter')
-titles_communication=r.RPG_table('_book_titles_communication')
-titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
-titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
-titles_fixed = r.RPG_table('_book_titles_fixed')
-titles_history_of = r.RPG_table('_book_titles_history')
-titles_negative_subject = r.RPG_table('_book_titles_negative_subject')
-titles_noun_1_list = r.RPG_table('_book_titles_noun_1')
-titles_noun_2_list = r.RPG_table('_book_titles_noun_2')
-titles_person_evil=r.RPG_table('_names_famous_evil')
-titles_places_cities = r.RPG_table('_book_titles_places_cities')
-titles_places_nations = r.RPG_table('_book_titles_places_nations')
-titles_religious_starter = r.RPG_table('_book_titles_religious_starter')
-titles_study_in_list = r.RPG_table('_book_titles_study_in')
-titles_study_of_list = r.RPG_table('_book_titles_study_of')
-titles_study_on_list = r.RPG_table('_book_titles_study_on')
-titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
-titles_the_1 = r.RPG_table('_books_titles_the_1')
-
-# book title templates
-
-titles_template_list_general = r.RPG_table('_book_titles_templates_general')
-titles_template_list_history = r.RPG_table('_book_titles_templates_history')
-titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
-titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
-
-# name tables load
-
-list_of_names_tables_male = [
-        "_names_anglo_saxon_male",
-        "_names_arabic_male",
-        "_names_english_male",
-        "_names_famous_male", 
-        "_names_french_male", 
-        "_names_norse_male",
-        "_names_roman_male", 
-        ]
-
-list_of_names_tables_female = [
-        "_names_arabic_female",
-        "_names_anglo_saxon_female", 
-        "_names_english_female",
-        "_names_famous_female", 
-        "_names_french_female", 
-        "_names_norse_female",
-        "_names_roman_female", 
-        ]
-
-list_of_surnames_tables = [
-        ("_names_arabic_surnames"),
-        ("_names_anglo_saxon_surnames"), 
-        ("_names_english_surnames"),
-        ("_names_famous_surnames"), 
-        ("_names_french_surnames"), 
-        ("_names_norse_surnames_female"),
-        ("_names_norse_surnames_male"),
-        ("_names_roman_surnames"),
-        ]
-
-# load name table dictionaries
-for i in list_of_names_tables_male:
-    name_tables_male[i] = r.RPG_table(i)
-    name_table_amalgamated_male = (name_tables_male[i]) + name_table_amalgamated_male
-
-for i in list_of_names_tables_female:
-    name_tables_female[i] = r.RPG_table(i)
-    name_table_amalgamated_female += (name_tables_female[i])
-
-    # surnames
-for i in list_of_surnames_tables:
-    surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
-
 ######################## FUNCTIONS ########################
 
 def create_fantasy_book(book_type=None, **kwargs):
@@ -236,9 +127,165 @@ def import_language_words():
 
     return vocab_dictionary
 
-######################## CLASSES ########################
+def initialize_variables(): # only needs to be called once when program is started.
+    
+    vocab_dictionary = {}
+    vocab_dictionary = import_language_words()
 
-vocab_dictionary = import_language_words() # this is here because must come after definition of function
+    list_of_words_to_not_capitalize = [
+        ("The","the"),
+        ("Of","of"),
+        ("De","de"),
+        ("D'","d'"),
+    ]
+    complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
+
+    surnames_tables = {}
+    name_tables_male = {}
+    name_tables_female = {}
+
+    # title of author
+    author_title_table = r.RPG_table('_titles_person')
+
+    #epithets of author
+    epithets_table = r.RPG_table('_epithets')
+
+    # saints names
+    titles_saints_male=r.RPG_table('_names_saints_male')
+    titles_saints_female=r.RPG_table('_names_saints_female')
+    titles_saints_amalgamated= titles_saints_male + titles_saints_female
+
+    # famous names
+    titles_person_famous_male=r.RPG_table('_names_famous_male')
+    titles_person_famous_female=r.RPG_table('_names_famous_female')
+    titles_person_famous_amalgamated=titles_person_famous_male + titles_person_famous_female
+
+    # blank lists for later use
+    name_table_amalgamated_male = r.RPG_table('_names_empty')
+    name_table_amalgamated_male.description = "Male Names Amalgamated"
+    name_table_amalgamated_female = r.RPG_table('_names_empty')
+    name_table_amalgamated_female.description = "Female Names Amalgamated"
+
+    # book title fragments
+    titles_adjective_1_list = r.RPG_table('_book_titles_adjective_1')
+    titles_biography_starter=r.RPG_table('_book_titles_biography_starter')
+    titles_communication=r.RPG_table('_book_titles_communication')
+    titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
+    titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
+    titles_fixed = r.RPG_table('_book_titles_fixed')
+    titles_history_of = r.RPG_table('_book_titles_history')
+    titles_negative_subject = r.RPG_table('_book_titles_negative_subject')
+    titles_noun_1_list = r.RPG_table('_book_titles_noun_1')
+    titles_noun_2_list = r.RPG_table('_book_titles_noun_2')
+    titles_person_evil=r.RPG_table('_names_famous_evil')
+    titles_places_cities = r.RPG_table('_book_titles_places_cities')
+    titles_places_nations = r.RPG_table('_book_titles_places_nations')
+    titles_religious_starter = r.RPG_table('_book_titles_religious_starter')
+    titles_study_in_list = r.RPG_table('_book_titles_study_in')
+    titles_study_of_list = r.RPG_table('_book_titles_study_of')
+    titles_study_on_list = r.RPG_table('_book_titles_study_on')
+    titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
+    titles_the_1 = r.RPG_table('_books_titles_the_1')
+
+    # book title templates
+
+    titles_template_list_general = r.RPG_table('_book_titles_templates_general')
+    titles_template_list_history = r.RPG_table('_book_titles_templates_history')
+    titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
+    titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
+
+    # name tables load
+
+    list_of_names_tables_male = [
+            "_names_anglo_saxon_male",
+            "_names_arabic_male",
+            "_names_english_male",
+            "_names_famous_male", 
+            "_names_french_male", 
+            "_names_norse_male",
+            "_names_roman_male", 
+            ]
+
+    list_of_names_tables_female = [
+            "_names_arabic_female",
+            "_names_anglo_saxon_female", 
+            "_names_english_female",
+            "_names_famous_female", 
+            "_names_french_female", 
+            "_names_norse_female",
+            "_names_roman_female", 
+            ]
+
+    list_of_surnames_tables = [
+            ("_names_arabic_surnames"),
+            ("_names_anglo_saxon_surnames"), 
+            ("_names_english_surnames"),
+            ("_names_famous_surnames"), 
+            ("_names_french_surnames"), 
+            ("_names_norse_surnames_female"),
+            ("_names_norse_surnames_male"),
+            ("_names_roman_surnames"),
+            ]
+
+    # load name table dictionaries
+    for i in list_of_names_tables_male:
+        name_tables_male[i] = r.RPG_table(i)
+        name_table_amalgamated_male = (name_tables_male[i]) + name_table_amalgamated_male
+
+    for i in list_of_names_tables_female:
+        name_tables_female[i] = r.RPG_table(i)
+        name_table_amalgamated_female += (name_tables_female[i])
+
+        # surnames
+    for i in list_of_surnames_tables:
+        surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
+
+def main():
+    initialize_variables()
+    number_to_run = 100
+
+    for z in range(0,number_to_run):
+
+        a = create_fantasy_book()
+        print ("Book type:" + str(a.book_type))
+        print ("Scope:" + str(a.scope))
+        print ("Current Lang:" + str(a.current_language))
+        print ("Original Lang:" + str(a.original_language))
+        print ("Translator:" + str(a.translator))
+        print ("Translator title:" + str(a.translator_title))
+        print ("Translator sex:" + str(a.translator_sex))
+        print ("Translator full name:" + str(a.translator_full_name))
+        print ("Complex:" + str(a.complexity))
+        print ("Sex:" + str(a.sex))
+        print ("Epithet:" + str(a.author_epithet))
+        print ("Author title:" + str(a.author_title))
+        print ("Author:" + str(a.author_full))
+        print ("Author nationality:" + str(a.author_nationality))
+        print ("Topic:" + str(a.topic))
+        print ("Topic title:" + str(a.topic_title_form))
+        print ("Actual title:" + a.book_title)
+        print ("Title Flavor: " + str(a.book_title_flavor_for_translation))
+        print ("Age:" + str(a.age_at_discovery))
+        print ("Format:" + str(a.format))
+        print ("Template:" + str(a.template))
+        print ("Materials:" + str(a.materials))
+        print ("Extant copies:" + str(a.number_extant_copies))
+        print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
+        print ("Rarity modifier: " + str(a.rarity_modifier))
+        print ("Number pages:" + str(a.number_pages))
+        print ("Reading time:" + str(a.reading_time))
+        print ("Reference time:" + str(a.reference_time))
+        print ("Cost per page:" + str(a.cost_per_page))
+        print ("Production value:" + str(a.production_value))
+        print ("Lit value base:" + str(a.literary_value_base))
+        print ("Lit value mod:" + str(a.literary_value_modified))
+        print ("Market value: " + str (a.market_value))
+        print ("Weight per page: " + str (a.weight_per_page))
+        print ("Weight: " + str(a.weight))
+        print ("Volumes: " + str(a.number_volumes))
+        print ("Percent complete: " + str(a.fraction_complete))
+        print ("---")
+######################## CLASSES ########################
 class FantasyBook():
     ''' Fantasy book object.'''
 
@@ -460,6 +507,13 @@ class FantasyBook():
             the_1=None,
 
             ):
+        
+        global titles_adjective_1_list, titles_noun_1_list, titles_noun_2_list, titles_study_of_list, titles_study_in_list, titles_study_on_list
+        global titles_template_list_general, titles_template_list_history, titles_template_list_theology, titles_template_list_occult
+        global titles_history_of, titles_conjunction_about, titles_conjunction_by, titles_fixed
+        global titles_negative_subject, titles_places_cities, titles_places_nations, titles_religious_starter, titles_study_verbing, titles_the_1
+        global titles_person_1, titles_person_2, titles_communication, titles_biography_starter, titles_person_evil
+        global titles_person_famous_male, titles_person_famous_female, titles_person_famous_amalgamated, titles_saints_male, titles_saints_female, titles_saints_amalgamated
 
         avoid_special_class_of_title = True
 
@@ -630,6 +684,7 @@ class FantasyBook():
             self.materials = materials
 
     def name_generate(self,sex=None):
+        global name_table_amalgamated_male, name_table_amalgamated_female
         # first name
         if sex == None:
             if d20.roll("1d100").total <  CHANCE_OF_FEMALE_AUTHOR: 
@@ -778,20 +833,18 @@ class FantasyBook():
 
     def number_volumes_set(self):
         if self.format == "Codex":
-            self.number_volumes = ceil(self.number_pages/750)
-            self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
+            self.number_of_volumes = ceil(self.number_pages/750)
+            self.weight = self.weight + (self.number_of_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
         
         elif self.format == "Scroll":
-            self.number_volumes = ceil(self.number_pages/250)
-            self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
+            self.number_of_volumes = ceil(self.number_pages/250)
+            self.weight = self.weight + (self.number_of_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
         
         elif self.format == "Tablet":
-            self.number_volumes = 1 # ie, never multivolume
+            self.number_of_volumes = 1 # ie, never multivolume
 
         else:
             raise ValueError("Format has a problem: is not a Codex, Scroll, or Tablet.")
-        
-
 
     def weight_set(self):
         self.weight_per_page = self.look_up_table(result_column="Result",table_name="BookWeight",search_column="Material",search_term=self.materials)
@@ -832,46 +885,5 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-number_to_run = 100
-
-for z in range(0,number_to_run):
-
-    a = create_fantasy_book()
-    print ("Book type:" + str(a.book_type))
-    print ("Scope:" + str(a.scope))
-    print ("Current Lang:" + str(a.current_language))
-    print ("Original Lang:" + str(a.original_language))
-    print ("Translator:" + str(a.translator))
-    print ("Translator title:" + str(a.translator_title))
-    print ("Translator sex:" + str(a.translator_sex))
-    print ("Translator full name:" + str(a.translator_full_name))
-    print ("Complex:" + str(a.complexity))
-    print ("Sex:" + str(a.sex))
-    print ("Epithet:" + str(a.author_epithet))
-    print ("Author title:" + str(a.author_title))
-    print ("Author:" + str(a.author_full))
-    print ("Author nationality:" + str(a.author_nationality))
-    print ("Topic:" + str(a.topic))
-    print ("Topic title:" + str(a.topic_title_form))
-    print ("Actual title:" + a.book_title)
-    print ("Title Flavor: " + str(a.book_title_flavor_for_translation))
-    print ("Age:" + str(a.age_at_discovery))
-    print ("Format:" + str(a.format))
-    print ("Template:" + str(a.template))
-    print ("Materials:" + str(a.materials))
-    print ("Extant copies:" + str(a.number_extant_copies))
-    print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
-    print ("Rarity modifier: " + str(a.rarity_modifier))
-    print ("Number pages:" + str(a.number_pages))
-    print ("Reading time:" + str(a.reading_time))
-    print ("Reference time:" + str(a.reference_time))
-    print ("Cost per page:" + str(a.cost_per_page))
-    print ("Production value:" + str(a.production_value))
-    print ("Lit value base:" + str(a.literary_value_base))
-    print ("Lit value mod:" + str(a.literary_value_modified))
-    print ("Market value: " + str (a.market_value))
-    print ("Weight per page: " + str (a.weight_per_page))
-    print ("Weight: " + str(a.weight))
-    print ("Volumes: " + str(a.number_volumes))
-    print ("Fraction complete: " + str(a.fraction_complete))
-    print ("---")
+if __name__ == "__main__":
+    main()
