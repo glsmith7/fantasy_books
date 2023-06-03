@@ -35,7 +35,7 @@ CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
 TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = "1d100+20" 
 WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
 WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
-CHANCE_OF_INCOMPLETE_WORK = 100 # 0-100%
+CHANCE_OF_INCOMPLETE_WORK = 100
 
 # uses first:
 DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
@@ -286,7 +286,7 @@ class FantasyBook():
         year_written = 0,
         market_value = 0,
         weight_per_page = 0,
-        percentage_complete = 0,
+        fraction_complete = 0,
         ):
 
         # set all values to whatever they were passed in 
@@ -330,7 +330,7 @@ class FantasyBook():
         self.year_written = year_written
         self.market_value = market_value
         self.weight_per_page = weight_per_page
-        self.percentage_complete = percentage_complete
+        self.fraction_complete = fraction_complete
 
         self.scope_set(self.scope)
         self.current_language_set(self.current_language)
@@ -357,7 +357,7 @@ class FantasyBook():
         self.weight_set()
         self.number_volumes_set()
         self.flavor_text_title_set(self.book_title_flavor_for_translation)
-        self.percentage_of_text_missing_set(self.percentage_complete)
+        self.percentage_of_text_missing_set(self.fraction_complete)
         self.year_discovered = year_discovered
         self.year_written = year_written
 
@@ -671,8 +671,24 @@ class FantasyBook():
         
         self.original_language = original_language
 
-    def percentage_of_text_missing_set(percentage_missing):
-        pass
+    def percentage_of_text_missing_set(self,fraction_missing):
+        
+        if not fraction_missing:
+            if CHANCE_OF_INCOMPLETE_WORK >= d20.roll("1d100").total:
+                fraction_missing = round(d20.roll("1d99").total/100,2)
+            else:
+                fraction_missing = 0
+            fraction_complete = 1 - fraction_missing
+         
+        self.scope = round(self.scope * 2.0 * fraction_complete) / 2.0 # the x2, then div 2 rounds to nearest 0.5
+        self.reading_time = round(self.reading_time * 2.0 * fraction_complete) / 2.0
+        self.reference_time = round(self.reference_time * 2.0 * fraction_complete) / 2.0
+
+        self.number_pages = round(self.number_pages * fraction_complete)
+        self.weight = round(self.weight * fraction_complete)
+        self.market_value = round(self.market_value * fraction_complete)
+        self.fraction_complete = round(fraction_complete,2)
+
     
     def person_title_generate (self,sex):
         global author_title_table
@@ -830,38 +846,39 @@ for z in range(0,number_to_run):
     print ("Book type:" + str(a.book_type))
     print ("Scope:" + str(a.scope))
     print ("Current Lang:" + str(a.current_language))
-    # print ("Original Lang:" + str(a.original_language))
-    # print ("Translator:" + str(a.translator))
-    # print ("Translator title:" + str(a.translator_title))
-    # print ("Translator sex:" + str(a.translator_sex))
-    # print ("Translator full name:" + str(a.translator_full_name))
-    # print ("Complex:" + str(a.complexity))
-    # print ("Sex:" + str(a.sex))
-    # print ("Epithet:" + str(a.author_epithet))
-    # print ("Author title:" + str(a.author_title))
-    # print ("Author:" + str(a.author_full))
-    # print ("Author nationality:" + str(a.author_nationality))
-    # print ("Topic:" + str(a.topic))
-    # print ("Topic title:" + str(a.topic_title_form))
+    print ("Original Lang:" + str(a.original_language))
+    print ("Translator:" + str(a.translator))
+    print ("Translator title:" + str(a.translator_title))
+    print ("Translator sex:" + str(a.translator_sex))
+    print ("Translator full name:" + str(a.translator_full_name))
+    print ("Complex:" + str(a.complexity))
+    print ("Sex:" + str(a.sex))
+    print ("Epithet:" + str(a.author_epithet))
+    print ("Author title:" + str(a.author_title))
+    print ("Author:" + str(a.author_full))
+    print ("Author nationality:" + str(a.author_nationality))
+    print ("Topic:" + str(a.topic))
+    print ("Topic title:" + str(a.topic_title_form))
     print ("Actual title:" + a.book_title)
-    # print ("Age:" + str(a.age_at_discovery))
-    # print ("Format:" + str(a.format))
-    # print ("Template:" + str(a.template))
-    # print ("Materials:" + str(a.materials))
-    # print ("Extant copies:" + str(a.number_extant_copies))
-    # print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
-    # print ("Rarity modifier: " + str(a.rarity_modifier))
-    # print ("Number pages:" + str(a.number_pages))
-    # print ("Reading time:" + str(a.reading_time))
-    # print ("Cost per page:" + str(a.cost_per_page))
-    # print ("Production value:" + str(a.production_value))
-    # print ("Lit value base:" + str(a.literary_value_base))
-    # print ("Lit value mod:" + str(a.literary_value_modified))
-    # print ("Market value: " + str (a.market_value))
-    # print ("Weight per page: " + str (a.weight_per_page))
-    # print ("Weight: " + str(a.weight))
-    # print ("Volumes: " + str(a.number_volumes))
     print ("Title Flavor: " + str(a.book_title_flavor_for_translation))
+    print ("Age:" + str(a.age_at_discovery))
+    print ("Format:" + str(a.format))
+    print ("Template:" + str(a.template))
+    print ("Materials:" + str(a.materials))
+    print ("Extant copies:" + str(a.number_extant_copies))
+    print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
+    print ("Rarity modifier: " + str(a.rarity_modifier))
+    print ("Number pages:" + str(a.number_pages))
+    print ("Reading time:" + str(a.reading_time))
+    print ("Cost per page:" + str(a.cost_per_page))
+    print ("Production value:" + str(a.production_value))
+    print ("Lit value base:" + str(a.literary_value_base))
+    print ("Lit value mod:" + str(a.literary_value_modified))
+    print ("Market value: " + str (a.market_value))
+    print ("Weight per page: " + str (a.weight_per_page))
+    print ("Weight: " + str(a.weight))
+    print ("Volumes: " + str(a.number_volumes))
+    print ("Percent complete: " + str(a.fraction_complete))
     print ("---")
 
 # Akkadian titles, works:
