@@ -21,28 +21,7 @@ global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_W
 global vocab_dictionary
 global lang_no_spaces, lang_limit_40_chars
 
-# general
-
-global list_of_words_to_not_capitalize
-global complexity_table_list
-
-# names
-global list_of_names_tables_male, list_of_names_tables_female
-global author_title_table, epithets_table
-global surnames_tables
-
-# names of male and female
-global name_table_amalgamated_male, name_tables_male
-global name_table_amalgamated_female, name_tables_female
-
-# book titles
-
-global titles_adjective_1_list, titles_communication, titles_conjunction_about, titles_conjunction_by, titles_fixed
-global titles_history_of, titles_negative_subject
-global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2
-global titles_places_cities, titles_places_nations, titles_religious_starter
-global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
-global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology
+vocab_dictionary = {}
 
 #########################################################
 # USER SETABLE variables
@@ -92,19 +71,149 @@ lang_limit_40_chars = ["Akkadian","Ancient","Gothic"] # name given to self.curre
 
 ##################### End of user-settable variables ###########################
 
+# general
+
+global list_of_words_to_not_capitalize
+global complexity_table_list
+
+# names
+global list_of_names_tables_male, list_of_names_tables_female
+global author_title_table, epithets_tables
+
+# names of male and female
+global complete_table_male_names, name_tables_male
+global complete_table_female_names, name_tables_female
+
+# book titles
+
+global titles_adjective_1_list, titles_communication, titles_conjunction_about, titles_conjunction_by, titles_fixed
+global titles_history_of, titles_negative_subject
+global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2
+global titles_places_cities, titles_places_nations, titles_religious_starter
+global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
+global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
+
+list_of_words_to_not_capitalize = [
+    ("The","the"),
+    ("Of","of"),
+    ("De","de"),
+    ("D'","d'"),
+]
+complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
+
+surnames_tables = {}
+name_tables_male = {}
+name_tables_female = {}
+
+# title of author
+author_title_table = r.RPG_table('_titles_person')
+
+#epithets of author
+epithets_table = r.RPG_table('_epithets')
+
+# saints names
+titles_saints_male=r.RPG_table('_names_saints_male')
+titles_saints_female=r.RPG_table('_names_saints_female')
+titles_saints_amalgamated= titles_saints_male + titles_saints_female
+
+# famous names
+titles_person_famous_male=r.RPG_table('_names_famous_male')
+titles_person_famous_female=r.RPG_table('_names_famous_female')
+titles_person_famous_amalgamated=titles_person_famous_male + titles_person_famous_female
+
+# blank lists for later use
+complete_table_male_names = r.RPG_table('_names_empty')
+complete_table_male_names.description = "Male Names Amalgamated"
+complete_table_female_names = r.RPG_table('_names_empty')
+complete_table_female_names.description = "Female Names Amalgamated"
+
+# book title fragments
+titles_adjective_1_list = r.RPG_table('_book_titles_adjective_1')
+titles_biography_starter=r.RPG_table('_book_titles_biography_starter')
+titles_communication=r.RPG_table('_book_titles_communication')
+titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
+titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
+titles_fixed = r.RPG_table('_book_titles_fixed')
+titles_history_of = r.RPG_table('_book_titles_history')
+titles_negative_subject = r.RPG_table('_book_titles_negative_subject')
+titles_noun_1_list = r.RPG_table('_book_titles_noun_1')
+titles_noun_2_list = r.RPG_table('_book_titles_noun_2')
+titles_person_evil=r.RPG_table('_names_famous_evil')
+titles_places_cities = r.RPG_table('_book_titles_places_cities')
+titles_places_nations = r.RPG_table('_book_titles_places_nations')
+titles_religious_starter = r.RPG_table('_book_titles_religious_starter')
+titles_study_in_list = r.RPG_table('_book_titles_study_in')
+titles_study_of_list = r.RPG_table('_book_titles_study_of')
+titles_study_on_list = r.RPG_table('_book_titles_study_on')
+titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
+titles_the_1 = r.RPG_table('_books_titles_the_1')
+
+# book title templates
+
+titles_template_list_general = r.RPG_table('_book_titles_templates_general')
+titles_template_list_history = r.RPG_table('_book_titles_templates_history')
+titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
+titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
+
+# name tables load
+
+list_of_names_tables_male = [
+        "_names_anglo_saxon_male",
+        "_names_arabic_male",
+        "_names_english_male",
+        "_names_famous_male", 
+        "_names_french_male", 
+        "_names_norse_male",
+        "_names_roman_male", 
+        ]
+
+list_of_names_tables_female = [
+        "_names_arabic_female",
+        "_names_anglo_saxon_female", 
+        "_names_english_female",
+        "_names_famous_female", 
+        "_names_french_female", 
+        "_names_norse_female",
+        "_names_roman_female", 
+        ]
+
+list_of_surnames_tables = [
+        ("_names_arabic_surnames"),
+        ("_names_anglo_saxon_surnames"), 
+        ("_names_english_surnames"),
+        ("_names_famous_surnames"), 
+        ("_names_french_surnames"), 
+        ("_names_norse_surnames_female"),
+        ("_names_norse_surnames_male"),
+        ("_names_roman_surnames"),
+        ]
+
+# load name table dictionaries
+for i in list_of_names_tables_male:
+    name_tables_male[i] = r.RPG_table(i)
+    complete_table_male_names = (name_tables_male[i]) + complete_table_male_names
+
+for i in list_of_names_tables_female:
+    name_tables_female[i] = r.RPG_table(i)
+    complete_table_female_names = (name_tables_female[i]) + complete_table_female_names
+
+    # surnames
+for i in list_of_surnames_tables:
+    surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
+
 ######################## FUNCTIONS ########################
 
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
     book_type = string.capwords(str(book_type))
-    if book_type == "Esoteric":
-        return EsotericBook(**kwargs)
-    elif book_type == "Authority":
-        return AuthoritativeBook(**kwargs)
-    elif book_type == "Magic":
-        return MagicBook(**kwargs)
-    else:
-        return FantasyBook(**kwargs)
+    # if book_type == "Esoteric":
+    #     return EsotericBook(**kwargs)
+    # elif book_type == "Authority":
+    #     return AuthoritativeBook(**kwargs)
+    # elif book_type == "Magic":
+    #     return MagicBook(**kwargs)
+    # else:
+    return FantasyBook(**kwargs)
 
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
@@ -127,165 +236,9 @@ def import_language_words():
 
     return vocab_dictionary
 
-def initialize_variables(): # only needs to be called once when program is started.
-    
-    vocab_dictionary = {}
-    vocab_dictionary = import_language_words()
-
-    list_of_words_to_not_capitalize = [
-        ("The","the"),
-        ("Of","of"),
-        ("De","de"),
-        ("D'","d'"),
-    ]
-    complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
-
-    surnames_tables = {}
-    name_tables_male = {}
-    name_tables_female = {}
-
-    # title of author
-    author_title_table = r.RPG_table('_titles_person')
-
-    #epithets of author
-    epithets_table = r.RPG_table('_epithets')
-
-    # saints names
-    titles_saints_male=r.RPG_table('_names_saints_male')
-    titles_saints_female=r.RPG_table('_names_saints_female')
-    titles_saints_amalgamated= titles_saints_male + titles_saints_female
-
-    # famous names
-    titles_person_famous_male=r.RPG_table('_names_famous_male')
-    titles_person_famous_female=r.RPG_table('_names_famous_female')
-    titles_person_famous_amalgamated=titles_person_famous_male + titles_person_famous_female
-
-    # blank lists for later use
-    name_table_amalgamated_male = r.RPG_table('_names_empty')
-    name_table_amalgamated_male.description = "Male Names Amalgamated"
-    name_table_amalgamated_female = r.RPG_table('_names_empty')
-    name_table_amalgamated_female.description = "Female Names Amalgamated"
-
-    # book title fragments
-    titles_adjective_1_list = r.RPG_table('_book_titles_adjective_1')
-    titles_biography_starter=r.RPG_table('_book_titles_biography_starter')
-    titles_communication=r.RPG_table('_book_titles_communication')
-    titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
-    titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
-    titles_fixed = r.RPG_table('_book_titles_fixed')
-    titles_history_of = r.RPG_table('_book_titles_history')
-    titles_negative_subject = r.RPG_table('_book_titles_negative_subject')
-    titles_noun_1_list = r.RPG_table('_book_titles_noun_1')
-    titles_noun_2_list = r.RPG_table('_book_titles_noun_2')
-    titles_person_evil=r.RPG_table('_names_famous_evil')
-    titles_places_cities = r.RPG_table('_book_titles_places_cities')
-    titles_places_nations = r.RPG_table('_book_titles_places_nations')
-    titles_religious_starter = r.RPG_table('_book_titles_religious_starter')
-    titles_study_in_list = r.RPG_table('_book_titles_study_in')
-    titles_study_of_list = r.RPG_table('_book_titles_study_of')
-    titles_study_on_list = r.RPG_table('_book_titles_study_on')
-    titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
-    titles_the_1 = r.RPG_table('_books_titles_the_1')
-
-    # book title templates
-
-    titles_template_list_general = r.RPG_table('_book_titles_templates_general')
-    titles_template_list_history = r.RPG_table('_book_titles_templates_history')
-    titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
-    titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
-
-    # name tables load
-
-    list_of_names_tables_male = [
-            "_names_anglo_saxon_male",
-            "_names_arabic_male",
-            "_names_english_male",
-            "_names_famous_male", 
-            "_names_french_male", 
-            "_names_norse_male",
-            "_names_roman_male", 
-            ]
-
-    list_of_names_tables_female = [
-            "_names_arabic_female",
-            "_names_anglo_saxon_female", 
-            "_names_english_female",
-            "_names_famous_female", 
-            "_names_french_female", 
-            "_names_norse_female",
-            "_names_roman_female", 
-            ]
-
-    list_of_surnames_tables = [
-            ("_names_arabic_surnames"),
-            ("_names_anglo_saxon_surnames"), 
-            ("_names_english_surnames"),
-            ("_names_famous_surnames"), 
-            ("_names_french_surnames"), 
-            ("_names_norse_surnames_female"),
-            ("_names_norse_surnames_male"),
-            ("_names_roman_surnames"),
-            ]
-
-    # load name table dictionaries
-    for i in list_of_names_tables_male:
-        name_tables_male[i] = r.RPG_table(i)
-        name_table_amalgamated_male = (name_tables_male[i]) + name_table_amalgamated_male
-
-    for i in list_of_names_tables_female:
-        name_tables_female[i] = r.RPG_table(i)
-        name_table_amalgamated_female += (name_tables_female[i])
-
-        # surnames
-    for i in list_of_surnames_tables:
-        surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
-
-def main():
-    initialize_variables()
-    number_to_run = 100
-
-    for z in range(0,number_to_run):
-
-        a = create_fantasy_book()
-        print ("Book type:" + str(a.book_type))
-        print ("Scope:" + str(a.scope))
-        print ("Current Lang:" + str(a.current_language))
-        print ("Original Lang:" + str(a.original_language))
-        print ("Translator:" + str(a.translator))
-        print ("Translator title:" + str(a.translator_title))
-        print ("Translator sex:" + str(a.translator_sex))
-        print ("Translator full name:" + str(a.translator_full_name))
-        print ("Complex:" + str(a.complexity))
-        print ("Sex:" + str(a.sex))
-        print ("Epithet:" + str(a.author_epithet))
-        print ("Author title:" + str(a.author_title))
-        print ("Author:" + str(a.author_full))
-        print ("Author nationality:" + str(a.author_nationality))
-        print ("Topic:" + str(a.topic))
-        print ("Topic title:" + str(a.topic_title_form))
-        print ("Actual title:" + a.book_title)
-        print ("Title Flavor: " + str(a.book_title_flavor_for_translation))
-        print ("Age:" + str(a.age_at_discovery))
-        print ("Format:" + str(a.format))
-        print ("Template:" + str(a.template))
-        print ("Materials:" + str(a.materials))
-        print ("Extant copies:" + str(a.number_extant_copies))
-        print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
-        print ("Rarity modifier: " + str(a.rarity_modifier))
-        print ("Number pages:" + str(a.number_pages))
-        print ("Reading time:" + str(a.reading_time))
-        print ("Reference time:" + str(a.reference_time))
-        print ("Cost per page:" + str(a.cost_per_page))
-        print ("Production value:" + str(a.production_value))
-        print ("Lit value base:" + str(a.literary_value_base))
-        print ("Lit value mod:" + str(a.literary_value_modified))
-        print ("Market value: " + str (a.market_value))
-        print ("Weight per page: " + str (a.weight_per_page))
-        print ("Weight: " + str(a.weight))
-        print ("Volumes: " + str(a.number_volumes))
-        print ("Percent complete: " + str(a.fraction_complete))
-        print ("---")
 ######################## CLASSES ########################
+
+vocab_dictionary = import_language_words() # this is here because must come after definition of function
 class FantasyBook():
     ''' Fantasy book object.'''
 
@@ -295,6 +248,7 @@ class FantasyBook():
     def __init__(self,
         book_type = "Standard",         
         topic = "",
+        topic_apparent = "",
         topic_title_form = "",
         book_title = "",
         book_title_flavor_for_translation = '',
@@ -317,8 +271,10 @@ class FantasyBook():
         libraries_it_is_in = [],
         number_extant_copies = 0,
         number_extant_available_to_place = 0,
-        scope = '',
-        complexity = '',
+        scope = 0,
+        scope_esoteric = 0,
+        complexity = 0,
+        complexity_esoteric = 0,
         age_at_discovery = 0,
         number_pages = 0,
         reading_time = 0,
@@ -326,6 +282,8 @@ class FantasyBook():
         production_value = 0,
         literary_value_base = 0,
         literary_value_modified = 0,
+        esoteric_literary_value_base = 0,
+        esoteric_literary_value_modified = 0,
         rarity_modifier = 0,
         weight = 0,
         number_volumes = 0,
@@ -339,6 +297,7 @@ class FantasyBook():
         # set all values to whatever they were passed in 
         self.book_type = book_type
         self.topic = topic
+        self.topic_apparent = topic_apparent
         self.topic_title_form = topic_title_form
         self.book_title = book_title
         self.book_title_flavor_for_translation = book_title_flavor_for_translation
@@ -362,7 +321,9 @@ class FantasyBook():
         self.number_extant_copies = number_extant_copies
         self.number_extant_available_to_place = number_extant_available_to_place
         self.scope = scope
+        self.scope_esoteric = scope_esoteric
         self.complexity = complexity
+        self.complexity_esoteric = complexity_esoteric
         self.age_at_discovery = age_at_discovery
         self.number_pages = number_pages
         self.reading_time = reading_time
@@ -370,6 +331,8 @@ class FantasyBook():
         self.production_value = production_value
         self.literary_value_base = literary_value_base
         self.literary_value_modified = literary_value_modified
+        self.esoteric_literary_value_base = esoteric_literary_value_base
+        self.esoteric_literary_value_modified = esoteric_literary_value_modified
         self.rarity_modifier = rarity_modifier
         self.weight = weight
         self.number_volumes = number_volumes
@@ -395,18 +358,19 @@ class FantasyBook():
         self.format_set(self.format)
         self.book_title_set(self.book_title)
         self.materials_set(self.materials)
-        self.libraries_it_is_in = libraries_it_is_in
         self.rarity_set()
         self.number_pages_set()
         self.reading_time_set()
         self.production_value_set()
         self.literary_value_set()
         self.weight_set()
-        self.number_volumes_set()
+        self.volumes_number_set()
         self.flavor_text_title_set(self.book_title_flavor_for_translation)
         self.percentage_of_text_missing_set(self.fraction_complete)
+        self.esoteric_set()
         self.year_discovered = year_discovered
         self.year_written = year_written
+        self.libraries_it_is_in = libraries_it_is_in
 
     def add(self,library):
         ''' Add this book to a given library'''
@@ -507,13 +471,6 @@ class FantasyBook():
             the_1=None,
 
             ):
-        
-        global titles_adjective_1_list, titles_noun_1_list, titles_noun_2_list, titles_study_of_list, titles_study_in_list, titles_study_on_list
-        global titles_template_list_general, titles_template_list_history, titles_template_list_theology, titles_template_list_occult
-        global titles_history_of, titles_conjunction_about, titles_conjunction_by, titles_fixed
-        global titles_negative_subject, titles_places_cities, titles_places_nations, titles_religious_starter, titles_study_verbing, titles_the_1
-        global titles_person_1, titles_person_2, titles_communication, titles_biography_starter, titles_person_evil
-        global titles_person_famous_male, titles_person_famous_female, titles_person_famous_amalgamated, titles_saints_male, titles_saints_female, titles_saints_amalgamated
 
         avoid_special_class_of_title = True
 
@@ -555,12 +512,10 @@ class FantasyBook():
             if not communication and "{communication}" in template: communication = titles_communication.df.sample().iloc[0,0]
             if not biography_starter and "{biography_starter}" in template: biography_starter = titles_biography_starter.df.sample().iloc[0,0]
             if not person_evil and "{person_evil}" in template: person_evil = titles_person_evil.df.sample().iloc[0,0]
-            if not history_of and "{history_of}" in template: history_of = titles_history_of.df.sample().iloc[0,0]
-            if not the_1 and "{the_1}" in template: the_1 = titles_the_1.df.sample().iloc[0,0]
-
             if not person_1 and "{person_1}" in template: person_1, _ , _ = self.name_generate() # 2nd,3rd are nation, sex which we don't need
             if not person_2 and "{person_2}" in template: person_2, _, _ = self.name_generate()
-
+            if not history_of and "{history_of}" in template: history_of = titles_history_of.df.sample().iloc[0,0]
+            if not the_1 and "{the_1}" in template: the_1 = titles_the_1.df.sample().iloc[0,0]
             
             self.template = template
 
@@ -594,16 +549,49 @@ class FantasyBook():
         if not complexity:
             complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since list index starts at zero.
             if complexity_from_table >= 1: complexity_from_table = int(complexity_from_table) # doesn't integerize 0.75
-            self.complexity = complexity_from_table 
+            self.complexity = complexity_from_table
         
         else:
-            self.complexity = complexity
+            self.complexity = complexity   
     
     def current_language_set(self, current_language):
         if not current_language:
             self.current_language = self.book_details_result_from_tables("BookCurrentLanguage")
         else:
             self.current_language = current_language
+
+    def esoteric_set(self):
+        if self.topic != self.topic_apparent:
+            esoteric_complexity_from_table = 0
+            esoteric_ratios_correct = False
+            while not esoteric_ratios_correct:
+                # esoteric scope
+                self.scope_esoteric = self.book_details_result_from_tables("BookScope")
+                
+                # esoteric complexity
+                esoteric_complexity_from_table = self.book_details_result_from_tables(complexity_table_list[int(self.scope_esoteric)-1])
+                if esoteric_complexity_from_table >= 1: esoteric_complexity_from_table = int(esoteric_complexity_from_table)      
+                self.complexity_esoteric = esoteric_complexity_from_table
+            
+                # Is apparent ratio >= to the esoteric?
+                ratio_apparent = self.scope/self.complexity
+                ratio_esoteric = self.scope_esoteric/self.complexity_esoteric
+
+                if ratio_apparent >= ratio_esoteric: 
+                    esoteric_ratios_correct = True
+    
+                self.esoteric_value_set()
+
+    def esoteric_value_set (self):
+        target_table = "BookLiteraryValueScope" + str(self.scope_esoteric)
+        self.esoteric_literary_value_base = self.look_up_table(
+            table_name=target_table,
+            search_column="Complexity",
+            search_term = self.complexity_esoteric,
+            result_column="LiteraryValue"
+            )
+        self.esoteric_literary_value_modified = ceil (self.esoteric_literary_value_base * self.rarity_modifier) * self.number_pages * 5 # Writer of 18 Intelligence needed
+        self.market_value = ceil(self.literary_value_modified + self.esoteric_literary_value_modified + self.production_value)
 
     def format_set(self, format):
         if not format:
@@ -621,13 +609,12 @@ class FantasyBook():
             self.format = format
     
     def flavor_text_title_set(self, flavor_text_title):
-
         
         if not flavor_text_title:
 
             # Limit number chars (like Akkadian, gothic_latin)
             if  self.current_language in lang_limit_40_chars:
-                limit_chars = 40 # These requires only 50 chars or weird stuff happens. ? Unicode issue
+                limit_chars = 40 # These require only 40 chars or weird stuff happens. ? Unicode issue
             else:
                 limit_chars = 0 # all the rest no limit
 
@@ -668,7 +655,7 @@ class FantasyBook():
             result_column="LiteraryValue"
             )
 
-        self.literary_value_modified = ceil(self.literary_value_base * self.rarity_modifier)
+        self.literary_value_modified = ceil(self.literary_value_base * self.rarity_modifier) * self.number_pages
         self.market_value = ceil(self.literary_value_modified + self.production_value)
 
     def look_up_table (self,result_column,table_name,search_column,search_term):
@@ -682,9 +669,8 @@ class FantasyBook():
             self.materials = self.book_details_result_from_tables(target_table)
         else:
             self.materials = materials
-
+   
     def name_generate(self,sex=None):
-        global name_table_amalgamated_male, name_table_amalgamated_female
         # first name
         if sex == None:
             if d20.roll("1d100").total <  CHANCE_OF_FEMALE_AUTHOR: 
@@ -692,8 +678,8 @@ class FantasyBook():
             else: 
                 sex = "Male"
 
-        if sex == "Male": first_name = name_table_amalgamated_male.df.sample()
-        else: first_name = name_table_amalgamated_female.df.sample()
+        if sex == "Male": first_name = complete_table_male_names.df.sample()
+        else: first_name = complete_table_female_names.df.sample()
         author_nationality = (first_name.iloc[0,1]) # the second column (i.e. index 1 since starts at 0) is the table for this type of name's surname.
                 
         # surname
@@ -799,8 +785,14 @@ class FantasyBook():
 
         if not topic:
             topic = self.book_details_result_from_tables("BookTopicsACKS")
-        self.topic = topic
-    
+            self.topic = topic
+            self.topic_apparent = topic
+            if "Esoteric" in topic:
+                while "Esoteric" in topic: # keep picking apparent topic until not esoteric
+                    topic = self.book_details_result_from_tables("BookTopicsACKS")
+                    
+                self.topic_apparent = topic
+                  
     def topic_title_set(self,topic_title_form):
         if not topic_title_form:
 
@@ -808,12 +800,12 @@ class FantasyBook():
                 result_column="title_string",
                 table_name= "_book_titles_topics", 
                 search_column="Result",
-                search_term = self.topic 
+                search_term = self.topic_apparent
                 )
             
             t = t.split(";") # list is made by separating by semicolons
             t = random.choice(t) # a random option is then chosen
-            self.topic_title_form = t 
+            self.topic_title_form = t
         
         else:
             self.topic_title_form = topic_title_form
@@ -831,38 +823,38 @@ class FantasyBook():
         
         ### Give a title in foreign language
 
-    def number_volumes_set(self):
+    def volumes_number_set(self):
         if self.format == "Codex":
-            self.number_of_volumes = ceil(self.number_pages/750)
-            self.weight = self.weight + (self.number_of_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
+            self.number_volumes = ceil(self.number_pages/750)
+            self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
         
         elif self.format == "Scroll":
-            self.number_of_volumes = ceil(self.number_pages/250)
-            self.weight = self.weight + (self.number_of_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
+            self.number_volumes = ceil(self.number_pages/250)
+            self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
         
         elif self.format == "Tablet":
-            self.number_of_volumes = 1 # ie, never multivolume
+            self.number_volumes = 1 # ie, never multivolume
 
         else:
             raise ValueError("Format has a problem: is not a Codex, Scroll, or Tablet.")
-
+        
     def weight_set(self):
         self.weight_per_page = self.look_up_table(result_column="Result",table_name="BookWeight",search_column="Material",search_term=self.materials)
         self.weight = ceil(self.weight_per_page * self.number_pages)
 
-class EsotericBook(FantasyBook):
-    ''' Subclass of fantasy book, that has a few extra values.'''
-    def __init__ (self,
-        book_type = "Esoteric",
-        esoteric_complexity = '', 
-        esoteric_scope = '', 
-        esoteric_topic = []):
+# class EsotericBook(FantasyBook):
+#     ''' Subclass of fantasy book, that has a few extra values.'''
+#     def __init__ (self,
+#         book_type = "Esoteric",
+#         esoteric_complexity = '', 
+#         esoteric_scope = '', 
+#         esoteric_topic = []):
 
-        super().__init__(self)
-        self.book_type = book_type
-        self.esoteric_complexity = esoteric_complexity
-        self.esoteric_scope = esoteric_scope
-        self.esoteric_topic = esoteric_topic
+#         super().__init__(self)
+#         self.book_type = book_type
+#         self.esoteric_complexity = esoteric_complexity
+        # self.esoteric_scope = esoteric_scope
+        # self.esoteric_topic = esoteric_topic
 
 class AuthoritativeBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
@@ -885,5 +877,56 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-if __name__ == "__main__":
-    main()
+number_to_run = 100
+book = {}
+for z in range(0,number_to_run):
+    print (z)
+    book[z] = create_fantasy_book()
+    
+for z in range (0,number_to_run):
+    a = book[z]
+    print ("Book type:" + str(a.book_type))
+    print ("Current Lang:" + str(a.current_language))
+    print ("Original Lang:" + str(a.original_language))
+    print ("Translator:" + str(a.translator))
+    print ("Translator title:" + str(a.translator_title))
+    print ("Translator sex:" + str(a.translator_sex))
+    print ("Translator full name:" + str(a.translator_full_name))
+    print ("Reading time:" + str(a.reading_time))
+    print ("Reference time:" + str(a.reference_time))
+    print ("Sex:" + str(a.sex))
+    print ("Epithet:" + str(a.author_epithet))
+    print ("Author title:" + str(a.author_title))
+    print ("Author:" + str(a.author_full))
+    print ("Author nationality:" + str(a.author_nationality))
+    print ("Topic:" + str(a.topic))
+    print ("Apparent Topic:" + str(a.topic_apparent))
+    print ("Topic title:" + str(a.topic_title_form))
+    print ("Actual title:" + a.book_title)
+    print ("Title Flavor: " + str(a.book_title_flavor_for_translation))
+    print ("Age:" + str(a.age_at_discovery))
+    print ("Format:" + str(a.format))
+    print ("Template:" + str(a.template))
+    print ("Materials:" + str(a.materials))
+    print ("Extant copies:" + str(a.number_extant_copies))
+    print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
+    print ("##################################################")
+    print ("Scope:" + str(a.scope))
+    print ("Esoteric scope:" + str(a.scope_esoteric))
+    print ("Rarity modifier: " + str(a.rarity_modifier))
+    print ("Number pages:" + str(a.number_pages))
+    print ("Cost per page:" + str(a.cost_per_page))
+    print ("Production value:" + str(a.production_value))
+    print ("Complex:" + str(a.complexity))
+    print ("Lit value base:" + str(a.literary_value_base))
+    print ("Lit value mod:" + str(a.literary_value_modified))
+    print ("Esoteric complexity:" + str(a.complexity_esoteric))
+    print ("Esoteric value base:" + str(a.esoteric_literary_value_base))
+    print ("Esoteric value mod:" + str(a.esoteric_literary_value_modified))
+    print (" ********** Reality check:" + str(a.esoteric_literary_value_modified + a.literary_value_modified + a.production_value))
+    print ("Market value: " + str (a.market_value))
+    print ("Weight per page: " + str (a.weight_per_page))
+    print ("Weight: " + str(a.weight))
+    print ("Volumes: " + str(a.number_volumes))
+    print ("Fraction complete: " + str(a.fraction_complete))
+    print ("---")
