@@ -311,7 +311,6 @@ def create_fantasy_book(book_type=None, **kwargs):
 def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksheet = "Book Hoard"):
     book_columns,current_language_index, flavor_title_index= book_characteristics(books)
     
-    print (current_language_index, flavor_title_index)
     try:
         wb = load_workbook(filename= filename)
     except:
@@ -322,11 +321,14 @@ def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksh
     else:
         ws = wb.create_sheet(title=worksheet)
 
+    # column headers
     the_counter = 0
     for item in book_columns:
         the_counter += 1
         ws.cell(row=1,column=the_counter,value=item)
+        ws.cell(row=1,column=the_counter).font = openpyxl_font(bold='bold')
 
+    # each row for a book
     for book in books:
         row = []
         for attribute in book_columns:
@@ -1054,21 +1056,12 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=50000,overshoot=False)
+books, books_value = produce_book_hoard(value=10000,overshoot=True)
 # print_book_hoard(books)
 export_books_to_excel(books)
 
 print ("TOTAL: " + str(books_value))
 print ("Number of books: " + str (len(books)))
-
-### Notes:
-
-# Font location in RegEdit: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Fonts
-# Font BabelStone Runic shows dwarf runes
-## license - https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL
-# Font Segoe UI Historic shows cuneiform and all others [seguihis.ttf]
-# Tengwar Annatar - for elven.
-
 
 #### Print attributes and value with numbering
 # count = 0
