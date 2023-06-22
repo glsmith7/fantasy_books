@@ -1143,7 +1143,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=15000,overshoot=True,book_title="Necronomicron")
+books, books_value = produce_book_hoard(value=15000,overshoot=True,rarity_modifier = 1, number_extant_copies = 3)
 
 # print_book_hoard(books)
 export_books_to_excel(books)
