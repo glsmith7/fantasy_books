@@ -33,7 +33,7 @@ vocab_dictionary = {}
 # USER SETABLE variables
 #########################################################
 ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO = 'Ancient'
-CHANCE_OF_BEING_TRANSLATION = 100 # # 0-100%
+CHANCE_OF_BEING_TRANSLATION = 5 # # 0-100%
 CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
 CHANCE_OF_TITLE_IN_AUTHOR_NAME = 50 # 0-100%
 CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
@@ -490,7 +490,6 @@ class FantasyBook():
         topic_title_form = "",
         book_title = "",
         book_title_flavor = '',
-        final_title = '',
         author_sex = "",
         author_name = "",
         author_title = "",
@@ -540,7 +539,6 @@ class FantasyBook():
         self.topic_title_form = topic_title_form
         self.book_title = book_title
         self.book_title_flavor = book_title_flavor
-        self.final_title = final_title
         self.author_sex = author_sex
         self.author_name = author_name
         self.author_title = author_title
@@ -589,18 +587,19 @@ class FantasyBook():
         # translator_set must be called before original_language_set
         self.translator_set(translator_name=self.translator_name,translator_sex = self.translator_sex,translator_nationality=self.translator_nationality, translator_title=self.translator_title,translator_full_name=self.translator_full_name) 
         
-        self.original_language_set(self.original_language)
-        self.topic_set(self.topic)
-        self.topic_title_set(self.topic_title_form)
-        self.sex_set(self.author_sex)
-        self.author_epithet_set (self.author_epithet)
-        self.author_name_set(self.author_name)
-        self.author_title_set (self.author_title)
-        self.author_full_set (self.author_full)
-        self.complexity_set(self.complexity)
-        self.format_set(self.format)
-        self.book_title_set(book_title = self.book_title,final_title = self.final_title)
-        self.materials_set(self.materials)
+        self.original_language_set(original_language = self.original_language, is_a_translation= self.is_a_translation)
+        self.topic_set(topic = self.topic)
+        self.topic_title_set(topic_title_form = self.topic_title_form)
+        self.sex_set(author_sex = self.author_sex)
+        self.author_epithet_set (author_epithet = self.author_epithet)
+        self.author_name_set(author_name = self.author_name)
+        self.author_title_set (author_title = self.author_title)
+        self.author_full_set (author_full = self.author_full)
+
+        self.complexity_set(complexity = self.complexity)
+        self.format_set(format = self.format)
+        self.book_title_set(book_title = self.book_title)
+        self.materials_set(materials = self.materials)
         self.rarity_set()
         self.number_pages_set()
         self.reading_time_set()
@@ -656,7 +655,6 @@ class FantasyBook():
         self.author_name = author_name
         self.author_nationality = author_nationality
 
-
     def author_title_set(self, author_title=None):
         if not author_title:
             self.author_title = self.person_title_generate(sex = self.author_sex)
@@ -697,7 +695,6 @@ class FantasyBook():
             study_on=None, 
             template=None,
             book_title=None,
-            final_title=None,
             conjunction_about=None,
             conjunction_by=None,
             negative_1=None,
@@ -719,9 +716,11 @@ class FantasyBook():
 
         avoid_special_class_of_title = True
 
-        if final_title: 
-            self.book_title = final_title
-            self.final_title = final_title
+        if book_title: 
+            self.book_title = book_title
+            self.template = "Final title passed in as: " + book_title
+
+        if template:
             self.template = template
         
         else:
@@ -947,9 +946,14 @@ class FantasyBook():
     def number_pages_set(self):
         self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
 
-    def original_language_set(self, original_language=None):
+    def original_language_set(self, original_language=None,is_a_translation=False):
         
-        if self.is_a_translation == False:
+        if is_a_translation:
+            self.is_a_translation = is_a_translation
+
+        if (not is_a_translation) and (not original_language): 
+            self.is_a_translation == False
+            self.original_language == ''
             return
 
         if not original_language: # original language is empty
@@ -959,6 +963,7 @@ class FantasyBook():
                 original_language = self.book_details_result_from_tables("BookOriginalLanguage") # reroll until not the same
         
         self.original_language = original_language
+        self.is_a_translation = True
 
     def percentage_of_text_missing_set(self,fraction_missing=None):
         
@@ -1042,12 +1047,9 @@ class FantasyBook():
 
         if not topic:
             topic = self.book_details_result_from_tables("BookTopicsACKS")
-            self.topic = topic
-            self.topic_apparent = topic
-            
-        else:
-            self.topic = topic
-            self.topic_apparent = topic
+           
+        self.topic = topic
+        self.topic_apparent = topic     
         
         if "Esoteric" in self.topic:
                 while "Esoteric" in topic: # keep picking apparent topic until not esoteric
@@ -1129,7 +1131,8 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=1500,overshoot=True,author_epithet = "the Slim", author_name = "Gregory Smith", author_title="Dr.", translator_name = "Bob Dole",translator_title = "The Reverend",translator_nationality = "Greek",translator_sex = "Male")
+books, books_value = produce_book_hoard(value=15000,overshoot=True)
+
 # print_book_hoard(books)
 export_books_to_excel(books)
 
