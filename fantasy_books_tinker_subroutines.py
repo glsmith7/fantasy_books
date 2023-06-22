@@ -21,9 +21,10 @@ global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_
 global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
 global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
+global DEFAULT_FONT
 global vocab_dictionary
 global lang_no_spaces, lang_limit_40_chars
-global default_font, dwarven_font, elvish_font
+
 
 vocab_dictionary = {}
 
@@ -47,6 +48,7 @@ DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_t
 DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 
 # fonts to display flavor titles in Excel properly
+DEFAULT_FONT = "Segoe UI Historic"
 
 # "Common" is just English. 
 # Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
@@ -73,28 +75,29 @@ dictionary_languages = {
         # "Classical": "arabic.txt",
     }
 
+
 font_languages = {
-        "Classical" : "Segoe UI Historic",
-        "Common": "Segoe UI Historic",
-        "Classical": "Segoe UI Historic", 
-        "Regional" : "Segoe UI Historic", 
-        "Ancient": "Segoe UI Historic",
+        "Classical" : DEFAULT_FONT,
+        "Common": DEFAULT_FONT,
+        "Classical": DEFAULT_FONT, 
+        "Regional" : DEFAULT_FONT, 
+        "Ancient": DEFAULT_FONT,
         "Dwarven" : "Noto Sans Runic",
         "Elvish" : "Tengwar Annatar",
-        # "Akkadian": "Segoe UI Historic",   
-        #"Arabic": "Segoe UI Historic",       
-        #"Armenian": "Segoe UI Historic",
-        #"Chinese": "Segoe UI Historic",
-        #"Cyrillic": "Segoe UI Historic",
-        #"Georgian": "Segoe UI Historic",
-        #"Gothic": "Segoe UI Historic",
-        #"Hebrew": "Segoe UI Historic",
-        #"Hindi": "Segoe UI Historic"
-        #"Kanji":"Segoe UI Historic",
-        #"Korean":"Segoe UI Historic",
+        # "Akkadian": DEFAULT_FONT,   
+        #"Arabic": DEFAULT_FONT,       
+        #"Armenian": DEFAULT_FONT,
+        #"Chinese": DEFAULT_FONT,
+        #"Cyrillic": DEFAULT_FONT,
+        #"Georgian": DEFAULT_FONT,
+        #"Gothic": DEFAULT_FONT,
+        #"Hebrew": DEFAULT_FONT,
+        #"Hindi": DEFAULT_FONT,
+        #"Kanji": DEFAULT_FONT,
+        #"Korean": DEFAULT_FONT,
     }
 lang_no_spaces = ["Chinese","Kanji","Korean"]
-lang_limit_40_chars = ["Akkadian","Ancient","Gothic"] # name given to self.current_language for each book.
+lang_limit_40_chars = ["Akkadian","Ancient","Gothic"]
 
 ##################### End of user-settable variables ###########################
 
@@ -241,7 +244,7 @@ def book_characteristics(books):
                                     'current_language',
                                     'is_a_translation',
                                     'original_language',
-                                    'book_title_flavor_for_translation',
+                                    'book_title_flavor',
                                     'translator_full_name',
                                     'book_type',
                                     'materials',
@@ -289,7 +292,7 @@ def book_characteristics(books):
             book_variables_in_chosen_order.append(item)
 
     current_language_index = book_variables_in_chosen_order.index('current_language')
-    flavor_title_index = book_variables_in_chosen_order.index('book_title_flavor_for_translation')
+    flavor_title_index = book_variables_in_chosen_order.index('book_title_flavor')
 
     return book_variables_in_chosen_order, current_language_index+1, flavor_title_index+1 # index starts 0, Excel starts 1
 
@@ -383,7 +386,7 @@ def print_book_hoard (books):
         print ("Apparent Topic:" + str(a.topic_apparent))
         print ("Topic title:" + str(a.topic_title_form))
         print ("Actual title:" + a.book_title)
-        print ("Title Flavor: " + str(a.book_title_flavor_for_translation))
+        print ("Title Flavor: " + str(a.book_title_flavor))
         print ("Age:" + str(a.age_at_discovery))
         print ("Format:" + str(a.format))
         print ("Template:" + str(a.template))
@@ -451,7 +454,7 @@ class FantasyBook():
         topic_apparent = "",
         topic_title_form = "",
         book_title = "",
-        book_title_flavor_for_translation = '',
+        book_title_flavor = '',
         sex = "",
         author_name = "",
         author_title = "",
@@ -500,7 +503,7 @@ class FantasyBook():
         self.topic_apparent = topic_apparent
         self.topic_title_form = topic_title_form
         self.book_title = book_title
-        self.book_title_flavor_for_translation = book_title_flavor_for_translation
+        self.book_title_flavor = book_title_flavor
         self.sex = sex
         self.author_name = author_name
         self.author_title = author_title
@@ -565,7 +568,7 @@ class FantasyBook():
         self.literary_value_set()
         self.weight_set()
         self.volumes_number_set()
-        self.flavor_text_title_set(self.book_title_flavor_for_translation)
+        self.flavor_text_title_set(self.book_title_flavor)
         self.percentage_of_text_missing_set(self.fraction_complete)
         self.esoteric_set()
         self.year_discovered = year_discovered
@@ -580,7 +583,7 @@ class FantasyBook():
         if not age:
             table_name = "BookAge_" + self.current_language # Ancient, Dwarvish, Elvish, Classical, Common are options
             dice_string = self.book_details_result_from_tables(table_name)
-            if self.is_a_translation == "True": 
+            if self.is_a_translation == True: 
                 self.age_at_discovery = d20.roll(TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL).total # bonus to age if is translation.
             
             self.age_at_discovery = self.age_at_discovery + d20.roll(dice_string).total
@@ -844,7 +847,7 @@ class FantasyBook():
                     flavor_text_title = "No flavor text designated for this language type."
                 flavor_text_title = flavor_text_title.capitalize()
 
-        self.book_title_flavor_for_translation = flavor_text_title
+        self.book_title_flavor = flavor_text_title
 
     def literary_value_set (self):
         target_table = "BookLiteraryValueScope" + str(self.scope)
@@ -1018,7 +1021,7 @@ class FantasyBook():
         else:
             self.translator, self.translator_nationality, self.translator_sex = self.name_generate()
             self.translator_title = self.person_title_generate(sex = self.translator_sex)
-            self.is_a_translation = "True"
+            self.is_a_translation = True
             self.translator_full_name = self.translator_title + " " + self.translator
         
         ### Give a title in foreign language
