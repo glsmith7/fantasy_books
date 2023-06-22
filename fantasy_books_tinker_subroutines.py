@@ -78,7 +78,6 @@ dictionary_languages = {
         # "Classical": "arabic.txt",
     }
 
-
 font_languages = {
         "Classical" : DEFAULT_EXCEL_FONT,
         "Common": DEFAULT_EXCEL_FONT,
@@ -248,25 +247,25 @@ def book_characteristics(books):
                                     'number_volumes',
                                     'number_pages',
                                     'weight',
+                                    'current_language',
+                                    'original_language',
                                     'topic',
                                     'topic_apparent',
                                     'scope',
                                     'scope_esoteric',
                                     'complexity',
                                     'complexity_esoteric',
+                                    'fraction_complete',
                                     'market_value',
                                     'book_title',
                                     'author_full',
                                     'translator_full_name',                             
-                                    'current_language',
-                                    'original_language',
                                     'book_title_flavor',
                                     'reading_time',
                                     'reference_time',
                                     'age_at_discovery',
                                     'number_extant_copies',
                                     'number_extant_available_to_place',
-                                    'fraction_complete',
                                     'rarity_modifier',
                                     'libraries_it_is_in',
                                     'author_epithet',
@@ -333,7 +332,25 @@ def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksh
     for item in book_columns:
         the_counter += 1
         ws.cell(row=1,column=the_counter,value=item)
-        ws.cell(row=1,column=the_counter).font = openpyxl_font(bold='bold')
+        ws.cell(row=1,column=the_counter).font = openpyxl_font(bold='bold',size=9)
+
+    # Make sure can save
+
+    try_to_save = True
+    while try_to_save:
+        try:
+            wb.save(filename) 
+        except:
+            print ("You've probably got the excel file open; can't save.")
+            user_response = input ("(T)ry again or (Q)uit? ")
+            
+            if user_response == "Q" or user_response == "q":
+                try_to_save = False
+                print ("Quitting without saving to Excel.")
+                sys.exit()
+                break
+        else:
+            try_to_save = False # ie succeeded
 
     # each row for a book
     the_counter = 0
@@ -343,19 +360,17 @@ def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksh
             row.append(getattr(books[book],attribute))
         ws.append(row)
         the_counter += 1
-        print ("Saving Book #" + str(the_counter))
+        print ("Saving Book #" + str(the_counter) + "/" + str(len(books)),end='\r')
+
             # now get language of the last row (just added) and set the proper font for the flavor title cell
         the_lang = ws.cell(row=ws.max_row,column=current_language_index)
         the_flavor = ws.cell(row=ws.max_row, column=flavor_title_index)
-        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)
+        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)     
 
-      
-        try:
-            wb.save(filename) 
-        except:
-                print ("You've probably got the excel file open; can't save.")
-                # need better error handling code
-                
+    wb.save(filename)
+    print ('') # get off the same line
+    
+
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
         titles are generated with a lorem_ipsum algorithm from random words in *.txt files in the folder lorem_ipsum_fantasy.
@@ -438,7 +453,7 @@ def produce_book_hoard (value=0,overshoot=False):
 
         while running_total < value:
             the_count += 1
-            print("Book #"+str(the_count))
+            print("Generating Book #"+str(the_count), end ='\r')
             books[the_count] = create_fantasy_book()
             running_total += books[the_count].market_value
 
@@ -450,7 +465,7 @@ def produce_book_hoard (value=0,overshoot=False):
         
         if books == {}:
             print ("Zero books made in hoard; retrying ....") # need better error checking to avoid endless loop if value too low.
-
+    print ('') # get off the same line
     return books, running_total
     
 ######################## CLASSES ########################
@@ -795,11 +810,14 @@ class FantasyBook():
                 
 
                 # Is apparent ratio >= to the esoteric?
+                if self.scope < 1: self.scope = 1 # self.scope can be very low if lots of text missing.
+
                 ratio_apparent = self.scope/self.complexity
                 ratio_esoteric = self.scope_esoteric/self.complexity_esoteric
 
                 if ratio_apparent >= ratio_esoteric: 
                     esoteric_ratios_correct = True
+                    self.scope = self.scope * self.fraction_complete
                 
                 else:
                     print ("ratio_apparent:" + str(ratio_apparent))
