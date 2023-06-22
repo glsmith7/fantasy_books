@@ -1,6 +1,7 @@
 import d20
 from lorem_text_fantasy import lorem as lf
 from math import ceil
+from openpyxl.styles import Font as openpyxl_font
 from openpyxl import load_workbook
 from openpyxl import Workbook
 import os
@@ -22,6 +23,7 @@ global CHANCE_OF_INCOMPLETE_WORK
 global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
 global vocab_dictionary
 global lang_no_spaces, lang_limit_40_chars
+global default_font, dwarven_font, elvish_font
 
 vocab_dictionary = {}
 
@@ -43,6 +45,12 @@ DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_t
 
 # if the above gives less than 3 words, this formula is used instead
 DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
+
+# fonts to display flavor titles in Excel properly
+
+default_font = openpyxl_font(name='Segoe UI Historic')
+dwarven_font = openpyxl_font(name='Noto Sans Runic')
+elvish_font = openpyxl_font(name = 'Tengwar Annatar')
 
 # "Common" is just English. 
 # Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
@@ -67,6 +75,27 @@ dictionary_languages = {
         #"Kanji":"kanji.txt",
         #"Korean":"korean.txt",
         #"Classical": "korean.txt",
+    }
+
+font_languages = {
+        "Classical" : "Segoe UI Historic",
+        "Common": "Segoe UI Historic",
+        "Classical": "Segoe UI Historic", 
+        "Regional" : "Segoe UI Historic", 
+        "Ancient": "Segoe UI Historic",
+        "Dwarven" : "BableStone Runic",
+        "Elvish" : "Tengwar Annatar",
+        #"Akkadian": "Segoe UI Historic",   
+        #"Arabic": "",       
+        #"Armenian": "",
+        #"Chinese": "",
+        #"Cyrilic": "",
+        #"Georgian": "",
+        #"Gothic": "",
+        #"Hebrew": "",
+        #"Hindi": ""
+        #"Kanji":"",
+        #"Korean":"",
     }
 lang_no_spaces = ["Chinese","Kanji","Korean"]
 lang_limit_40_chars = ["Akkadian","Ancient","Gothic"] # name given to self.current_language for each book.
@@ -210,7 +239,63 @@ def book_characteristics(books):
                    if not attribute.startswith('__')
                    and not callable(getattr(books[1], attribute))
                    ]
-    return book_attributes
+    # edit these to make appear in the Excel output in a different order
+    book_variables_in_chosen_order = ['book_title',
+                                    'author_full',
+                                    'current_language',
+                                    'is_a_translation',
+                                    'original_language',
+                                    'book_title_flavor_for_translation',
+                                    'translator_full_name',
+                                    'book_type',
+                                    'materials',
+                                    'topic',
+                                    'topic_apparent',
+                                    'complexity',
+                                    'complexity_esoteric',
+                                    'reading_time',
+                                    'reference_time',
+                                    'age_at_discovery',
+                                    'number_volumes',
+                                    'number_pages',
+                                    'weight',
+                                    'number_extant_copies',
+                                    'number_extant_available_to_place',
+                                    'fraction_complete',
+                                    'format',
+                                    'rarity_modifier',
+                                    'market_value',
+                                    'libraries_it_is_in',
+                                    'author_epithet',
+                                    'author_name',
+                                    'author_nationality',
+                                    'author_title',
+                                    'sex',
+                                    'translator',
+                                    'translator_nationality',
+                                    'translator_sex',
+                                    'translator_title',
+                                    'weight_per_page',
+                                    'template',
+                                    'topic_title_form',
+                                    'cost_per_page',
+                                    'production_value',
+                                    'literary_value_base',
+                                    'literary_value_modified',
+                                    'esoteric_literary_value_base',
+                                    'esoteric_literary_value_modified',
+                                    'year_discovered',
+                                    'year_written']
+    
+    # this bit adds any variables that have been omitted from the above list, so all will be displayed even if user error.
+    for item in book_attributes:
+        if item not in book_variables_in_chosen_order:
+            book_variables_in_chosen_order.append(item)
+
+    current_language_index = book_variables_in_chosen_order.index('current_language')
+    flavor_title_index = book_variables_in_chosen_order.index('book_title_flavor_for_translation')
+
+    return book_variables_in_chosen_order, current_language_index+1, flavor_title_index+1 # index starts 0, Excel starts 1
 
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
@@ -225,14 +310,15 @@ def create_fantasy_book(book_type=None, **kwargs):
     return FantasyBook(**kwargs)
 
 def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksheet = "Book Hoard"):
-    book_columns = book_characteristics(books)
+    book_columns,current_language_index, flavor_title_index= book_characteristics(books)
     
+    print (current_language_index, flavor_title_index)
     try:
         wb = load_workbook(filename= filename)
     except:
         wb = Workbook()
 
-    if worksheet in wb.sheetnames:
+    if worksheet in wb.sheetnames: 
         ws = wb[worksheet]
     else:
         ws = wb.create_sheet(title=worksheet)
@@ -247,7 +333,14 @@ def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksh
         for attribute in book_columns:
             row.append(getattr(books[book],attribute))
         ws.append(row)
-
+        last_row_number = ws.max_row
+        the_lang = ws.cell(row=last_row_number,column=current_language_index)
+        if the_lang.value == "Dwarven":
+            the_flavor = ws.cell(row=last_row_number, column=flavor_title_index)
+            the_flavor.font = dwarven_font
+        elif the_lang.value == "Elvish":
+            the_flavor = ws.cell(row=last_row_number, column=flavor_title_index)
+            the_flavor.font = elvish_font
     try:
         wb.save(filename) 
     except:
@@ -965,12 +1058,21 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=10000,overshoot=False)
+books, books_value = produce_book_hoard(value=50000,overshoot=False)
 # print_book_hoard(books)
 export_books_to_excel(books)
 
 print ("TOTAL: " + str(books_value))
 print ("Number of books: " + str (len(books)))
+
+### Notes:
+
+# Font location in RegEdit: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Fonts
+# Font BabelStone Runic shows dwarf runes
+## license - https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL
+# Font Segoe UI Historic shows cuneiform and all others [seguihis.ttf]
+# Tengwar Annatar - for elven.
+
 
 #### Print attributes and value with numbering
 # count = 0
