@@ -719,9 +719,6 @@ class FantasyBook():
         if book_title: 
             self.book_title = book_title
             self.template = "Final title passed in as: " + book_title
-
-        if template:
-            self.template = template
         
         else:
             if not template: template = titles_template_list_general.df.sample().iloc[0,0]
@@ -1131,7 +1128,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=15000,overshoot=True)
+books, books_value = produce_book_hoard(value=15000,overshoot=True,book_title="Necronomicron")
 
 # print_book_hoard(books)
 export_books_to_excel(books)
