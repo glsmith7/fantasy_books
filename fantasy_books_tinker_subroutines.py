@@ -600,7 +600,9 @@ class FantasyBook():
         self.book_title_set(book_title = self.book_title)
         self.materials_set(materials = self.materials)
         self.rarity_set(rarity_modifier = self.rarity_modifier, number_extant_copies = self.number_extant_copies, number_extant_available_to_place = self.number_extant_available_to_place)
-        self.number_pages_set()
+
+        # these are all calculated based on other values above
+        self.number_pages_set(number_pages = self.number_pages)
         self.reading_time_set()
         self.production_value_set()
         self.literary_value_set()
@@ -941,8 +943,12 @@ class FantasyBook():
 
         return author_name, author_nationality, sex
     
-    def number_pages_set(self):
-        self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
+    def number_pages_set(self, number_pages = None):
+        if number_pages:
+            self.number_pages = number_pages
+        
+        else:
+            self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
 
     def original_language_set(self, original_language=None,is_a_translation=False):
         
