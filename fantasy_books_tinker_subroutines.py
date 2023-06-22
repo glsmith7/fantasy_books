@@ -1,6 +1,8 @@
 import d20
 from lorem_text_fantasy import lorem as lf
 from math import ceil
+from openpyxl import load_workbook
+from openpyxl import Workbook
 import os
 import random as random
 import rpg_tables as r
@@ -203,6 +205,13 @@ for i in list_of_surnames_tables:
 
 ######################## FUNCTIONS ########################
 
+def book_characteristics(books):
+    book_attributes = [attribute for attribute in dir(books[1])
+                   if not attribute.startswith('__')
+                   and not callable(getattr(books[1], attribute))
+                   ]
+    return book_attributes
+
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
     book_type = string.capwords(str(book_type))
@@ -214,6 +223,35 @@ def create_fantasy_book(book_type=None, **kwargs):
     #     return MagicBook(**kwargs)
     # else:
     return FantasyBook(**kwargs)
+
+def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksheet = "Book Hoard"):
+    book_columns = book_characteristics(books)
+    
+    try:
+        wb = load_workbook(filename= filename)
+    except:
+        wb = Workbook()
+
+    if worksheet in wb.sheetnames:
+        ws = wb[worksheet]
+    else:
+        ws = wb.create_sheet(title=worksheet)
+
+    the_counter = 0
+    for item in book_columns:
+        the_counter += 1
+        ws.cell(row=1,column=the_counter,value=item)
+
+    for book in books:
+        row = []
+        for attribute in book_columns:
+            row.append(getattr(books[book],attribute))
+        ws.append(row)
+
+    try:
+        wb.save(filename) 
+    except:
+        print ("You've probably got the excel file open; can't save.")
 
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
@@ -289,20 +327,26 @@ def produce_book_hoard (value=0,overshoot=False):
     ''' produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
     '''
     books = {}
-    running_total = 0
-    the_count = 0
 
-    while running_total < value:
-        the_count += 1
-        books[the_count] = create_fantasy_book()
-        running_total += books[the_count].market_value
+    while books == {}:
+    
+        running_total = 0
+        the_count = 0
 
-    if overshoot: 
-        pass    
-    else:
-        running_total -= books[len(books)].market_value # subtract last value that put us over the top
-        books.popitem() # delete last book which put over the top
+        while running_total < value:
+            the_count += 1
+            books[the_count] = create_fantasy_book()
+            running_total += books[the_count].market_value
+
+        if overshoot: 
+            pass    
+        else:
+            running_total -= books[len(books)].market_value # subtract last value that put us over the top
+            books.popitem() # delete last book which put over the top
         
+        if books == {}:
+            print ("Zero books made in hoard; retrying ....") # need better error checking to avoid endless loop if value too low.
+
     return books, running_total
     
 ######################## CLASSES ########################
@@ -338,7 +382,7 @@ class FantasyBook():
         translator_full_name = '',
         format = "",
         materials = "",
-        libraries_it_is_in = [],
+        libraries_it_is_in = '',
         number_extant_copies = 0,
         number_extant_available_to_place = 0,
         scope = 0,
@@ -922,7 +966,19 @@ class MagicBook(FantasyBook):
 ######################## main() ########################
 
 books, books_value = produce_book_hoard(value=10000,overshoot=False)
-print_book_hoard(books)
+# print_book_hoard(books)
+export_books_to_excel(books)
 
 print ("TOTAL: " + str(books_value))
 print ("Number of books: " + str (len(books)))
+
+#### Print attributes and value with numbering
+# count = 0
+# for item in book_characteristics:
+#     print (str(count) + " " + str(item))
+#     count += 1
+
+# count = 0
+# for item in row:
+#     print (str(count) + " " + str(item))
+#     count += 1
