@@ -236,79 +236,9 @@ def import_language_words():
 
     return vocab_dictionary
 
-def produce_book_hoard (value=0,overshoot=False):
-    ''' produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
-    '''
-    books = {}
-    running_total = 0
-    the_count = 0
-
-    while running_total < value:
-        the_count += 1
-        books[the_count] = create_fantasy_book()
-        running_total += books[the_count].market_value
-
-    if overshoot: 
-        pass    
-    else:
-        running_total -= books[len(books)].market_value # subtract last value that put us over the top
-        books.popitem() # delete last book which put over the top
-        
-    
-    for z in range (1,(len(books)+1)):
-        a = books[z]
-        print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ----> " + str(z))
-        print ("Book type:" + str(a.book_type))
-        print ("Current Lang:" + str(a.current_language))
-        print ("Original Lang:" + str(a.original_language))
-        print ("Translator:" + str(a.translator))
-        print ("Translator title:" + str(a.translator_title))
-        print ("Translator sex:" + str(a.translator_sex))
-        print ("Translator full name:" + str(a.translator_full_name))
-        print ("Reading time:" + str(a.reading_time))
-        print ("Reference time:" + str(a.reference_time))
-        print ("Sex:" + str(a.sex))
-        print ("Epithet:" + str(a.author_epithet))
-        print ("Author title:" + str(a.author_title))
-        print ("Author:" + str(a.author_full))
-        print ("Author nationality:" + str(a.author_nationality))
-        print ("Topic:" + str(a.topic))
-        print ("Apparent Topic:" + str(a.topic_apparent))
-        print ("Topic title:" + str(a.topic_title_form))
-        print ("Actual title:" + a.book_title)
-        print ("Title Flavor: " + str(a.book_title_flavor_for_translation))
-        print ("Age:" + str(a.age_at_discovery))
-        print ("Format:" + str(a.format))
-        print ("Template:" + str(a.template))
-        print ("Materials:" + str(a.materials))
-        print ("Extant copies:" + str(a.number_extant_copies))
-        print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
-        print ("Scope:" + str(a.scope))
-        print ("Esoteric scope:" + str(a.scope_esoteric))
-        print ("Rarity modifier: " + str(a.rarity_modifier))
-        print ("Number pages:" + str(a.number_pages))
-        print ("Cost per page:" + str(a.cost_per_page))
-        print ("Production value:" + str(a.production_value))
-        print ("Complex:" + str(a.complexity))
-        print ("Lit value base:" + str(a.literary_value_base))
-        print ("Lit value mod:" + str(a.literary_value_modified))
-        print ("Esoteric complexity:" + str(a.complexity_esoteric))
-        print ("Esoteric value base:" + str(a.esoteric_literary_value_base))
-        print ("Esoteric value mod:" + str(a.esoteric_literary_value_modified))
-        print ("Market value: " + str (a.market_value))
-        print ("Weight per page: " + str (a.weight_per_page))
-        print ("Weight: " + str(a.weight))
-        print ("Volumes: " + str(a.number_volumes))
-        print ("Fraction complete: " + str(a.fraction_complete))
-        print ("---")
-
-
-    print ("TOTAL: " + str(running_total))
-    print ("Number of books: " + str (len(books)))
 ######################## CLASSES ########################
 
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
-
 class FantasyBook():
     ''' Fantasy book object.'''
 
@@ -912,6 +842,32 @@ class FantasyBook():
         self.weight_per_page = self.look_up_table(result_column="Result",table_name="BookWeight",search_column="Material",search_term=self.materials)
         self.weight = ceil(self.weight_per_page * self.number_pages)
 
+# class EsotericBook(FantasyBook):
+#     ''' Subclass of fantasy book, that has a few extra values.'''
+#     def __init__ (self,
+#         book_type = "Esoteric",
+#         esoteric_complexity = '', 
+#         esoteric_scope = '', 
+#         esoteric_topic = []):
+
+#         super().__init__(self)
+#         self.book_type = book_type
+#         self.esoteric_complexity = esoteric_complexity
+        # self.esoteric_scope = esoteric_scope
+        # self.esoteric_topic = esoteric_topic
+
+class AuthoritativeBook(FantasyBook):
+    ''' Subclass of fantasy book, that has a few extra values.'''
+    def __init__ (self,
+        book_type = "Authoritative",
+        authoritative_field = '', 
+        authority_rank = '',
+                ):
+        super().__init__(self)
+        self.book_type = book_type
+        self.authoritative_field = authoritative_field
+        self.authority_rank = authority_rank
+
 class MagicBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
     def __init__ (self,
@@ -921,4 +877,56 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-produce_book_hoard(value=10000,overshoot=False)
+number_to_run = 100
+book = {}
+for z in range(0,number_to_run):
+    print (z)
+    book[z] = create_fantasy_book()
+    
+for z in range (0,number_to_run):
+    a = book[z]
+    print ("Book type:" + str(a.book_type))
+    print ("Current Lang:" + str(a.current_language))
+    print ("Original Lang:" + str(a.original_language))
+    print ("Translator:" + str(a.translator))
+    print ("Translator title:" + str(a.translator_title))
+    print ("Translator sex:" + str(a.translator_sex))
+    print ("Translator full name:" + str(a.translator_full_name))
+    print ("Reading time:" + str(a.reading_time))
+    print ("Reference time:" + str(a.reference_time))
+    print ("Sex:" + str(a.sex))
+    print ("Epithet:" + str(a.author_epithet))
+    print ("Author title:" + str(a.author_title))
+    print ("Author:" + str(a.author_full))
+    print ("Author nationality:" + str(a.author_nationality))
+    print ("Topic:" + str(a.topic))
+    print ("Apparent Topic:" + str(a.topic_apparent))
+    print ("Topic title:" + str(a.topic_title_form))
+    print ("Actual title:" + a.book_title)
+    print ("Title Flavor: " + str(a.book_title_flavor_for_translation))
+    print ("Age:" + str(a.age_at_discovery))
+    print ("Format:" + str(a.format))
+    print ("Template:" + str(a.template))
+    print ("Materials:" + str(a.materials))
+    print ("Extant copies:" + str(a.number_extant_copies))
+    print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
+    print ("##################################################")
+    print ("Scope:" + str(a.scope))
+    print ("Esoteric scope:" + str(a.scope_esoteric))
+    print ("Rarity modifier: " + str(a.rarity_modifier))
+    print ("Number pages:" + str(a.number_pages))
+    print ("Cost per page:" + str(a.cost_per_page))
+    print ("Production value:" + str(a.production_value))
+    print ("Complex:" + str(a.complexity))
+    print ("Lit value base:" + str(a.literary_value_base))
+    print ("Lit value mod:" + str(a.literary_value_modified))
+    print ("Esoteric complexity:" + str(a.complexity_esoteric))
+    print ("Esoteric value base:" + str(a.esoteric_literary_value_base))
+    print ("Esoteric value mod:" + str(a.esoteric_literary_value_modified))
+    print (" ********** Reality check:" + str(a.esoteric_literary_value_modified + a.literary_value_modified + a.production_value))
+    print ("Market value: " + str (a.market_value))
+    print ("Weight per page: " + str (a.weight_per_page))
+    print ("Weight: " + str(a.weight))
+    print ("Volumes: " + str(a.number_volumes))
+    print ("Fraction complete: " + str(a.fraction_complete))
+    print ("---")
