@@ -33,7 +33,7 @@ vocab_dictionary = {}
 # USER SETABLE variables
 #########################################################
 ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO = 'Ancient'
-CHANCE_OF_BEING_TRANSLATION = 10 # # 0-100%
+CHANCE_OF_BEING_TRANSLATION = 100 # # 0-100%
 CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
 CHANCE_OF_TITLE_IN_AUTHOR_NAME = 50 # 0-100%
 CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
@@ -273,7 +273,7 @@ def book_characteristics(books):
                                     'author_nationality',
                                     'author_title',
                                     'author_sex',
-                                    'translator',
+                                    'translator_name',
                                     'translator_nationality',
                                     'translator_sex',
                                     'translator_title',
@@ -315,7 +315,8 @@ def create_fantasy_book(book_type=None, **kwargs):
     return FantasyBook(**kwargs)
 
 def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksheet = "Book Hoard"):
-    book_columns,current_language_index, flavor_title_index= book_characteristics(books)
+    
+    book_columns,current_language_index, flavor_title_index = book_characteristics(books)
     
     try:
         wb = load_workbook(filename= filename)
@@ -360,16 +361,15 @@ def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksh
             row.append(getattr(books[book],attribute))
         ws.append(row)
         the_counter += 1
-        print ("Saving Book #" + str(the_counter) + "/" + str(len(books)),end='\r')
+        print ("Saving Book #" + str(the_counter) + "/" + str(len(books)) + " (" + str((int(100*the_counter/len(books)))) + "%)",end='\r')
 
             # now get language of the last row (just added) and set the proper font for the flavor title cell
         the_lang = ws.cell(row=ws.max_row,column=current_language_index)
         the_flavor = ws.cell(row=ws.max_row, column=flavor_title_index)
-        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)     
+        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)
 
     wb.save(filename)
-    print ('') # get off the same line
-    
+    print ('') # get off the same line    
 
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
@@ -441,9 +441,13 @@ def print_book_hoard (books):
         print ("Fraction complete: " + str(a.fraction_complete))
         print ("---")
 
-def produce_book_hoard (value=0,overshoot=False):
+def produce_book_hoard (value=0,overshoot=False, **kwargs):
     ''' produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
     '''
+    def update_book_status(the_count, running_total,value):
+        print (" " * 80,end='\r') # blank the line
+        print("Generating Book #" + str(the_count) + " --> " + str(running_total) + " gp/" + str (value) + " (" + str((int(100*running_total/value))) + "%)", end ='\r')
+
     books = {}
 
     while books == {}:
@@ -453,16 +457,17 @@ def produce_book_hoard (value=0,overshoot=False):
 
         while running_total < value:
             the_count += 1
-            print("Generating Book #"+str(the_count), end ='\r')
-            books[the_count] = create_fantasy_book()
+            books[the_count] = create_fantasy_book(**kwargs)
             running_total += books[the_count].market_value
+            update_book_status(the_count, running_total,value)
 
         if overshoot: 
             pass    
         else:
             running_total -= books[len(books)].market_value # subtract last value that put us over the top
             books.popitem() # delete last book which put over the top
-        
+            update_book_status(the_count, running_total,value)
+
         if books == {}:
             print ("Zero books made in hoard; retrying ....") # need better error checking to avoid endless loop if value too low.
     print ('') # get off the same line
@@ -485,6 +490,7 @@ class FantasyBook():
         topic_title_form = "",
         book_title = "",
         book_title_flavor = '',
+        final_title = '',
         author_sex = "",
         author_name = "",
         author_title = "",
@@ -494,7 +500,7 @@ class FantasyBook():
         current_language = "",
         original_language = "",
         is_a_translation = False,
-        translator = "",
+        translator_name = "",
         translator_nationality = "",
         translator_sex = '',
         translator_title = '',
@@ -534,6 +540,7 @@ class FantasyBook():
         self.topic_title_form = topic_title_form
         self.book_title = book_title
         self.book_title_flavor = book_title_flavor
+        self.final_title = final_title
         self.author_sex = author_sex
         self.author_name = author_name
         self.author_title = author_title
@@ -543,7 +550,7 @@ class FantasyBook():
         self.current_language = current_language
         self.original_language = original_language
         self.is_a_translation = is_a_translation
-        self.translator = translator
+        self.translator_name = translator_name
         self.translator_nationality = translator_nationality
         self.translator_sex = translator_sex
         self.translator_title = translator_title
@@ -578,7 +585,10 @@ class FantasyBook():
         self.scope_set(self.scope)
         self.current_language_set(self.current_language)
         self.age_set(self.age_at_discovery)
-        self.translator_set() # must be called before original_language_set
+        
+        # translator_set must be called before original_language_set
+        self.translator_set(translator_name=self.translator_name,translator_sex = self.translator_sex,translator_nationality=self.translator_nationality, translator_title=self.translator_title,translator_full_name=self.translator_full_name) 
+        
         self.original_language_set(self.original_language)
         self.topic_set(self.topic)
         self.topic_title_set(self.topic_title_form)
@@ -589,7 +599,7 @@ class FantasyBook():
         self.author_full_set (self.author_full)
         self.complexity_set(self.complexity)
         self.format_set(self.format)
-        self.book_title_set(self.book_title)
+        self.book_title_set(book_title = self.book_title,final_title = self.final_title)
         self.materials_set(self.materials)
         self.rarity_set()
         self.number_pages_set()
@@ -609,7 +619,7 @@ class FantasyBook():
         ''' Add this book to a given library'''
         self.libraries_it_is_in.append(library)
 
-    def age_set(self,age):
+    def age_set(self,age=None):
         if not age:
             table_name = "BookAge_" + self.current_language # Ancient, Dwarvish, Elvish, Classical, Common are options
             dice_string = self.book_details_result_from_tables(table_name)
@@ -620,14 +630,14 @@ class FantasyBook():
         else:
             self.age_at_discovery = age
     
-    def author_epithet_set (self, author_epithet):
+    def author_epithet_set (self, author_epithet=None):
         if not author_epithet:
             if CHANCE_OF_EPITHET_IN_AUTHOR_NAME > d20.roll("1d100").total:
                 author_epithet = epithets_table.df.sample() # a random option is then chosen
                 author_epithet = author_epithet.iloc[0,0]         
         self.author_epithet = author_epithet            
 
-    def author_full_set (self, author_full):
+    def author_full_set (self, author_full=None):
         # put it all together
         if not author_full:
 
@@ -637,16 +647,17 @@ class FantasyBook():
         
         self.author_full = author_full
     
-    def author_name_set(self,author_name):
+    def author_name_set(self,author_name=None,author_nationality = None):
         
         if not author_name:        
              
             author_name, author_nationality, _ = self.name_generate(sex = self.author_sex)
             
-            self.author_name = author_name
-            self.author_nationality = author_nationality
+        self.author_name = author_name
+        self.author_nationality = author_nationality
 
-    def author_title_set(self, author_title):
+
+    def author_title_set(self, author_title=None):
         if not author_title:
             self.author_title = self.person_title_generate(sex = self.author_sex)
         else:
@@ -685,6 +696,7 @@ class FantasyBook():
             study_in=None, 
             study_on=None, 
             template=None,
+            book_title=None,
             final_title=None,
             conjunction_about=None,
             conjunction_by=None,
@@ -707,7 +719,10 @@ class FantasyBook():
 
         avoid_special_class_of_title = True
 
-        if final_title: self.book_title = final_title
+        if final_title: 
+            self.book_title = final_title
+            self.final_title = final_title
+            self.template = template
         
         else:
             if not template: template = titles_template_list_general.df.sample().iloc[0,0]
@@ -753,7 +768,7 @@ class FantasyBook():
             self.template = template
 
             self.book_title = template.format(
-                adjective_1=adjective_1, 
+                adjective_1 = adjective_1, 
                 noun_1 = noun_1, 
                 noun_2 = noun_2, 
                 study_of = study_of, 
@@ -778,7 +793,7 @@ class FantasyBook():
                 the_1 = the_1
             )
 
-    def complexity_set(self,complexity):
+    def complexity_set(self,complexity=None):
         if not complexity:
             complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since list index starts at zero.
             if complexity_from_table >= 1: complexity_from_table = int(complexity_from_table) # doesn't integerize 0.75
@@ -787,7 +802,7 @@ class FantasyBook():
         else:
             self.complexity = complexity   
     
-    def current_language_set(self, current_language):
+    def current_language_set(self, current_language = None):
         if not current_language:
             self.current_language = self.book_details_result_from_tables("BookCurrentLanguage")
         else:
@@ -807,21 +822,18 @@ class FantasyBook():
                 if esoteric_complexity_from_table >= 1: esoteric_complexity_from_table = int(esoteric_complexity_from_table)      
                 self.complexity_esoteric = esoteric_complexity_from_table
 
-                
-
                 # Is apparent ratio >= to the esoteric?
-                if self.scope < 1: self.scope = 1 # self.scope can be very low if lots of text missing.
+                if self.scope < 1: self.scope = 1 # self.scope can be very low if lots of the book is missing. Corrected below
 
                 ratio_apparent = self.scope/self.complexity
                 ratio_esoteric = self.scope_esoteric/self.complexity_esoteric
 
                 if ratio_apparent >= ratio_esoteric: 
                     esoteric_ratios_correct = True
-                    self.scope = self.scope * self.fraction_complete
-                
+                    self.scope = self.scope * self.fraction_complete # restores from previous set = 1.
+                    
                 else:
-                    print ("ratio_apparent:" + str(ratio_apparent))
-                    print ("ratio_esoteric:" + str(ratio_esoteric))
+                    pass
     
             self.esoteric_value_set()
 
@@ -833,10 +845,10 @@ class FantasyBook():
             search_term = self.complexity_esoteric,
             result_column="LiteraryValue"
             )
-        self.esoteric_literary_value_modified = ceil (self.esoteric_literary_value_base * self.rarity_modifier) * self.number_pages * 5 # Writer of 18 Intelligence needed
+        self.esoteric_literary_value_modified = ceil (self.esoteric_literary_value_base * self.rarity_modifier) * self.number_pages * 5 # Writer of 18 Intelligence needed; hence the 5.
         self.market_value = ceil(self.literary_value_modified + self.esoteric_literary_value_modified + self.production_value)
 
-    def format_set(self, format):
+    def format_set(self, format = None):
         if not format:
             target_table = "BookAge_Format_"
             if self.age_at_discovery < 11: target_table += "0001_0010"
@@ -851,7 +863,7 @@ class FantasyBook():
         else:
             self.format = format
     
-    def flavor_text_title_set(self, flavor_text_title):
+    def flavor_text_title_set(self, flavor_text_title=None):
         
         if not flavor_text_title:
 
@@ -906,7 +918,7 @@ class FantasyBook():
         t = r.LookUpTable(query = query)
         return t.result   
     
-    def materials_set (self, materials):
+    def materials_set (self, materials=None):
         if not materials:
             target_table = "BookMaterials" + self.format
             self.materials = self.book_details_result_from_tables(target_table)
@@ -935,7 +947,7 @@ class FantasyBook():
     def number_pages_set(self):
         self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
 
-    def original_language_set(self, original_language):
+    def original_language_set(self, original_language=None):
         
         if self.is_a_translation == False:
             return
@@ -948,7 +960,7 @@ class FantasyBook():
         
         self.original_language = original_language
 
-    def percentage_of_text_missing_set(self,fraction_missing):
+    def percentage_of_text_missing_set(self,fraction_missing=None):
         
         if not fraction_missing:
             if CHANCE_OF_INCOMPLETE_WORK >= d20.roll("1d100").total:
@@ -968,7 +980,7 @@ class FantasyBook():
         self.market_value = round(self.market_value * fraction_complete)
         self.fraction_complete = round(fraction_complete,2)
     
-    def person_title_generate (self,sex):
+    def person_title_generate (self,sex="Male"):
         global author_title_table
         author_title = ''
 
@@ -1013,32 +1025,37 @@ class FantasyBook():
         except ValueError:
             print ("The book _{}_ is not in {} library.".format(self.title, library))
     
-    def scope_set(self, scope):
+    def scope_set(self, scope=None):
         if not scope:
             self.scope = self.book_details_result_from_tables("BookScope")
         else:
             self.scope = scope
     
-    def sex_set (self, author_sex):
+    def sex_set (self, author_sex=None):
         if not author_sex:
             if d20.roll("1d100").total <= CHANCE_OF_FEMALE_AUTHOR: self.author_sex = "Female"
             else: self.author_sex = "Male"
         else:
             self.author_sex = author_sex
     
-    def topic_set (self, topic):
+    def topic_set (self, topic=None):
 
         if not topic:
             topic = self.book_details_result_from_tables("BookTopicsACKS")
             self.topic = topic
             self.topic_apparent = topic
-            if "Esoteric" in topic:
+            
+        else:
+            self.topic = topic
+            self.topic_apparent = topic
+        
+        if "Esoteric" in self.topic:
                 while "Esoteric" in topic: # keep picking apparent topic until not esoteric
                     topic = self.book_details_result_from_tables("BookTopicsACKS")
                     
                 self.topic_apparent = topic
                   
-    def topic_title_set(self,topic_title_form):
+    def topic_title_set(self,topic_title_form=None):
         if not topic_title_form:
 
             t = self.look_up_table(
@@ -1055,18 +1072,34 @@ class FantasyBook():
         else:
             self.topic_title_form = topic_title_form
 
-    def translator_set (self):
+    def translator_set (self,translator_name=None,translator_sex = None,translator_nationality=None, translator_title=None,translator_full_name=None):
         roll_to_see_if_it_is_a_translation = d20.roll("1d100").total
-        if (roll_to_see_if_it_is_a_translation > CHANCE_OF_BEING_TRANSLATION) or (ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO.__contains__(self.current_language)):
-            self.translator = "N/A"
-            self.is_a_translation = False
-        else:
-            self.translator, self.translator_nationality, self.translator_sex = self.name_generate()
-            self.translator_title = self.person_title_generate(sex = self.translator_sex)
+
+        self.is_a_translation = False
+        self.translator_full_name = translator_full_name
+
+        if (translator_name or translator_full_name) and (self.current_language not in ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO):
             self.is_a_translation = True
-            self.translator_full_name = self.translator_title + " " + self.translator
-        
-        ### Give a title in foreign language
+            self.translator_nationality = translator_nationality
+            self.translator_title = translator_title
+            self.translator_name = translator_name
+            self.translator_sex = translator_sex
+
+            if translator_full_name:
+                self.translator_full_name = translator_full_name
+            else:
+                self.translator_full_name = self.translator_title + " " + self.translator_name
+
+        elif (roll_to_see_if_it_is_a_translation < CHANCE_OF_BEING_TRANSLATION) and (self.current_language not in ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO):
+            self.is_a_translation = True
+            self.translator_name, self.translator_nationality, self.translator_sex = self.name_generate()
+            self.translator_title = self.person_title_generate(sex = self.translator_sex)
+            self.translator_full_name = self.translator_title + " " + self.translator_name
+
+        else:
+            
+            self.is_a_translation = False
+
 
     def volumes_number_set(self):
         if self.format == "Codex":
@@ -1096,7 +1129,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=20000,overshoot=True)
+books, books_value = produce_book_hoard(value=1500,overshoot=True,author_epithet = "the Slim", author_name = "Gregory Smith", author_title="Dr.", translator_name = "Bob Dole",translator_title = "The Reverend",translator_nationality = "Greek",translator_sex = "Male")
 # print_book_hoard(books)
 export_books_to_excel(books)
 
