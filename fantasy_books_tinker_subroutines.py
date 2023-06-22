@@ -595,12 +595,11 @@ class FantasyBook():
         self.author_name_set(author_name = self.author_name)
         self.author_title_set (author_title = self.author_title)
         self.author_full_set (author_full = self.author_full)
-
         self.complexity_set(complexity = self.complexity)
         self.format_set(format = self.format)
         self.book_title_set(book_title = self.book_title)
         self.materials_set(materials = self.materials)
-        self.rarity_set()
+        self.rarity_set(rarity_modifier = self.rarity_modifier, number_extant_copies = self.number_extant_copies, number_extant_available_to_place = self.number_extant_available_to_place)
         self.number_pages_set()
         self.reading_time_set()
         self.production_value_set()
@@ -915,9 +914,11 @@ class FantasyBook():
         return t.result   
     
     def materials_set (self, materials=None):
+        
         if not materials:
             target_table = "BookMaterials" + self.format
             self.materials = self.book_details_result_from_tables(target_table)
+
         else:
             self.materials = materials
    
@@ -1007,14 +1008,28 @@ class FantasyBook():
         self.cost_per_page = self.look_up_table(result_column="Cost",table_name=target_table,search_column="Material",search_term=self.materials)
         self.production_value = ceil(self.cost_per_page * self.number_pages)
         
-    def rarity_set(self):
+    def rarity_set(self, rarity_modifier = None, number_extant_copies = None, number_extant_available_to_place = None):
         the_roll = d20.roll("1d100").total # this same value needed twice, so must roll it first so can be passed.
 
-        dice_string_determine_number_copies = self.book_details_result_from_tables("BookRarityCopies", roll_result= the_roll)
-        number_of_copies_roll = d20.roll(dice_string_determine_number_copies).total
-        self.number_extant_copies = number_of_copies_roll
-        self.number_extant_available_to_place = (self.number_extant_copies - 1) # ie, less this one.
-        self.rarity_modifier = self.book_details_result_from_tables("BookRarityModifier",roll_result=the_roll)
+        if number_extant_copies:
+            self.number_extant_copies = number_extant_copies
+        
+        else:
+            dice_string_determine_number_copies = self.book_details_result_from_tables("BookRarityCopies", roll_result= the_roll)
+            number_of_copies_roll = d20.roll(dice_string_determine_number_copies).total
+            self.number_extant_copies = number_of_copies_roll
+        
+        if number_extant_available_to_place:
+            self.number_extant_available_to_place = number_extant_available_to_place
+
+        else:
+            self.number_extant_available_to_place = (self.number_extant_copies - 1) # ie, less this one.
+
+        if rarity_modifier:
+            self.rarity_modifier = rarity_modifier
+        
+        else:
+            self.rarity_modifier = self.book_details_result_from_tables("BookRarityModifier",roll_result=the_roll)
 
     def reading_time_set(self):
         self.reading_time = ceil(self.number_pages//180)
