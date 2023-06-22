@@ -48,10 +48,6 @@ DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 
 # fonts to display flavor titles in Excel properly
 
-default_font = openpyxl_font(name='Segoe UI Historic')
-dwarven_font = openpyxl_font(name='Noto Sans Runic')
-elvish_font = openpyxl_font(name = 'Tengwar Annatar')
-
 # "Common" is just English. 
 # Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
 
@@ -67,14 +63,14 @@ dictionary_languages = {
         #"Arabic": "arabic.txt",       # ... adjust to taste, however.
         #"Armenian": "armenian.txt",
         #"Chinese": "chinese.txt",
-        #"Cyrilic": "cyrilic.txt",
+        #"Cyrilic": "cyrillic.txt",
         #"Georgian": "georgian.txt",
         #"Gothic": "gothic_latin.txt",
         #"Hebrew": "hebrew.txt",
         #"Hindi": "hindi.txt"
         #"Kanji":"kanji.txt",
         #"Korean":"korean.txt",
-        #"Classical": "korean.txt",
+        # "Classical": "arabic.txt",
     }
 
 font_languages = {
@@ -83,19 +79,19 @@ font_languages = {
         "Classical": "Segoe UI Historic", 
         "Regional" : "Segoe UI Historic", 
         "Ancient": "Segoe UI Historic",
-        "Dwarven" : "BableStone Runic",
+        "Dwarven" : "Noto Sans Runic",
         "Elvish" : "Tengwar Annatar",
-        #"Akkadian": "Segoe UI Historic",   
-        #"Arabic": "",       
-        #"Armenian": "",
-        #"Chinese": "",
-        #"Cyrilic": "",
-        #"Georgian": "",
-        #"Gothic": "",
-        #"Hebrew": "",
-        #"Hindi": ""
-        #"Kanji":"",
-        #"Korean":"",
+        # "Akkadian": "Segoe UI Historic",   
+        #"Arabic": "Segoe UI Historic",       
+        #"Armenian": "Segoe UI Historic",
+        #"Chinese": "Segoe UI Historic",
+        #"Cyrillic": "Segoe UI Historic",
+        #"Georgian": "Segoe UI Historic",
+        #"Gothic": "Segoe UI Historic",
+        #"Hebrew": "Segoe UI Historic",
+        #"Hindi": "Segoe UI Historic"
+        #"Kanji":"Segoe UI Historic",
+        #"Korean":"Segoe UI Historic",
     }
 lang_no_spaces = ["Chinese","Kanji","Korean"]
 lang_limit_40_chars = ["Akkadian","Ancient","Gothic"] # name given to self.current_language for each book.
@@ -333,14 +329,11 @@ def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksh
         for attribute in book_columns:
             row.append(getattr(books[book],attribute))
         ws.append(row)
-        last_row_number = ws.max_row
-        the_lang = ws.cell(row=last_row_number,column=current_language_index)
-        if the_lang.value == "Dwarven":
-            the_flavor = ws.cell(row=last_row_number, column=flavor_title_index)
-            the_flavor.font = dwarven_font
-        elif the_lang.value == "Elvish":
-            the_flavor = ws.cell(row=last_row_number, column=flavor_title_index)
-            the_flavor.font = elvish_font
+            # now get language of the last row (just added) and set the proper font for the flavor title cell
+        the_lang = ws.cell(row=ws.max_row,column=current_language_index)
+        the_flavor = ws.cell(row=ws.max_row, column=flavor_title_index)
+        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value])
+        
     try:
         wb.save(filename) 
     except:
