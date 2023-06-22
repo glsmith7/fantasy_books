@@ -8,6 +8,7 @@ import os
 import random as random
 import rpg_tables as r
 import string as string
+import sys
 
 # logging boilerplate
 import settings_GLS as s
@@ -21,7 +22,7 @@ global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_
 global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
 global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
-global DEFAULT_FONT
+global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE
 global vocab_dictionary
 global lang_no_spaces, lang_limit_40_chars
 
@@ -48,8 +49,10 @@ DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_t
 DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 
 # fonts to display flavor titles in Excel properly
-DEFAULT_FONT = "Segoe UI Historic"
+DEFAULT_EXCEL_FONT = "Segoe UI Historic"
+DEFAULT_EXCEL_FLAVOR_FONT_SIZE = 9
 
+#############################################
 # "Common" is just English. 
 # Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
 
@@ -77,24 +80,24 @@ dictionary_languages = {
 
 
 font_languages = {
-        "Classical" : DEFAULT_FONT,
-        "Common": DEFAULT_FONT,
-        "Classical": DEFAULT_FONT, 
-        "Regional" : DEFAULT_FONT, 
-        "Ancient": DEFAULT_FONT,
+        "Classical" : DEFAULT_EXCEL_FONT,
+        "Common": DEFAULT_EXCEL_FONT,
+        "Classical": DEFAULT_EXCEL_FONT, 
+        "Regional" : DEFAULT_EXCEL_FONT, 
+        "Ancient": DEFAULT_EXCEL_FONT,
         "Dwarven" : "Noto Sans Runic",
         "Elvish" : "Tengwar Annatar",
-        # "Akkadian": DEFAULT_FONT,   
-        #"Arabic": DEFAULT_FONT,       
-        #"Armenian": DEFAULT_FONT,
-        #"Chinese": DEFAULT_FONT,
-        #"Cyrillic": DEFAULT_FONT,
-        #"Georgian": DEFAULT_FONT,
-        #"Gothic": DEFAULT_FONT,
-        #"Hebrew": DEFAULT_FONT,
-        #"Hindi": DEFAULT_FONT,
-        #"Kanji": DEFAULT_FONT,
-        #"Korean": DEFAULT_FONT,
+        # "Akkadian": DEFAULT_EXCEL_FONT,   
+        #"Arabic": DEFAULT_EXCEL_FONT,       
+        #"Armenian": DEFAULT_EXCEL_FONT,
+        #"Chinese": DEFAULT_EXCEL_FONT,
+        #"Cyrillic": DEFAULT_EXCEL_FONT,
+        #"Georgian": DEFAULT_EXCEL_FONT,
+        #"Gothic": DEFAULT_EXCEL_FONT,
+        #"Hebrew": DEFAULT_EXCEL_FONT,
+        #"Hindi": DEFAULT_EXCEL_FONT,
+        #"Kanji": DEFAULT_EXCEL_FONT,
+        #"Korean": DEFAULT_EXCEL_FONT,
     }
 lang_no_spaces = ["Chinese","Kanji","Korean"]
 lang_limit_40_chars = ["Akkadian","Ancient","Gothic"]
@@ -239,37 +242,38 @@ def book_characteristics(books):
                    and not callable(getattr(books[1], attribute))
                    ]
     # edit these to make appear in the Excel output in a different order
-    book_variables_in_chosen_order = ['book_title',
-                                    'author_full',
-                                    'current_language',
-                                    'is_a_translation',
-                                    'original_language',
-                                    'book_title_flavor',
-                                    'translator_full_name',
-                                    'book_type',
+    book_variables_in_chosen_order = [
+                                    'format',
                                     'materials',
-                                    'topic',
-                                    'topic_apparent',
-                                    'complexity',
-                                    'complexity_esoteric',
-                                    'reading_time',
-                                    'reference_time',
-                                    'age_at_discovery',
                                     'number_volumes',
                                     'number_pages',
                                     'weight',
+                                    'topic',
+                                    'topic_apparent',
+                                    'scope',
+                                    'scope_esoteric',
+                                    'complexity',
+                                    'complexity_esoteric',
+                                    'market_value',
+                                    'book_title',
+                                    'author_full',
+                                    'translator_full_name',                             
+                                    'current_language',
+                                    'original_language',
+                                    'book_title_flavor',
+                                    'reading_time',
+                                    'reference_time',
+                                    'age_at_discovery',
                                     'number_extant_copies',
                                     'number_extant_available_to_place',
                                     'fraction_complete',
-                                    'format',
                                     'rarity_modifier',
-                                    'market_value',
                                     'libraries_it_is_in',
                                     'author_epithet',
                                     'author_name',
                                     'author_nationality',
                                     'author_title',
-                                    'sex',
+                                    'author_sex',
                                     'translator',
                                     'translator_nationality',
                                     'translator_sex',
@@ -284,7 +288,10 @@ def book_characteristics(books):
                                     'esoteric_literary_value_base',
                                     'esoteric_literary_value_modified',
                                     'year_discovered',
-                                    'year_written']
+                                    'year_written',
+                                    'is_a_translation',
+                                    'book_type',
+                                    ]
     
     # this bit adds any variables that have been omitted from the above list, so all will be displayed even if user error.
     for item in book_attributes:
@@ -329,21 +336,26 @@ def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksh
         ws.cell(row=1,column=the_counter).font = openpyxl_font(bold='bold')
 
     # each row for a book
+    the_counter = 0
     for book in books:
         row = []
         for attribute in book_columns:
             row.append(getattr(books[book],attribute))
         ws.append(row)
+        the_counter += 1
+        print ("Saving Book #" + str(the_counter))
             # now get language of the last row (just added) and set the proper font for the flavor title cell
         the_lang = ws.cell(row=ws.max_row,column=current_language_index)
         the_flavor = ws.cell(row=ws.max_row, column=flavor_title_index)
-        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value])
-        
-    try:
-        wb.save(filename) 
-    except:
-        print ("You've probably got the excel file open; can't save.")
+        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)
 
+      
+        try:
+            wb.save(filename) 
+        except:
+                print ("You've probably got the excel file open; can't save.")
+                # need better error handling code
+                
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
         titles are generated with a lorem_ipsum algorithm from random words in *.txt files in the folder lorem_ipsum_fantasy.
@@ -379,7 +391,7 @@ def print_book_hoard (books):
         print ("Translator full name:" + str(a.translator_full_name))
         print ("Reading time:" + str(a.reading_time))
         print ("Reference time:" + str(a.reference_time))
-        print ("Sex:" + str(a.sex))
+        print ("author_sex:" + str(a.author_sex))
         print ("Epithet:" + str(a.author_epithet))
         print ("Author title:" + str(a.author_title))
         print ("Author:" + str(a.author_full))
@@ -426,6 +438,7 @@ def produce_book_hoard (value=0,overshoot=False):
 
         while running_total < value:
             the_count += 1
+            print("Book #"+str(the_count))
             books[the_count] = create_fantasy_book()
             running_total += books[the_count].market_value
 
@@ -457,7 +470,7 @@ class FantasyBook():
         topic_title_form = "",
         book_title = "",
         book_title_flavor = '',
-        sex = "",
+        author_sex = "",
         author_name = "",
         author_title = "",
         author_epithet = "",
@@ -506,7 +519,7 @@ class FantasyBook():
         self.topic_title_form = topic_title_form
         self.book_title = book_title
         self.book_title_flavor = book_title_flavor
-        self.sex = sex
+        self.author_sex = author_sex
         self.author_name = author_name
         self.author_title = author_title
         self.author_epithet = author_epithet
@@ -554,7 +567,7 @@ class FantasyBook():
         self.original_language_set(self.original_language)
         self.topic_set(self.topic)
         self.topic_title_set(self.topic_title_form)
-        self.sex_set(self.sex)
+        self.sex_set(self.author_sex)
         self.author_epithet_set (self.author_epithet)
         self.author_name_set(self.author_name)
         self.author_title_set (self.author_title)
@@ -613,14 +626,14 @@ class FantasyBook():
         
         if not author_name:        
              
-            author_name, author_nationality, _ = self.name_generate(sex = self.sex)
+            author_name, author_nationality, _ = self.name_generate(sex = self.author_sex)
             
             self.author_name = author_name
             self.author_nationality = author_nationality
 
     def author_title_set(self, author_title):
         if not author_title:
-            self.author_title = self.person_title_generate(sex = self.sex)
+            self.author_title = self.person_title_generate(sex = self.author_sex)
         else:
             self.author_title = author_title
 
@@ -769,6 +782,7 @@ class FantasyBook():
         if self.topic != self.topic_apparent:
             esoteric_complexity_from_table = 0
             esoteric_ratios_correct = False
+
             while not esoteric_ratios_correct:
                 # esoteric scope
                 self.scope_esoteric = self.book_details_result_from_tables("BookScope")
@@ -777,15 +791,21 @@ class FantasyBook():
                 esoteric_complexity_from_table = self.book_details_result_from_tables(complexity_table_list[int(self.scope_esoteric)-1])
                 if esoteric_complexity_from_table >= 1: esoteric_complexity_from_table = int(esoteric_complexity_from_table)      
                 self.complexity_esoteric = esoteric_complexity_from_table
-            
+
+                
+
                 # Is apparent ratio >= to the esoteric?
                 ratio_apparent = self.scope/self.complexity
                 ratio_esoteric = self.scope_esoteric/self.complexity_esoteric
 
                 if ratio_apparent >= ratio_esoteric: 
                     esoteric_ratios_correct = True
+                
+                else:
+                    print ("ratio_apparent:" + str(ratio_apparent))
+                    print ("ratio_esoteric:" + str(ratio_esoteric))
     
-                self.esoteric_value_set()
+            self.esoteric_value_set()
 
     def esoteric_value_set (self):
         target_table = "BookLiteraryValueScope" + str(self.scope_esoteric)
@@ -920,6 +940,8 @@ class FantasyBook():
             fraction_complete = 1 - fraction_missing
          
         self.scope = round(self.scope * 2.0 * fraction_complete) / 2.0 # the x2, then div 2 rounds to nearest 0.5
+        if self.scope == 0: self.scope = 0.5
+
         self.reading_time = round(self.reading_time * 2.0 * fraction_complete) / 2.0
         self.reference_time = round(self.reference_time * 2.0 * fraction_complete) / 2.0
 
@@ -979,12 +1001,12 @@ class FantasyBook():
         else:
             self.scope = scope
     
-    def sex_set (self, sex):
-        if not sex:
-            if d20.roll("1d100").total <= CHANCE_OF_FEMALE_AUTHOR: self.sex = "Female"
-            else: self.sex = "Male"
+    def sex_set (self, author_sex):
+        if not author_sex:
+            if d20.roll("1d100").total <= CHANCE_OF_FEMALE_AUTHOR: self.author_sex = "Female"
+            else: self.author_sex = "Male"
         else:
-            self.sex = sex
+            self.author_sex = author_sex
     
     def topic_set (self, topic):
 
@@ -1056,7 +1078,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=10000,overshoot=True)
+books, books_value = produce_book_hoard(value=20000,overshoot=True)
 # print_book_hoard(books)
 export_books_to_excel(books)
 
