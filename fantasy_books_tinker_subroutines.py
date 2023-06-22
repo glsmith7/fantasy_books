@@ -236,25 +236,8 @@ def import_language_words():
 
     return vocab_dictionary
 
-def produce_book_hoard (value=0,overshoot=False):
-    ''' produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
-    '''
-    books = {}
-    running_total = 0
-    the_count = 0
+def print_book_hoard (books):
 
-    while running_total < value:
-        the_count += 1
-        books[the_count] = create_fantasy_book()
-        running_total += books[the_count].market_value
-
-    if overshoot: 
-        pass    
-    else:
-        running_total -= books[len(books)].market_value # subtract last value that put us over the top
-        books.popitem() # delete last book which put over the top
-        
-    
     for z in range (1,(len(books)+1)):
         a = books[z]
         print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ----> " + str(z))
@@ -302,9 +285,26 @@ def produce_book_hoard (value=0,overshoot=False):
         print ("Fraction complete: " + str(a.fraction_complete))
         print ("---")
 
+def produce_book_hoard (value=0,overshoot=False):
+    ''' produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
+    '''
+    books = {}
+    running_total = 0
+    the_count = 0
 
-    print ("TOTAL: " + str(running_total))
-    print ("Number of books: " + str (len(books)))
+    while running_total < value:
+        the_count += 1
+        books[the_count] = create_fantasy_book()
+        running_total += books[the_count].market_value
+
+    if overshoot: 
+        pass    
+    else:
+        running_total -= books[len(books)].market_value # subtract last value that put us over the top
+        books.popitem() # delete last book which put over the top
+        
+    return books, running_total
+    
 ######################## CLASSES ########################
 
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
@@ -921,4 +921,8 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-produce_book_hoard(value=10000,overshoot=False)
+books, books_value = produce_book_hoard(value=10000,overshoot=False)
+print_book_hoard(books)
+
+print ("TOTAL: " + str(books_value))
+print ("Number of books: " + str (len(books)))
