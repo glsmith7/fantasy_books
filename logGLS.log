@@ -1,5 +1,5 @@
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF13F0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __titles_person_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709313F0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __titles_person_ providing: 
                        Result
 0               the venerable
 1                       saint
@@ -20,8 +20,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __titles_person_
 16  his lordship/her ladyship
 17        his honor/her honor
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF1C60>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __epithets_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70931C60>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __epithets_ providing: 
                  Result
 0                     I
 1                    II
@@ -292,8 +292,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __epithets_ prov
 266         the Zealous
 267          Theophilus
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF22F0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_saints_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709322F0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_saints_male_ providing: 
                    Result
 0                Adalbert
 1                 Adamnan
@@ -574,8 +574,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_saints_m
 276               Roberts
 277               Robinus
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF25C0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_saints_female_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709325C0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_saints_female_ providing: 
               Result
 0           Adelaide
 1            Aemilia
@@ -614,8 +614,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_saints_f
 34            Rawynn
 35              Rose
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|87 - RPG_table: _names_saints_male combining with: _names_saints_female
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_saints_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_saints_male combining with: _names_saints_female
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_saints_male_ providing: 
                    Result
 0                Adalbert
 1                 Adamnan
@@ -896,7 +896,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_sain
 276               Roberts
 277               Robinus
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_saints_female_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: __names_saints_female_ providing: 
               Result
 0           Adelaide
 1            Aemilia
@@ -935,8 +935,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_sai
 34            Rawynn
 35              Rose
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF26B0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_saints_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709326B0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_saints_male_ providing: 
                    Result
 0                Adalbert
 1                 Adamnan
@@ -1217,7 +1217,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_saints_m
 276               Roberts
 277               Robinus
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_saints_male COMBINED WITH _names_saints_female_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|106 - Composite table: __names_saints_male COMBINED WITH _names_saints_female_ providing: 
                    Result
 0                Adelaide
 1                 Aemilia
@@ -1535,8 +1535,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_sa
 313               Robinus
 
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF2B60>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70932B60>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_famous_male_ providing: 
                    Result             Nationality
 0          Almar the Holy  _names_famous_surnames
 1      Bahak the Preacher  _names_famous_surnames
@@ -1547,15 +1547,15 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_m
 6  Raham the Lightbringer  _names_famous_surnames
 7   Mogadon the Merciless  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF2E30>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_female_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70932E30>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_famous_female_ providing: 
                  Result             Nationality
 0     Amaya the Seeress  _names_famous_surnames
 1  Lira the Flamekeeper  _names_famous_surnames
 2         Queen Kalissa  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|87 - RPG_table: _names_famous_male combining with: _names_famous_female
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_famous_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_famous_male combining with: _names_famous_female
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_famous_male_ providing: 
                    Result             Nationality
 0          Almar the Holy  _names_famous_surnames
 1      Bahak the Preacher  _names_famous_surnames
@@ -1566,14 +1566,14 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_famo
 6  Raham the Lightbringer  _names_famous_surnames
 7   Mogadon the Merciless  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_famous_female_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: __names_famous_female_ providing: 
                  Result             Nationality
 0     Amaya the Seeress  _names_famous_surnames
 1  Lira the Flamekeeper  _names_famous_surnames
 2         Queen Kalissa  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF2C50>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70932C50>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_famous_male_ providing: 
                    Result             Nationality
 0          Almar the Holy  _names_famous_surnames
 1      Bahak the Preacher  _names_famous_surnames
@@ -1584,7 +1584,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_m
 6  Raham the Lightbringer  _names_famous_surnames
 7   Mogadon the Merciless  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_famous_male COMBINED WITH _names_famous_female_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|106 - Composite table: __names_famous_male COMBINED WITH _names_famous_female_ providing: 
                     Result             Nationality
 0        Amaya the Seeress  _names_famous_surnames
 1     Lira the Flamekeeper  _names_famous_surnames
@@ -1599,20 +1599,20 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_fa
 10   Mogadon the Merciless  _names_famous_surnames
 
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF31F0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_empty_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709331F0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_empty_ providing: 
 Empty DataFrame
 Columns: [Result, Nationality]
 Index: []
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3010>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_empty_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933010>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_empty_ providing: 
 Empty DataFrame
 Columns: [Result, Nationality]
 Index: []
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3100>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_adjective_1_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933100>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_adjective_1_ providing: 
             Result
 0         Mystical
 1     Otherworldly
@@ -1747,8 +1747,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_ad
 130         Secret
 131      Sibylline
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF32E0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_biography_starter_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709332E0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_biography_starter_ providing: 
                        Result
 0                  Life story
 1                      Memoir
@@ -1770,8 +1770,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_bi
 17               Condemnation
 18                   Apologia
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF33D0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_communication_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709333D0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_communication_ providing: 
            Result
 0  Correspondence
 1         Letters
@@ -1781,8 +1781,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_co
 5        Epistles
 6    Transactions
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF34C0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_conjunction_about_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709334C0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_conjunction_about_ providing: 
                Result
 0          Concerning
 1           Regarding
@@ -1801,16 +1801,16 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_co
 14  With Reference to
 15     With Regard to
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF35B0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_conjunction_by_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709335B0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_conjunction_by_ providing: 
                                               Result
 0                                                 by
 1                                                 of
 2                                               from
 3  , a Commentary on That Which Came From the Pen of
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF36A0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_fixed_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709336A0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_fixed_ providing: 
                                                                                    Result
 0                                                            Flowing Light of the Godhead
 1   A Light of My Godhood Flowing into All the Hearts of Those Who Live Without Falsehood
@@ -1827,8 +1827,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_fi
 12                                                          The Book of Privy Counselling
 13                                                                    The Well-Laden Ship
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3790>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_history_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933790>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_history_ providing: 
             Result
 0      The Rule of
 1      The Saga of
@@ -1845,8 +1845,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_hi
 12       Treaty of
 13      Concert of
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3880>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_negative_subject_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933880>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_negative_subject_ providing: 
              Result
 0          Heresies
 1              Sins
@@ -1888,8 +1888,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_ne
 37            Vices
 38       Wickedness
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3970>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_noun_1_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933970>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_noun_1_ providing: 
               Result
 0              Ambit
 1             Bounds
@@ -1975,8 +1975,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_no
 81          Occasion
 82          Weakness
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3A60>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_noun_2_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933A60>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_noun_2_ providing: 
               Result
 0            the Age
 1            the Day
@@ -2053,15 +2053,15 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_no
 72       Trepidation
 73         Recreancy
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3B50>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_evil_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933B50>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_famous_evil_ providing: 
              Result
 0     The Dark Lord
 1  The Chief Sinner
 2     The Temptress
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3C40>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_places_cities_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933C40>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_places_cities_ providing: 
            Result
 0           Paris
 1            Rome
@@ -2070,8 +2070,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_pl
 4  Constantinople
 5          Athens
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3D30>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_places_nations_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933D30>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_places_nations_ providing: 
              Result
 0           England
 1            France
@@ -2080,8 +2080,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_pl
 4  the Roman Empire
 5             Egypt
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3E20>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_religious_starter_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933E20>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_religious_starter_ providing: 
                     Result
 0           The Passion of
 1        The Sufferings of
@@ -2120,8 +2120,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_re
 34         Flagellation of
 35               Shrift of
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3F10>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_study_in_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933F10>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_study_in_ providing: 
             Result
 0     Explorations
 1          Voyages
@@ -2147,8 +2147,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_st
 21     Ruminations
 22         Trances
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8040>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_study_of_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8040>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_study_of_ providing: 
                  Result
 0           Exploration
 1               Mastery
@@ -2179,8 +2179,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_st
 26             The Arts
 27                Pains
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8130>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_study_on_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8130>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_study_on_ providing: 
             Result
 0         Treatise
 1     Dissertation
@@ -2207,8 +2207,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_st
 22        Thoughts
 23         Trances
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8310>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_study_verbing_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8310>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_study_verbing_ providing: 
                Result
 0           Beginning
 1   Setting Forth For
@@ -2233,8 +2233,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_st
 20        Summarizing
 21          Surveying
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8220>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __books_titles_the_1_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8220>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __books_titles_the_1_ providing: 
              Result
 0               The
 1          The Many
@@ -2252,8 +2252,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __books_titles_t
 13              The
 14              The
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA84F0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_templates_general_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E84F0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_templates_general_ providing: 
                                                                                                                                            Result
 0                                                                                                     {verbing} {topic}: a {adjective_1} {noun_1}
 1                                                                                                               {topic}, a {adjective_1} {noun_1}
@@ -2277,8 +2277,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_te
 19                                                                                  {the_1} {negative_1} of {person_1}, on the Subject of {topic}
 20                                                                           {the_1} {negative_1} of {person_evil} on the Dire Subject of {topic}
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8400>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_templates_history_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8400>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_templates_history_ providing: 
                                                             Result
 0            The {adjective_1} {noun_1}: {history_of} {place_city}
 1          The {adjective_1} {noun_1}: {history_of} {place_nation}
@@ -2290,8 +2290,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_te
 7                             {the_1} {negative_1} of {place_city}
 8                           {the_1} {negative_1} of {place_nation}
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA85E0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_templates_occult_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E85E0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_templates_occult_ providing: 
                                                             Result
 0                        {religious_starter} of {saint} on {topic}
 1                    {biography_starter} of {person_1} and {topic}
@@ -2299,16 +2299,16 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_te
 3               {biography_starter} of {person_famous} and {topic}
 4                   {religious_starter} of {saint} Against {topic}
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA86D0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __book_titles_templates_theology_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E86D0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __book_titles_templates_theology_ providing: 
                                                             Result
 0                                   {religious_starter} of {saint}
 1                    {biography_starter} of {person_1} and {topic}
 2  {biography_starter} of {person_evil} with emphasis upon {topic}
 3               {biography_starter} of {person_famous} and {topic}
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA87C0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E87C0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_male_ providing: 
              Result                  Nationality
 0              Æbbe  _names_anglo_saxon_surnames
 1         Æðelberht  _names_anglo_saxon_surnames
@@ -2467,8 +2467,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_anglo_sa
 154           Pepin  _names_anglo_saxon_surnames
 155       Childeric  _names_anglo_saxon_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|87 - RPG_table: _names_anglo_saxon_male combining with: Male Names Amalgamated
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_anglo_saxon_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_anglo_saxon_male combining with: Male Names Amalgamated
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_anglo_saxon_male_ providing: 
              Result                  Nationality
 0              Æbbe  _names_anglo_saxon_surnames
 1         Æðelberht  _names_anglo_saxon_surnames
@@ -2627,13 +2627,13 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_angl
 154           Pepin  _names_anglo_saxon_surnames
 155       Childeric  _names_anglo_saxon_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: _Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: _Male Names Amalgamated_ providing: 
 Empty DataFrame
 Columns: [Result, Nationality]
 Index: []
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA88B0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E88B0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_male_ providing: 
              Result                  Nationality
 0              Æbbe  _names_anglo_saxon_surnames
 1         Æðelberht  _names_anglo_saxon_surnames
@@ -2792,7 +2792,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_anglo_sa
 154           Pepin  _names_anglo_saxon_surnames
 155       Childeric  _names_anglo_saxon_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|106 - Composite table: __names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
              Result                  Nationality
 0              Æbbe  _names_anglo_saxon_surnames
 1         Æðelberht  _names_anglo_saxon_surnames
@@ -2952,8 +2952,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_an
 155       Childeric  _names_anglo_saxon_surnames
 
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF31F0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_arabic_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709331F0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_arabic_male_ providing: 
            Result             Nationality
 0           Abbas  _names_arabic_surnames
 1           Abdul  _names_arabic_surnames
@@ -3090,8 +3090,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_arabic_m
 132          Zaki  _names_arabic_surnames
 133          Zayn  _names_arabic_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|87 - RPG_table: _names_arabic_male combining with: _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_arabic_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_arabic_male combining with: _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_arabic_male_ providing: 
            Result             Nationality
 0           Abbas  _names_arabic_surnames
 1           Abdul  _names_arabic_surnames
@@ -3228,7 +3228,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_arab
 132          Zaki  _names_arabic_surnames
 133          Zayn  _names_arabic_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: __names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
              Result                  Nationality
 0              Æbbe  _names_anglo_saxon_surnames
 1         Æðelberht  _names_anglo_saxon_surnames
@@ -3387,8 +3387,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_ang
 154           Pepin  _names_anglo_saxon_surnames
 155       Childeric  _names_anglo_saxon_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA89A0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_arabic_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E89A0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_arabic_male_ providing: 
            Result             Nationality
 0           Abbas  _names_arabic_surnames
 1           Abdul  _names_arabic_surnames
@@ -3525,7 +3525,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_arabic_m
 132          Zaki  _names_arabic_surnames
 133          Zayn  _names_arabic_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|106 - Composite table: __names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
              Result                  Nationality
 0              Æbbe  _names_anglo_saxon_surnames
 1         Æðelberht  _names_anglo_saxon_surnames
@@ -3819,8 +3819,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_ar
 289            Zayn       _names_arabic_surnames
 
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA88B0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_english_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E88B0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_english_male_ providing: 
           Result              Nationality
 0       Theodore  _names_english_surnames
 1         Finley  _names_english_surnames
@@ -3998,8 +3998,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_english_
 173      Tristan  _names_english_surnames
 174     Tristram  _names_english_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|87 - RPG_table: _names_english_male combining with: _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_english_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_english_male combining with: _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_english_male_ providing: 
           Result              Nationality
 0       Theodore  _names_english_surnames
 1         Finley  _names_english_surnames
@@ -4177,7 +4177,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_engl
 173      Tristan  _names_english_surnames
 174     Tristram  _names_english_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: __names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
              Result                  Nationality
 0              Æbbe  _names_anglo_saxon_surnames
 1         Æðelberht  _names_anglo_saxon_surnames
@@ -4470,8 +4470,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_ara
 288            Zaki       _names_arabic_surnames
 289            Zayn       _names_arabic_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8A90>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_english_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8A90>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_english_male_ providing: 
           Result              Nationality
 0       Theodore  _names_english_surnames
 1         Finley  _names_english_surnames
@@ -4649,7 +4649,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_english_
 173      Tristan  _names_english_surnames
 174     Tristram  _names_english_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|106 - Composite table: __names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
              Result                  Nationality
 0              Æbbe  _names_anglo_saxon_surnames
 1         Æðelberht  _names_anglo_saxon_surnames
@@ -5118,8 +5118,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_en
 464        Tristram      _names_english_surnames
 
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA89A0>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E89A0>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_famous_male_ providing: 
                    Result             Nationality
 0          Almar the Holy  _names_famous_surnames
 1      Bahak the Preacher  _names_famous_surnames
@@ -5130,8 +5130,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_m
 6  Raham the Lightbringer  _names_famous_surnames
 7   Mogadon the Merciless  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|87 - RPG_table: _names_famous_male combining with: _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_famous_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_famous_male combining with: _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_famous_male_ providing: 
                    Result             Nationality
 0          Almar the Holy  _names_famous_surnames
 1      Bahak the Preacher  _names_famous_surnames
@@ -5142,7 +5142,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_famo
 6  Raham the Lightbringer  _names_famous_surnames
 7   Mogadon the Merciless  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: __names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
              Result                  Nationality
 0              Æbbe  _names_anglo_saxon_surnames
 1         Æðelberht  _names_anglo_saxon_surnames
@@ -5610,8 +5610,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_eng
 463         Tristan      _names_english_surnames
 464        Tristram      _names_english_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8B80>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8B80>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_famous_male_ providing: 
                    Result             Nationality
 0          Almar the Holy  _names_famous_surnames
 1      Bahak the Preacher  _names_famous_surnames
@@ -5622,7 +5622,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_famous_m
 6  Raham the Lightbringer  _names_famous_surnames
 7   Mogadon the Merciless  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|106 - Composite table: __names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
                      Result                  Nationality
 0                      Æbbe  _names_anglo_saxon_surnames
 1                 Æðelberht  _names_anglo_saxon_surnames
@@ -6099,8 +6099,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_fa
 472   Mogadon the Merciless       _names_famous_surnames
 
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8A90>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_french_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8A90>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_french_male_ providing: 
            Result             Nationality
 0           Aaron  _names_french_surnames
 1            Abel  _names_french_surnames
@@ -6594,8 +6594,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_french_m
 489          Yvon  _names_french_surnames
 490      Zacharie  _names_french_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|87 - RPG_table: _names_french_male combining with: _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_french_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_french_male combining with: _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_french_male_ providing: 
            Result             Nationality
 0           Aaron  _names_french_surnames
 1            Abel  _names_french_surnames
@@ -7089,7 +7089,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_fren
 489          Yvon  _names_french_surnames
 490      Zacharie  _names_french_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: __names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
                      Result                  Nationality
 0                      Æbbe  _names_anglo_saxon_surnames
 1                 Æðelberht  _names_anglo_saxon_surnames
@@ -7565,8 +7565,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_fam
 471  Raham the Lightbringer       _names_famous_surnames
 472   Mogadon the Merciless       _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8C70>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_french_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8C70>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_french_male_ providing: 
            Result             Nationality
 0           Aaron  _names_french_surnames
 1            Abel  _names_french_surnames
@@ -8060,7 +8060,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_french_m
 489          Yvon  _names_french_surnames
 490      Zacharie  _names_french_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|106 - Composite table: __names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
                      Result                  Nationality
 0                      Æbbe  _names_anglo_saxon_surnames
 1                 Æðelberht  _names_anglo_saxon_surnames
@@ -9028,8 +9028,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_fr
 963                Zacharie       _names_french_surnames
 
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8B80>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_norse_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8B80>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_norse_male_ providing: 
            Result                 Nationality
 0           Aegir  _names_norse_surnames_male
 1         Aeldiet  _names_norse_surnames_male
@@ -9600,8 +9600,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_norse_ma
 566       Yngvarr  _names_norse_surnames_male
 567         Yngvi  _names_norse_surnames_male
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|87 - RPG_table: _names_norse_male combining with: _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_norse_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_norse_male combining with: _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_norse_male_ providing: 
            Result                 Nationality
 0           Aegir  _names_norse_surnames_male
 1         Aeldiet  _names_norse_surnames_male
@@ -10172,7 +10172,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_nors
 566       Yngvarr  _names_norse_surnames_male
 567         Yngvi  _names_norse_surnames_male
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: __names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
                      Result                  Nationality
 0                      Æbbe  _names_anglo_saxon_surnames
 1                 Æðelberht  _names_anglo_saxon_surnames
@@ -11139,8 +11139,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_fre
 962                    Yvon       _names_french_surnames
 963                Zacharie       _names_french_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8D60>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_norse_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8D60>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_norse_male_ providing: 
            Result                 Nationality
 0           Aegir  _names_norse_surnames_male
 1         Aeldiet  _names_norse_surnames_male
@@ -11711,7 +11711,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_norse_ma
 566       Yngvarr  _names_norse_surnames_male
 567         Yngvi  _names_norse_surnames_male
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_norse_male COMBINED WITH _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|106 - Composite table: __names_norse_male COMBINED WITH _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
                       Result                  Nationality
 0                       Æbbe  _names_anglo_saxon_surnames
 1                  Æðelberht  _names_anglo_saxon_surnames
@@ -13247,8 +13247,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|106 - Composite table: __names_no
 1531                   Yngvi   _names_norse_surnames_male
 
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8C70>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_roman_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8C70>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_roman_male_ providing: 
           Result            Nationality
 0       Aloysius  _names_roman_surnames
 1        Amadeus  _names_roman_surnames
@@ -13371,8 +13371,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_roman_ma
 118        Varus  _names_roman_surnames
 119    Virgilius  _names_roman_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|87 - RPG_table: _names_roman_male combining with: _names_norse_male COMBINED WITH _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_roman_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_roman_male combining with: _names_norse_male COMBINED WITH _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_roman_male_ providing: 
           Result            Nationality
 0       Aloysius  _names_roman_surnames
 1        Amadeus  _names_roman_surnames
@@ -13495,7 +13495,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|91 - First DataForm: __names_roma
 118        Varus  _names_roman_surnames
 119    Virgilius  _names_roman_surnames
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_norse_male COMBINED WITH _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: __names_norse_male COMBINED WITH _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
                       Result                  Nationality
 0                       Æbbe  _names_anglo_saxon_surnames
 1                  Æðelberht  _names_anglo_saxon_surnames
@@ -15030,8 +15030,8 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__add__|92 - Second DataForm: __names_nor
 1530                 Yngvarr   _names_norse_surnames_male
 1531                   Yngvi   _names_norse_surnames_male
 
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8E50>
-DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_roman_male_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8E50>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_roman_male_ providing: 
           Result            Nationality
 0       Aloysius  _names_roman_surnames
 1        Amadeus  _names_roman_surnames
@@ -15154,7 +15154,7 @@ DEBUG:	|06/22/2023 05:53:19|rpg_tables|__init__|73 - RPG_table: __names_roman_ma
 118        Varus  _names_roman_surnames
 119    Virgilius  _names_roman_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_roman_male COMBINED WITH _names_norse_male COMBINED WITH _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|106 - Composite table: __names_roman_male COMBINED WITH _names_norse_male COMBINED WITH _names_french_male COMBINED WITH _names_famous_male COMBINED WITH _names_english_male COMBINED WITH _names_arabic_male COMBINED WITH _names_anglo_saxon_male COMBINED WITH Male Names Amalgamated_ providing: 
                       Result                  Nationality
 0                       Æbbe  _names_anglo_saxon_surnames
 1                  Æðelberht  _names_anglo_saxon_surnames
@@ -16810,8 +16810,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_ro
 1651               Virgilius        _names_roman_surnames
 
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8D60>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_arabic_female_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8D60>
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__init__|73 - RPG_table: __names_arabic_female_ providing: 
            Result             Nationality
 0         Aaliyah  _names_arabic_surnames
 1           Adara  _names_arabic_surnames
@@ -17001,8 +17001,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_arabic_f
 185          Zuma  _names_arabic_surnames
 186        Zumena  _names_arabic_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|87 - RPG_table: _names_arabic_female combining with: Female Names Amalgamated
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_arabic_female_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|87 - RPG_table: _names_arabic_female combining with: Female Names Amalgamated
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|91 - First DataForm: __names_arabic_female_ providing: 
            Result             Nationality
 0         Aaliyah  _names_arabic_surnames
 1           Adara  _names_arabic_surnames
@@ -17192,13 +17192,13 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_arab
 185          Zuma  _names_arabic_surnames
 186        Zumena  _names_arabic_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: _Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|__add__|92 - Second DataForm: _Female Names Amalgamated_ providing: 
 Empty DataFrame
 Columns: [Result, Nationality]
 Index: []
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8F40>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_arabic_female_ providing: 
+DEBUG:	|06/22/2023 06:05:47|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8F40>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_arabic_female_ providing: 
            Result             Nationality
 0         Aaliyah  _names_arabic_surnames
 1           Adara  _names_arabic_surnames
@@ -17388,7 +17388,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_arabic_f
 185          Zuma  _names_arabic_surnames
 186        Zumena  _names_arabic_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|106 - Composite table: __names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
            Result             Nationality
 0         Aaliyah  _names_arabic_surnames
 1           Adara  _names_arabic_surnames
@@ -17579,8 +17579,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_ar
 186        Zumena  _names_arabic_surnames
 
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CAF3010>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D70933010>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_female_ providing: 
          Result                  Nationality
 0     Ælfthryth  _names_anglo_saxon_surnames
 1        Ælfwig  _names_anglo_saxon_surnames
@@ -17611,8 +17611,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_anglo_sa
 26     Wulfwynn  _names_anglo_saxon_surnames
 27     Eadburga  _names_anglo_saxon_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|87 - RPG_table: _names_anglo_saxon_female combining with: _names_arabic_female COMBINED WITH Female Names Amalgamated
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_anglo_saxon_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|87 - RPG_table: _names_anglo_saxon_female combining with: _names_arabic_female COMBINED WITH Female Names Amalgamated
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|91 - First DataForm: __names_anglo_saxon_female_ providing: 
          Result                  Nationality
 0     Ælfthryth  _names_anglo_saxon_surnames
 1        Ælfwig  _names_anglo_saxon_surnames
@@ -17643,7 +17643,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_angl
 26     Wulfwynn  _names_anglo_saxon_surnames
 27     Eadburga  _names_anglo_saxon_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|92 - Second DataForm: __names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
            Result             Nationality
 0         Aaliyah  _names_arabic_surnames
 1           Adara  _names_arabic_surnames
@@ -17833,8 +17833,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_ara
 185          Zuma  _names_arabic_surnames
 186        Zumena  _names_arabic_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9030>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9030>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_female_ providing: 
          Result                  Nationality
 0     Ælfthryth  _names_anglo_saxon_surnames
 1        Ælfwig  _names_anglo_saxon_surnames
@@ -17865,7 +17865,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_anglo_sa
 26     Wulfwynn  _names_anglo_saxon_surnames
 27     Eadburga  _names_anglo_saxon_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|106 - Composite table: __names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
            Result                  Nationality
 0         Aaliyah       _names_arabic_surnames
 1           Adara       _names_arabic_surnames
@@ -18084,8 +18084,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_an
 214      Eadburga  _names_anglo_saxon_surnames
 
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA8F40>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_english_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E8F40>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_english_female_ providing: 
         Result              Nationality
 0       Olivia  _names_english_surnames
 1       Amelia  _names_english_surnames
@@ -18165,8 +18165,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_english_
 75      Taylor  _names_english_surnames
 76        Wren  _names_english_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|87 - RPG_table: _names_english_female combining with: _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_english_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|87 - RPG_table: _names_english_female combining with: _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|91 - First DataForm: __names_english_female_ providing: 
         Result              Nationality
 0       Olivia  _names_english_surnames
 1       Amelia  _names_english_surnames
@@ -18246,7 +18246,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_engl
 75      Taylor  _names_english_surnames
 76        Wren  _names_english_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|92 - Second DataForm: __names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
            Result                  Nationality
 0         Aaliyah       _names_arabic_surnames
 1           Adara       _names_arabic_surnames
@@ -18464,8 +18464,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_ang
 213      Wulfwynn  _names_anglo_saxon_surnames
 214      Eadburga  _names_anglo_saxon_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9300>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_english_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9300>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_english_female_ providing: 
         Result              Nationality
 0       Olivia  _names_english_surnames
 1       Amelia  _names_english_surnames
@@ -18545,7 +18545,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_english_
 75      Taylor  _names_english_surnames
 76        Wren  _names_english_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|106 - Composite table: __names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
            Result                  Nationality
 0         Aaliyah       _names_arabic_surnames
 1           Adara       _names_arabic_surnames
@@ -18841,21 +18841,21 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_en
 291          Wren      _names_english_surnames
 
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9030>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_famous_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9030>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_famous_female_ providing: 
                  Result             Nationality
 0     Amaya the Seeress  _names_famous_surnames
 1  Lira the Flamekeeper  _names_famous_surnames
 2         Queen Kalissa  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|87 - RPG_table: _names_famous_female combining with: _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_famous_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|87 - RPG_table: _names_famous_female combining with: _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|91 - First DataForm: __names_famous_female_ providing: 
                  Result             Nationality
 0     Amaya the Seeress  _names_famous_surnames
 1  Lira the Flamekeeper  _names_famous_surnames
 2         Queen Kalissa  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|92 - Second DataForm: __names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
            Result                  Nationality
 0         Aaliyah       _names_arabic_surnames
 1           Adara       _names_arabic_surnames
@@ -19150,14 +19150,14 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_eng
 290        Taylor      _names_english_surnames
 291          Wren      _names_english_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA94E0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_famous_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E94E0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_famous_female_ providing: 
                  Result             Nationality
 0     Amaya the Seeress  _names_famous_surnames
 1  Lira the Flamekeeper  _names_famous_surnames
 2         Queen Kalissa  _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|106 - Composite table: __names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
                    Result                  Nationality
 0                 Aaliyah       _names_arabic_surnames
 1                   Adara       _names_arabic_surnames
@@ -19456,8 +19456,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_fa
 294         Queen Kalissa       _names_famous_surnames
 
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9300>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_french_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9300>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_french_female_ providing: 
            Result             Nationality
 0       Abigaëlle  _names_french_surnames
 1        Adélaïde  _names_french_surnames
@@ -19942,8 +19942,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_french_f
 480     Zéphyrine  _names_french_surnames
 481           Zoé  _names_french_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|87 - RPG_table: _names_french_female combining with: _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_french_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|87 - RPG_table: _names_french_female combining with: _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|91 - First DataForm: __names_french_female_ providing: 
            Result             Nationality
 0       Abigaëlle  _names_french_surnames
 1        Adélaïde  _names_french_surnames
@@ -20428,7 +20428,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_fren
 480     Zéphyrine  _names_french_surnames
 481           Zoé  _names_french_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|92 - Second DataForm: __names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
                    Result                  Nationality
 0                 Aaliyah       _names_arabic_surnames
 1                   Adara       _names_arabic_surnames
@@ -20726,8 +20726,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_fam
 293  Lira the Flamekeeper       _names_famous_surnames
 294         Queen Kalissa       _names_famous_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA93F0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_french_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E93F0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_french_female_ providing: 
            Result             Nationality
 0       Abigaëlle  _names_french_surnames
 1        Adélaïde  _names_french_surnames
@@ -21212,7 +21212,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_french_f
 480     Zéphyrine  _names_french_surnames
 481           Zoé  _names_french_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|106 - Composite table: __names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
                    Result                  Nationality
 0                 Aaliyah       _names_arabic_surnames
 1                   Adara       _names_arabic_surnames
@@ -21993,8 +21993,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_fr
 776                   Zoé       _names_french_surnames
 
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA94E0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_norse_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E94E0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_norse_female_ providing: 
            Result                   Nationality
 0          Ingrid  _names_norse_surnames_female
 1          Aelfsi  _names_norse_surnames_female
@@ -22243,8 +22243,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_norse_fe
 244      Yngvildr  _names_norse_surnames_female
 245          Yrsa  _names_norse_surnames_female
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|87 - RPG_table: _names_norse_female combining with: _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_norse_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|87 - RPG_table: _names_norse_female combining with: _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|91 - First DataForm: __names_norse_female_ providing: 
            Result                   Nationality
 0          Ingrid  _names_norse_surnames_female
 1          Aelfsi  _names_norse_surnames_female
@@ -22493,7 +22493,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_nors
 244      Yngvildr  _names_norse_surnames_female
 245          Yrsa  _names_norse_surnames_female
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|92 - Second DataForm: __names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
                    Result                  Nationality
 0                 Aaliyah       _names_arabic_surnames
 1                   Adara       _names_arabic_surnames
@@ -23273,8 +23273,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_fre
 775             Zéphyrine       _names_french_surnames
 776                   Zoé       _names_french_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9210>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_norse_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9210>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_norse_female_ providing: 
            Result                   Nationality
 0          Ingrid  _names_norse_surnames_female
 1          Aelfsi  _names_norse_surnames_female
@@ -23523,7 +23523,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_norse_fe
 244      Yngvildr  _names_norse_surnames_female
 245          Yrsa  _names_norse_surnames_female
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_norse_female COMBINED WITH _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|106 - Composite table: __names_norse_female COMBINED WITH _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
                     Result                   Nationality
 0                  Aaliyah        _names_arabic_surnames
 1                    Adara        _names_arabic_surnames
@@ -24550,8 +24550,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_no
 1022                  Yrsa  _names_norse_surnames_female
 
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA93F0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_roman_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E93F0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_roman_female_ providing: 
         Result            Nationality
 0      Adriana  _names_roman_surnames
 1        Aelia  _names_roman_surnames
@@ -24657,8 +24657,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_roman_fe
 101    Valeria  _names_roman_surnames
 102   Virginia  _names_roman_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|87 - RPG_table: _names_roman_female combining with: _names_norse_female COMBINED WITH _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_roman_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|87 - RPG_table: _names_roman_female combining with: _names_norse_female COMBINED WITH _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|91 - First DataForm: __names_roman_female_ providing: 
         Result            Nationality
 0      Adriana  _names_roman_surnames
 1        Aelia  _names_roman_surnames
@@ -24764,7 +24764,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|91 - First DataForm: __names_roma
 101    Valeria  _names_roman_surnames
 102   Virginia  _names_roman_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_norse_female COMBINED WITH _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|92 - Second DataForm: __names_norse_female COMBINED WITH _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
                     Result                   Nationality
 0                  Aaliyah        _names_arabic_surnames
 1                    Adara        _names_arabic_surnames
@@ -25790,8 +25790,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|92 - Second DataForm: __names_nor
 1021              Yngvildr  _names_norse_surnames_female
 1022                  Yrsa  _names_norse_surnames_female
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA96C0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_roman_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E96C0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_roman_female_ providing: 
         Result            Nationality
 0      Adriana  _names_roman_surnames
 1        Aelia  _names_roman_surnames
@@ -25897,7 +25897,7 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_roman_fe
 101    Valeria  _names_roman_surnames
 102   Virginia  _names_roman_surnames
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_roman_female COMBINED WITH _names_norse_female COMBINED WITH _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__add__|106 - Composite table: __names_roman_female COMBINED WITH _names_norse_female COMBINED WITH _names_french_female COMBINED WITH _names_famous_female COMBINED WITH _names_english_female COMBINED WITH _names_anglo_saxon_female COMBINED WITH _names_arabic_female COMBINED WITH Female Names Amalgamated_ providing: 
                     Result                   Nationality
 0                  Aaliyah        _names_arabic_surnames
 1                    Adara        _names_arabic_surnames
@@ -27027,8 +27027,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__add__|106 - Composite table: __names_ro
 1125              Virginia         _names_roman_surnames
 
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9210>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_arabic_surnames_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9210>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_arabic_surnames_ providing: 
              Result
 0             Aamer
 1           Abargil
@@ -27729,8 +27729,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_arabic_s
 696          Zuberi
 697            Zubi
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA95D0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_surnames_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E95D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_anglo_saxon_surnames_ providing: 
             Result
 0             Adam
 1            Adlam
@@ -27959,8 +27959,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_anglo_sa
 224       Yeardley
 225       Younston
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA97B0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_english_surnames_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E97B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_english_surnames_ providing: 
             Result
 0            Adams
 1         Aglionby
@@ -28297,14 +28297,14 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_english_
 332         Wright
 333          Young
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA98A0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_famous_surnames_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E98A0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_famous_surnames_ providing: 
   Result
 0   None
 1   None
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9990>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_french_surnames_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9990>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_french_surnames_ providing: 
                        Result
 0                      Abadie
 1                     Abbadie
@@ -29849,8 +29849,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_french_s
 1540                    Zagré
 1541                    Zazou
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9A80>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_norse_surnames_female_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9A80>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_norse_surnames_female_ providing: 
               Result
 0       Andersdotter
 1       Andersdotter
@@ -29906,8 +29906,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_norse_su
 51       Svensdotter
 52       Thomsdotter
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9B70>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_norse_surnames_male_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9B70>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_norse_surnames_male_ providing: 
           Result
 0       Andersen
 1      Andersson
@@ -29963,8 +29963,8 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_norse_su
 51      Svensson
 52       Thomsen
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9C60>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_roman_surnames_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9C60>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: __names_roman_surnames_ providing: 
           Result
 0        Abronia
 1         Abudia
@@ -30776,20 +30776,20 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: __names_roman_su
 807      Volusia
 808      Vorenia
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9F30>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9F30>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookScope_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9F30>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9F30>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookScope_ providing: 
   DieRange  Result DieLow DieHigh
 0     1-55       1      1      55
 1    56-80       2     56      80
 2    81-95       3     81      95
 3   96-100       4     96     100
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA020>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA020>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookCurrentLanguage_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA020>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA020>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookCurrentLanguage_ providing: 
   DieRange     Result DieLow DieHigh
 0     1-30  Classical      1      30
 1    31-65     Common     31      65
@@ -30798,10 +30798,10 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookCurrentLang
 4    91-95     Elvish     91      95
 5   96-100    Ancient     96     100
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9F30>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBA9F30>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookAge_Common_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9F30>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709E9F30>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookAge_Common_ providing: 
   DieRange     Result DieLow DieHigh
 0      1-5       1d10      1       5
 1     6-25    10+1d20      6      25
@@ -30809,10 +30809,10 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookAge_Common_
 3    76-95    50+1d50     76      95
 4   96-100  100+1d400     96     100
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA4D0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d1000',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA4D0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookTopicsACKS_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d1000',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookTopicsACKS_ providing: 
     DieRange                             Result DieLow DieHigh
 0        1-5                         Acrobatics      1       5
 1       6-10                            Alchemy      6      10
@@ -30995,208 +30995,23 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookTopicsACKS_
 178  971-999           Esoteric: Judge’s Choice    971     999
 179     1000                          Authority   1000    1000
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA5C0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d1000',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA5C0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookTopicsACKS_ providing: 
-    DieRange                             Result DieLow DieHigh
-0        1-5                         Acrobatics      1       5
-1       6-10                            Alchemy      6      10
-2      11-15                            Alchemy     11      15
-3      16-20                          Alertness     16      20
-4      21-25                          Ambushing     21      25
-5      26-30                   Animal Husbandry     26      30
-6      31-35             Animal Training (dogs)     31      35
-7      36-40           Animal Training (horses)     36      40
-8      41-45          Animal Training (falcons)     41      45
-9      45-50                           Apostasy     45      50
-10     51-55                    Arcane Dabbling     51      55
-11     56-60                  Art (calligraphy)     56      60
-12     61-65                      Art (drawing)     61      65
-13     66-70                 Art (illumination)     66      70
-14     71-80                       Art (mosaic)     71      80
-15     81-85                     Art (painting)     81      85
-16     86-90                    Art (sculpture)     86      90
-17     91-95                Art (stained glass)     91      95
-18    96-100                         Bargaining     96     100
-19   101-105                       Battle Magic    101     105
-20   106-110                       Battle Magic    106     110
-21   111-115                   Beast Friendship    111     115
-22   116-120                      Berserkergang    116     120
-23   121-125                Black Lore of Zahar    121     125
-24   126-130                Black Lore of Zahar    126     130
-25   131-135                     Blind Fighting    131     135
-26   136-140                            Bribery    136     140
-27   141-145                             Caving    141     145
-28   145-150                       Cat Burglary    145     150
-29   151-155                           Climbing    151     155
-30   156-160                Collegiate Wizardry    156     160
-31   161-165                Collegiate Wizardry    161     165
-32   166-170                    Combat Reflexes    166     170
-33   171-180                    Combat Trickery    171     180
-34   181-185                            Command    181     185
-35   186-190                      Contemplation    186     190
-36   191-195                      Contortionism    191     195
-37   196-200               Craft (armor-making)    196     200
-38   201-205                     Craft (baking)    201     205
-39   206-210              Craft (basket-making)    206     210
-40   211-215              Craft (blacksmithing)    211     215
-41   216-220               Craft (book-binding)    216     220
-42   221-225                 Craft (bow-making)    221     225
-43   226-230                    Craft (brewing)    226     230
-44   231-235              Craft (candle-making)    231     235
-45   236-240                  Craft (carpentry)    236     240
-46   241-245                   Craft (cobbling)    241     245
-47   245-250                    Craft (cooking)    245     250
-48   251-255                Craft (doll-making)    251     255
-49   256-260                      Craft (dying)    256     260
-50   261-265                 Craft (embroidery)    261     265
-51   266-270                  Craft (fletching)    266     270
-52   271-280             Craft (leatherworking)    271     280
-53   281-285              Craft (lock-smithing)    281     285
-54   286-290               Craft (rune-carving)    286     290
-55   291-295                   Craft (saddlery)    291     295
-56   296-300                   Craft (scribing)    296     300
-57   301-305                 Craft (scrivening)    301     305
-58   306-310                 Craft (stonemason)    306     310
-59   311-315                    Craft (tanning)    311     315
-60   316-320                  Craft (tinkering)    316     320
-61   321-325                    Craft (weaving)    321     325
-62   326-330             Craft (weaponsmithing)    326     330
-63   331-335                Craft (wheelwright)    331     335
-64   336-340                          Diplomacy    336     340
-65   341-345                           Disguise    341     345
-66   345-350                    Dungeon Bashing    345     350
-67   351-355                    Dwarven Brewing    351     355
-68   356-360                      Eavesdropping    356     360
-69   361-365                       Elementalism    361     365
-70   366-370                          Endurance    366     370
-71   371-380                        Engineering    371     380
-72   381-385                        Engineering    381     385
-73   386-390                           Familiar    386     390
-74   391-395                     Fighting Style    391     395
-75   396-400                           Gambling    396     400
-76   401-405                     Goblin-Slaying    401     405
-77   406-410                            Healing    406     410
-78   411-415                            Healing    411     415
-79   416-420                            Healing    416     420
-80   421-425                Illusion Resistance    421     425
-81   426-430                       Intimidation    426     430
-82   431-435           Knowledge (architecture)    431     435
-83   436-440              Knowledge (astrology)    436     440
-84   441-445              Knowledge (geography)    441     445
-85   446-450                Knowledge (history)    446     450
-86   451-455            Knowledge (mathematics)    451     455
-87   456-460        Knowledge (natural history)    456     460
-88   461-465     Knowledge (natural philosophy)    461     465
-89   466-470      Knowledge (political economy)    466     470
-90   471-480                 Knowledge (occult)    471     480
-91   481-485                 Knowledge (trivia)    481     485
-92   486-490                     Labor (barber)    486     490
-93   491-495                Labor (bricklaying)    491     495
-94   496-500                 Labor (butchering)    496     500
-95   501-505               Labor (construction)    501     505
-96   506-510                   Labor (domestic)    506     510
-97   511-515                    Labor (farming)    511     515
-98   516-520                     Labor (mining)    516     520
-99   521-525                Labor (shepherding)    521     525
-100  526-530              Labor (stone-cutting)    526     530
-101  531-535                     Land Surveying    531     535
-102  536-540                    Laying on Hands    536     540
-103  541-545                         Leadership    541     545
-104  545-550                        Lip Reading    545     550
-105  551-555                        Lockpicking    551     555
-106  556-560                        Loremastery    556     560
-107  561-565                        Loremastery    561     565
-108  566-570                Magical Engineering    566     570
-109  571-580                Magical Engineering    571     580
-110  581-585                      Magical Music    581     585
-111  586-590                     Manual of Arms    586     590
-112  591-595                     Manual of Arms    591     595
-113  596-600                            Mapping    596     600
-114  601-605                            Mapping    601     605
-115  606-610                   Martial Training    606     610
-116  611-615                  Military Strategy    611     615
-117  616-620                  Military Strategy    616     620
-118  621-625                            Mimicry    621     625
-119  626-630                     Mountaineering    626     630
-120  631-635                         Naturalism    631     635
-121  636-640                         Naturalism    636     640
-122  641-645                         Navigation    641     645
-123  645-650                         Navigation    645     650
-124  651-655                 Pass Without Trace    651     655
-125  656-660               Performance (acting)    656     660
-126  661-665             Performance (chanting)    661     665
-127  666-670              Performance (dancing)    666     670
-128  671-680          Performance (epic poetry)    671     680
-129  681-685  Performance (playing instruments)    681     685
-130  686-690              Performance (singing)    686     690
-131  691-695         Performance (storytelling)    691     695
-132  696-700                   Precise Shooting    696     700
-133  701-705                   Prestidigitation    701     705
-134  706-710               Profession (actuary)    706     710
-135  711-715                Profession (banker)    711     715
-136  716-720           Profession (chamberlain)    716     720
-137  721-725                 Profession (judge)    721     725
-138  726-730                Profession (lawyer)    726     730
-139  731-735             Profession (librarian)    731     735
-140  736-740              Profession (merchant)    736     740
-141  741-745          Profession (restaurateur)    741     745
-142  745-750             Profession (seneschal)    745     750
-143  751-755              Profession (torturer)    751     755
-144  756-760                           Prophecy    756     760
-145  761-765                        Quiet Magic    761     765
-146  766-770                             Riding    766     770
-147  771-780                  Righteous Turning    771     780
-148  781-785                            Running    781     785
-149  786-790                          Seafaring    786     790
-150  791-795                          Seafaring    791     795
-151  796-800                          Seduction    796     800
-152  801-805                  Siege Engineering    801     805
-153  806-810                  Siege Engineering    806     810
-154  811-815                          Signaling    811     815
-155  816-820                        Skirmishing    816     820
-156  821-825                           Skulking    821     825
-157  826-830                            Sniping    826     830
-158  831-835                        Soothsaying    831     835
-159  836-840                           Survival    836     840
-160  841-845                      Swashbuckling    841     845
-161  845-850                           Theology    845     850
-162  851-855                           Theology    851     855
-163  856-860                           Theology    856     860
-164  861-865                       Trap Finding    861     865
-165  866-870                           Tracking    866     870
-166  871-880                 Transmogrification    871     880
-167  881-885                           Trapping    881     885
-168  886-890                Unflappable Casting    886     890
-169  891-895                     Weapon Finesse    891     895
-170  896-900                       Weapon Focus    896     900
-171  901-910                  Esoteric: Alchemy    901     910
-172  911-920                 Esoteric: Apostasy    911     920
-173  921-930      Esoteric: Black Lore of Zahar    921     930
-174  931-940       Esoteric: Knowledge (occult)    931     940
-175  941-950              Esoteric: Loremastery    941     950
-176  951-960              Esoteric: Soothsaying    951     960
-177  961-970                 Esoteric: Theology    961     970
-178  971-999           Esoteric: Judge’s Choice    971     999
-179     1000                          Authority   1000    1000
-
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA6B0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA5C0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA5C0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookComplexityForScope1_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA5C0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookComplexityForScope2_ providing: 
   DieRange  Result DieLow DieHigh
-0     1-25    0.75      1      25
-1    26-50    1.00     26      50
-2    51-91    2.00     51      91
-3    92-99    3.00     92      99
-4      100    4.00    100     100
+0      1-6    0.75      1       6
+1     7-21    1.00      7      21
+2    22-61    2.00     22      61
+3    62-91    3.00     62      91
+4    92-99    4.00     92      99
+5      100    5.00    100     100
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA6B0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA6B0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookAge_Format_0011_0050_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookAge_Format_0011_0050_ providing: 
    DieRange  Result DieLow DieHigh
 0         1  Tablet      1       1
 1         2  Scroll      2       2
@@ -31299,10 +31114,387 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookAge_Format_
 98       99   Codex     99      99
 99      100   Codex    100     100
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA5C0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA5C0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookMaterialsCodex_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookMaterialsScroll_ providing: 
+  DieRange            Result DieLow DieHigh
+0     1-20            Vellum      1      20
+1    21-50         Parchment     21      50
+2    51-70      Fine Papyrus     51      70
+3   71-100  Ordinary Papyrus     71     100
+
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookRarityCopies_ providing: 
+  DieRange         Result DieLow DieHigh
+0     1-10            1d1      1      10
+1    11-25          1d4+1     11      25
+2    26-50         1d20+5     26      50
+3    51-65        1d25+25     51      65
+4    66-75        1d50+50     66      75
+5    76-85      1d150+100     76      85
+6    86-90      1d250+250     86      90
+7    91-95    1d500 + 500     91      95
+8   96-100  1d1000 + 1000     96     100
+
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookRarityModifier_ providing: 
+  DieRange  Result DieLow DieHigh
+0     1-10    1.00      1      10
+1    11-25    0.50     11      25
+2    26-50    0.33     26      50
+3    51-65    0.25     51      65
+4    66-75    0.10     66      75
+5    76-85    0.05     76      85
+6    86-90    0.02     86      90
+7    91-95    0.01     91      95
+8   96-100    0.00     96     100
+
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookScope_ providing: 
+  DieRange  Result DieLow DieHigh
+0     1-55       1      1      55
+1    56-80       2     56      80
+2    81-95       3     81      95
+3   96-100       4     96     100
+
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookCurrentLanguage_ providing: 
+  DieRange     Result DieLow DieHigh
+0     1-30  Classical      1      30
+1    31-65     Common     31      65
+2    66-85   Regional     66      85
+3    86-90    Dwarven     86      90
+4    91-95     Elvish     91      95
+5   96-100    Ancient     96     100
+
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookAge_Classical_ providing: 
+  DieRange       Result DieLow DieHigh
+0      1-5         1d10      1       5
+1     6-20      10+1d20      6      20
+2    21-35      30+1d20     21      35
+3    36-75      50+1d50     36      75
+4    76-95    100+1d400     76      95
+5   96-100  500 + 1d500     96     100
+
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d1000',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookTopicsACKS_ providing: 
+    DieRange                             Result DieLow DieHigh
+0        1-5                         Acrobatics      1       5
+1       6-10                            Alchemy      6      10
+2      11-15                            Alchemy     11      15
+3      16-20                          Alertness     16      20
+4      21-25                          Ambushing     21      25
+5      26-30                   Animal Husbandry     26      30
+6      31-35             Animal Training (dogs)     31      35
+7      36-40           Animal Training (horses)     36      40
+8      41-45          Animal Training (falcons)     41      45
+9      45-50                           Apostasy     45      50
+10     51-55                    Arcane Dabbling     51      55
+11     56-60                  Art (calligraphy)     56      60
+12     61-65                      Art (drawing)     61      65
+13     66-70                 Art (illumination)     66      70
+14     71-80                       Art (mosaic)     71      80
+15     81-85                     Art (painting)     81      85
+16     86-90                    Art (sculpture)     86      90
+17     91-95                Art (stained glass)     91      95
+18    96-100                         Bargaining     96     100
+19   101-105                       Battle Magic    101     105
+20   106-110                       Battle Magic    106     110
+21   111-115                   Beast Friendship    111     115
+22   116-120                      Berserkergang    116     120
+23   121-125                Black Lore of Zahar    121     125
+24   126-130                Black Lore of Zahar    126     130
+25   131-135                     Blind Fighting    131     135
+26   136-140                            Bribery    136     140
+27   141-145                             Caving    141     145
+28   145-150                       Cat Burglary    145     150
+29   151-155                           Climbing    151     155
+30   156-160                Collegiate Wizardry    156     160
+31   161-165                Collegiate Wizardry    161     165
+32   166-170                    Combat Reflexes    166     170
+33   171-180                    Combat Trickery    171     180
+34   181-185                            Command    181     185
+35   186-190                      Contemplation    186     190
+36   191-195                      Contortionism    191     195
+37   196-200               Craft (armor-making)    196     200
+38   201-205                     Craft (baking)    201     205
+39   206-210              Craft (basket-making)    206     210
+40   211-215              Craft (blacksmithing)    211     215
+41   216-220               Craft (book-binding)    216     220
+42   221-225                 Craft (bow-making)    221     225
+43   226-230                    Craft (brewing)    226     230
+44   231-235              Craft (candle-making)    231     235
+45   236-240                  Craft (carpentry)    236     240
+46   241-245                   Craft (cobbling)    241     245
+47   245-250                    Craft (cooking)    245     250
+48   251-255                Craft (doll-making)    251     255
+49   256-260                      Craft (dying)    256     260
+50   261-265                 Craft (embroidery)    261     265
+51   266-270                  Craft (fletching)    266     270
+52   271-280             Craft (leatherworking)    271     280
+53   281-285              Craft (lock-smithing)    281     285
+54   286-290               Craft (rune-carving)    286     290
+55   291-295                   Craft (saddlery)    291     295
+56   296-300                   Craft (scribing)    296     300
+57   301-305                 Craft (scrivening)    301     305
+58   306-310                 Craft (stonemason)    306     310
+59   311-315                    Craft (tanning)    311     315
+60   316-320                  Craft (tinkering)    316     320
+61   321-325                    Craft (weaving)    321     325
+62   326-330             Craft (weaponsmithing)    326     330
+63   331-335                Craft (wheelwright)    331     335
+64   336-340                          Diplomacy    336     340
+65   341-345                           Disguise    341     345
+66   345-350                    Dungeon Bashing    345     350
+67   351-355                    Dwarven Brewing    351     355
+68   356-360                      Eavesdropping    356     360
+69   361-365                       Elementalism    361     365
+70   366-370                          Endurance    366     370
+71   371-380                        Engineering    371     380
+72   381-385                        Engineering    381     385
+73   386-390                           Familiar    386     390
+74   391-395                     Fighting Style    391     395
+75   396-400                           Gambling    396     400
+76   401-405                     Goblin-Slaying    401     405
+77   406-410                            Healing    406     410
+78   411-415                            Healing    411     415
+79   416-420                            Healing    416     420
+80   421-425                Illusion Resistance    421     425
+81   426-430                       Intimidation    426     430
+82   431-435           Knowledge (architecture)    431     435
+83   436-440              Knowledge (astrology)    436     440
+84   441-445              Knowledge (geography)    441     445
+85   446-450                Knowledge (history)    446     450
+86   451-455            Knowledge (mathematics)    451     455
+87   456-460        Knowledge (natural history)    456     460
+88   461-465     Knowledge (natural philosophy)    461     465
+89   466-470      Knowledge (political economy)    466     470
+90   471-480                 Knowledge (occult)    471     480
+91   481-485                 Knowledge (trivia)    481     485
+92   486-490                     Labor (barber)    486     490
+93   491-495                Labor (bricklaying)    491     495
+94   496-500                 Labor (butchering)    496     500
+95   501-505               Labor (construction)    501     505
+96   506-510                   Labor (domestic)    506     510
+97   511-515                    Labor (farming)    511     515
+98   516-520                     Labor (mining)    516     520
+99   521-525                Labor (shepherding)    521     525
+100  526-530              Labor (stone-cutting)    526     530
+101  531-535                     Land Surveying    531     535
+102  536-540                    Laying on Hands    536     540
+103  541-545                         Leadership    541     545
+104  545-550                        Lip Reading    545     550
+105  551-555                        Lockpicking    551     555
+106  556-560                        Loremastery    556     560
+107  561-565                        Loremastery    561     565
+108  566-570                Magical Engineering    566     570
+109  571-580                Magical Engineering    571     580
+110  581-585                      Magical Music    581     585
+111  586-590                     Manual of Arms    586     590
+112  591-595                     Manual of Arms    591     595
+113  596-600                            Mapping    596     600
+114  601-605                            Mapping    601     605
+115  606-610                   Martial Training    606     610
+116  611-615                  Military Strategy    611     615
+117  616-620                  Military Strategy    616     620
+118  621-625                            Mimicry    621     625
+119  626-630                     Mountaineering    626     630
+120  631-635                         Naturalism    631     635
+121  636-640                         Naturalism    636     640
+122  641-645                         Navigation    641     645
+123  645-650                         Navigation    645     650
+124  651-655                 Pass Without Trace    651     655
+125  656-660               Performance (acting)    656     660
+126  661-665             Performance (chanting)    661     665
+127  666-670              Performance (dancing)    666     670
+128  671-680          Performance (epic poetry)    671     680
+129  681-685  Performance (playing instruments)    681     685
+130  686-690              Performance (singing)    686     690
+131  691-695         Performance (storytelling)    691     695
+132  696-700                   Precise Shooting    696     700
+133  701-705                   Prestidigitation    701     705
+134  706-710               Profession (actuary)    706     710
+135  711-715                Profession (banker)    711     715
+136  716-720           Profession (chamberlain)    716     720
+137  721-725                 Profession (judge)    721     725
+138  726-730                Profession (lawyer)    726     730
+139  731-735             Profession (librarian)    731     735
+140  736-740              Profession (merchant)    736     740
+141  741-745          Profession (restaurateur)    741     745
+142  745-750             Profession (seneschal)    745     750
+143  751-755              Profession (torturer)    751     755
+144  756-760                           Prophecy    756     760
+145  761-765                        Quiet Magic    761     765
+146  766-770                             Riding    766     770
+147  771-780                  Righteous Turning    771     780
+148  781-785                            Running    781     785
+149  786-790                          Seafaring    786     790
+150  791-795                          Seafaring    791     795
+151  796-800                          Seduction    796     800
+152  801-805                  Siege Engineering    801     805
+153  806-810                  Siege Engineering    806     810
+154  811-815                          Signaling    811     815
+155  816-820                        Skirmishing    816     820
+156  821-825                           Skulking    821     825
+157  826-830                            Sniping    826     830
+158  831-835                        Soothsaying    831     835
+159  836-840                           Survival    836     840
+160  841-845                      Swashbuckling    841     845
+161  845-850                           Theology    845     850
+162  851-855                           Theology    851     855
+163  856-860                           Theology    856     860
+164  861-865                       Trap Finding    861     865
+165  866-870                           Tracking    866     870
+166  871-880                 Transmogrification    871     880
+167  881-885                           Trapping    881     885
+168  886-890                Unflappable Casting    886     890
+169  891-895                     Weapon Finesse    891     895
+170  896-900                       Weapon Focus    896     900
+171  901-910                  Esoteric: Alchemy    901     910
+172  911-920                 Esoteric: Apostasy    911     920
+173  921-930      Esoteric: Black Lore of Zahar    921     930
+174  931-940       Esoteric: Knowledge (occult)    931     940
+175  941-950              Esoteric: Loremastery    941     950
+176  951-960              Esoteric: Soothsaying    951     960
+177  961-970                 Esoteric: Theology    961     970
+178  971-999           Esoteric: Judge’s Choice    971     999
+179     1000                          Authority   1000    1000
+
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA980>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA980>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA980>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookComplexityForScope2_ providing: 
+  DieRange  Result DieLow DieHigh
+0      1-6    0.75      1       6
+1     7-21    1.00      7      21
+2    22-61    2.00     22      61
+3    62-91    3.00     62      91
+4    92-99    4.00     92      99
+5      100    5.00    100     100
+
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookAge_Format_0011_0050_ providing: 
+   DieRange  Result DieLow DieHigh
+0         1  Tablet      1       1
+1         2  Scroll      2       2
+2         3  Scroll      3       3
+3         4   Codex      4       4
+4         5   Codex      5       5
+5         6   Codex      6       6
+6         7   Codex      7       7
+7         8   Codex      8       8
+8         9   Codex      9       9
+9        10   Codex     10      10
+10       11   Codex     11      11
+11       12   Codex     12      12
+12       13   Codex     13      13
+13       14   Codex     14      14
+14       15   Codex     15      15
+15       16   Codex     16      16
+16       17   Codex     17      17
+17       18   Codex     18      18
+18       19   Codex     19      19
+19       20   Codex     20      20
+20       21   Codex     21      21
+21       22   Codex     22      22
+22       23   Codex     23      23
+23       24   Codex     24      24
+24       25   Codex     25      25
+25       26   Codex     26      26
+26       27   Codex     27      27
+27       28   Codex     28      28
+28       29   Codex     29      29
+29       30   Codex     30      30
+30       31   Codex     31      31
+31       32   Codex     32      32
+32       33   Codex     33      33
+33       34   Codex     34      34
+34       35   Codex     35      35
+35       36   Codex     36      36
+36       37   Codex     37      37
+37       38   Codex     38      38
+38       39   Codex     39      39
+39       40   Codex     40      40
+40       41   Codex     41      41
+41       42   Codex     42      42
+42       43   Codex     43      43
+43       44   Codex     44      44
+44       45   Codex     45      45
+45       46   Codex     46      46
+46       47   Codex     47      47
+47       48   Codex     48      48
+48       49   Codex     49      49
+49       50   Codex     50      50
+50       51   Codex     51      51
+51       52   Codex     52      52
+52       53   Codex     53      53
+53       54   Codex     54      54
+54       55   Codex     55      55
+55       56   Codex     56      56
+56       57   Codex     57      57
+57       58   Codex     58      58
+58       59   Codex     59      59
+59       60   Codex     60      60
+60       61   Codex     61      61
+61       62   Codex     62      62
+62       63   Codex     63      63
+63       64   Codex     64      64
+64       65   Codex     65      65
+65       66   Codex     66      66
+66       67   Codex     67      67
+67       68   Codex     68      68
+68       69   Codex     69      69
+69       70   Codex     70      70
+70       71   Codex     71      71
+71       72   Codex     72      72
+72       73   Codex     73      73
+73       74   Codex     74      74
+74       75   Codex     75      75
+75       76   Codex     76      76
+76       77   Codex     77      77
+77       78   Codex     78      78
+78       79   Codex     79      79
+79       80   Codex     80      80
+80       81   Codex     81      81
+81       82   Codex     82      82
+82       83   Codex     83      83
+83       84   Codex     84      84
+84       85   Codex     85      85
+85       86   Codex     86      86
+86       87   Codex     87      87
+87       88   Codex     88      88
+88       89   Codex     89      89
+89       90   Codex     90      90
+90       91   Codex     91      91
+91       92   Codex     92      92
+92       93   Codex     93      93
+93       94   Codex     94      94
+94       95   Codex     95      95
+95       96   Codex     96      96
+96       97   Codex     97      97
+97       98   Codex     98      98
+98       99   Codex     99      99
+99      100   Codex    100     100
+
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA980>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA980>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookMaterialsCodex_ providing: 
   DieRange       Result DieLow DieHigh
 0        1    Gold Foil      1       1
 1      2-3  Silver Foil      2       3
@@ -31310,28 +31502,31 @@ DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookMaterialsCo
 3     6-50       Vellum      6      50
 4   51-100    Parchment     51     100
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA6B0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA5C0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA980>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA980>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA980>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookScope_ providing: 
-  DieRange  Result DieLow DieHigh
-0     1-55       1      1      55
-1    56-80       2     56      80
-2    81-95       3     81      95
-3   96-100       4     96     100
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA980>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookRarityCopies_ providing: 
+  DieRange         Result DieLow DieHigh
+0     1-10            1d1      1      10
+1    11-25          1d4+1     11      25
+2    26-50         1d20+5     26      50
+3    51-65        1d25+25     51      65
+4    66-75        1d50+50     66      75
+5    76-85      1d150+100     76      85
+6    86-90      1d250+250     86      90
+7    91-95    1d500 + 500     91      95
+8   96-100  1d1000 + 1000     96     100
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA6B0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|what_dice_to_roll|219 - Search result of SQL database returned as: [('1d100',)]
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA6B0>
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|__init__|73 - RPG_table: _BookComplexityForScope1_ providing: 
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA6B0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|__init__|73 - RPG_table: _BookRarityModifier_ providing: 
   DieRange  Result DieLow DieHigh
-0     1-25    0.75      1      25
-1    26-50    1.00     26      50
-2    51-91    2.00     51      91
-3    92-99    3.00     92      99
-4      100    4.00    100     100
+0     1-10    1.00      1      10
+1    11-25    0.50     11      25
+2    26-50    0.33     26      50
+3    51-65    0.25     51      65
+4    66-75    0.10     66      75
+5    76-85    0.05     76      85
+6    86-90    0.02     86      90
+7    91-95    0.01     91      95
+8   96-100    0.00     96     100
 
-DEBUG:	|06/22/2023 05:53:20|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x000002547CBAA5C0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>
+DEBUG:	|06/22/2023 06:05:48|rpg_tables|connect_to_database|196 - SLQ connection established: <sqlite3.Connection object at 0x0000016D709EA4D0>

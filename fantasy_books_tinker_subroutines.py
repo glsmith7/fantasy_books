@@ -603,8 +603,8 @@ class FantasyBook():
 
         # these are all calculated based on other values above
         self.number_pages_set(number_pages = self.number_pages)
-        self.reading_time_set()
-        self.production_value_set()
+        self.reading_time_set(reading_time = self.reading_time)
+        self.production_value_set(production_value = self.production_value)
         self.literary_value_set()
         self.weight_set()
         self.volumes_number_set()
@@ -946,7 +946,8 @@ class FantasyBook():
     def number_pages_set(self, number_pages = None):
         if number_pages:
             self.number_pages = number_pages
-        
+            self.complexity = ceil((self.scope * 1000) // self.number_pages)
+
         else:
             self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
 
@@ -1008,11 +1009,16 @@ class FantasyBook():
         
         return string.capwords(str(author_title))
     
-    def production_value_set(self):
-        target_table = "BookProductionValue" + self.format
+    def production_value_set(self, production_value = None):
 
-        self.cost_per_page = self.look_up_table(result_column="Cost",table_name=target_table,search_column="Material",search_term=self.materials)
-        self.production_value = ceil(self.cost_per_page * self.number_pages)
+        if production_value:
+            self.production_value = production_value
+            self.cost_per_page = production_value / self.number_pages
+
+        else:
+            target_table = "BookProductionValue" + self.format
+            self.cost_per_page = self.look_up_table(result_column="Cost",table_name=target_table,search_column="Material",search_term=self.materials)
+            self.production_value = ceil(self.cost_per_page * self.number_pages)
         
     def rarity_set(self, rarity_modifier = None, number_extant_copies = None, number_extant_available_to_place = None):
         the_roll = d20.roll("1d100").total # this same value needed twice, so must roll it first so can be passed.
@@ -1037,9 +1043,16 @@ class FantasyBook():
         else:
             self.rarity_modifier = self.book_details_result_from_tables("BookRarityModifier",roll_result=the_roll)
 
-    def reading_time_set(self):
-        self.reading_time = ceil(self.number_pages//180)
-        self.reference_time = self.reading_time
+    def reading_time_set(self,reading_time = None):
+
+        if reading_time:
+            self.number_pages = 180 * reading_time
+            self.reading_time = reading_time
+            self.reference_time = reading_time
+
+        else:
+            self.reading_time = ceil(self.number_pages//180)
+            self.reference_time = self.reading_time
 
     def remove (self,library):
         ''' Remove this book from a given library'''
@@ -1120,7 +1133,6 @@ class FantasyBook():
             
             self.is_a_translation = False
 
-
     def volumes_number_set(self):
         if self.format == "Codex":
             self.number_volumes = ceil(self.number_pages/750)
@@ -1136,9 +1148,16 @@ class FantasyBook():
         else:
             raise ValueError("Format has a problem: is not a Codex, Scroll, or Tablet.")
         
-    def weight_set(self):
-        self.weight_per_page = self.look_up_table(result_column="Result",table_name="BookWeight",search_column="Material",search_term=self.materials)
-        self.weight = ceil(self.weight_per_page * self.number_pages)
+    def weight_set(self,weight=None):
+
+        if weight:
+            self.weight = weight
+            self.number_pages  = self.weight * self.weight_per_page
+            self.number_pages_set(number_pages = self.number_pages)
+
+        else:
+            self.weight_per_page = self.look_up_table(result_column="Result",table_name="BookWeight",search_column="Material",search_term=self.materials)
+            self.weight = ceil(self.weight_per_page * self.number_pages)
 
 class MagicBook(FantasyBook):
     ''' Subclass of fantasy book, that has a few extra values.'''
@@ -1149,7 +1168,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=15000,overshoot=True,rarity_modifier = 1, number_extant_copies = 3)
+books, books_value = produce_book_hoard(value=15000,overshoot=True,production_value=10000)
 
 # print_book_hoard(books)
 export_books_to_excel(books)
