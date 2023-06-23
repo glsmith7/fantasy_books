@@ -476,28 +476,28 @@ class FantasyBook():
     # if the value is to be set from a random table.
 
     def __init__(self,
-        book_type = "Standard",         
-        topic = "",
-        topic_apparent = "",
-        topic_title_form = "",
-        book_title = "",
+        book_type = 'Standard',         
+        topic = '',
+        topic_apparent = '',
+        topic_title_form = '',
+        book_title = '',
         book_title_flavor = '',
-        author_sex = "",
-        author_name = "",
-        author_title = "",
-        author_epithet = "",
-        author_full = "",
-        author_nationality = "",
-        current_language = "",
-        original_language = "",
+        author_sex = '',
+        author_name = '',
+        author_title = '',
+        author_epithet = '',
+        author_full = '',
+        author_nationality = '',
+        current_language = '',
+        original_language = '',
         is_a_translation = False,
-        translator_name = "",
-        translator_nationality = "",
+        translator_name = '',
+        translator_nationality = '',
         translator_sex = '',
         translator_title = '',
         translator_full_name = '',
-        format = "",
-        materials = "",
+        format = '',
+        materials = '',
         libraries_it_is_in = '',
         number_extant_copies = 0,
         number_extant_available_to_place = 0,
@@ -613,7 +613,7 @@ class FantasyBook():
 
     def age_set(self,age=None):
         if not age:
-            table_name = "BookAge_" + self.current_language # Ancient, Dwarvish, Elvish, Classical, Common are options
+            table_name = 'BookAge_'+ self.current_language # Ancient, Dwarvish, Elvish, Classical, Common are options
             dice_string = self.book_details_result_from_tables(table_name)
             if self.is_a_translation == True: 
                 self.age_at_discovery = d20.roll(TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL).total # bonus to age if is translation.
@@ -793,7 +793,7 @@ class FantasyBook():
     
     def current_language_set(self, current_language = None):
         if not current_language:
-            self.current_language = self.book_details_result_from_tables("BookCurrentLanguage")
+            self.current_language = self.book_details_result_from_tables('BookCurrentLanguage')
         else:
             self.current_language = current_language
 
@@ -804,7 +804,7 @@ class FantasyBook():
 
             while not esoteric_ratios_correct:
                 # esoteric scope
-                self.scope_esoteric = self.book_details_result_from_tables("BookScope")
+                self.scope_esoteric = self.book_details_result_from_tables('BookScope')
                 
                 # esoteric complexity
                 esoteric_complexity_from_table = self.book_details_result_from_tables(complexity_table_list[int(self.scope_esoteric)-1])
@@ -827,26 +827,26 @@ class FantasyBook():
             self.esoteric_value_set()
 
     def esoteric_value_set (self):
-        target_table = "BookLiteraryValueScope" + str(self.scope_esoteric)
+        target_table = 'BookLiteraryValueScope' + str(self.scope_esoteric)
         self.esoteric_literary_value_base = self.look_up_table(
             table_name=target_table,
-            search_column="Complexity",
+            search_column='Complexity',
             search_term = self.complexity_esoteric,
-            result_column="LiteraryValue"
+            result_column='LiteraryValue'
             )
         self.esoteric_literary_value_modified = ceil (self.esoteric_literary_value_base * self.rarity_modifier) * self.number_pages * 5 # Writer of 18 Intelligence needed; hence the 5.
         self.market_value = ceil(self.literary_value_modified + self.esoteric_literary_value_modified + self.production_value)
 
     def format_set(self, format = None):
         if not format:
-            target_table = "BookAge_Format_"
-            if self.age_at_discovery < 11: target_table += "0001_0010"
-            elif self.age_at_discovery < 51: target_table += "0011_0050"
-            elif self.age_at_discovery < 101: target_table += "0051_0100"
-            elif self.age_at_discovery < 501: target_table += "0101_0500"
-            elif self.age_at_discovery < 1001: target_table += "0501_1000"
-            elif self.age_at_discovery < 2001: target_table += "1001_2000"
-            elif self.age_at_discovery < 10001: target_table += "2001_10000"
+            target_table = 'BookAge_Format_'
+            if self.age_at_discovery < 11: target_table += '0001_0010'
+            elif self.age_at_discovery < 51: target_table += '0011_0050'
+            elif self.age_at_discovery < 101: target_table += '0051_0100'
+            elif self.age_at_discovery < 501: target_table += '0101_0500'
+            elif self.age_at_discovery < 1001: target_table += '0501_1000'
+            elif self.age_at_discovery < 2001: target_table += '1001_2000'
+            elif self.age_at_discovery < 10001: target_table += '2001_10000'
 
             self.format = self.book_details_result_from_tables(target_table)
         else:
@@ -891,12 +891,12 @@ class FantasyBook():
         self.book_title_flavor = book_title_flavor
 
     def literary_value_set (self):
-        target_table = "BookLiteraryValueScope" + str(self.scope)
+        target_table = 'BookLiteraryValueScope' + str(self.scope)
         self.literary_value_base = self.look_up_table(
             table_name=target_table,
-            search_column="Complexity",
+            search_column='Complexity',
             search_term = self.complexity,
-            result_column="LiteraryValue"
+            result_column='LiteraryValue'
             )
 
         self.literary_value_modified = ceil(self.literary_value_base * self.rarity_modifier * self.number_pages)
@@ -910,7 +910,7 @@ class FantasyBook():
     def materials_set (self, materials=None):
         
         if not materials:
-            target_table = "BookMaterials" + self.format
+            target_table = 'BookMaterials' + self.format
             self.materials = self.book_details_result_from_tables(target_table)
 
         else:
@@ -954,10 +954,10 @@ class FantasyBook():
             return
 
         if not original_language: # original language is empty
-            original_language = self.book_details_result_from_tables("BookOriginalLanguage")
+            original_language = self.book_details_result_from_tables('BookOriginalLanguage')
 
             while original_language == self.current_language:  
-                original_language = self.book_details_result_from_tables("BookOriginalLanguage") # reroll until not the same
+                original_language = self.book_details_result_from_tables('BookOriginalLanguage') # reroll until not the same
         
         self.original_language = original_language
         self.is_a_translation = True
