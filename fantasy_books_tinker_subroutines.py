@@ -41,12 +41,12 @@ WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
 WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
 
 #
-ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO = 'Ancient'
+ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO = ['Ancient']
 CHANCE_OF_BEING_TRANSLATION = 5 # # 0-100%
 CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
 CHANCE_OF_TITLE_IN_AUTHOR_NAME = 30 # 0-100%
 CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
-TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = "1d100+20" 
+TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = '1d100+20'
 CHANCE_OF_INCOMPLETE_WORK = 5 # 0-100%
 
 # uses first:
@@ -56,7 +56,7 @@ DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_t
 DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 
 # fonts to display flavor titles in Excel properly
-DEFAULT_EXCEL_FONT = "Segoe UI Historic"
+DEFAULT_EXCEL_FONT = 'Segoe UI Historic'
 DEFAULT_EXCEL_FLAVOR_FONT_SIZE = 9
 
 #############################################
@@ -64,49 +64,49 @@ DEFAULT_EXCEL_FLAVOR_FONT_SIZE = 9
 # Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
 
 dictionary_languages = {
-        "Classical" : "latin.txt",
-        "Common": "english.txt", # uses just English; file is empty and does nothing but prevent bugs. :-)
-        "Classical": "latin.txt", 
-        "Regional" : "greek.txt", 
-        "Ancient": "akkadian.txt",
-        "Dwarven" : "runes.txt",
-        "Elvish" : "sindarin.txt",
-        #"Akkadian": "akkadian.txt",   # commented ones have no equivalence in ACKS tables for language.        
-        #"Arabic": "arabic.txt",       # ... adjust to taste, however.
-        #"Armenian": "armenian.txt",
-        #"Chinese": "chinese.txt",
-        #"Cyrilic": "cyrillic.txt",
-        #"Georgian": "georgian.txt",
-        #"Gothic": "gothic_latin.txt",
-        #"Hebrew": "hebrew.txt",
-        #"Hindi": "hindi.txt"
-        #"Kanji":"kanji.txt",
-        #"Korean":"korean.txt",
-        # "Classical": "arabic.txt",
+        'Classical' : 'latin.txt',
+        'Common': 'english.txt', # uses just English; file is empty and does nothing but prevent bugs. :-)
+        'Classical': 'latin.txt', 
+        'Regional' : 'greek.txt', 
+        'Ancient': 'akkadian.txt',
+        'Dwarven' : 'runes.txt',
+        'Elvish' : 'sindarin.txt',
+        #'Akkadian': 'akkadian.txt',   # commented ones have no equivalence in ACKS tables for language.        
+        #'Arabic': 'arabic.txt',       # ... adjust to taste, however.
+        #'Armenian': 'armenian.txt',
+        #'Chinese': 'chinese.txt',
+        #'Cyrilic': 'cyrillic.txt',
+        #'Georgian': 'georgian.txt',
+        #'Gothic': 'gothic_latin.txt',
+        #'Hebrew': 'hebrew.txt',
+        #'Hindi': 'hindi.txt'
+        #'Kanji':'kanji.txt',
+        #'Korean':'korean.txt',
+        # 'Classical': 'arabic.txt',
     }
 
 font_languages = {
-        "Classical" : DEFAULT_EXCEL_FONT,
-        "Common": DEFAULT_EXCEL_FONT,
-        "Classical": DEFAULT_EXCEL_FONT, 
-        "Regional" : DEFAULT_EXCEL_FONT, 
-        "Ancient": DEFAULT_EXCEL_FONT,
-        "Dwarven" : "Noto Sans Runic",
-        "Elvish" : "Tengwar Annatar",
-        # "Akkadian": DEFAULT_EXCEL_FONT,   
-        #"Arabic": DEFAULT_EXCEL_FONT,       
-        #"Armenian": DEFAULT_EXCEL_FONT,
-        #"Chinese": DEFAULT_EXCEL_FONT,
-        #"Cyrillic": DEFAULT_EXCEL_FONT,
-        #"Georgian": DEFAULT_EXCEL_FONT,
-        #"Gothic": DEFAULT_EXCEL_FONT,
-        #"Hebrew": DEFAULT_EXCEL_FONT,
-        #"Hindi": DEFAULT_EXCEL_FONT,
-        #"Kanji": DEFAULT_EXCEL_FONT,
-        #"Korean": DEFAULT_EXCEL_FONT,
+        'Classical' : DEFAULT_EXCEL_FONT,
+        'Common': DEFAULT_EXCEL_FONT,
+        'Classical': DEFAULT_EXCEL_FONT, 
+        'Regional' : DEFAULT_EXCEL_FONT, 
+        'Ancient': DEFAULT_EXCEL_FONT,
+        'Dwarven' : 'Noto Sans Runic',
+        'Elvish' : 'Tengwar Annatar',
+        # 'Akkadian': DEFAULT_EXCEL_FONT,   
+        #'Arabic': DEFAULT_EXCEL_FONT,       
+        #'Armenian': DEFAULT_EXCEL_FONT,
+        #'Chinese': DEFAULT_EXCEL_FONT,
+        #'Cyrillic': DEFAULT_EXCEL_FONT,
+        #'Georgian': DEFAULT_EXCEL_FONT,
+        #'Gothic': DEFAULT_EXCEL_FONT,
+        #'Hebrew': DEFAULT_EXCEL_FONT,
+        #'Hindi': DEFAULT_EXCEL_FONT,
+        #'Kanji': DEFAULT_EXCEL_FONT,
+        #'Korean': DEFAULT_EXCEL_FONT,
     }
-lang_no_spaces = ["Chinese","Kanji","Korean"]
-lang_limit_40_chars = ["Akkadian","Ancient","Gothic"]
+lang_no_spaces = ['Chinese','Kanji','Korean']
+lang_limit_40_chars = ['Akkadian','Ancient','Gothic']
 
 ##################### End of user-settable variables ###########################
 
@@ -133,12 +133,12 @@ global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_
 global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
 
 list_of_words_to_not_capitalize = [
-    ("The","the"),
-    ("Of","of"),
-    ("De","de"),
+    ('The','the'),
+    ('Of','of'),
+    ('De','de'),
     ("D'","d'"),
 ]
-complexity_table_list = ["BookComplexityForScope1","BookComplexityForScope2","BookComplexityForScope3","BookComplexityForScope4"]
+complexity_table_list = ['BookComplexityForScope1','BookComplexityForScope2','BookComplexityForScope3','BookComplexityForScope4']
 
 surnames_tables = {}
 name_tables_male = {}
@@ -197,34 +197,34 @@ titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
 # name tables load
 
 list_of_names_tables_male = [
-        "_names_anglo_saxon_male",
-        "_names_arabic_male",
-        "_names_english_male",
-        "_names_famous_male", 
-        "_names_french_male", 
-        "_names_norse_male",
-        "_names_roman_male", 
+        '_names_anglo_saxon_male',
+        '_names_arabic_male',
+        '_names_english_male',
+        '_names_famous_male', 
+        '_names_french_male', 
+        '_names_norse_male',
+        '_names_roman_male', 
         ]
 
 list_of_names_tables_female = [
-        "_names_arabic_female",
-        "_names_anglo_saxon_female", 
-        "_names_english_female",
-        "_names_famous_female", 
-        "_names_french_female", 
-        "_names_norse_female",
-        "_names_roman_female", 
+        '_names_arabic_female',
+        '_names_anglo_saxon_female', 
+        '_names_english_female',
+        '_names_famous_female', 
+        '_names_french_female', 
+        '_names_norse_female',
+        '_names_roman_female', 
         ]
 
 list_of_surnames_tables = [
-        ("_names_arabic_surnames"),
-        ("_names_anglo_saxon_surnames"), 
-        ("_names_english_surnames"),
-        ("_names_famous_surnames"), 
-        ("_names_french_surnames"), 
-        ("_names_norse_surnames_female"),
-        ("_names_norse_surnames_male"),
-        ("_names_roman_surnames"),
+        ('_names_arabic_surnames'),
+        ('_names_anglo_saxon_surnames'), 
+        ('_names_english_surnames'),
+        ('_names_famous_surnames'), 
+        ('_names_french_surnames'), 
+        ('_names_norse_surnames_female'),
+        ('_names_norse_surnames_male'),
+        ('_names_roman_surnames'),
         ]
 
 # load name table dictionaries
@@ -314,7 +314,7 @@ def create_fantasy_book(book_type=None, **kwargs):
     book_type = string.capwords(str(book_type))
     return FantasyBook(**kwargs)
 
-def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksheet = "Book Hoard"):
+def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksheet = 'Book Hoard'):
     
     '''
     Takes a list of books and exports to Excel file. Default file 'books_spreadsheet_out.xlsx' in same folder, worksheet defaults to "Book Hoard."
@@ -1193,5 +1193,5 @@ books, books_value = produce_number_of_books(number = 5,topic='Healing')
 # print_book_hoard(books)
 export_books_to_excel(books)
 
-print ("TOTAL: " + str(books_value))
-print ("Number of books: " + str (len(books)))
+print ('TOTAL: ' + str(books_value))
+print ('Number of books: ' + str (len(books)))
