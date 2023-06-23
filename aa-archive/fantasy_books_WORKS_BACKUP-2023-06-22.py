@@ -312,22 +312,17 @@ def book_characteristics(books):
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
     book_type = string.capwords(str(book_type))
+    # if book_type == "Esoteric":
+    #     return EsotericBook(**kwargs)
+    # elif book_type == "Authority":
+    #     return AuthoritativeBook(**kwargs)
+    # elif book_type == "Magic":
+    #     return MagicBook(**kwargs)
+    # else:
     return FantasyBook(**kwargs)
 
 def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksheet = "Book Hoard"):
     
-    '''
-    Takes a list of books and exports to Excel file. Default file 'books_spreadsheet_out.xlsx' in same folder, worksheet defaults to "Book Hoard."
-    filename = 
-    worksheet = 
-
-    Can be passed in.
-
-    If file and worksheet exist, is appended to. If file and/or worksheet do not exist, they are created.
-
-    Note that export cannot function if the desired file is open. If this happens an option will be presented allowing user to close the Excel file and retry the save.
-    '''
-
     book_columns,current_language_index, flavor_title_index = book_characteristics(books)
     
     try:
@@ -381,9 +376,7 @@ def export_books_to_excel (books,filename = "books_spreadsheet_out.xlsx", worksh
         the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)
 
     wb.save(filename)
-    wb.close()
-    print ('') # get off the same line
-    print ("Exported to Excell file " + filename)
+    print ('') # get off the same line    
 
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
@@ -406,11 +399,57 @@ def import_language_words():
 
     return vocab_dictionary
 
-def produce_book_hoard (value=0,overshoot=False, **kwargs):
-    ''' 
-    produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
+def print_book_hoard (books):
 
-    Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
+    for z in range (1,(len(books)+1)):
+        a = books[z]
+        print ("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ----> " + str(z))
+        print ("Book type:" + str(a.book_type))
+        print ("Current Lang:" + str(a.current_language))
+        print ("Original Lang:" + str(a.original_language))
+        print ("Translator:" + str(a.translator))
+        print ("Translator title:" + str(a.translator_title))
+        print ("Translator sex:" + str(a.translator_sex))
+        print ("Translator full name:" + str(a.translator_full_name))
+        print ("Reading time:" + str(a.reading_time))
+        print ("Reference time:" + str(a.reference_time))
+        print ("author_sex:" + str(a.author_sex))
+        print ("Epithet:" + str(a.author_epithet))
+        print ("Author title:" + str(a.author_title))
+        print ("Author:" + str(a.author_full))
+        print ("Author nationality:" + str(a.author_nationality))
+        print ("Topic:" + str(a.topic))
+        print ("Apparent Topic:" + str(a.topic_apparent))
+        print ("Topic title:" + str(a.topic_title_form))
+        print ("Actual title:" + a.book_title)
+        print ("Title Flavor: " + str(a.book_title_flavor))
+        print ("Age:" + str(a.age_at_discovery))
+        print ("Format:" + str(a.format))
+        print ("Template:" + str(a.template))
+        print ("Materials:" + str(a.materials))
+        print ("Extant copies:" + str(a.number_extant_copies))
+        print ("Extant copies yet to place:" + str(a.number_extant_available_to_place))
+        print ("Scope:" + str(a.scope))
+        print ("Esoteric scope:" + str(a.scope_esoteric))
+        print ("Rarity modifier: " + str(a.rarity_modifier))
+        print ("Number pages:" + str(a.number_pages))
+        print ("Cost per page:" + str(a.cost_per_page))
+        print ("Production value:" + str(a.production_value))
+        print ("Complex:" + str(a.complexity))
+        print ("Lit value base:" + str(a.literary_value_base))
+        print ("Lit value mod:" + str(a.literary_value_modified))
+        print ("Esoteric complexity:" + str(a.complexity_esoteric))
+        print ("Esoteric value base:" + str(a.esoteric_literary_value_base))
+        print ("Esoteric value mod:" + str(a.esoteric_literary_value_modified))
+        print ("Market value: " + str (a.market_value))
+        print ("Weight per page: " + str (a.weight_per_page))
+        print ("Weight: " + str(a.weight))
+        print ("Volumes: " + str(a.number_volumes))
+        print ("Fraction complete: " + str(a.fraction_complete))
+        print ("---")
+
+def produce_book_hoard (value=0,overshoot=False, **kwargs):
+    ''' produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
     '''
     def update_book_status(the_count, running_total,value):
         print (" " * 80,end='\r') # blank the line
@@ -442,10 +481,8 @@ def produce_book_hoard (value=0,overshoot=False, **kwargs):
     return books, running_total
 
 def produce_number_of_books (number=1, **kwargs):
-    ''' 
-    Produces a given number of books. Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
+    ''' produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
     '''
-
     def update_book_status(the_count, running_total,number):
         print (" " * 80,end='\r') # blank the line
         print("Generating Book #" + str(the_count) + "/" + str (number) + " (" + str((int(100*the_count/number))) + "%)" + " --> " + str(running_total) + " total gp value", end ='\r')
@@ -1188,10 +1225,21 @@ class MagicBook(FantasyBook):
 ######################## main() ########################
 
 # books, books_value = produce_book_hoard(value=15000,overshoot=True,fraction_complete=0.1)
-books, books_value = produce_number_of_books(number = 5,topic='Healing')
+books, books_value = produce_number_of_books(number = 5)
 
 # print_book_hoard(books)
 export_books_to_excel(books)
 
 print ("TOTAL: " + str(books_value))
 print ("Number of books: " + str (len(books)))
+
+#### Print attributes and value with numbering
+# count = 0
+# for item in book_characteristics:
+#     print (str(count) + " " + str(item))
+#     count += 1
+
+# count = 0
+# for item in row:
+#     print (str(count) + " " + str(item))
+#     count += 1
