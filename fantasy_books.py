@@ -243,6 +243,55 @@ for i in list_of_surnames_tables:
     surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
 
 ######################## FUNCTIONS ########################
+def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoard",destination="master_fantasy_book_list.xlsx",destination_worksheet = "Master List"):
+    '''
+    Places books in an excel spreadsheet into the master_book_list. This is all books that exist in a campaign, and is used to produce additional copies (if they are extant) of already-described books. This happens at the appropriate frequency for the total number of books in the game world.
+
+    filename = an Excel (*.xlsx) file. Defaults to "books_spreadsheet_out.xlsx".
+    worksheet = the "tab" from the Excel file. Defaults to "Book Hoard".
+
+    '''
+    # load source
+    try:
+        wb_source = load_workbook(filename= source)
+    except:
+        raise FileNotFoundError ("Could not load the source file: " + source + ".")
+
+    if worksheet in wb_source.sheetnames: 
+        ws_source = wb_source[worksheet]
+    else:
+        raise FileNotFoundError ("Could not find the worksheet: " + worksheet + " even though file " + source + " was successfully loaded.")
+    
+    # load destination
+
+    try:
+        wb_dest = load_workbook(filename= destination)
+    except:
+        raise FileNotFoundError ("Could not load the destination file: " + destination + ".")
+    
+    if destination_worksheet in wb_dest.sheetnames: 
+        ws_dest = wb_dest[destination_worksheet]
+
+    else:
+        raise FileNotFoundError ("Could not find the worksheet: " + destination_worksheet + " even though file " + destination + " was successfully loaded.")
+    
+    # Make sure can save
+
+    try_to_save = True
+    while try_to_save:
+        try:
+            wb_dest.save(destination) 
+        except:
+            print ("You've probably got the Excel file " + destination + " open; can't save.")
+            user_response = input ("(T)ry again or (Q)uit? ")
+            
+            if user_response == "Q" or user_response == "q":
+                try_to_save = False
+                print ("Quitting without saving to Excel.")
+                sys.exit()
+                break
+        else:
+            try_to_save = False # ie succeeded
 
 def book_characteristics(books):
     book_attributes = [attribute for attribute in dir(books[1])
@@ -313,7 +362,33 @@ def book_characteristics(books):
 
     return book_variables_in_chosen_order, current_language_index+1, flavor_title_index+1 # index starts 0, Excel starts 1
 
-def book_hoard (value=0,overshoot=False, **kwargs):
+def book_batch (number=1, **kwargs):
+    
+    ''' 
+    Produces a given number of books. Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
+    '''
+
+    def update_book_status(the_count, running_total,number):
+        print (" " * 80,end='\r') # blank the line
+        print("Generating Book #" + str(the_count) + "/" + str (number) + " (" + str((int(100*the_count/number))) + "%)" + " --> " + str(running_total) + " total gp value", end ='\r')
+
+    books = {}
+
+    while books == {}:
+    
+        running_total = 0
+        the_count = 0
+
+        while the_count < number:
+            the_count += 1
+            books[the_count] = create_fantasy_book(**kwargs)
+            running_total += books[the_count].market_value
+            update_book_status(the_count, running_total,number)
+
+    print ('') # get off the same line
+    return books, running_total
+
+def book_hoard (value=0,overshoot=True, **kwargs):
     ''' 
     produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
 
@@ -345,32 +420,6 @@ def book_hoard (value=0,overshoot=False, **kwargs):
 
         if books == {}:
             print ("Zero books made in hoard; retrying ....") # need better error checking to avoid endless loop if value too low.
-    print ('') # get off the same line
-    return books, running_total
-
-def book_batch (number=1, **kwargs):
-    
-    ''' 
-    Produces a given number of books. Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
-    '''
-
-    def update_book_status(the_count, running_total,number):
-        print (" " * 80,end='\r') # blank the line
-        print("Generating Book #" + str(the_count) + "/" + str (number) + " (" + str((int(100*the_count/number))) + "%)" + " --> " + str(running_total) + " total gp value", end ='\r')
-
-    books = {}
-
-    while books == {}:
-    
-        running_total = 0
-        the_count = 0
-
-        while the_count < number:
-            the_count += 1
-            books[the_count] = create_fantasy_book(**kwargs)
-            running_total += books[the_count].market_value
-            update_book_status(the_count, running_total,number)
-
     print ('') # get off the same line
     return books, running_total
 
@@ -1219,10 +1268,12 @@ class MagicBook(FantasyBook):
 ######################## main() ########################
 
 # books, books_value = produce_book_hoard(value=15000,overshoot=True,fraction_complete=0.1)
-books, books_value = book_batch(number = 10)
+# books, books_value = book_batch(number = 10)
 
 # print_book_hoard(books)
-export_books_to_excel(books)
+# export_books_to_excel(books)
 
-print ('TOTAL: ' + str(books_value))
-print ('Number of books: ' + str (len(books)))
+# print ('TOTAL: ' + str(books_value))
+# print ('Number of books: ' + str (len(books)) + " Done!")
+
+archive_to_master()
