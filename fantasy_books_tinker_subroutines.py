@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO 
 global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
 global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
+global READING_PAGES_PER_HOUR, PAGES_PER_VOLUME_FOR_CODEX, PAGES_PER_VOLUME_FOR_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
 global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
 global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE
@@ -32,14 +33,20 @@ vocab_dictionary = {}
 #########################################################
 # USER SETABLE variables
 #########################################################
+# ACKS given values
+READING_PAGES_PER_HOUR = 180
+PAGES_PER_VOLUME_FOR_CODEX = 750
+PAGES_PER_VOLUME_FOR_SCROLL = 250
+WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
+WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
+
+#
 ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO = 'Ancient'
 CHANCE_OF_BEING_TRANSLATION = 5 # # 0-100%
 CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
-CHANCE_OF_TITLE_IN_AUTHOR_NAME = 50 # 0-100%
+CHANCE_OF_TITLE_IN_AUTHOR_NAME = 30 # 0-100%
 CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
 TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = "1d100+20" 
-WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
-WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
 CHANCE_OF_INCOMPLETE_WORK = 5 # 0-100%
 
 # uses first:
@@ -606,8 +613,8 @@ class FantasyBook():
         self.reading_time_set(reading_time = self.reading_time)
         self.production_value_set(production_value = self.production_value)
         self.literary_value_set()
-        self.weight_set()
-        self.volumes_number_set()
+        self.weight_set(weight = self.weight)
+        self.volumes_number_set(number_volumes = self.number_volumes)
         self.flavor_text_title_set(self.book_title_flavor)
         self.percentage_of_text_missing_set(self.fraction_complete)
         self.esoteric_set()
@@ -946,10 +953,10 @@ class FantasyBook():
     def number_pages_set(self, number_pages = None):
         if number_pages:
             self.number_pages = number_pages
-            self.complexity = ceil((self.scope * 1000) // self.number_pages)
+            self.complexity = ceil((self.scope * 1000) / self.number_pages)
 
         else:
-            self.number_pages = ceil((self.scope * 1000) // self.complexity) # note integer division // 
+            self.number_pages = ceil((self.scope * 1000) / self.complexity) # note integer division // 
 
     def original_language_set(self, original_language=None,is_a_translation=False):
         
@@ -1046,13 +1053,18 @@ class FantasyBook():
     def reading_time_set(self,reading_time = None):
 
         if reading_time:
-            self.number_pages = 180 * reading_time
+            self.number_pages = READING_PAGES_PER_HOUR * reading_time
             self.reading_time = reading_time
             self.reference_time = reading_time
 
         else:
-            self.reading_time = ceil(self.number_pages//180)
+            self.reading_time = ceil(self.number_pages/READING_PAGES_PER_HOUR)
             self.reference_time = self.reading_time
+
+    def refresh_number_pages(self):
+            self.number_pages_set(number_pages = self.number_pages)
+            self.reading_time_set()
+            self.production_value_set()    
 
     def remove (self,library):
         ''' Remove this book from a given library'''
@@ -1133,30 +1145,51 @@ class FantasyBook():
             
             self.is_a_translation = False
 
-    def volumes_number_set(self):
-        if self.format == "Codex":
-            self.number_volumes = ceil(self.number_pages/750)
-            self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
-        
-        elif self.format == "Scroll":
-            self.number_volumes = ceil(self.number_pages/250)
-            self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
-        
-        elif self.format == "Tablet":
-            self.number_volumes = 1 # ie, never multivolume
+    def volumes_number_set(self, number_volumes = None):
+        if number_volumes:
+            self.number_volumes = number_volumes
+
+            if self.format == "Codex":
+                self.number_pages = ceil (self.number_volumes * PAGES_PER_VOLUME_FOR_CODEX)
+                self.weight = ceil ((self.number_pages * self.weight_per_page) + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX))
+            
+            elif self.format == "Scroll":
+                self.number_pages = ceil (self.number_volumes * PAGES_PER_VOLUME_FOR_SCROLL)
+                self.weight = ceil((self.number_pages * self.weight_per_page) + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL))
+
+            elif self.format == "Tablet":
+                self.number_volumes = 1 # ie, never multivolume
+            
+            else:
+                raise ValueError("Format has a problem: is not a Codex, Scroll, or Tablet.")
+
+            self.refresh_number_pages()
 
         else:
-            raise ValueError("Format has a problem: is not a Codex, Scroll, or Tablet.")
+
+            if self.format == "Codex":
+                self.number_volumes = ceil(self.number_pages/PAGES_PER_VOLUME_FOR_CODEX)
+                self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
+            
+            elif self.format == "Scroll":
+                self.number_volumes = ceil(self.number_pages/PAGES_PER_VOLUME_FOR_SCROLL)
+                self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
+            
+            elif self.format == "Tablet":
+                self.number_volumes = 1 # ie, never multivolume
+
+            else:
+                raise ValueError("Format has a problem: is not a Codex, Scroll, or Tablet.")
         
     def weight_set(self,weight=None):
+        self.weight_per_page = self.look_up_table(result_column="Result",table_name="BookWeight",search_column="Material",search_term=self.materials)
 
         if weight:
             self.weight = weight
-            self.number_pages  = self.weight * self.weight_per_page
-            self.number_pages_set(number_pages = self.number_pages)
+            self.number_pages  = ceil(self.weight / self.weight_per_page)
+            self.refresh_number_pages()
 
         else:
-            self.weight_per_page = self.look_up_table(result_column="Result",table_name="BookWeight",search_column="Material",search_term=self.materials)
             self.weight = ceil(self.weight_per_page * self.number_pages)
 
 class MagicBook(FantasyBook):
@@ -1168,7 +1201,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=15000,overshoot=True,production_value=10000)
+books, books_value = produce_book_hoard(value=15000,overshoot=True,number_volumes=100)
 
 # print_book_hoard(books)
 export_books_to_excel(books)
