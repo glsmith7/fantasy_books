@@ -27,9 +27,13 @@ global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_W
 global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE
 global vocab_dictionary
 global lang_no_spaces, lang_limit_40_chars
-
+global CURRENT_LANGUAGE_COLUMN_INDEX, FLAVOR_TITLE_COLUMN_INDEX
 
 vocab_dictionary = {}
+
+# magic numbers
+CURRENT_LANGUAGE_COLUMN_INDEX = 6
+FLAVOR_TITLE_COLUMN_INDEX = 19
 
 #########################################################
 # USER SETABLE variables
@@ -295,31 +299,36 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
                 break
         else:
             try_to_save = False # ie succeeded
-
-    print ("Source max row:" + str(ws_source.max_row))
-    print ("Source min row:" + str(ws_source.min_row))
-    print ("Source max column:" + str(ws_source.max_column))
-    print ("Source min column:" + str(ws_source.min_column))
-
-    print ("Dest max column:" + str(ws_dest.max_column))
-    print ("Dest min column:" + str(ws_dest.min_column))
     
     row_dest = ws_dest.max_row + 1
-    print ("Dest: " + str(row_dest))
-
     the_count = 0
-    for row_source in ws_source.iter_rows(min_row=ws_source.min_row+1, min_col=ws_source.min_column, max_row=ws_source.max_row, max_col=ws_source.max_column):
-        the_count +=1
+
+    # copy each cell from source to destination
+
+    for row_source in ws_source.iter_rows(min_row=ws_source.min_row+1, min_col=ws_source.min_column, max_row=10, max_col=ws_source.max_column):
+        the_count +=1 # ws_source.max_row
         for cell_source in row_source:
             dest_coords = str(cell_source.column_letter) + str(row_dest)
             cell_dest = ws_dest[dest_coords]
-            cell_dest.value = cell_source.value
             
-        print ("Row #" + str(the_count) + "/" + str (ws_source.max_row - ws_source.min_row),end ='\r')   
+            cell_dest.value = cell_source.value
+            # cell_dest.font = cell_source.font
+
+        # now get language of the last row (just added) and set the proper font for the flavor title cell
+        the_lang = ws_dest.cell(row=ws_dest.max_row,column=CURRENT_LANGUAGE_COLUMN_INDEX)
+        the_flavor = ws_dest.cell(row=ws_dest.max_row, column=FLAVOR_TITLE_COLUMN_INDEX)
+        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)    
+        print ("Copying Row #" + str(the_count) + "/" + str (ws_source.max_row - ws_source.min_row),end ='\r')   
         row_dest += 1
+
+    print ("\n Finished transfer to master.")
     wb_dest.save(destination)
+    wb_dest.close()
+    wb_source.close()
 
 def book_characteristics(books):
+
+
     book_attributes = [attribute for attribute in dir(books[1])
                    if not attribute.startswith('__')
                    and not callable(getattr(books[1], attribute))
@@ -467,9 +476,8 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
 
     Note that export cannot function if the desired file is open. If this happens an option will be presented allowing user to close the Excel file and retry the save.
     '''
-
     book_columns,current_language_index, flavor_title_index = book_characteristics(books)
-    
+    print ("Magic:" + str(current_language_index), str(flavor_title_index))
     try:
         wb = load_workbook(filename= filename)
     except:
