@@ -247,8 +247,11 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
     '''
     Places books in an excel spreadsheet into the master_book_list. This is all books that exist in a campaign, and is used to produce additional copies (if they are extant) of already-described books. This happens at the appropriate frequency for the total number of books in the game world.
 
-    filename = an Excel (*.xlsx) file. Defaults to "books_spreadsheet_out.xlsx".
-    worksheet = the "tab" from the Excel file. Defaults to "Book Hoard".
+    source = an Excel (*.xlsx) file. Defaults to "books_spreadsheet_out.xlsx".
+    worksheet = the "tab" from the source Excel file. Defaults to "Book Hoard".
+
+    destination = an Excel (*.xlsx) file. Defaults to "master_fantasy_book_list.xlsx".
+    destination_worksheet = the "tab" from the destination Excel file. Defaults to "Master List"
 
     '''
     # load source
@@ -292,6 +295,29 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
                 break
         else:
             try_to_save = False # ie succeeded
+
+    print ("Source max row:" + str(ws_source.max_row))
+    print ("Source min row:" + str(ws_source.min_row))
+    print ("Source max column:" + str(ws_source.max_column))
+    print ("Source min column:" + str(ws_source.min_column))
+
+    print ("Dest max column:" + str(ws_dest.max_column))
+    print ("Dest min column:" + str(ws_dest.min_column))
+    
+    row_dest = ws_dest.max_row + 1
+    print ("Dest: " + str(row_dest))
+
+    the_count = 0
+    for row_source in ws_source.iter_rows(min_row=ws_source.min_row+1, min_col=ws_source.min_column, max_row=ws_source.max_row, max_col=ws_source.max_column):
+        the_count +=1
+        for cell_source in row_source:
+            dest_coords = str(cell_source.column_letter) + str(row_dest)
+            cell_dest = ws_dest[dest_coords]
+            cell_dest.value = cell_source.value
+            
+        print ("Row #" + str(the_count) + "/" + str (ws_source.max_row - ws_source.min_row),end ='\r')   
+        row_dest += 1
+    wb_dest.save(destination)
 
 def book_characteristics(books):
     book_attributes = [attribute for attribute in dir(books[1])
@@ -468,7 +494,7 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
         try:
             wb.save(filename) 
         except:
-            print ("You've probably got the excel file open; can't save.")
+            print ("You've probably got the Excel file " + filename + " open; can't save until closed.")
             user_response = input ("(T)ry again or (Q)uit? ")
             
             if user_response == "Q" or user_response == "q":
