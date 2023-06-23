@@ -615,8 +615,8 @@ class FantasyBook():
         self.literary_value_set()
         self.weight_set(weight = self.weight)
         self.volumes_number_set(number_volumes = self.number_volumes)
-        self.flavor_text_title_set(self.book_title_flavor)
-        self.percentage_of_text_missing_set(self.fraction_complete)
+        self.flavor_text_title_set(book_title_flavor = self.book_title_flavor)
+        self.percentage_of_text_missing_set(fraction_complete = self.fraction_complete)
         self.esoteric_set()
         self.year_discovered = year_discovered
         self.year_written = year_written
@@ -867,9 +867,9 @@ class FantasyBook():
         else:
             self.format = format
     
-    def flavor_text_title_set(self, flavor_text_title=None):
+    def flavor_text_title_set(self, book_title_flavor=None):
         
-        if not flavor_text_title:
+        if not book_title_flavor:
 
             # Limit number chars (like Akkadian, gothic_latin)
             if  self.current_language in lang_limit_40_chars:
@@ -884,7 +884,7 @@ class FantasyBook():
                 spaces = True # all the rest have spaces
 
             if self.current_language == "Common":
-                flavor_text_title = self.book_title
+                book_title_flavor = self.book_title
             else:
                 try:
                     
@@ -892,7 +892,7 @@ class FantasyBook():
                     num_words_in_flavor_title = eval(DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE)
                     if num_words_in_flavor_title <3: num_words_in_flavor_title = eval(DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS)
 
-                    flavor_text_title = str(
+                    book_title_flavor = str(
                         lf.words(vocab_dictionary[self.current_language],
                         count=num_words_in_flavor_title,
                         limit=limit_chars,
@@ -900,10 +900,10 @@ class FantasyBook():
                     )
 
                 except:
-                    flavor_text_title = "No flavor text designated for this language type."
-                flavor_text_title = flavor_text_title.capitalize()
+                    book_title_flavor = "No flavor text designated for this language type."
+                book_title_flavor = book_title_flavor.capitalize()
 
-        self.book_title_flavor = flavor_text_title
+        self.book_title_flavor = book_title_flavor
 
     def literary_value_set (self):
         target_table = "BookLiteraryValueScope" + str(self.scope)
@@ -914,7 +914,7 @@ class FantasyBook():
             result_column="LiteraryValue"
             )
 
-        self.literary_value_modified = ceil(self.literary_value_base * self.rarity_modifier) * self.number_pages
+        self.literary_value_modified = ceil(self.literary_value_base * self.rarity_modifier * self.number_pages)
         self.market_value = ceil(self.literary_value_modified + self.production_value)
 
     def look_up_table (self,result_column,table_name,search_column,search_term):
@@ -977,9 +977,9 @@ class FantasyBook():
         self.original_language = original_language
         self.is_a_translation = True
 
-    def percentage_of_text_missing_set(self,fraction_missing=None):
+    def percentage_of_text_missing_set(self,fraction_complete=None):
         
-        if not fraction_missing:
+        if not fraction_complete:
             if CHANCE_OF_INCOMPLETE_WORK >= d20.roll("1d100").total:
                 fraction_missing = round(d20.roll("1d99").total/100,2)
             else:
@@ -992,9 +992,10 @@ class FantasyBook():
         self.reading_time = round(self.reading_time * 2.0 * fraction_complete) / 2.0
         self.reference_time = round(self.reference_time * 2.0 * fraction_complete) / 2.0
 
-        self.number_pages = round(self.number_pages * fraction_complete)
-        self.weight = round(self.weight * fraction_complete)
-        self.market_value = round(self.market_value * fraction_complete)
+        self.number_pages = ceil(self.number_pages * fraction_complete)
+        self.weight = ceil(self.weight * fraction_complete)
+        self.market_value = ceil(self.market_value * fraction_complete)
+
         self.fraction_complete = round(fraction_complete,2)
     
     def person_title_generate (self,sex="Male"):
@@ -1201,7 +1202,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = produce_book_hoard(value=15000,overshoot=True,number_volumes=100)
+books, books_value = produce_book_hoard(value=15000,overshoot=True,fraction_complete=0.1)
 
 # print_book_hoard(books)
 export_books_to_excel(books)
