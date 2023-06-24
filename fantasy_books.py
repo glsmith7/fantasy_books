@@ -37,58 +37,6 @@ global lang_no_spaces, lang_limit_40_chars
 
 vocab_dictionary = {}
 
-
-#########################################################
-# USER SETABLE variables
-#########################################################
-
-
-#############################################
-# "Common" is just English. 
-# Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
-
-dictionary_languages = {
-        'Classical' : 'latin.txt',
-        'Common': 'english.txt', # uses just English; file is empty and does nothing but prevent bugs. :-)
-        'Classical': 'latin.txt', 
-        'Regional' : 'greek.txt', 
-        'Ancient': 'akkadian.txt',
-        'Dwarven' : 'runes.txt',
-        'Elvish' : 'sindarin.txt',
-        #'Akkadian': 'akkadian.txt',   # commented ones have no equivalence in ACKS tables for language.        
-        #'Arabic': 'arabic.txt',       # ... adjust to taste, however.
-        #'Armenian': 'armenian.txt',
-        #'Chinese': 'chinese.txt',
-        #'Cyrilic': 'cyrillic.txt',
-        #'Georgian': 'georgian.txt',
-        #'Gothic': 'gothic_latin.txt',
-        #'Hebrew': 'hebrew.txt',
-        #'Hindi': 'hindi.txt'
-        #'Kanji':'kanji.txt',
-        #'Korean':'korean.txt',
-        # 'Classical': 'arabic.txt',
-    }
-
-font_languages = {
-        'Classical' : config['DEFAULT_EXCEL_FONT'],
-        'Common': config['DEFAULT_EXCEL_FONT'],
-        'Classical': config['DEFAULT_EXCEL_FONT'], 
-        'Regional' : config['DEFAULT_EXCEL_FONT'], 
-        'Ancient': config['DEFAULT_EXCEL_FONT'],
-        'Dwarven' : 'Noto Sans Runic',
-        'Elvish' : 'Tengwar Annatar',
-        # 'Akkadian': config['DEFAULT_EXCEL_FONT'],   
-        #'Arabic': config['DEFAULT_EXCEL_FONT'],       
-        #'Armenian': config['DEFAULT_EXCEL_FONT'],
-        #'Chinese': config['DEFAULT_EXCEL_FONT'],
-        #'Cyrillic': config['DEFAULT_EXCEL_FONT'],
-        #'Georgian': config['DEFAULT_EXCEL_FONT'],
-        #'Gothic': config['DEFAULT_EXCEL_FONT'],
-        #'Hebrew': config['DEFAULT_EXCEL_FONT'],
-        #'Hindi': config['DEFAULT_EXCEL_FONT'],
-        #'Kanji': config['DEFAULT_EXCEL_FONT'],
-        #'Korean': config['DEFAULT_EXCEL_FONT'],
-    }
 lang_no_spaces = ['Chinese','Kanji','Korean']
 lang_limit_40_chars = ['Akkadian','Ancient','Gothic']
 
@@ -468,7 +416,7 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
             # now get language of the last row (just added) and set the proper font for the flavor title cell
         the_lang = ws.cell(row=ws.max_row,column=current_language_index)
         the_flavor = ws.cell(row=ws.max_row, column=flavor_title_index)
-        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=config['DEFAULT_EXCEL_FLAVOR_FONT_SIZE'])
+        the_flavor.font = openpyxl_font(name=config['font_languages'][the_lang.value],size=config['DEFAULT_EXCEL_FLAVOR_FONT_SIZE'])
 
     wb.save(filename)
     wb.close()
@@ -480,13 +428,13 @@ def import_language_words():
         titles are generated with a lorem_ipsum algorithm from random words in *.txt files in the folder lorem_ipsum_fantasy.
         This is called just once as the program starts, and then the lists are passed to the lorem_ipsum_fantasy package.
 
-        More languages and the like can be added in the dictionary_languages dictionary at the beginning of the program with the other constants. Key is the language; value is the name of the text file.
+        More languages and the like can be added in the config['dictionary_languages'] dictionary at the beginning of the program with the other constants. Key is the language; value is the name of the text file.
     '''
     ROOT_DIR = os.getcwd() # os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
     THIS_FOLDER = os.path.join((ROOT_DIR), 'lorem_text_fantasy')
     vocab_dictionary = {}
 
-    for language,file in dictionary_languages.items():
+    for language,file in config['dictionary_languages'].items():
         TARGET_LANGUAGE_FILE = os.path.join(THIS_FOLDER, file)
         the_words_imported = []
         with open(TARGET_LANGUAGE_FILE,encoding = 'utf8', mode='r') as f:
@@ -1284,7 +1232,7 @@ class MagicBook(FantasyBook):
 ######################## main() ########################
 
 # books, books_value = book_hoard (value=15000,overshoot=True)
-books, books_value = book_batch(number = 10)
+books, books_value = book_batch(number = 50)
 
 export_books_to_excel(books)
 
