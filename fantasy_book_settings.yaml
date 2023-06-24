@@ -1,12 +1,6 @@
+# Settings file for fantasy_books.py
 
-# ACKS given values
-READING_PAGES_PER_HOUR : 180
-PAGES_PER_VOLUME_FOR_CODEX : 750
-PAGES_PER_VOLUME_FOR_SCROLL : 250
-WEIGHT_PER_VOLUME_OF_CODEX : 1.5 # lbs
-WEIGHT_PER_VOLUME_OF_SCROLL : 2 # lbs
-
-#
+# These are the key values for customization; others have more to do with the guts of the program.
 ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO : ['Ancient']
 CHANCE_OF_BEING_TRANSLATION : 5 # # 0-100%
 CHANCE_OF_EPITHET_IN_AUTHOR_NAME : 15 # 0-100%
@@ -17,6 +11,13 @@ CHANCE_OF_INCOMPLETE_WORK : 5 # 0-100%
 CHANCE_OF_ARCHIVE_BOOK_APPEARING_AGAIN : 100 # 0-100%
 TOTAL_BOOKS_IN_CAMPAIGN : 30000 # Pre-printing Europe had around 30,000 books. This number is used to determine chance of another copy of already-created book appearing in a different hoard.
 
+# ACKS given values
+READING_PAGES_PER_HOUR : 180
+PAGES_PER_VOLUME_FOR_CODEX : 750
+PAGES_PER_VOLUME_FOR_SCROLL : 250
+WEIGHT_PER_VOLUME_OF_CODEX : 1.5 # lbs
+WEIGHT_PER_VOLUME_OF_SCROLL : 2 # lbs
+
 # Flavor text lorem ipsum formulas and data
 ## uses first:
 DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE : 'num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
@@ -24,13 +25,8 @@ DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE : 'num_words_in_english
 ## if the above gives less than 3 words, this formula is used instead
 DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS : '3 + d20.roll("1d6").total'
 
-## fonts to display flavor titles in Excel properly
-
-DEFAULT_EXCEL_FLAVOR_FONT_SIZE : 9
-
-#############################################
-# "Common" is just English. 
-# Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
+## "Common" is just English. 
+## Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
 
 dictionary_languages : {
         'Classical' : 'latin.txt',
@@ -54,6 +50,10 @@ dictionary_languages : {
         # 'Classical': 'arabic.txt',
     }
 
+## fonts to display flavor titles in Excel properly; fonts for installation by user are in "fonts" folder if needed
+
+DEFAULT_EXCEL_FLAVOR_FONT_SIZE : 9
+
 font_languages : {
         'Classical' : 'Segoe UI Historic',
         'Common': 'Segoe UI Historic',
@@ -74,12 +74,46 @@ font_languages : {
         #'Kanji': 'Segoe UI Historic',
         #'Korean': 'Segoe UI Historic',
     }
+
 lang_no_spaces : ['Chinese','Kanji','Korean']
+
 lang_limit_40_chars : ['Akkadian','Ancient','Gothic']
 
-complexity_table_list : ['BookComplexityForScope1','BookComplexityForScope2','BookComplexityForScope3','BookComplexityForScope4']
-
 # name tables
+
+name_SQL_tables : {
+    'author_title_table' : '_titles_person',
+    'epithets_table' : '_epithets',
+    'titles_saints_male' : '_names_saints_male',
+    'titles_saints_female' : '_names_saints_female',
+    'titles_person_famous_male' : '_names_famous_male',
+    'titles_person_famous_female' : '_names_famous_female',
+    'complete_table_male_names' : '_names_empty',
+    'complete_table_female_names' : '_names_empty',
+    'titles_adjective_1_list' : '_book_titles_adjective_1',
+    'titles_biography_starter' : '_book_titles_biography_starter',
+    'titles_communication' : '_book_titles_communication',
+    'titles_conjunction_about' : '_book_titles_conjunction_about',
+    'titles_conjunction_by' : '_book_titles_conjunction_by',
+    'titles_fixed' : '_book_titles_fixed',
+    'titles_history_of' : '_book_titles_history',
+    'titles_negative_subject' : '_book_titles_negative_subject',
+    'titles_noun_1_list' : '_book_titles_noun_1',
+    'titles_noun_2_list' : '_book_titles_noun_2',
+    'titles_person_evil' : '_names_famous_evil',
+    'titles_places_cities' : '_book_titles_places_cities',
+    'titles_places_nations' : '_book_titles_places_nations',
+    'titles_religious_starter' : '_book_titles_religious_starter',
+    'titles_study_in_list' : '_book_titles_study_in',
+    'titles_study_of_list' : '_book_titles_study_of',
+    'titles_study_on_list' : '_book_titles_study_on',
+    'titles_study_verbing' : '_book_titles_study_verbing',
+    'titles_the_1' : '_books_titles_the_1',
+    'titles_template_list_general' : '_book_titles_templates_general',
+    'titles_template_list_history' : '_book_titles_templates_history',
+    'titles_template_list_occult' : '_book_titles_templates_occult',
+    'titles_template_list_theology' : '_book_titles_templates_theology',
+    }
 
 list_of_names_tables_male : [
         '_names_anglo_saxon_male',
@@ -112,7 +146,10 @@ list_of_surnames_tables : [
         '_names_roman_surnames',
         ]
 
-################################################################ Excel settings
+# Misc
+complexity_table_list : ['BookComplexityForScope1','BookComplexityForScope2','BookComplexityForScope3','BookComplexityForScope4']
+
+#################### Excel settings ####################
 
 book_variables_in_chosen_order : [
                                     'format',
@@ -174,38 +211,8 @@ NOTE_COLUMN_INDEX : 49
 NUMBER_EXTANT_COPIES_INDEX : 23
 NUMBER_COPIES_AVAIL_TO_PLACE : 24
 
-## Variables to load
+#################### Data Storage for Program ####################
 
-name_SQL_tables : {
-    'author_title_table' : '_titles_person',
-    'epithets_table' : '_epithets',
-    'titles_saints_male' : '_names_saints_male',
-    'titles_saints_female' : '_names_saints_female',
-    'titles_person_famous_male' : '_names_famous_male',
-    'titles_person_famous_female' : '_names_famous_female',
-    'complete_table_male_names' : '_names_empty',
-    'complete_table_female_names' : '_names_empty',
-    'titles_adjective_1_list' : '_book_titles_adjective_1',
-    'titles_biography_starter' : '_book_titles_biography_starter',
-    'titles_communication' : '_book_titles_communication',
-    'titles_conjunction_about' : '_book_titles_conjunction_about',
-    'titles_conjunction_by' : '_book_titles_conjunction_by',
-    'titles_fixed' : '_book_titles_fixed',
-    'titles_history_of' : '_book_titles_history',
-    'titles_negative_subject' : '_book_titles_negative_subject',
-    'titles_noun_1_list' : '_book_titles_noun_1',
-    'titles_noun_2_list' : '_book_titles_noun_2',
-    'titles_person_evil' : '_names_famous_evil',
-    'titles_places_cities' : '_book_titles_places_cities',
-    'titles_places_nations' : '_book_titles_places_nations',
-    'titles_religious_starter' : '_book_titles_religious_starter',
-    'titles_study_in_list' : '_book_titles_study_in',
-    'titles_study_of_list' : '_book_titles_study_of',
-    'titles_study_on_list' : '_book_titles_study_on',
-    'titles_study_verbing' : '_book_titles_study_verbing',
-    'titles_the_1' : '_books_titles_the_1',
-    'titles_template_list_general' : '_book_titles_templates_general',
-    'titles_template_list_history' : '_book_titles_templates_history',
-    'titles_template_list_occult' : '_book_titles_templates_occult',
-    'titles_template_list_theology' : '_book_titles_templates_theology',
-    }
+# Don't edit these unless you know what you're doing; the software uses to keep running tally.
+TOTAL_TITLES_IN_MASTER : 0 # duplicates don't count, books A,A,B,C in master = 3
+TOTAL_BOOKS_IN_MASTER: 0 # duplicates count, books A,A,B,C in master = 4

@@ -32,11 +32,11 @@ import logging_tools_GLS
 logger = logging.getLogger(__name__)
 
 
-global nt, vocab_dictionary
+global vocab_dictionary, nt
 
-nt={}
 vocab_dictionary = {}
 name_tables_dictionary = config['name_SQL_tables']
+nt={}
 
 for key,table in name_tables_dictionary.items():
     nt[key] = r.RPG_table(table)
