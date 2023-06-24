@@ -25,17 +25,20 @@ global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 global READING_PAGES_PER_HOUR, PAGES_PER_VOLUME_FOR_CODEX, PAGES_PER_VOLUME_FOR_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
 global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
-global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE
+global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE,
 global vocab_dictionary
 global lang_no_spaces, lang_limit_40_chars
 global CURRENT_LANGUAGE_COLUMN_INDEX, FLAVOR_TITLE_COLUMN_INDEX, NOTE_COLUMN_INDEX
+global NUMBER_EXTANT_COPIES_INDEX, NUMBER_COPIES_AVAIL_TO_PLACE
 
 vocab_dictionary = {}
 
 # magic numbers
 CURRENT_LANGUAGE_COLUMN_INDEX = 6
 FLAVOR_TITLE_COLUMN_INDEX = 19
-NOTE_COLUMN_INDEX = 50
+NOTE_COLUMN_INDEX = 49
+NUMBER_EXTANT_COPIES_INDEX = 23
+NUMBER_COPIES_AVAIL_TO_PLACE = 24
 
 #########################################################
 # USER SETABLE variables
@@ -310,6 +313,13 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
     for row_source in ws_source.iter_rows(min_row=ws_source.min_row+1, min_col=ws_source.min_column, max_row=ws_source.max_row, max_col=ws_source.max_column):
         
         the_count +=1 
+        the_note = row_source[NOTE_COLUMN_INDEX]
+        if "do_not_archive" == the_note.value or "has_been_archived" == the_note.value:
+            continue
+
+        else:
+
+            the_note.value = "has_been_archived"
 
         for cell_source in row_source:
             dest_coords = str(cell_source.column_letter) + str(row_dest)
@@ -317,21 +327,18 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
             
             cell_dest.value = cell_source.value
             cell_dest.font = copy (cell_source.font)
-        # now get language of the last row (just added) and set the proper font for the flavor title cell
-        # Hacky code ahoy: make sure the magic numbers are set right! if the order of columns in book_characterstics() changes, these need to change.
-
-        # the_lang = ws_dest.cell(row=ws_dest.max_row,column=CURRENT_LANGUAGE_COLUMN_INDEX)
-        # the_flavor = ws_dest.cell(row=ws_dest.max_row, column=FLAVOR_TITLE_COLUMN_INDEX)
-        # the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)    
+            
         
         print ("Copying Row #" + str(the_count) + "/" + str (ws_source.max_row - ws_source.min_row),end ='\r')   
         
         row_dest += 1
 
     print ("\n Finished transfer to master.")
+    wb_source.save(source)
     wb_dest.save(destination)
-    wb_dest.close()
+    
     wb_source.close()
+    wb_dest.close()
 
 def book_characteristics(books):
 
