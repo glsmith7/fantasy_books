@@ -13,13 +13,14 @@ import sys
 import uuid
 import yaml
 
-# use faster C code if available, otherwise pure python code
+# use faster C code for yaml if available, otherwise pure python code
 try:
     from yaml import CSafeLoader as SafeLoader
 
 except ImportError:
     from yaml import SafeLoader
 
+# settings file
 with open("fantasy_book_settings.yaml") as f:     
     config = yaml.load(f, Loader=SafeLoader)
 
@@ -32,20 +33,12 @@ logger = logging.getLogger(__name__)
 
 ################ GLOBALS #####################
 
-global vocab_dictionary
-global lang_no_spaces, lang_limit_40_chars
 
 vocab_dictionary = {}
 
-lang_no_spaces = ['Chinese','Kanji','Korean']
-lang_limit_40_chars = ['Akkadian','Ancient','Gothic']
-
-##################### End of user-settable variables ###########################
 
 # general
 
-global list_of_words_to_not_capitalize
-global complexity_table_list
 
 # names
 global list_of_names_tables_male, list_of_names_tables_female
@@ -63,14 +56,6 @@ global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2
 global titles_places_cities, titles_places_nations, titles_religious_starter
 global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
 global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
-
-list_of_words_to_not_capitalize = [
-    ('The','the'),
-    ('Of','of'),
-    ('De','de'),
-    ("D'","d'"),
-]
-complexity_table_list = ['BookComplexityForScope1','BookComplexityForScope2','BookComplexityForScope3','BookComplexityForScope4']
 
 surnames_tables = {}
 name_tables_male = {}
@@ -822,7 +807,7 @@ class FantasyBook():
 
     def complexity_set(self,complexity=None):
         if not complexity:
-            complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since list index starts at zero.
+            complexity_from_table = self.book_details_result_from_tables(config['complexity_table_list'][self.scope-1]) # Minus 1 since list index starts at zero.
             if complexity_from_table >= 1: complexity_from_table = int(complexity_from_table) # doesn't integerize 0.75
             self.complexity = complexity_from_table
         
@@ -848,7 +833,7 @@ class FantasyBook():
                 self.scope_esoteric = self.book_details_result_from_tables('BookScope')
                 
                 # esoteric complexity
-                esoteric_complexity_from_table = self.book_details_result_from_tables(complexity_table_list[int(self.scope_esoteric)-1])
+                esoteric_complexity_from_table = self.book_details_result_from_tables(config['complexity_table_list'][int(self.scope_esoteric)-1])
                 if esoteric_complexity_from_table >= 1: esoteric_complexity_from_table = int(esoteric_complexity_from_table)      
                 self.complexity_esoteric = esoteric_complexity_from_table
 
@@ -898,13 +883,13 @@ class FantasyBook():
         if not book_title_flavor:
 
             # Limit number chars (like Akkadian, gothic_latin)
-            if  self.current_language in lang_limit_40_chars:
+            if  self.current_language in config['lang_limit_40_chars']:
                 limit_chars = 40 # These require only 40 chars or weird stuff happens. ? Unicode issue
             else:
                 limit_chars = 0 # all the rest no limit
 
             # no spaces between:
-            if self.current_language in lang_no_spaces:
+            if self.current_language in config['lang_no_spaces']:
                 spaces = False # No spaces between works; Kanji looks better, for example.
             else:
                 spaces = True # all the rest have spaces
@@ -1232,7 +1217,7 @@ class MagicBook(FantasyBook):
 ######################## main() ########################
 
 # books, books_value = book_hoard (value=15000,overshoot=True)
-books, books_value = book_batch(number = 50)
+books, books_value = book_batch(number = 10)
 
 export_books_to_excel(books)
 

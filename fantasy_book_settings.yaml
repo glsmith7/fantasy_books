@@ -77,6 +77,10 @@ font_languages : {
 lang_no_spaces : ['Chinese','Kanji','Korean']
 lang_limit_40_chars : ['Akkadian','Ancient','Gothic']
 
+
+
+complexity_table_list : ['BookComplexityForScope1','BookComplexityForScope2','BookComplexityForScope3','BookComplexityForScope4']
+
 ################################################################ Excel settings
 
 book_variables_in_chosen_order : [
