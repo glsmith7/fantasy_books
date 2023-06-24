@@ -176,7 +176,7 @@ NUMBER_COPIES_AVAIL_TO_PLACE : 24
 
 ## Variables to load
 
-dictonary_SQL_tables_load_into_variables : {
+name_SQL_tables : {
     'author_title_table' : '_titles_person',
     'epithets_table' : '_epithets',
     'titles_saints_male' : '_names_saints_male',

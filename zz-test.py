@@ -50,6 +50,14 @@ name_tables_female = {}
 
 ############# below here tweaked.
 
+gls = config['name_SQL_tables']
+g={}
+
+for key,table in gls.items():
+    g[key] = r.RPG_table(table)
+    
+
+print (g['titles_the_1'])
 
 # complete_table_female_names.description : "Female Names Amalgamated"
 # complete_table_male_names.description = "Male Names Amalgamated"

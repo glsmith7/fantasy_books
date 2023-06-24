@@ -31,54 +31,39 @@ import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
 
-################ GLOBALS #####################
 
-# names
+global nt, vocab_dictionary
 
-global author_title_table, epithets_tables
-
-# names of male and female
-global complete_table_male_names, name_tables_male
-global complete_table_female_names, name_tables_female
-
-# book titles
-
-global titles_adjective_1_list, titles_communication, titles_conjunction_about, titles_conjunction_by, titles_fixed
-global titles_history_of, titles_negative_subject
-global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2
-global titles_places_cities, titles_places_nations, titles_religious_starter
-global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
-global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
-
+nt={}
 vocab_dictionary = {}
-surnames_tables = {}
-name_tables_male = {}
-name_tables_female = {}
+name_tables_dictionary = config['name_SQL_tables']
 
-############# below here tweaked.
+for key,table in name_tables_dictionary.items():
+    nt[key] = r.RPG_table(table)
 
-
-# complete_table_female_names.description : "Female Names Amalgamated"
-# complete_table_male_names.description = "Male Names Amalgamated"
-
-############# above here tweaked.
-
-titles_saints_amalgamated= titles_saints_male + titles_saints_female
-titles_person_famous_amalgamated=titles_person_famous_male + titles_person_famous_female
+nt['complete_table_female_names'].description = "Female Names Amalgamated"
+nt['complete_table_male_names'].description = "Male Names Amalgamated"
+nt['titles_saints_amalgamated']= nt['titles_saints_male'] + nt['titles_saints_female']
+nt['titles_person_famous_amalgamated'] = nt['titles_person_famous_male'] + nt['titles_person_famous_female']
 
 # load first name table dictionaries
+
+nt['name_tables_male'] = {}
+nt['name_tables_female'] = {}
+nt['surnames_tables'] = {}
+
 for i in config['list_of_names_tables_male']:
-    name_tables_male[i] = r.RPG_table(i)
-    complete_table_male_names = (name_tables_male[i]) + complete_table_male_names
+    nt['name_tables_male'][i] = r.RPG_table(i)
+    nt['complete_table_male_names'] = (nt['name_tables_male'][i]) + nt['complete_table_male_names']
 
 for i in config['list_of_names_tables_female']:
-    name_tables_female[i] = r.RPG_table(i)
-    complete_table_female_names = (name_tables_female[i]) + complete_table_female_names
+    nt['name_tables_female'][i] = r.RPG_table(i)
+    nt['complete_table_female_names'] = (nt['name_tables_female'][i]) + nt['complete_table_female_names']
 
 # load surnames table dictionaries
 
 for i in config['list_of_surnames_tables']:
-    surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
+    nt['surnames_tables'][i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
 
 ######################## FUNCTIONS ########################
 def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoard",destination="master_fantasy_book_list.xlsx",destination_worksheet = "Master List"):
@@ -570,7 +555,7 @@ class FantasyBook():
     def author_epithet_set (self, author_epithet=None):
         if not author_epithet:
             if config['CHANCE_OF_EPITHET_IN_AUTHOR_NAME'] > d20.roll("1d100").total:
-                author_epithet = epithets_table.df.sample() # a random option is then chosen
+                author_epithet = nt['epithets_table'].df.sample() # a random option is then chosen
                 author_epithet = author_epithet.iloc[0,0]         
         self.author_epithet = author_epithet            
 
@@ -659,45 +644,45 @@ class FantasyBook():
             self.template = "Final title passed in as: " + book_title
         
         else:
-            if not template: template = titles_template_list_general.df.sample().iloc[0,0]
+            if not template: template = nt['titles_template_list_general'].df.sample().iloc[0,0]
             topic = self.topic_title_form
 
             if "theology" in topic.lower():
                 while ("religious" not in template) and ("biography" not in template):
-                    template = titles_template_list_theology.df.sample().iloc[0,0]
+                    template = nt['titles_template_list_theology'].df.sample().iloc[0,0]
 
             if "history" in topic.lower():
                 while ("history" not in template) and ("biography" not in template):
-                    template = titles_template_list_history.df.sample().iloc[0,0]
+                    template = nt['titles_template_list_history'].df.sample().iloc[0,0]
 
             if ("occult" in topic.lower()) or ("apostasy" in topic.lower()) or ("black lore" in topic.lower()):
                 while ("occult" not in template) and ("negative" not in template) and {"evil" not in template} and ("biography" not in template):
-                    template = titles_template_list_occult.df.sample().iloc[0,0]
+                    template = nt['titles_template_list_occult'].df.sample().iloc[0,0]
             
             # refactor this code eventually into loop with eval()
 
-            if not adjective_1 and "{adjective_1}" in template: adjective_1 = titles_adjective_1_list.df.sample().iloc[0,0]
-            if not noun_1 and "{noun_1}" in template: noun_1 = titles_noun_1_list.df.sample().iloc[0,0]
-            if not noun_2 and "{noun_2}" in template: noun_2 = titles_noun_2_list.df.sample().iloc[0,0]
-            if not study_of and "{study_of}" in template: study_of = titles_study_of_list.df.sample().iloc[0,0]
-            if not study_in and "{study_in}" in template: study_in = titles_study_in_list.df.sample().iloc[0,0]
-            if not study_on and "{study_on}" in template: study_on = titles_study_on_list.df.sample().iloc[0,0]
-            if not conjunction_about and "{conjunction_about}" in template: conjunction_about = titles_conjunction_about.df.sample().iloc[0,0]
-            if not conjunction_by and "{conjunction_by}" in template: conjunction_by = titles_conjunction_by.df.sample().iloc[0,0]
-            if not negative_1 and "{negative_1}" in template: negative_1 = titles_negative_subject.df.sample().iloc[0,0]
-            if not place_city and "{place_city}" in template: place_city = titles_places_cities.df.sample().iloc[0,0]
-            if not place_nation and "{place_nation}" in template: place_nation = titles_places_nations.df.sample().iloc[0,0]
-            if not religious_starter and "{religious_starter}" in template: religious_starter = titles_religious_starter.df.sample().iloc[0,0]
-            if not verbing and "{verbing}" in template: verbing = titles_study_verbing.df.sample().iloc[0,0]
-            if not saint and "{saint}" in template: saint = titles_saints_amalgamated.df.sample().iloc[0,0]
-            if not person_famous and "{person_famous}" in template: person_famous = titles_person_famous_amalgamated.df.sample().iloc[0,0]
-            if not communication and "{communication}" in template: communication = titles_communication.df.sample().iloc[0,0]
-            if not biography_starter and "{biography_starter}" in template: biography_starter = titles_biography_starter.df.sample().iloc[0,0]
-            if not person_evil and "{person_evil}" in template: person_evil = titles_person_evil.df.sample().iloc[0,0]
+            if not adjective_1 and "{adjective_1}" in template: adjective_1 = nt['titles_adjective_1_list'].df.sample().iloc[0,0]
+            if not noun_1 and "{noun_1}" in template: noun_1 = nt['titles_noun_1_list'].df.sample().iloc[0,0]
+            if not noun_2 and "{noun_2}" in template: noun_2 = nt['titles_noun_2_list'].df.sample().iloc[0,0]
+            if not study_of and "{study_of}" in template: study_of = nt['titles_study_of_list'].df.sample().iloc[0,0]
+            if not study_in and "{study_in}" in template: study_in = nt['titles_study_in_list'].df.sample().iloc[0,0]
+            if not study_on and "{study_on}" in template: study_on = nt['titles_study_on_list'].df.sample().iloc[0,0]
+            if not conjunction_about and "{conjunction_about}" in template: conjunction_about = nt['titles_conjunction_about'].df.sample().iloc[0,0]
+            if not conjunction_by and "{conjunction_by}" in template: conjunction_by = nt['titles_conjunction_by'].df.sample().iloc[0,0]
+            if not negative_1 and "{negative_1}" in template: negative_1 = nt['titles_negative_subject'].df.sample().iloc[0,0]
+            if not place_city and "{place_city}" in template: place_city = nt['titles_places_cities'].df.sample().iloc[0,0]
+            if not place_nation and "{place_nation}" in template: place_nation = nt['titles_places_nations'].df.sample().iloc[0,0]
+            if not religious_starter and "{religious_starter}" in template: religious_starter = nt['titles_religious_starter'].df.sample().iloc[0,0]
+            if not verbing and "{verbing}" in template: verbing = nt['titles_study_verbing'].df.sample().iloc[0,0]
+            if not saint and "{saint}" in template: saint = nt['titles_saints_amalgamated'].df.sample().iloc[0,0]
+            if not person_famous and "{person_famous}" in template: person_famous = nt['titles_person_famous_amalgamated'].df.sample().iloc[0,0]
+            if not communication and "{communication}" in template: communication = nt['titles_communication'].df.sample().iloc[0,0]
+            if not biography_starter and "{biography_starter}" in template: biography_starter = nt['titles_biography_starter'].df.sample().iloc[0,0]
+            if not person_evil and "{person_evil}" in template: person_evil = nt['titles_person_evil'].df.sample().iloc[0,0]
             if not person_1 and "{person_1}" in template: person_1, _ , _ = self.name_generate() # 2nd,3rd are nation, sex which we don't need
             if not person_2 and "{person_2}" in template: person_2, _, _ = self.name_generate()
-            if not history_of and "{history_of}" in template: history_of = titles_history_of.df.sample().iloc[0,0]
-            if not the_1 and "{the_1}" in template: the_1 = titles_the_1.df.sample().iloc[0,0]
+            if not history_of and "{history_of}" in template: history_of = nt['titles_history_of'].df.sample().iloc[0,0]
+            if not the_1 and "{the_1}" in template: the_1 = nt['titles_the_1'].df.sample().iloc[0,0]
             
             self.template = template
 
@@ -872,12 +857,12 @@ class FantasyBook():
             else: 
                 sex = "Male"
 
-        if sex == "Male": first_name = complete_table_male_names.df.sample()
-        else: first_name = complete_table_female_names.df.sample()
+        if sex == "Male": first_name = nt['complete_table_male_names'].df.sample()
+        else: first_name = nt['complete_table_female_names'].df.sample()
         author_nationality = (first_name.iloc[0,1]) # the second column (i.e. index 1 since starts at 0) is the table for this type of name's surname.
                 
         # surname
-        last_name_table = (surnames_tables[author_nationality])
+        last_name_table = (nt['surnames_tables'][author_nationality])
         last_name = last_name_table.df.sample()
         author_name = str(first_name.iloc[0,0]) + " " + str(last_name.iloc[0,0]) # first (0 index) item is the name
 
@@ -932,12 +917,12 @@ class FantasyBook():
         self.fraction_complete = round(fraction_complete,2)
     
     def person_title_generate (self,sex="Male"):
-        global author_title_table
+        
         author_title = ''
 
         if config['CHANCE_OF_TITLE_IN_AUTHOR_NAME'] >= d20.roll("1d100").total:
 
-            author_title = str(author_title_table.df.sample().iloc[0,0])
+            author_title = str(nt['author_title_table'].df.sample().iloc[0,0])
            
         #  # male/female titles are separated by a slash in the SQL database  
             if author_title.__contains__("/"):
@@ -1139,13 +1124,13 @@ class MagicBook(FantasyBook):
 ######################## main() ########################
 
 # books, books_value = book_hoard (value=15000,overshoot=True)
-books, books_value = book_batch(number = 10)
+books, books_value = book_batch(number = 100)
 
 export_books_to_excel(books)
 
 # print ('TOTAL: ' + str(books_value))
 # print ('Number of books: ' + str (len(books)) + " Done!")
 
-# archive_to_master()
+archive_to_master()
 
 # the_book = pick_existing_book()
