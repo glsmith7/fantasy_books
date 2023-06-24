@@ -11,6 +11,18 @@ import rpg_tables as r
 import string as string
 import sys
 import uuid
+import yaml
+
+# use faster C code if available, otherwise pure python code
+try:
+    from yaml import CSafeLoader as SafeLoader
+
+except ImportError:
+    from yaml import SafeLoader
+
+with open("fantasy_book_settings.yaml") as f:     
+    config = yaml.load(f, Loader=SafeLoader)
+
 
 # logging boilerplate
 import settings_GLS as s
@@ -19,95 +31,17 @@ import logging_tools_GLS
 logger = logging.getLogger(__name__)
 
 ################ GLOBALS #####################
-global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO
-global CHANCE_OF_ARCHIVE_BOOK_APPEARING_AGAIN
-global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
-global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
-global READING_PAGES_PER_HOUR, PAGES_PER_VOLUME_FOR_CODEX, PAGES_PER_VOLUME_FOR_SCROLL
-global CHANCE_OF_INCOMPLETE_WORK
-global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
-global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE
-global CURRENT_LANGUAGE_COLUMN_INDEX, FLAVOR_TITLE_COLUMN_INDEX, NOTE_COLUMN_INDEX
-global NUMBER_EXTANT_COPIES_INDEX, NUMBER_COPIES_AVAIL_TO_PLACE
-global TOTAL_BOOKS_IN_CAMPAIGN
 
 global vocab_dictionary
-global lang_no_spaces, lang_limit_40_chars, book_variables_in_chosen_order
+global lang_no_spaces, lang_limit_40_chars
 
 vocab_dictionary = {}
-book_variables_in_chosen_order = [
-                                    'format',
-                                    'materials',
-                                    'number_volumes',
-                                    'number_pages',
-                                    'weight',
-                                    'current_language',
-                                    'original_language',
-                                    'topic',
-                                    'topic_apparent',
-                                    'scope',
-                                    'scope_esoteric',
-                                    'complexity',
-                                    'complexity_esoteric',
-                                    'fraction_complete',
-                                    'market_value',
-                                    'book_title',
-                                    'author_full',
-                                    'translator_full_name',                             
-                                    'book_title_flavor',
-                                    'reading_time',
-                                    'reference_time',
-                                    'age_at_discovery',
-                                    'number_extant_copies',
-                                    'number_extant_available_to_place',
-                                    'rarity_modifier',
-                                    'libraries_it_is_in',
-                                    'author_epithet',
-                                    'author_name',
-                                    'author_nationality',
-                                    'author_title',
-                                    'author_sex',
-                                    'translator_name',
-                                    'translator_nationality',
-                                    'translator_sex',
-                                    'translator_title',
-                                    'weight_per_page',
-                                    'template',
-                                    'topic_title_form',
-                                    'cost_per_page',
-                                    'production_value',
-                                    'literary_value_base',
-                                    'literary_value_modified',
-                                    'esoteric_literary_value_base',
-                                    'esoteric_literary_value_modified',
-                                    'year_discovered',
-                                    'year_written',
-                                    'is_a_translation',
-                                    'book_type',
-                                    'uuid',
-                                    'note',
-                                    ]
 
-# magic numbers related to above
-CURRENT_LANGUAGE_COLUMN_INDEX = 6
-FLAVOR_TITLE_COLUMN_INDEX = 19
-NOTE_COLUMN_INDEX = 49
-NUMBER_EXTANT_COPIES_INDEX = 23
-NUMBER_COPIES_AVAIL_TO_PLACE = 24
 
 #########################################################
 # USER SETABLE variables
 #########################################################
-# ACKS given values
-READING_PAGES_PER_HOUR = 180
-PAGES_PER_VOLUME_FOR_CODEX = 750
-PAGES_PER_VOLUME_FOR_SCROLL = 250
-WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
-WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
 
-#
-ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO = ['Ancient']
-CHANCE_OF_BEING_TRANSLATION = 5 # # 0-100%
 CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
 CHANCE_OF_TITLE_IN_AUTHOR_NAME = 30 # 0-100%
 CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
@@ -371,7 +305,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
     for row_source in ws_source.iter_rows(min_row=ws_source.min_row+1, min_col=ws_source.min_column, max_row=ws_source.max_row, max_col=ws_source.max_column):
         
         the_count +=1 
-        the_note = row_source[NOTE_COLUMN_INDEX]
+        the_note = row_source[config['NOTE_COLUMN_INDEX']]
         if "do_not_archive" == the_note.value or "has_been_archived" == the_note.value:
             continue
 
@@ -410,13 +344,13 @@ def book_characteristics(books):
     
     # this bit adds any variables that have been omitted from the above list, so all will be displayed even if user error.
     for item in book_attributes:
-        if item not in book_variables_in_chosen_order:
-            book_variables_in_chosen_order.append(item)
+        if item not in config['book_variables_in_chosen_order']:
+            config['book_variables_in_chosen_order'].append(item)
 
-    current_language_index = book_variables_in_chosen_order.index('current_language')
-    flavor_title_index = book_variables_in_chosen_order.index('book_title_flavor')
+    current_language_index = config['book_variables_in_chosen_order'].index('current_language')
+    flavor_title_index = config['book_variables_in_chosen_order'].index('book_title_flavor')
 
-    return book_variables_in_chosen_order, current_language_index+1, flavor_title_index+1 # index starts 0, Excel starts 1
+    return config['book_variables_in_chosen_order'], current_language_index+1, flavor_title_index+1 # index starts 0, Excel starts 1
 
 def book_batch (number=1, **kwargs):
     
@@ -501,8 +435,8 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
     '''
     book_columns,current_language_index, flavor_title_index = book_characteristics(books)
     
-    CURRENT_LANGUAGE_COLUMN_INDEX = current_language_index
-    FLAVOR_TITLE_COLUMN_INDEX = flavor_title_index
+    config['CURRENT_LANGUAGE_COLUMN_INDEX'] = current_language_index
+    config['FLAVOR_TITLE_COLUMN_INDEX'] = flavor_title_index
     
     try:
         wb = load_workbook(filename= filename)
@@ -606,7 +540,7 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
             # need to subtract one from available books
 
             the_counter = 0
-            for attribute in book_variables_in_chosen_order:
+            for attribute in config['book_variables_in_chosen_order']:
                 book_to_be [attribute] = row[the_counter].value
                 the_counter += 1
             
@@ -1216,12 +1150,12 @@ class FantasyBook():
     def reading_time_set(self,reading_time = None):
 
         if reading_time:
-            self.number_pages = READING_PAGES_PER_HOUR * reading_time
+            self.number_pages = config['READING_PAGES_PER_HOUR'] * reading_time
             self.reading_time = reading_time
             self.reference_time = reading_time
 
         else:
-            self.reading_time = ceil(self.number_pages/READING_PAGES_PER_HOUR)
+            self.reading_time = ceil(self.number_pages/config['READING_PAGES_PER_HOUR'])
             self.reference_time = self.reading_time
 
     def refresh_number_pages(self):
@@ -1286,7 +1220,7 @@ class FantasyBook():
         self.is_a_translation = False
         self.translator_full_name = translator_full_name
 
-        if (translator_name or translator_full_name) and (self.current_language not in ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO):
+        if (translator_name or translator_full_name) and (self.current_language not in config['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO']):
             self.is_a_translation = True
             self.translator_nationality = translator_nationality
             self.translator_title = translator_title
@@ -1298,7 +1232,7 @@ class FantasyBook():
             else:
                 self.translator_full_name = self.translator_title + " " + self.translator_name
 
-        elif (roll_to_see_if_it_is_a_translation < CHANCE_OF_BEING_TRANSLATION) and (self.current_language not in ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO):
+        elif (roll_to_see_if_it_is_a_translation < config['CHANCE_OF_BEING_TRANSLATION']) and (self.current_language not in config['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO']):
             self.is_a_translation = True
             self.translator_name, self.translator_nationality, self.translator_sex = self.name_generate()
             self.translator_title = self.person_title_generate(sex = self.translator_sex)
@@ -1316,12 +1250,12 @@ class FantasyBook():
             self.number_volumes = number_volumes
 
             if self.format == "Codex":
-                self.number_pages = ceil (self.number_volumes * PAGES_PER_VOLUME_FOR_CODEX)
-                self.weight = ceil ((self.number_pages * self.weight_per_page) + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX))
+                self.number_pages = ceil (self.number_volumes * config['PAGES_PER_VOLUME_FOR_CODEX'])
+                self.weight = ceil ((self.number_pages * self.weight_per_page) + (self.number_volumes * config['WEIGHT_PER_VOLUME_OF_CODEX']))
             
             elif self.format == "Scroll":
-                self.number_pages = ceil (self.number_volumes * PAGES_PER_VOLUME_FOR_SCROLL)
-                self.weight = ceil((self.number_pages * self.weight_per_page) + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL))
+                self.number_pages = ceil (self.number_volumes * config['PAGES_PER_VOLUME_FOR_SCROLL'])
+                self.weight = ceil((self.number_pages * self.weight_per_page) + (self.number_volumes * config['WEIGHT_PER_VOLUME_OF_SCROLL']))
 
             elif self.format == "Tablet":
                 self.number_volumes = 1 # ie, never multivolume
@@ -1334,12 +1268,12 @@ class FantasyBook():
         else:
 
             if self.format == "Codex":
-                self.number_volumes = ceil(self.number_pages/PAGES_PER_VOLUME_FOR_CODEX)
-                self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
+                self.number_volumes = ceil(self.number_pages/config['PAGES_PER_VOLUME_FOR_CODEX'])
+                self.weight = self.weight + (self.number_volumes * config['WEIGHT_PER_VOLUME_OF_CODEX'])
             
             elif self.format == "Scroll":
-                self.number_volumes = ceil(self.number_pages/PAGES_PER_VOLUME_FOR_SCROLL)
-                self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
+                self.number_volumes = ceil(self.number_pages/config['PAGES_PER_VOLUME_FOR_SCROLL'])
+                self.weight = self.weight + (self.number_volumes * config['WEIGHT_PER_VOLUME_OF_SCROLL'])
             
             elif self.format == "Tablet":
                 self.number_volumes = 1 # ie, never multivolume
@@ -1368,13 +1302,13 @@ class MagicBook(FantasyBook):
 ######################## main() ########################
 
 # books, books_value = book_hoard (value=15000,overshoot=True)
-books, books_value = book_batch(number = 2)
+books, books_value = book_batch(number = 10)
 
 export_books_to_excel(books)
 
 # print ('TOTAL: ' + str(books_value))
 # print ('Number of books: ' + str (len(books)) + " Done!")
 
-archive_to_master()
+# archive_to_master()
 
 # the_book = pick_existing_book()

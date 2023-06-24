@@ -1,0 +1,140 @@
+
+# ACKS given values
+READING_PAGES_PER_HOUR : 180
+PAGES_PER_VOLUME_FOR_CODEX : 750
+PAGES_PER_VOLUME_FOR_SCROLL : 250
+WEIGHT_PER_VOLUME_OF_CODEX : 1.5 # lbs
+WEIGHT_PER_VOLUME_OF_SCROLL : 2 # lbs
+
+#
+ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO : ['Ancient']
+CHANCE_OF_BEING_TRANSLATION : 5 # # 0-100%
+CHANCE_OF_EPITHET_IN_AUTHOR_NAME : 15 # 0-100%
+CHANCE_OF_TITLE_IN_AUTHOR_NAME : 30 # 0-100%
+CHANCE_OF_FEMALE_AUTHOR : 50 # 0-100%
+TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL : '1d100+20'
+CHANCE_OF_INCOMPLETE_WORK : 5 # 0-100%
+CHANCE_OF_ARCHIVE_BOOK_APPEARING_AGAIN : 100 # 0-100%
+TOTAL_BOOKS_IN_CAMPAIGN : 30000 # Pre-printing Europe had around 30,000 books. This number is used to determine chance of another copy of already-created book appearing in a different hoard.
+
+# Flavor text lorem ipsum formulas and data
+## uses first:
+DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE : 'num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
+
+## if the above gives less than 3 words, this formula is used instead
+DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS : '3 + d20.roll("1d6").total'
+
+## fonts to display flavor titles in Excel properly
+DEFAULT_EXCEL_FONT : 'Segoe UI Historic'
+DEFAULT_EXCEL_FLAVOR_FONT_SIZE : 9
+
+#############################################
+# "Common" is just English. 
+# Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
+
+dictionary_languages : {
+        'Classical' : 'latin.txt',
+        'Common': 'english.txt', # uses just English; file is empty and does nothing but prevent bugs. :-)
+        'Classical': 'latin.txt', 
+        'Regional' : 'greek.txt', 
+        'Ancient': 'akkadian.txt',
+        'Dwarven' : 'runes.txt',
+        'Elvish' : 'sindarin.txt',
+        #'Akkadian': 'akkadian.txt',   # commented ones have no equivalence in ACKS tables for language.        
+        #'Arabic': 'arabic.txt',       # ... adjust to taste, however.
+        #'Armenian': 'armenian.txt',
+        #'Chinese': 'chinese.txt',
+        #'Cyrilic': 'cyrillic.txt',
+        #'Georgian': 'georgian.txt',
+        #'Gothic': 'gothic_latin.txt',
+        #'Hebrew': 'hebrew.txt',
+        #'Hindi': 'hindi.txt'
+        #'Kanji':'kanji.txt',
+        #'Korean':'korean.txt',
+        # 'Classical': 'arabic.txt',
+    }
+
+font_languages : {
+        'Classical' : "config['DEFAULT_EXCEL_FONT']",
+        'Common': "config['DEFAULT_EXCEL_FONT']",
+        'Classical': "config['DEFAULT_EXCEL_FONT']", 
+        'Regional' : "config['DEFAULT_EXCEL_FONT']", 
+        'Ancient': "config['DEFAULT_EXCEL_FONT']",
+        'Dwarven' : "config['Noto Sans Runic']",
+        'Elvish' : "config['Tengwar Annatar']",
+        # 'Akkadian': "config['DEFAULT_EXCEL_FONT']",   
+        #'Arabic': "config['DEFAULT_EXCEL_FONT']",       
+        #'Armenian': "config['DEFAULT_EXCEL_FONT']",
+        #'Chinese': "config['DEFAULT_EXCEL_FONT']",
+        #'Cyrillic': "config['DEFAULT_EXCEL_FONT']",
+        #'Georgian': "config['DEFAULT_EXCEL_FONT']",
+        #'Gothic': "config['DEFAULT_EXCEL_FONT']",
+        #'Hebrew': "config['DEFAULT_EXCEL_FONT']",
+        #'Hindi': "config['DEFAULT_EXCEL_FONT']",
+        #'Kanji': "config['DEFAULT_EXCEL_FONT']",
+        #'Korean': "config['DEFAULT_EXCEL_FONT']",
+    }
+lang_no_spaces : ['Chinese','Kanji','Korean']
+lang_limit_40_chars : ['Akkadian','Ancient','Gothic']
+
+################################################################ Excel settings
+
+book_variables_in_chosen_order : [
+                                    'format',
+                                    'materials',
+                                    'number_volumes',
+                                    'number_pages',
+                                    'weight',
+                                    'current_language',
+                                    'original_language',
+                                    'topic',
+                                    'topic_apparent',
+                                    'scope',
+                                    'scope_esoteric',
+                                    'complexity',
+                                    'complexity_esoteric',
+                                    'fraction_complete',
+                                    'market_value',
+                                    'book_title',
+                                    'author_full',
+                                    'translator_full_name',                             
+                                    'book_title_flavor',
+                                    'reading_time',
+                                    'reference_time',
+                                    'age_at_discovery',
+                                    'number_extant_copies',
+                                    'number_extant_available_to_place',
+                                    'rarity_modifier',
+                                    'libraries_it_is_in',
+                                    'author_epithet',
+                                    'author_name',
+                                    'author_nationality',
+                                    'author_title',
+                                    'author_sex',
+                                    'translator_name',
+                                    'translator_nationality',
+                                    'translator_sex',
+                                    'translator_title',
+                                    'weight_per_page',
+                                    'template',
+                                    'topic_title_form',
+                                    'cost_per_page',
+                                    'production_value',
+                                    'literary_value_base',
+                                    'literary_value_modified',
+                                    'esoteric_literary_value_base',
+                                    'esoteric_literary_value_modified',
+                                    'year_discovered',
+                                    'year_written',
+                                    'is_a_translation',
+                                    'book_type',
+                                    'uuid',
+                                    'note',
+                                    ]
+
+# magic numbers related to above; must change if the order is changed. Starts from ONE (1)
+CURRENT_LANGUAGE_COLUMN_INDEX : 6
+FLAVOR_TITLE_COLUMN_INDEX : 19
+NOTE_COLUMN_INDEX : 49
+NUMBER_EXTANT_COPIES_INDEX : 23
+NUMBER_COPIES_AVAIL_TO_PLACE : 24
