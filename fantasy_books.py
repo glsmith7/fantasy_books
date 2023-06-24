@@ -43,10 +43,6 @@ vocab_dictionary = {}
 #########################################################
 
 
-## fonts to display flavor titles in Excel properly
-DEFAULT_EXCEL_FONT = 'Segoe UI Historic'
-DEFAULT_EXCEL_FLAVOR_FONT_SIZE = 9
-
 #############################################
 # "Common" is just English. 
 # Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
@@ -74,24 +70,24 @@ dictionary_languages = {
     }
 
 font_languages = {
-        'Classical' : DEFAULT_EXCEL_FONT,
-        'Common': DEFAULT_EXCEL_FONT,
-        'Classical': DEFAULT_EXCEL_FONT, 
-        'Regional' : DEFAULT_EXCEL_FONT, 
-        'Ancient': DEFAULT_EXCEL_FONT,
+        'Classical' : config['DEFAULT_EXCEL_FONT'],
+        'Common': config['DEFAULT_EXCEL_FONT'],
+        'Classical': config['DEFAULT_EXCEL_FONT'], 
+        'Regional' : config['DEFAULT_EXCEL_FONT'], 
+        'Ancient': config['DEFAULT_EXCEL_FONT'],
         'Dwarven' : 'Noto Sans Runic',
         'Elvish' : 'Tengwar Annatar',
-        # 'Akkadian': DEFAULT_EXCEL_FONT,   
-        #'Arabic': DEFAULT_EXCEL_FONT,       
-        #'Armenian': DEFAULT_EXCEL_FONT,
-        #'Chinese': DEFAULT_EXCEL_FONT,
-        #'Cyrillic': DEFAULT_EXCEL_FONT,
-        #'Georgian': DEFAULT_EXCEL_FONT,
-        #'Gothic': DEFAULT_EXCEL_FONT,
-        #'Hebrew': DEFAULT_EXCEL_FONT,
-        #'Hindi': DEFAULT_EXCEL_FONT,
-        #'Kanji': DEFAULT_EXCEL_FONT,
-        #'Korean': DEFAULT_EXCEL_FONT,
+        # 'Akkadian': config['DEFAULT_EXCEL_FONT'],   
+        #'Arabic': config['DEFAULT_EXCEL_FONT'],       
+        #'Armenian': config['DEFAULT_EXCEL_FONT'],
+        #'Chinese': config['DEFAULT_EXCEL_FONT'],
+        #'Cyrillic': config['DEFAULT_EXCEL_FONT'],
+        #'Georgian': config['DEFAULT_EXCEL_FONT'],
+        #'Gothic': config['DEFAULT_EXCEL_FONT'],
+        #'Hebrew': config['DEFAULT_EXCEL_FONT'],
+        #'Hindi': config['DEFAULT_EXCEL_FONT'],
+        #'Kanji': config['DEFAULT_EXCEL_FONT'],
+        #'Korean': config['DEFAULT_EXCEL_FONT'],
     }
 lang_no_spaces = ['Chinese','Kanji','Korean']
 lang_limit_40_chars = ['Akkadian','Ancient','Gothic']
@@ -472,7 +468,7 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
             # now get language of the last row (just added) and set the proper font for the flavor title cell
         the_lang = ws.cell(row=ws.max_row,column=current_language_index)
         the_flavor = ws.cell(row=ws.max_row, column=flavor_title_index)
-        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)
+        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=config['DEFAULT_EXCEL_FLAVOR_FONT_SIZE'])
 
     wb.save(filename)
     wb.close()
