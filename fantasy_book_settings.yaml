@@ -77,9 +77,40 @@ font_languages : {
 lang_no_spaces : ['Chinese','Kanji','Korean']
 lang_limit_40_chars : ['Akkadian','Ancient','Gothic']
 
-
-
 complexity_table_list : ['BookComplexityForScope1','BookComplexityForScope2','BookComplexityForScope3','BookComplexityForScope4']
+
+# name tables
+
+list_of_names_tables_male : [
+        '_names_anglo_saxon_male',
+        '_names_arabic_male',
+        '_names_english_male',
+        '_names_famous_male', 
+        '_names_french_male', 
+        '_names_norse_male',
+        '_names_roman_male', 
+        ]
+
+list_of_names_tables_female : [
+        '_names_arabic_female',
+        '_names_anglo_saxon_female', 
+        '_names_english_female',
+        '_names_famous_female', 
+        '_names_french_female', 
+        '_names_norse_female',
+        '_names_roman_female', 
+        ]
+
+list_of_surnames_tables : [
+        '_names_arabic_surnames',
+        '_names_anglo_saxon_surnames', 
+        '_names_english_surnames',
+        '_names_famous_surnames', 
+        '_names_french_surnames', 
+        '_names_norse_surnames_female',
+        '_names_norse_surnames_male',
+        '_names_roman_surnames',
+        ]
 
 ################################################################ Excel settings
 

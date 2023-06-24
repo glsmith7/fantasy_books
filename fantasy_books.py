@@ -33,15 +33,8 @@ logger = logging.getLogger(__name__)
 
 ################ GLOBALS #####################
 
-
-vocab_dictionary = {}
-
-
-# general
-
-
 # names
-global list_of_names_tables_male, list_of_names_tables_female
+
 global author_title_table, epithets_tables
 
 # names of male and female
@@ -57,6 +50,7 @@ global titles_places_cities, titles_places_nations, titles_religious_starter
 global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
 global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
 
+vocab_dictionary = {}
 surnames_tables = {}
 name_tables_male = {}
 name_tables_female = {}
@@ -111,51 +105,18 @@ titles_template_list_history = r.RPG_table('_book_titles_templates_history')
 titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
 titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
 
-# name tables load
-
-list_of_names_tables_male = [
-        '_names_anglo_saxon_male',
-        '_names_arabic_male',
-        '_names_english_male',
-        '_names_famous_male', 
-        '_names_french_male', 
-        '_names_norse_male',
-        '_names_roman_male', 
-        ]
-
-list_of_names_tables_female = [
-        '_names_arabic_female',
-        '_names_anglo_saxon_female', 
-        '_names_english_female',
-        '_names_famous_female', 
-        '_names_french_female', 
-        '_names_norse_female',
-        '_names_roman_female', 
-        ]
-
-list_of_surnames_tables = [
-        ('_names_arabic_surnames'),
-        ('_names_anglo_saxon_surnames'), 
-        ('_names_english_surnames'),
-        ('_names_famous_surnames'), 
-        ('_names_french_surnames'), 
-        ('_names_norse_surnames_female'),
-        ('_names_norse_surnames_male'),
-        ('_names_roman_surnames'),
-        ]
-
 # load name table dictionaries
-for i in list_of_names_tables_male:
+for i in config['list_of_names_tables_male']:
     name_tables_male[i] = r.RPG_table(i)
     complete_table_male_names = (name_tables_male[i]) + complete_table_male_names
 
-for i in list_of_names_tables_female:
+for i in config['list_of_names_tables_female']:
     name_tables_female[i] = r.RPG_table(i)
     complete_table_female_names = (name_tables_female[i]) + complete_table_female_names
 
     # surnames
 
-for i in list_of_surnames_tables:
+for i in config['list_of_surnames_tables']:
     surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
 
 ######################## FUNCTIONS ########################
