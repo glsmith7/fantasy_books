@@ -29,6 +29,7 @@ global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_W
 global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE
 global CURRENT_LANGUAGE_COLUMN_INDEX, FLAVOR_TITLE_COLUMN_INDEX, NOTE_COLUMN_INDEX
 global NUMBER_EXTANT_COPIES_INDEX, NUMBER_COPIES_AVAIL_TO_PLACE
+global TOTAL_BOOKS_IN_CAMPAIGN
 
 global vocab_dictionary
 global lang_no_spaces, lang_limit_40_chars, book_variables_in_chosen_order
@@ -113,14 +114,16 @@ CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
 TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = '1d100+20'
 CHANCE_OF_INCOMPLETE_WORK = 5 # 0-100%
 CHANCE_OF_ARCHIVE_BOOK_APPEARING_AGAIN = 100 # 0-100%
+TOTAL_BOOKS_IN_CAMPAIGN = 30000 # Pre-printing Europe had around 30,000 books. This number is used to determine chance of another copy of already-created book appearing in a different hoard.
 
-# uses first:
+# Flavor text lorem ipsum formulas and data
+## uses first:
 DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
 
-# if the above gives less than 3 words, this formula is used instead
+## if the above gives less than 3 words, this formula is used instead
 DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 
-# fonts to display flavor titles in Excel properly
+## fonts to display flavor titles in Excel properly
 DEFAULT_EXCEL_FONT = 'Segoe UI Historic'
 DEFAULT_EXCEL_FLAVOR_FONT_SIZE = 9
 
@@ -428,13 +431,15 @@ def book_batch (number=1, **kwargs):
     books = {}
 
     while books == {}:
-        books[1] = pick_existing_book()
-        running_total = 1
-        the_count = 1
+        
+        running_total = 0
+        the_count = 0
 
         while the_count < number:
             the_count += 1
+            # books[the_count] = pick_existing_book()
             books[the_count] = create_fantasy_book(**kwargs)
+            
             running_total += books[the_count].market_value
             update_book_status(the_count, running_total,number)
 
@@ -576,7 +581,10 @@ def import_language_words():
     return vocab_dictionary
 
 def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
-    
+    '''
+    Randomly picks a single book from the master Excel file, and passes it back as a dictionary book_to_be, which can then be treated as input for create_fantasy_book(book_to_be**)
+    '''
+
     # load source
     try:
         wb_source = load_workbook(filename= filename)
@@ -592,12 +600,20 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     number_of_books = ws_source.max_row
     dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
     random_book = d20.roll(dice_string).total
-    for row in ws_source.iter_rows(min_row=random_book, max_row=random_book, max_col=ws_source.max_column): # min/max row same since only 1
-        the_counter = 0
-        for attribute in book_variables_in_chosen_order:
-            book_to_be [attribute] = row[the_counter].value
-            the_counter += 1
-    
+    while True:
+        for row in ws_source.iter_rows(min_row=random_book, max_row=random_book, max_col=ws_source.max_column): # min/max row same since only 1
+            # CODE TO ADD: Needs to check to see if a book is avail to place. If not then CONTINUE. Should do some kind of counting of how many times we try again, so as to avoid an infinite loop if no books avail to be placed.
+            # need to subtract one from available books
+
+            the_counter = 0
+            for attribute in book_variables_in_chosen_order:
+                book_to_be [attribute] = row[the_counter].value
+                the_counter += 1
+            
+            wb_source.save()
+            wb_source.close()
+            break # leave the infinite while True loop
+
     book = create_fantasy_book(**book_to_be)
     return book
     
@@ -1351,7 +1367,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-# books, books_value = book_hoard (value=15000,overshoot=True,fraction_complete=0.1)
+# books, books_value = book_hoard (value=15000,overshoot=True)
 books, books_value = book_batch(number = 2)
 
 export_books_to_excel(books)
