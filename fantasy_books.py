@@ -19,21 +19,75 @@ import logging_tools_GLS
 logger = logging.getLogger(__name__)
 
 ################ GLOBALS #####################
-global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO 
+global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO
+global CHANCE_OF_ARCHIVE_BOOK_APPEARING_AGAIN
 global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
 global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
 global READING_PAGES_PER_HOUR, PAGES_PER_VOLUME_FOR_CODEX, PAGES_PER_VOLUME_FOR_SCROLL
 global CHANCE_OF_INCOMPLETE_WORK
 global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
-global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE,
-global vocab_dictionary
-global lang_no_spaces, lang_limit_40_chars
+global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE
 global CURRENT_LANGUAGE_COLUMN_INDEX, FLAVOR_TITLE_COLUMN_INDEX, NOTE_COLUMN_INDEX
 global NUMBER_EXTANT_COPIES_INDEX, NUMBER_COPIES_AVAIL_TO_PLACE
 
-vocab_dictionary = {}
+global vocab_dictionary
+global lang_no_spaces, lang_limit_40_chars, book_variables_in_chosen_order
 
-# magic numbers
+vocab_dictionary = {}
+book_variables_in_chosen_order = [
+                                    'format',
+                                    'materials',
+                                    'number_volumes',
+                                    'number_pages',
+                                    'weight',
+                                    'current_language',
+                                    'original_language',
+                                    'topic',
+                                    'topic_apparent',
+                                    'scope',
+                                    'scope_esoteric',
+                                    'complexity',
+                                    'complexity_esoteric',
+                                    'fraction_complete',
+                                    'market_value',
+                                    'book_title',
+                                    'author_full',
+                                    'translator_full_name',                             
+                                    'book_title_flavor',
+                                    'reading_time',
+                                    'reference_time',
+                                    'age_at_discovery',
+                                    'number_extant_copies',
+                                    'number_extant_available_to_place',
+                                    'rarity_modifier',
+                                    'libraries_it_is_in',
+                                    'author_epithet',
+                                    'author_name',
+                                    'author_nationality',
+                                    'author_title',
+                                    'author_sex',
+                                    'translator_name',
+                                    'translator_nationality',
+                                    'translator_sex',
+                                    'translator_title',
+                                    'weight_per_page',
+                                    'template',
+                                    'topic_title_form',
+                                    'cost_per_page',
+                                    'production_value',
+                                    'literary_value_base',
+                                    'literary_value_modified',
+                                    'esoteric_literary_value_base',
+                                    'esoteric_literary_value_modified',
+                                    'year_discovered',
+                                    'year_written',
+                                    'is_a_translation',
+                                    'book_type',
+                                    'uuid',
+                                    'note',
+                                    ]
+
+# magic numbers related to above
 CURRENT_LANGUAGE_COLUMN_INDEX = 6
 FLAVOR_TITLE_COLUMN_INDEX = 19
 NOTE_COLUMN_INDEX = 49
@@ -58,6 +112,7 @@ CHANCE_OF_TITLE_IN_AUTHOR_NAME = 30 # 0-100%
 CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
 TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = '1d100+20'
 CHANCE_OF_INCOMPLETE_WORK = 5 # 0-100%
+CHANCE_OF_ARCHIVE_BOOK_APPEARING_AGAIN = 100 # 0-100%
 
 # uses first:
 DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
@@ -348,58 +403,7 @@ def book_characteristics(books):
                    and not callable(getattr(books[1], attribute))
                    ]
     # edit these to make appear in the Excel output in a different order
-    book_variables_in_chosen_order = [
-                                    'format',
-                                    'materials',
-                                    'number_volumes',
-                                    'number_pages',
-                                    'weight',
-                                    'current_language',
-                                    'original_language',
-                                    'topic',
-                                    'topic_apparent',
-                                    'scope',
-                                    'scope_esoteric',
-                                    'complexity',
-                                    'complexity_esoteric',
-                                    'fraction_complete',
-                                    'market_value',
-                                    'book_title',
-                                    'author_full',
-                                    'translator_full_name',                             
-                                    'book_title_flavor',
-                                    'reading_time',
-                                    'reference_time',
-                                    'age_at_discovery',
-                                    'number_extant_copies',
-                                    'number_extant_available_to_place',
-                                    'rarity_modifier',
-                                    'libraries_it_is_in',
-                                    'author_epithet',
-                                    'author_name',
-                                    'author_nationality',
-                                    'author_title',
-                                    'author_sex',
-                                    'translator_name',
-                                    'translator_nationality',
-                                    'translator_sex',
-                                    'translator_title',
-                                    'weight_per_page',
-                                    'template',
-                                    'topic_title_form',
-                                    'cost_per_page',
-                                    'production_value',
-                                    'literary_value_base',
-                                    'literary_value_modified',
-                                    'esoteric_literary_value_base',
-                                    'esoteric_literary_value_modified',
-                                    'year_discovered',
-                                    'year_written',
-                                    'is_a_translation',
-                                    'book_type',
-                                    'uuid',
-                                    'note',
-                                    ]
+    
     
     # this bit adds any variables that have been omitted from the above list, so all will be displayed even if user error.
     for item in book_attributes:
@@ -424,9 +428,9 @@ def book_batch (number=1, **kwargs):
     books = {}
 
     while books == {}:
-    
-        running_total = 0
-        the_count = 0
+        books[1] = pick_existing_book()
+        running_total = 1
+        the_count = 1
 
         while the_count < number:
             the_count += 1
@@ -571,7 +575,32 @@ def import_language_words():
 
     return vocab_dictionary
 
+def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+    
+    # load source
+    try:
+        wb_source = load_workbook(filename= filename)
+    except:
+        raise FileNotFoundError ("Could not load the source file: " + filename + ".")
 
+    if worksheet in wb_source.sheetnames: 
+        ws_source = wb_source[worksheet]
+    else:
+        raise FileNotFoundError ("Could not find the worksheet: " + worksheet + " even though file " + filename + " was successfully loaded.")
+    
+    book_to_be = {}
+    number_of_books = ws_source.max_row
+    dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
+    random_book = d20.roll(dice_string).total
+    for row in ws_source.iter_rows(min_row=random_book, max_row=random_book, max_col=ws_source.max_column): # min/max row same since only 1
+        the_counter = 0
+        for attribute in book_variables_in_chosen_order:
+            book_to_be [attribute] = row[the_counter].value
+            the_counter += 1
+    
+    book = create_fantasy_book(**book_to_be)
+    return book
+    
 ######################## CLASSES ########################
 
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
@@ -588,6 +617,7 @@ class FantasyBook():
         topic_title_form = '',
         book_title = '',
         book_title_flavor = '',
+        cost_per_page = '',
         author_sex = '',
         author_name = '',
         author_title = '',
@@ -603,6 +633,7 @@ class FantasyBook():
         translator_title = '',
         translator_full_name = '',
         format = '',
+        template = '',
         materials = '',
         libraries_it_is_in = '',
         number_extant_copies = 0,
@@ -645,9 +676,11 @@ class FantasyBook():
         self.author_epithet = author_epithet
         self.author_full = author_full
         self.author_nationality = author_nationality
+        self.cost_per_page = cost_per_page
         self.current_language = current_language
         self.original_language = original_language
         self.is_a_translation = is_a_translation
+        self.template = template
         self.translator_name = translator_name
         self.translator_nationality = translator_nationality
         self.translator_sex = translator_sex
@@ -1318,13 +1351,14 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-# books, books_value = produce_book_hoard(value=15000,overshoot=True,fraction_complete=0.1)
-# books, books_value = book_batch(number = 10)
+# books, books_value = book_hoard (value=15000,overshoot=True,fraction_complete=0.1)
+books, books_value = book_batch(number = 2)
 
-# print_book_hoard(books)
-# export_books_to_excel(books)
+export_books_to_excel(books)
 
 # print ('TOTAL: ' + str(books_value))
 # print ('Number of books: ' + str (len(books)) + " Done!")
 
 archive_to_master()
+
+# the_book = pick_existing_book()
