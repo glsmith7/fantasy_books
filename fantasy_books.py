@@ -42,20 +42,6 @@ vocab_dictionary = {}
 # USER SETABLE variables
 #########################################################
 
-CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
-CHANCE_OF_TITLE_IN_AUTHOR_NAME = 30 # 0-100%
-CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
-TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = '1d100+20'
-CHANCE_OF_INCOMPLETE_WORK = 5 # 0-100%
-CHANCE_OF_ARCHIVE_BOOK_APPEARING_AGAIN = 100 # 0-100%
-TOTAL_BOOKS_IN_CAMPAIGN = 30000 # Pre-printing Europe had around 30,000 books. This number is used to determine chance of another copy of already-created book appearing in a different hoard.
-
-# Flavor text lorem ipsum formulas and data
-## uses first:
-DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
-
-## if the above gives less than 3 words, this formula is used instead
-DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 
 ## fonts to display flavor titles in Excel properly
 DEFAULT_EXCEL_FONT = 'Segoe UI Historic'
@@ -712,7 +698,7 @@ class FantasyBook():
             table_name = 'BookAge_'+ self.current_language # Ancient, Dwarvish, Elvish, Classical, Common are options
             dice_string = self.book_details_result_from_tables(table_name)
             if self.is_a_translation == True: 
-                self.age_at_discovery = d20.roll(TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL).total # bonus to age if is translation.
+                self.age_at_discovery = d20.roll(config['TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL']).total # bonus to age if is translation.
             
             self.age_at_discovery = self.age_at_discovery + d20.roll(dice_string).total
         else:
@@ -732,7 +718,7 @@ class FantasyBook():
 
     def author_epithet_set (self, author_epithet=None):
         if not author_epithet:
-            if CHANCE_OF_EPITHET_IN_AUTHOR_NAME > d20.roll("1d100").total:
+            if config['CHANCE_OF_EPITHET_IN_AUTHOR_NAME'] > d20.roll("1d100").total:
                 author_epithet = epithets_table.df.sample() # a random option is then chosen
                 author_epithet = author_epithet.iloc[0,0]         
         self.author_epithet = author_epithet            
@@ -985,8 +971,8 @@ class FantasyBook():
                 try:
                     
                     num_words_in_english_title = len(self.book_title.split())
-                    num_words_in_flavor_title = eval(DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE)
-                    if num_words_in_flavor_title <3: num_words_in_flavor_title = eval(DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS)
+                    num_words_in_flavor_title = eval(config['DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE'])
+                    if num_words_in_flavor_title <3: num_words_in_flavor_title = eval(config['DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS'])
 
                     book_title_flavor = str(
                         lf.words(vocab_dictionary[self.current_language],
@@ -1030,7 +1016,7 @@ class FantasyBook():
     def name_generate(self,sex=None):
         # first name
         if sex == None:
-            if d20.roll("1d100").total <  CHANCE_OF_FEMALE_AUTHOR: 
+            if d20.roll("1d100").total <  config['CHANCE_OF_FEMALE_AUTHOR']: 
                 sex = "Female"
             else: 
                 sex = "Male"
@@ -1076,7 +1062,7 @@ class FantasyBook():
     def percentage_of_text_missing_set(self,fraction_complete=None):
         
         if not fraction_complete:
-            if CHANCE_OF_INCOMPLETE_WORK >= d20.roll("1d100").total:
+            if config['CHANCE_OF_INCOMPLETE_WORK'] >= d20.roll("1d100").total:
                 fraction_missing = round(d20.roll("1d99").total/100,2)
             else:
                 fraction_missing = 0
@@ -1098,7 +1084,7 @@ class FantasyBook():
         global author_title_table
         author_title = ''
 
-        if CHANCE_OF_TITLE_IN_AUTHOR_NAME >= d20.roll("1d100").total:
+        if config['CHANCE_OF_TITLE_IN_AUTHOR_NAME'] >= d20.roll("1d100").total:
 
             author_title = str(author_title_table.df.sample().iloc[0,0])
            
@@ -1178,7 +1164,7 @@ class FantasyBook():
     
     def sex_set (self, author_sex=None):
         if not author_sex:
-            if d20.roll("1d100").total <= CHANCE_OF_FEMALE_AUTHOR: self.author_sex = "Female"
+            if d20.roll("1d100").total <= config['CHANCE_OF_FEMALE_AUTHOR']: self.author_sex = "Female"
             else: self.author_sex = "Male"
         else:
             self.author_sex = author_sex
