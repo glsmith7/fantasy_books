@@ -55,57 +55,18 @@ surnames_tables = {}
 name_tables_male = {}
 name_tables_female = {}
 
-# title of author
-author_title_table = r.RPG_table('_titles_person')
+############# below here tweaked.
 
-#epithets of author
-epithets_table = r.RPG_table('_epithets')
 
-# saints names
-titles_saints_male=r.RPG_table('_names_saints_male')
-titles_saints_female=r.RPG_table('_names_saints_female')
+# complete_table_female_names.description : "Female Names Amalgamated"
+# complete_table_male_names.description = "Male Names Amalgamated"
+
+############# above here tweaked.
+
 titles_saints_amalgamated= titles_saints_male + titles_saints_female
-
-# famous names
-titles_person_famous_male=r.RPG_table('_names_famous_male')
-titles_person_famous_female=r.RPG_table('_names_famous_female')
 titles_person_famous_amalgamated=titles_person_famous_male + titles_person_famous_female
 
-# blank lists for later use
-complete_table_male_names = r.RPG_table('_names_empty')
-complete_table_male_names.description = "Male Names Amalgamated"
-complete_table_female_names = r.RPG_table('_names_empty')
-complete_table_female_names.description = "Female Names Amalgamated"
-
-# book title fragments
-titles_adjective_1_list = r.RPG_table('_book_titles_adjective_1')
-titles_biography_starter=r.RPG_table('_book_titles_biography_starter')
-titles_communication=r.RPG_table('_book_titles_communication')
-titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
-titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
-titles_fixed = r.RPG_table('_book_titles_fixed')
-titles_history_of = r.RPG_table('_book_titles_history')
-titles_negative_subject = r.RPG_table('_book_titles_negative_subject')
-titles_noun_1_list = r.RPG_table('_book_titles_noun_1')
-titles_noun_2_list = r.RPG_table('_book_titles_noun_2')
-titles_person_evil=r.RPG_table('_names_famous_evil')
-titles_places_cities = r.RPG_table('_book_titles_places_cities')
-titles_places_nations = r.RPG_table('_book_titles_places_nations')
-titles_religious_starter = r.RPG_table('_book_titles_religious_starter')
-titles_study_in_list = r.RPG_table('_book_titles_study_in')
-titles_study_of_list = r.RPG_table('_book_titles_study_of')
-titles_study_on_list = r.RPG_table('_book_titles_study_on')
-titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
-titles_the_1 = r.RPG_table('_books_titles_the_1')
-
-# book title templates
-
-titles_template_list_general = r.RPG_table('_book_titles_templates_general')
-titles_template_list_history = r.RPG_table('_book_titles_templates_history')
-titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
-titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
-
-# load name table dictionaries
+# load first name table dictionaries
 for i in config['list_of_names_tables_male']:
     name_tables_male[i] = r.RPG_table(i)
     complete_table_male_names = (name_tables_male[i]) + complete_table_male_names
@@ -114,7 +75,7 @@ for i in config['list_of_names_tables_female']:
     name_tables_female[i] = r.RPG_table(i)
     complete_table_female_names = (name_tables_female[i]) + complete_table_female_names
 
-    # surnames
+# load surnames table dictionaries
 
 for i in config['list_of_surnames_tables']:
     surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.

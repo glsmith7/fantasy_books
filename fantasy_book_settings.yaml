@@ -173,3 +173,39 @@ FLAVOR_TITLE_COLUMN_INDEX : 19
 NOTE_COLUMN_INDEX : 49
 NUMBER_EXTANT_COPIES_INDEX : 23
 NUMBER_COPIES_AVAIL_TO_PLACE : 24
+
+## Variables to load
+
+dictonary_SQL_tables_load_into_variables : {
+    'author_title_table' : '_titles_person',
+    'epithets_table' : '_epithets',
+    'titles_saints_male' : '_names_saints_male',
+    'titles_saints_female' : '_names_saints_female',
+    'titles_person_famous_male' : '_names_famous_male',
+    'titles_person_famous_female' : '_names_famous_female',
+    'complete_table_male_names' : '_names_empty',
+    'complete_table_female_names' : '_names_empty',
+    'titles_adjective_1_list' : '_book_titles_adjective_1',
+    'titles_biography_starter' : '_book_titles_biography_starter',
+    'titles_communication' : '_book_titles_communication',
+    'titles_conjunction_about' : '_book_titles_conjunction_about',
+    'titles_conjunction_by' : '_book_titles_conjunction_by',
+    'titles_fixed' : '_book_titles_fixed',
+    'titles_history_of' : '_book_titles_history',
+    'titles_negative_subject' : '_book_titles_negative_subject',
+    'titles_noun_1_list' : '_book_titles_noun_1',
+    'titles_noun_2_list' : '_book_titles_noun_2',
+    'titles_person_evil' : '_names_famous_evil',
+    'titles_places_cities' : '_book_titles_places_cities',
+    'titles_places_nations' : '_book_titles_places_nations',
+    'titles_religious_starter' : '_book_titles_religious_starter',
+    'titles_study_in_list' : '_book_titles_study_in',
+    'titles_study_of_list' : '_book_titles_study_of',
+    'titles_study_on_list' : '_book_titles_study_on',
+    'titles_study_verbing' : '_book_titles_study_verbing',
+    'titles_the_1' : '_books_titles_the_1',
+    'titles_template_list_general' : '_book_titles_templates_general',
+    'titles_template_list_history' : '_book_titles_templates_history',
+    'titles_template_list_occult' : '_book_titles_templates_occult',
+    'titles_template_list_theology' : '_book_titles_templates_theology',
+    }
