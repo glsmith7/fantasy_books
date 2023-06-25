@@ -20,10 +20,12 @@ try:
 except ImportError:
     from yaml import SafeLoader
 
-# settings file
+# settings files
 with open("fantasy_book_settings.yaml") as f:     
     config = yaml.load(f, Loader=SafeLoader)
 
+with open("master_books_settings.yaml") as g:     
+    master_list_stats= yaml.load (g, Loader=SafeLoader)
 
 # logging boilerplate
 import settings_GLS as s
@@ -1124,13 +1126,18 @@ class MagicBook(FantasyBook):
 ######################## main() ########################
 
 # books, books_value = book_hoard (value=15000,overshoot=True)
-books, books_value = book_batch(number = 100)
+# books, books_value = book_batch(number = 100)
 
-export_books_to_excel(books)
+# export_books_to_excel(books)
 
 # print ('TOTAL: ' + str(books_value))
 # print ('Number of books: ' + str (len(books)) + " Done!")
 
-archive_to_master()
+# archive_to_master()
 
 # the_book = pick_existing_book()
+print (master_list_stats['TOTAL_TITLES_IN_MASTER'])
+master_list_stats['TOTAL_TITLES_IN_MASTER'] = 0
+
+with open("master_books_settings.yaml", "w") as f:     
+    yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)

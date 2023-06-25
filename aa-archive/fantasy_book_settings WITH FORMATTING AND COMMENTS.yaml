@@ -210,3 +210,9 @@ FLAVOR_TITLE_COLUMN_INDEX : 19
 NOTE_COLUMN_INDEX : 49
 NUMBER_EXTANT_COPIES_INDEX : 23
 NUMBER_COPIES_AVAIL_TO_PLACE : 24
+
+#################### Data Storage for Program ####################
+
+# Don't edit these unless you know what you're doing; the software uses to keep running tally.
+TOTAL_TITLES_IN_MASTER : 0 # duplicates don't count, books A,A,B,C in master = 3
+TOTAL_BOOKS_IN_MASTER: 0 # duplicates count, books A,A,B,C in master = 4
