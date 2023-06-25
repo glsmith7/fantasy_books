@@ -374,7 +374,14 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
 
     book = create_fantasy_book(**book_to_be)
     return book
-    
+
+def save_master_books_settings():
+    '''
+    Saves the master_list_stats array so data persists between sessions.
+    '''
+    with open("master_books_settings.yaml", "w") as f:     
+        yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
+
 ######################## CLASSES ########################
 
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
@@ -1136,8 +1143,6 @@ class MagicBook(FantasyBook):
 # archive_to_master()
 
 # the_book = pick_existing_book()
-print (master_list_stats['TOTAL_TITLES_IN_MASTER'])
-master_list_stats['TOTAL_TITLES_IN_MASTER'] = 0
 
-with open("master_books_settings.yaml", "w") as f:     
-    yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
+save_master_books_settings() # save data for next time.
+
