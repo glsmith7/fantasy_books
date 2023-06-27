@@ -371,29 +371,31 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     book_to_be = {}
     number_of_books = ws_source.max_row
     dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
-    random_book = d20.roll(dice_string).total
+    
     
     try:
-    
         while True:
-            for row in ws_source.iter_rows(min_row=random_book, max_row=random_book, max_col=ws_source.max_column): # min/max row same since only 1
-                # CODE TO ADD: Needs to check to see if a book is avail to place. If not then CONTINUE. Should do some kind of counting of how many times we try again, so as to avoid an infinite loop if no books avail to be placed.
-                # need to subtract one from available books
+            random_book = d20.roll(dice_string).total
+            index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
+            number_books_left_this_title = ws_source.cell(row = random_book, column = index).value
 
-                the_counter = 0
-                for attribute in config['book_variables_in_chosen_order']:
-                    book_to_be [attribute] = row[the_counter].value
-                    the_counter += 1
-                
-                index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
-                number_books_left = ws_source.cell(row = random_book, column = index).value - 1
-
-                ws_source.cell(row = random_book, column = index, value = number_books_left)
-                wb_source.save(filename)
-                wb_source.close()
+            if number_books_left_this_title == 0:
+                print ("zero books of this title, picking another...")
+                continue # ie not avail, pick another at random
+            
+            # Otherwise, copy over
+            the_counter = 1 # Excel starts at 1, not zero.
+            
+            for attribute in config['book_variables_in_chosen_order']:
+                book_to_be [attribute] = ws_source.cell(row=random_book, column = the_counter).value
+                the_counter += 1
+                        
+            ws_source.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
+            wb_source.save(filename) # save the master list with the decremented number of books for that title.
+            wb_source.close()
             break
     finally:
-             pass   # wb_source.close()
+             pass
                     
     book = create_fantasy_book(**book_to_be)
     return book
@@ -401,7 +403,6 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
 def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',worksheet = 'Master List'):
     excel_file_pandas = pd.read_excel(filename, sheet_name=worksheet, header=0, index_col=None, usecols=None, dtype=None, engine="openpyxl", decimal='.')
     return excel_file_pandas
-
 
 def save_master_books_settings():
     '''
@@ -760,7 +761,7 @@ class FantasyBook():
             if complexity_from_table >= 1: complexity_from_table = int(complexity_from_table) # doesn't integerize 0.75
             if complexity_from_table - self.scope > 4:
                 complexity_from_table = 5-self.scope
-                
+
             self.complexity = complexity_from_table
         
         else:
