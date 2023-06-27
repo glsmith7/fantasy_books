@@ -245,7 +245,7 @@ def calculate_stats_excel (excel_file_pandas):
     total={}
     total["rows"] = len(excel_file_pandas.index)
     for column in col_list:
-        total[column] = excel_file_pandas[column].sum()
+        total[column] = int (excel_file_pandas[column].sum())
     print (total)
     return (total)
 
@@ -352,7 +352,12 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     '''
     Randomly picks a single book from the master Excel file, and passes it back as a dictionary book_to_be, which can then be treated as input for create_fantasy_book(book_to_be**)
     '''
-
+    dataframe = read_excel_file_into_pandas(filename = filename, worksheet=worksheet)
+    stats = calculate_stats_excel(dataframe)
+    
+    if stats['number_extant_available_to_place'] < 1: # ie none exist to place
+        return False
+    
     # load source
     try:
         wb_source = load_workbook(filename= filename)
@@ -368,20 +373,27 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     number_of_books = ws_source.max_row
     dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
     random_book = d20.roll(dice_string).total
-    while True:
-        for row in ws_source.iter_rows(min_row=random_book, max_row=random_book, max_col=ws_source.max_column): # min/max row same since only 1
-            # CODE TO ADD: Needs to check to see if a book is avail to place. If not then CONTINUE. Should do some kind of counting of how many times we try again, so as to avoid an infinite loop if no books avail to be placed.
-            # need to subtract one from available books
+    
+    try:
+    
+        while True:
+            for row in ws_source.iter_rows(min_row=random_book, max_row=random_book, max_col=ws_source.max_column): # min/max row same since only 1
+                # CODE TO ADD: Needs to check to see if a book is avail to place. If not then CONTINUE. Should do some kind of counting of how many times we try again, so as to avoid an infinite loop if no books avail to be placed.
+                # need to subtract one from available books
 
-            the_counter = 0
-            for attribute in config['book_variables_in_chosen_order']:
-                book_to_be [attribute] = row[the_counter].value
-                the_counter += 1
-            
-            wb_source.save()
-            wb_source.close()
-            break # leave the infinite while True loop
-
+                the_counter = 0
+                for attribute in config['book_variables_in_chosen_order']:
+                    book_to_be [attribute] = row[the_counter].value
+                    the_counter += 1
+                
+                index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
+                ws_source.cell(row = random_book, column=index, value = 987654321)
+                wb_source.save(filename)
+                wb_source.close()
+                break
+    finally:
+                wb_source.close()
+                    
     book = create_fantasy_book(**book_to_be)
     return book
 
@@ -397,6 +409,11 @@ def save_master_books_settings():
     with open("master_books_settings.yaml", "w") as f:     
         yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
 
+def update_master_books_array(the_array):
+    master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
+    master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['market_value']
+    master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['number_extant_copies']
+    master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['number_extant_available_to_place']
 ######################## CLASSES ########################
 
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
@@ -1158,8 +1175,9 @@ class MagicBook(FantasyBook):
 
 # the_book = pick_existing_book()
 
-#save_master_books_settings() # save data for next time.
+
 
 gls = read_excel_file_into_pandas()
-calculate_stats_excel(gls)
-
+gls2 = calculate_stats_excel(gls)
+update_master_books_array(gls2)
+save_master_books_settings() # save data for next time.
