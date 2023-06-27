@@ -156,7 +156,6 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
     
     wb_source.close()
     wb_dest.close()
-
 def book_characteristics(books):
 
 
@@ -387,12 +386,14 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
                     the_counter += 1
                 
                 index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
-                ws_source.cell(row = random_book, column=index, value = 987654321)
+                number_books_left = ws_source.cell(row = random_book, column = index).value - 1
+
+                ws_source.cell(row = random_book, column = index, value = number_books_left)
                 wb_source.save(filename)
                 wb_source.close()
-                break
+            break
     finally:
-                wb_source.close()
+             pass   # wb_source.close()
                     
     book = create_fantasy_book(**book_to_be)
     return book
@@ -757,6 +758,9 @@ class FantasyBook():
         if not complexity:
             complexity_from_table = self.book_details_result_from_tables(config['complexity_table_list'][self.scope-1]) # Minus 1 since list index starts at zero.
             if complexity_from_table >= 1: complexity_from_table = int(complexity_from_table) # doesn't integerize 0.75
+            if complexity_from_table - self.scope > 4:
+                complexity_from_table = 5-self.scope
+                
             self.complexity = complexity_from_table
         
         else:
@@ -865,7 +869,11 @@ class FantasyBook():
         self.book_title_flavor = book_title_flavor
 
     def literary_value_set (self):
-        target_table = 'BookLiteraryValueScope' + str(self.scope)
+        if self.scope >= 1:
+            target_table = 'BookLiteraryValueScope' + str(self.scope)
+        else:
+            target_table = 'BookLiteraryValueScope' + str('1')
+
         self.literary_value_base = self.look_up_table(
             table_name=target_table,
             search_column='Complexity',
@@ -945,8 +953,8 @@ class FantasyBook():
                 fraction_missing = 0
             fraction_complete = 1 - fraction_missing
          
-        self.scope = round(self.scope * 2.0 * fraction_complete) / 2.0 # the x2, then div 2 rounds to nearest 0.5
-        if self.scope == 0: self.scope = 0.5
+        self.scope = ceil(self.scope * 2.0 * fraction_complete) / 2.0 # the x2, then div 2 rounds to nearest 0.5
+        if self.scope < 1: self.scope = 1
 
         self.reading_time = round(self.reading_time * 2.0 * fraction_complete) / 2.0
         self.reference_time = round(self.reference_time * 2.0 * fraction_complete) / 2.0
@@ -1173,7 +1181,7 @@ class MagicBook(FantasyBook):
 # print ('Number of books: ' + str (len(books)) + " Done!")
 # archive_to_master()
 
-# the_book = pick_existing_book()
+the_book = pick_existing_book()
 
 
 
@@ -1181,3 +1189,4 @@ gls = read_excel_file_into_pandas()
 gls2 = calculate_stats_excel(gls)
 update_master_books_array(gls2)
 save_master_books_settings() # save data for next time.
+print (the_book)
