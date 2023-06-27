@@ -5,6 +5,7 @@ from math import ceil
 from openpyxl.styles import Font as openpyxl_font
 from openpyxl import load_workbook
 from openpyxl import Workbook
+import pandas as pd
 import os
 import random as random
 import rpg_tables as r
@@ -239,6 +240,15 @@ def book_hoard (value=0,overshoot=True, **kwargs):
     print ('') # get off the same line
     return books, running_total
 
+def calculate_stats_excel (excel_file_pandas):
+    col_list = ['market_value','number_extant_copies','number_extant_available_to_place']
+    total={}
+    total["rows"] = len(excel_file_pandas.index)
+    for column in col_list:
+        total[column] = excel_file_pandas[column].sum()
+    print (total)
+    return (total)
+
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
     book_type = string.capwords(str(book_type))
@@ -374,6 +384,11 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
 
     book = create_fantasy_book(**book_to_be)
     return book
+
+def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',worksheet = 'Master List'):
+    excel_file_pandas = pd.read_excel(filename, sheet_name=worksheet, header=0, index_col=None, usecols=None, dtype=None, engine="openpyxl", decimal='.')
+    return excel_file_pandas
+
 
 def save_master_books_settings():
     '''
@@ -1133,16 +1148,18 @@ class MagicBook(FantasyBook):
 ######################## main() ########################
 
 # books, books_value = book_hoard (value=15000,overshoot=True)
-# books, books_value = book_batch(number = 100)
 
+
+# books, books_value = book_batch(number = 5)
 # export_books_to_excel(books)
-
 # print ('TOTAL: ' + str(books_value))
 # print ('Number of books: ' + str (len(books)) + " Done!")
-
 # archive_to_master()
 
 # the_book = pick_existing_book()
 
-save_master_books_settings() # save data for next time.
+#save_master_books_settings() # save data for next time.
+
+gls = read_excel_file_into_pandas()
+calculate_stats_excel(gls)
 
