@@ -156,6 +156,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
     
     wb_source.close()
     wb_dest.close()
+
 def book_characteristics(books):
 
 
@@ -223,7 +224,12 @@ def book_hoard (value=0,overshoot=True, **kwargs):
 
         while running_total < value:
             the_count += 1
-            books[the_count] = create_fantasy_book(**kwargs)
+            if check_if_should_place_existing_title():
+                books[the_count] = pick_existing_book()
+
+            else:
+                books[the_count] = create_fantasy_book(**kwargs)
+
             running_total += books[the_count].market_value
             update_book_status(the_count, running_total,value)
 
@@ -245,8 +251,27 @@ def calculate_stats_excel (excel_file_pandas):
     total["rows"] = len(excel_file_pandas.index)
     for column in col_list:
         total[column] = int (excel_file_pandas[column].sum())
-    print (total)
     return (total)
+
+def check_if_should_place_existing_title(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+    
+    dataframe = read_excel_file_into_pandas(filename = filename, worksheet=worksheet)
+    stats = calculate_stats_excel(dataframe)
+    
+    if stats['number_extant_available_to_place'] < 1: # ie none exist to place
+        return False
+    
+    else: 
+
+        total_books_copies_in_campaign = config['TOTAL_BOOKS_IN_CAMPAIGN']
+        total_books_copies_discovered = stats['number_extant_available_to_place']
+        dice_string = "1d" + str (total_books_copies_in_campaign)
+        
+        if d20.roll(dice_string).total <= total_books_copies_discovered:
+            return True
+        
+        else:
+            return False
 
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
@@ -354,9 +379,6 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     dataframe = read_excel_file_into_pandas(filename = filename, worksheet=worksheet)
     stats = calculate_stats_excel(dataframe)
     
-    if stats['number_extant_available_to_place'] < 1: # ie none exist to place
-        return False
-    
     # load source
     try:
         wb_source = load_workbook(filename= filename)
@@ -385,19 +407,25 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
             
             # Otherwise, copy over
             the_counter = 1 # Excel starts at 1, not zero.
-            
+            ws_source.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
+
             for attribute in config['book_variables_in_chosen_order']:
                 book_to_be [attribute] = ws_source.cell(row=random_book, column = the_counter).value
                 the_counter += 1
                         
-            ws_source.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
             wb_source.save(filename) # save the master list with the decremented number of books for that title.
             wb_source.close()
             break
+
     finally:
              pass
-                    
+    
+    dataframe = read_excel_file_into_pandas(filename = filename, worksheet=worksheet)
     book = create_fantasy_book(**book_to_be)
+    stats = calculate_stats_excel(dataframe)
+    update_master_books_array(stats)
+    save_master_books_settings()
+    print ("Picked preexist book.")
     return book
 
 def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',worksheet = 'Master List'):
@@ -1173,21 +1201,18 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-# books, books_value = book_hoard (value=15000,overshoot=True)
+books, books_value = book_hoard (value=10000,overshoot=True)
 
 
 # books, books_value = book_batch(number = 5)
-# export_books_to_excel(books)
-# print ('TOTAL: ' + str(books_value))
-# print ('Number of books: ' + str (len(books)) + " Done!")
-# archive_to_master()
+export_books_to_excel(books)
+print ('TOTAL: ' + str(books_value))
+print ('Number of books: ' + str (len(books)) + " Done!")
+archive_to_master()
 
-the_book = pick_existing_book()
-
-
+# the_book = pick_existing_book()
 
 gls = read_excel_file_into_pandas()
 gls2 = calculate_stats_excel(gls)
 update_master_books_array(gls2)
 save_master_books_settings() # save data for next time.
-print (the_book)
