@@ -1,3 +1,4 @@
+from bisect import bisect_left
 from copy import copy
 import d20
 from lorem_text_fantasy import lorem as lf
@@ -35,7 +36,7 @@ import logging_tools_GLS
 logger = logging.getLogger(__name__)
 
 
-global vocab_dictionary, nt
+global vocab_dictionary, nt, wb_source, ws_source
 
 vocab_dictionary = {}
 name_tables_dictionary = config['name_SQL_tables']
@@ -69,6 +70,7 @@ for i in config['list_of_surnames_tables']:
     nt['surnames_tables'][i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
 
 ######################## FUNCTIONS ########################
+
 def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoard",destination="master_fantasy_book_list.xlsx",destination_worksheet = "Master List"):
     '''
     Places books in an excel spreadsheet into the master_book_list. This is all books that exist in a campaign, and is used to produce additional copies (if they are extant) of already-described books. This happens at the appropriate frequency for the total number of books in the game world.
@@ -82,12 +84,12 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
     '''
     # load source
     try:
-        wb_source = load_workbook(filename= source)
+        wb_source_books = load_workbook(filename= source)
     except:
         raise FileNotFoundError ("Could not load the source file: " + source + ".")
 
-    if worksheet in wb_source.sheetnames: 
-        ws_source = wb_source[worksheet]
+    if worksheet in wb_source_books.sheetnames: 
+        ws_source_books = wb_source_books[worksheet]
     else:
         raise FileNotFoundError ("Could not find the worksheet: " + worksheet + " even though file " + source + " was successfully loaded.")
     
@@ -127,7 +129,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
 
     # copy each cell from source to destination
 
-    for row_source in ws_source.iter_rows(min_row=ws_source.min_row+1, min_col=ws_source.min_column, max_row=ws_source.max_row, max_col=ws_source.max_column):
+    for row_source in ws_source_books.iter_rows(min_row=ws_source_books.min_row+1, min_col=ws_source_books.min_column, max_row=ws_source_books.max_row, max_col=ws_source_books.max_column):
         
         the_count +=1 
         the_note = row_source[config['NOTE_COLUMN_INDEX']]
@@ -146,15 +148,15 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
             cell_dest.font = copy (cell_source.font)
             
         
-        print ("Copying Row #" + str(the_count) + "/" + str (ws_source.max_row - ws_source.min_row),end ='\r')   
+        print ("Copying Row #" + str(the_count) + "/" + str (ws_source_books.max_row - ws_source_books.min_row),end ='\r')   
         
         row_dest += 1
 
     print ("\n Finished transfer to master.")
-    wb_source.save(source)
+    wb_source_books.save(source)
     wb_dest.save(destination)
     
-    wb_source.close()
+    wb_source_books.close()
     wb_dest.close()
 
 def book_characteristics(books):
@@ -183,7 +185,7 @@ def book_batch (number=1, **kwargs):
     Produces a given number of books. Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
 
-    def update_book_status(the_count, running_total,number):
+    def update_user_facing_stats(the_count, running_total,number):
         print (" " * 80,end='\r') # blank the line
         print("Generating Book #" + str(the_count) + "/" + str (number) + " (" + str((int(100*the_count/number))) + "%)" + " --> " + str(running_total) + " total gp value", end ='\r')
 
@@ -195,12 +197,17 @@ def book_batch (number=1, **kwargs):
         the_count = 0
 
         while the_count < number:
+
             the_count += 1
-            # books[the_count] = pick_existing_book()
-            books[the_count] = create_fantasy_book(**kwargs)
-            
+            if check_if_should_place_existing_title():
+                books[the_count] = pick_existing_book()
+
+            else:
+                books[the_count] = create_fantasy_book(**kwargs)
+
             running_total += books[the_count].market_value
-            update_book_status(the_count, running_total,number)
+            update_user_facing_stats(the_count, running_total,number)
+            
 
     print ('') # get off the same line
     return books, running_total
@@ -254,9 +261,6 @@ def calculate_stats_excel (excel_file_pandas):
     return (total)
 
 def check_if_should_place_existing_title(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
-    
-    dataframe = read_excel_file_into_pandas(filename = filename, worksheet=worksheet)
-    stats = calculate_stats_excel(dataframe)
     
     if stats['number_extant_available_to_place'] < 1: # ie none exist to place
         return False
@@ -351,6 +355,50 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
     print ('') # get off the same line
     print ("Exported to Excel file '" + filename + "'")
 
+def get_proper_random_book (filename='master_fantasy_book_list.xlsx', worksheet='Master List'):
+    '''
+    Picking a row at random isn't a true randomization, since each row has a different number of extant books. This routine calculates the odds of each line, and rolls dice, returning the chosen line.
+    '''
+
+    def take_closest(myList, myNumber):
+        """
+        Assumes myList is sorted. Returns closest value to myNumber.
+
+        If two numbers are equally close, return the smallest number.
+        """
+        pos = bisect_left(myList, myNumber)
+        if pos == 0:
+            return myList[0]
+        if pos == len(myList):
+            return myList[-1]
+        before = myList[pos - 1]
+        after = myList[pos]
+        if after - myNumber < myNumber - before:
+            return after
+        else:
+            return before
+    
+    probability_array={}
+    master_book_pandas_table = read_excel_file_into_pandas (filename = filename,worksheet = worksheet)
+    total_number_extant_volumes = master_book_pandas_table['number_extant_available_to_place'].sum()
+    running_total = 0
+
+    for index, row in master_book_pandas_table.iterrows():
+        
+        running_total = running_total + row["number_extant_available_to_place"]
+        probability_array[index] = running_total
+
+    probability_array[index+1] = probability_array[index] # extra index so check algorithm below won't have out of range error if very last rolled.
+    running_total_list = list (probability_array.values())
+
+    dice_string = "1d" + str (int(total_number_extant_volumes))
+    the_roll = d20.roll(dice_string).total
+
+    the_closest = take_closest(running_total_list,the_roll)
+    the_index = running_total_list.index(the_closest)
+
+    return to_test
+
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
         titles are generated with a lorem_ipsum algorithm from random words in *.txt files in the folder lorem_ipsum_fantasy.
@@ -358,6 +406,7 @@ def import_language_words():
 
         More languages and the like can be added in the config['dictionary_languages'] dictionary at the beginning of the program with the other constants. Key is the language; value is the name of the text file.
     '''
+
     ROOT_DIR = os.getcwd() # os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
     THIS_FOLDER = os.path.join((ROOT_DIR), 'lorem_text_fantasy')
     vocab_dictionary = {}
@@ -372,14 +421,9 @@ def import_language_words():
 
     return vocab_dictionary
 
-def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
-    '''
-    Randomly picks a single book from the master Excel file, and passes it back as a dictionary book_to_be, which can then be treated as input for create_fantasy_book(book_to_be**)
-    '''
-    dataframe = read_excel_file_into_pandas(filename = filename, worksheet=worksheet)
-    stats = calculate_stats_excel(dataframe)
-    
-    # load source
+def load_excel_objects (filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+
+# load source
     try:
         wb_source = load_workbook(filename= filename)
     except:
@@ -390,16 +434,25 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     else:
         raise FileNotFoundError ("Could not find the worksheet: " + worksheet + " even though file " + filename + " was successfully loaded.")
     
+    return wb_source,ws_source
+
+def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+    '''
+    Randomly picks a single book from the master Excel file, and passes it back as a dictionary book_to_be, which can then be treated as input for create_fantasy_book(book_to_be**)
+    '''
+
+    wb_source,ws_source = load_excel_objects(filename = filename, worksheet = worksheet)
+    
     book_to_be = {}
     number_of_books = ws_source.max_row
     dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
     
-    
     try:
         while True:
-            random_book = d20.roll(dice_string).total
+            random_book = get_proper_random_book(filename=filename, worksheet=worksheet)
+
             index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
-            number_books_left_this_title = ws_source.cell(row = random_book, column = index).value
+            number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
 
             if number_books_left_this_title == 0:
                 print ("zero books of this title, picking another...")
@@ -447,6 +500,10 @@ def update_master_books_array(the_array):
 ######################## CLASSES ########################
 
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
+# read in dataframe for master file
+dataframe = read_excel_file_into_pandas()
+stats = calculate_stats_excel(dataframe)
+
 
 class FantasyBook():
     ''' 
@@ -1201,10 +1258,10 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-books, books_value = book_hoard (value=10000,overshoot=True)
+# books, books_value = book_hoard (value=10000,overshoot=True)
 
 
-# books, books_value = book_batch(number = 5)
+books, books_value = book_batch(number = 100)
 export_books_to_excel(books)
 print ('TOTAL: ' + str(books_value))
 print ('Number of books: ' + str (len(books)) + " Done!")
