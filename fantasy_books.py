@@ -238,7 +238,7 @@ def book_hoard (value=0,overshoot=True, **kwargs):
                 books[the_count] = create_fantasy_book(**kwargs)
 
             running_total += books[the_count].market_value
-            update_book_status(the_count, running_total,value)
+            update_user_facing_stats(the_count, running_total,value)
 
         if overshoot: 
             pass    
