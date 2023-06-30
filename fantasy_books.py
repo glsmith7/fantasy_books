@@ -218,7 +218,7 @@ def book_hoard (value=0,overshoot=True, **kwargs):
 
     Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
-    def update_book_status(the_count, running_total,value):
+    def update_user_facing_stats(the_count, running_total,value):
         print (" " * 80,end='\r') # blank the line
         print("Generating Book #" + str(the_count) + " --> " + str(running_total) + " gp/" + str (value) + " (" + str((int(100*running_total/value))) + "%)", end ='\r')
 
@@ -245,7 +245,7 @@ def book_hoard (value=0,overshoot=True, **kwargs):
         else:
             running_total -= books[len(books)].market_value # subtract last value that put us over the top
             books.popitem() # delete last book which put over the top
-            update_book_status(the_count, running_total,value)
+            update_user_facing_stats(the_count, running_total,value)
 
         if books == {}:
             print ("Zero books made in hoard; retrying ....") # need better error checking to avoid endless loop if value too low.
@@ -497,14 +497,26 @@ def save_master_books_settings():
     '''
     Saves the master_list_stats array so data persists between sessions.
     '''
-    with open("master_books_settings.yaml", "w") as f:     
-        yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
+    try:
+        with open("master_books_settings.yaml", "w") as f:     
+            yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
+    except:
+        print ('Error with saving file "master_books_settings.yaml". Is the file open in another program?')
 
 def update_master_books_array(the_array):
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
     master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['market_value']
     master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['number_extant_copies']
     master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['number_extant_available_to_place']
+
+def zero_out_master_books_file():
+    master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = 0
+    master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = 0
+    master_list_stats['TOTAL_BOOKS_IN_MASTER'] = 0
+    master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = 0
+    save_master_books_settings()
+    print ("Master book settings have been zeroed out. Makes sure the excel files contains no books.")
+
 ######################## CLASSES ########################
 
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
@@ -1271,13 +1283,15 @@ class MagicBook(FantasyBook):
 
 books, books_value = book_batch(number = 50)
 export_books_to_excel(books)
+
 print ('TOTAL: ' + str(books_value))
 print ('Number of books: ' + str (len(books)) + " Done!")
-archive_to_master()
 
-# the_book = pick_existing_book()
+archive_to_master()
 
 gls = read_excel_file_into_pandas()
 gls2 = calculate_stats_excel(gls)
 update_master_books_array(gls2)
+# zero_out_master_books_file()
+
 save_master_books_settings() # save data for next time.
