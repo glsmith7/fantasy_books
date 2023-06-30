@@ -396,8 +396,15 @@ def get_proper_random_book (filename='master_fantasy_book_list.xlsx', worksheet=
 
     the_closest = take_closest(running_total_list,the_roll)
     the_index = running_total_list.index(the_closest)
+# the_index -= 1
 
-    return to_test
+    while True:
+        if the_roll > probability_array[the_index]:
+            the_index+=1
+        else:
+            break
+
+    return the_index+1 # array starts at zero, the line in the dataform starts at 1
 
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
@@ -444,8 +451,8 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     wb_source,ws_source = load_excel_objects(filename = filename, worksheet = worksheet)
     
     book_to_be = {}
-    number_of_books = ws_source.max_row
-    dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
+    # number_of_books = ws_source.max_row
+    # dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
     
     try:
         while True:
@@ -459,9 +466,10 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
                 continue # ie not avail, pick another at random
             
             # Otherwise, copy over
-            the_counter = 1 # Excel starts at 1, not zero.
+            
             ws_source.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
-
+            
+            the_counter = 1 # Excel columns start at 1, not zero.
             for attribute in config['book_variables_in_chosen_order']:
                 book_to_be [attribute] = ws_source.cell(row=random_book, column = the_counter).value
                 the_counter += 1
@@ -477,7 +485,7 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     book = create_fantasy_book(**book_to_be)
     stats = calculate_stats_excel(dataframe)
     update_master_books_array(stats)
-    save_master_books_settings()
+    # save_master_books_settings()
     print ("Picked preexist book.")
     return book
 
@@ -1261,7 +1269,7 @@ class MagicBook(FantasyBook):
 # books, books_value = book_hoard (value=10000,overshoot=True)
 
 
-books, books_value = book_batch(number = 100)
+books, books_value = book_batch(number = 50)
 export_books_to_excel(books)
 print ('TOTAL: ' + str(books_value))
 print ('Number of books: ' + str (len(books)) + " Done!")
