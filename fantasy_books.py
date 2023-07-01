@@ -1,4 +1,3 @@
-from bisect import bisect_left
 from copy import copy
 import d20
 from lorem_text_fantasy import lorem as lf
@@ -6,28 +5,12 @@ from math import ceil
 from openpyxl.styles import Font as openpyxl_font
 from openpyxl import load_workbook
 from openpyxl import Workbook
-import pandas as pd
 import os
 import random as random
 import rpg_tables as r
 import string as string
 import sys
 import uuid
-import yaml
-
-# use faster C code for yaml if available, otherwise pure python code
-try:
-    from yaml import CSafeLoader as SafeLoader
-
-except ImportError:
-    from yaml import SafeLoader
-
-# settings files
-with open("fantasy_book_settings.yaml") as f:     
-    config = yaml.load(f, Loader=SafeLoader)
-
-with open("master_books_settings.yaml") as g:     
-    master_list_stats= yaml.load (g, Loader=SafeLoader)
 
 # logging boilerplate
 import settings_GLS as s
@@ -35,42 +18,298 @@ import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
 
+################ GLOBALS #####################
+global CHANCE_OF_BEING_TRANSLATION, TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL, ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO
+global CHANCE_OF_ARCHIVE_BOOK_APPEARING_AGAIN
+global CHANCE_OF_EPITHET_IN_AUTHOR_NAME, CHANCE_OF_TITLE_IN_AUTHOR_NAME, CHANCE_OF_FEMALE_AUTHOR
+global WEIGHT_PER_VOLUME_OF_CODEX, WEIGHT_PER_VOLUME_OF_SCROLL
+global READING_PAGES_PER_HOUR, PAGES_PER_VOLUME_FOR_CODEX, PAGES_PER_VOLUME_FOR_SCROLL
+global CHANCE_OF_INCOMPLETE_WORK
+global DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS, DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE
+global DEFAULT_EXCEL_FONT, DEFAULT_EXCEL_FLAVOR_FONT_SIZE
+global CURRENT_LANGUAGE_COLUMN_INDEX, FLAVOR_TITLE_COLUMN_INDEX, NOTE_COLUMN_INDEX
+global NUMBER_EXTANT_COPIES_INDEX, NUMBER_COPIES_AVAIL_TO_PLACE
+global TOTAL_BOOKS_IN_CAMPAIGN
 
-global vocab_dictionary, nt, wb_source, ws_source
+global vocab_dictionary
+global lang_no_spaces, lang_limit_40_chars, book_variables_in_chosen_order
 
 vocab_dictionary = {}
-name_tables_dictionary = config['name_SQL_tables']
-nt={}
+book_variables_in_chosen_order = [
+                                    'format',
+                                    'materials',
+                                    'number_volumes',
+                                    'number_pages',
+                                    'weight',
+                                    'current_language',
+                                    'original_language',
+                                    'topic',
+                                    'topic_apparent',
+                                    'scope',
+                                    'scope_esoteric',
+                                    'complexity',
+                                    'complexity_esoteric',
+                                    'fraction_complete',
+                                    'market_value',
+                                    'book_title',
+                                    'author_full',
+                                    'translator_full_name',                             
+                                    'book_title_flavor',
+                                    'reading_time',
+                                    'reference_time',
+                                    'age_at_discovery',
+                                    'number_extant_copies',
+                                    'number_extant_available_to_place',
+                                    'rarity_modifier',
+                                    'libraries_it_is_in',
+                                    'author_epithet',
+                                    'author_name',
+                                    'author_nationality',
+                                    'author_title',
+                                    'author_sex',
+                                    'translator_name',
+                                    'translator_nationality',
+                                    'translator_sex',
+                                    'translator_title',
+                                    'weight_per_page',
+                                    'template',
+                                    'topic_title_form',
+                                    'cost_per_page',
+                                    'production_value',
+                                    'literary_value_base',
+                                    'literary_value_modified',
+                                    'esoteric_literary_value_base',
+                                    'esoteric_literary_value_modified',
+                                    'year_discovered',
+                                    'year_written',
+                                    'is_a_translation',
+                                    'book_type',
+                                    'uuid',
+                                    'note',
+                                    ]
 
-for key,table in name_tables_dictionary.items():
-    nt[key] = r.RPG_table(table)
+# magic numbers related to above
+CURRENT_LANGUAGE_COLUMN_INDEX = 6
+FLAVOR_TITLE_COLUMN_INDEX = 19
+NOTE_COLUMN_INDEX = 49
+NUMBER_EXTANT_COPIES_INDEX = 23
+NUMBER_COPIES_AVAIL_TO_PLACE = 24
 
-nt['complete_table_female_names'].description = "Female Names Amalgamated"
-nt['complete_table_male_names'].description = "Male Names Amalgamated"
-nt['titles_saints_amalgamated']= nt['titles_saints_male'] + nt['titles_saints_female']
-nt['titles_person_famous_amalgamated'] = nt['titles_person_famous_male'] + nt['titles_person_famous_female']
+#########################################################
+# USER SETABLE variables
+#########################################################
+# ACKS given values
+READING_PAGES_PER_HOUR = 180
+PAGES_PER_VOLUME_FOR_CODEX = 750
+PAGES_PER_VOLUME_FOR_SCROLL = 250
+WEIGHT_PER_VOLUME_OF_CODEX = 1.5 # lbs
+WEIGHT_PER_VOLUME_OF_SCROLL = 2 # lbs
 
-# load first name table dictionaries
+#
+ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO = ['Ancient']
+CHANCE_OF_BEING_TRANSLATION = 5 # # 0-100%
+CHANCE_OF_EPITHET_IN_AUTHOR_NAME = 15 # 0-100%
+CHANCE_OF_TITLE_IN_AUTHOR_NAME = 30 # 0-100%
+CHANCE_OF_FEMALE_AUTHOR = 50 # 0-100%
+TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL = '1d100+20'
+CHANCE_OF_INCOMPLETE_WORK = 5 # 0-100%
+CHANCE_OF_ARCHIVE_BOOK_APPEARING_AGAIN = 100 # 0-100%
+TOTAL_BOOKS_IN_CAMPAIGN = 30000 # Pre-printing Europe had around 30,000 books. This number is used to determine chance of another copy of already-created book appearing in a different hoard.
 
-nt['name_tables_male'] = {}
-nt['name_tables_female'] = {}
-nt['surnames_tables'] = {}
+# Flavor text lorem ipsum formulas and data
+## uses first:
+DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE='num_words_in_english_title - d20.roll("1d4").total + d20.roll("1d8").total'
 
-for i in config['list_of_names_tables_male']:
-    nt['name_tables_male'][i] = r.RPG_table(i)
-    nt['complete_table_male_names'] = (nt['name_tables_male'][i]) + nt['complete_table_male_names']
+## if the above gives less than 3 words, this formula is used instead
+DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS ='3 + d20.roll("1d6").total'
 
-for i in config['list_of_names_tables_female']:
-    nt['name_tables_female'][i] = r.RPG_table(i)
-    nt['complete_table_female_names'] = (nt['name_tables_female'][i]) + nt['complete_table_female_names']
+## fonts to display flavor titles in Excel properly
+DEFAULT_EXCEL_FONT = 'Segoe UI Historic'
+DEFAULT_EXCEL_FLAVOR_FONT_SIZE = 9
 
-# load surnames table dictionaries
+#############################################
+# "Common" is just English. 
+# Additional languages can be added; a .txt file with one word per line should be in the lorem_text_fantasy directory:
 
-for i in config['list_of_surnames_tables']:
-    nt['surnames_tables'][i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
+dictionary_languages = {
+        'Classical' : 'latin.txt',
+        'Common': 'english.txt', # uses just English; file is empty and does nothing but prevent bugs. :-)
+        'Classical': 'latin.txt', 
+        'Regional' : 'greek.txt', 
+        'Ancient': 'akkadian.txt',
+        'Dwarven' : 'runes.txt',
+        'Elvish' : 'sindarin.txt',
+        #'Akkadian': 'akkadian.txt',   # commented ones have no equivalence in ACKS tables for language.        
+        #'Arabic': 'arabic.txt',       # ... adjust to taste, however.
+        #'Armenian': 'armenian.txt',
+        #'Chinese': 'chinese.txt',
+        #'Cyrilic': 'cyrillic.txt',
+        #'Georgian': 'georgian.txt',
+        #'Gothic': 'gothic_latin.txt',
+        #'Hebrew': 'hebrew.txt',
+        #'Hindi': 'hindi.txt'
+        #'Kanji':'kanji.txt',
+        #'Korean':'korean.txt',
+        # 'Classical': 'arabic.txt',
+    }
+
+font_languages = {
+        'Classical' : DEFAULT_EXCEL_FONT,
+        'Common': DEFAULT_EXCEL_FONT,
+        'Classical': DEFAULT_EXCEL_FONT, 
+        'Regional' : DEFAULT_EXCEL_FONT, 
+        'Ancient': DEFAULT_EXCEL_FONT,
+        'Dwarven' : 'Noto Sans Runic',
+        'Elvish' : 'Tengwar Annatar',
+        # 'Akkadian': DEFAULT_EXCEL_FONT,   
+        #'Arabic': DEFAULT_EXCEL_FONT,       
+        #'Armenian': DEFAULT_EXCEL_FONT,
+        #'Chinese': DEFAULT_EXCEL_FONT,
+        #'Cyrillic': DEFAULT_EXCEL_FONT,
+        #'Georgian': DEFAULT_EXCEL_FONT,
+        #'Gothic': DEFAULT_EXCEL_FONT,
+        #'Hebrew': DEFAULT_EXCEL_FONT,
+        #'Hindi': DEFAULT_EXCEL_FONT,
+        #'Kanji': DEFAULT_EXCEL_FONT,
+        #'Korean': DEFAULT_EXCEL_FONT,
+    }
+lang_no_spaces = ['Chinese','Kanji','Korean']
+lang_limit_40_chars = ['Akkadian','Ancient','Gothic']
+
+##################### End of user-settable variables ###########################
+
+# general
+
+global list_of_words_to_not_capitalize
+global complexity_table_list
+
+# names
+global list_of_names_tables_male, list_of_names_tables_female
+global author_title_table, epithets_tables
+
+# names of male and female
+global complete_table_male_names, name_tables_male
+global complete_table_female_names, name_tables_female
+
+# book titles
+
+global titles_adjective_1_list, titles_communication, titles_conjunction_about, titles_conjunction_by, titles_fixed
+global titles_history_of, titles_negative_subject
+global titles_noun_1_list, titles_noun_2_list, titles_person_1, titles_person_2
+global titles_places_cities, titles_places_nations, titles_religious_starter
+global titles_study_in_list, titles_study_of_list, titles_study_on_list, titles_study_verbing, titles_the_1 
+global titles_template_list_general, titles_template_list_history, titles_template_list_occult, titles_template_list_theology 
+
+list_of_words_to_not_capitalize = [
+    ('The','the'),
+    ('Of','of'),
+    ('De','de'),
+    ("D'","d'"),
+]
+complexity_table_list = ['BookComplexityForScope1','BookComplexityForScope2','BookComplexityForScope3','BookComplexityForScope4']
+
+surnames_tables = {}
+name_tables_male = {}
+name_tables_female = {}
+
+# title of author
+author_title_table = r.RPG_table('_titles_person')
+
+#epithets of author
+epithets_table = r.RPG_table('_epithets')
+
+# saints names
+titles_saints_male=r.RPG_table('_names_saints_male')
+titles_saints_female=r.RPG_table('_names_saints_female')
+titles_saints_amalgamated= titles_saints_male + titles_saints_female
+
+# famous names
+titles_person_famous_male=r.RPG_table('_names_famous_male')
+titles_person_famous_female=r.RPG_table('_names_famous_female')
+titles_person_famous_amalgamated=titles_person_famous_male + titles_person_famous_female
+
+# blank lists for later use
+complete_table_male_names = r.RPG_table('_names_empty')
+complete_table_male_names.description = "Male Names Amalgamated"
+complete_table_female_names = r.RPG_table('_names_empty')
+complete_table_female_names.description = "Female Names Amalgamated"
+
+# book title fragments
+titles_adjective_1_list = r.RPG_table('_book_titles_adjective_1')
+titles_biography_starter=r.RPG_table('_book_titles_biography_starter')
+titles_communication=r.RPG_table('_book_titles_communication')
+titles_conjunction_about = r.RPG_table('_book_titles_conjunction_about')
+titles_conjunction_by = r.RPG_table('_book_titles_conjunction_by')
+titles_fixed = r.RPG_table('_book_titles_fixed')
+titles_history_of = r.RPG_table('_book_titles_history')
+titles_negative_subject = r.RPG_table('_book_titles_negative_subject')
+titles_noun_1_list = r.RPG_table('_book_titles_noun_1')
+titles_noun_2_list = r.RPG_table('_book_titles_noun_2')
+titles_person_evil=r.RPG_table('_names_famous_evil')
+titles_places_cities = r.RPG_table('_book_titles_places_cities')
+titles_places_nations = r.RPG_table('_book_titles_places_nations')
+titles_religious_starter = r.RPG_table('_book_titles_religious_starter')
+titles_study_in_list = r.RPG_table('_book_titles_study_in')
+titles_study_of_list = r.RPG_table('_book_titles_study_of')
+titles_study_on_list = r.RPG_table('_book_titles_study_on')
+titles_study_verbing = r.RPG_table('_book_titles_study_verbing')
+titles_the_1 = r.RPG_table('_books_titles_the_1')
+
+# book title templates
+
+titles_template_list_general = r.RPG_table('_book_titles_templates_general')
+titles_template_list_history = r.RPG_table('_book_titles_templates_history')
+titles_template_list_occult = r.RPG_table('_book_titles_templates_occult')
+titles_template_list_theology = r.RPG_table('_book_titles_templates_theology')
+
+# name tables load
+
+list_of_names_tables_male = [
+        '_names_anglo_saxon_male',
+        '_names_arabic_male',
+        '_names_english_male',
+        '_names_famous_male', 
+        '_names_french_male', 
+        '_names_norse_male',
+        '_names_roman_male', 
+        ]
+
+list_of_names_tables_female = [
+        '_names_arabic_female',
+        '_names_anglo_saxon_female', 
+        '_names_english_female',
+        '_names_famous_female', 
+        '_names_french_female', 
+        '_names_norse_female',
+        '_names_roman_female', 
+        ]
+
+list_of_surnames_tables = [
+        ('_names_arabic_surnames'),
+        ('_names_anglo_saxon_surnames'), 
+        ('_names_english_surnames'),
+        ('_names_famous_surnames'), 
+        ('_names_french_surnames'), 
+        ('_names_norse_surnames_female'),
+        ('_names_norse_surnames_male'),
+        ('_names_roman_surnames'),
+        ]
+
+# load name table dictionaries
+for i in list_of_names_tables_male:
+    name_tables_male[i] = r.RPG_table(i)
+    complete_table_male_names = (name_tables_male[i]) + complete_table_male_names
+
+for i in list_of_names_tables_female:
+    name_tables_female[i] = r.RPG_table(i)
+    complete_table_female_names = (name_tables_female[i]) + complete_table_female_names
+
+    # surnames
+
+for i in list_of_surnames_tables:
+    surnames_tables[i] = r.RPG_table(i) # creates dictionary containing a table for each nationality.
 
 ######################## FUNCTIONS ########################
-
 def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoard",destination="master_fantasy_book_list.xlsx",destination_worksheet = "Master List"):
     '''
     Places books in an excel spreadsheet into the master_book_list. This is all books that exist in a campaign, and is used to produce additional copies (if they are extant) of already-described books. This happens at the appropriate frequency for the total number of books in the game world.
@@ -84,12 +323,12 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
     '''
     # load source
     try:
-        wb_source_books = load_workbook(filename= source)
+        wb_source = load_workbook(filename= source)
     except:
         raise FileNotFoundError ("Could not load the source file: " + source + ".")
 
-    if worksheet in wb_source_books.sheetnames: 
-        ws_source_books = wb_source_books[worksheet]
+    if worksheet in wb_source.sheetnames: 
+        ws_source = wb_source[worksheet]
     else:
         raise FileNotFoundError ("Could not find the worksheet: " + worksheet + " even though file " + source + " was successfully loaded.")
     
@@ -129,10 +368,10 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
 
     # copy each cell from source to destination
 
-    for row_source in ws_source_books.iter_rows(min_row=ws_source_books.min_row+1, min_col=ws_source_books.min_column, max_row=ws_source_books.max_row, max_col=ws_source_books.max_column):
+    for row_source in ws_source.iter_rows(min_row=ws_source.min_row+1, min_col=ws_source.min_column, max_row=ws_source.max_row, max_col=ws_source.max_column):
         
         the_count +=1 
-        the_note = row_source[config['NOTE_COLUMN_INDEX']]
+        the_note = row_source[NOTE_COLUMN_INDEX]
         if "do_not_archive" == the_note.value or "has_been_archived" == the_note.value:
             continue
 
@@ -148,15 +387,15 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
             cell_dest.font = copy (cell_source.font)
             
         
-        print ("Copying Row #" + str(the_count) + "/" + str (ws_source_books.max_row - ws_source_books.min_row),end ='\r')   
+        print ("Copying Row #" + str(the_count) + "/" + str (ws_source.max_row - ws_source.min_row),end ='\r')   
         
         row_dest += 1
 
     print ("\n Finished transfer to master.")
-    wb_source_books.save(source)
+    wb_source.save(source)
     wb_dest.save(destination)
     
-    wb_source_books.close()
+    wb_source.close()
     wb_dest.close()
 
 def book_characteristics(books):
@@ -171,13 +410,13 @@ def book_characteristics(books):
     
     # this bit adds any variables that have been omitted from the above list, so all will be displayed even if user error.
     for item in book_attributes:
-        if item not in config['book_variables_in_chosen_order']:
-            config['book_variables_in_chosen_order'].append(item)
+        if item not in book_variables_in_chosen_order:
+            book_variables_in_chosen_order.append(item)
 
-    current_language_index = config['book_variables_in_chosen_order'].index('current_language')
-    flavor_title_index = config['book_variables_in_chosen_order'].index('book_title_flavor')
+    current_language_index = book_variables_in_chosen_order.index('current_language')
+    flavor_title_index = book_variables_in_chosen_order.index('book_title_flavor')
 
-    return config['book_variables_in_chosen_order'], current_language_index+1, flavor_title_index+1 # index starts 0, Excel starts 1
+    return book_variables_in_chosen_order, current_language_index+1, flavor_title_index+1 # index starts 0, Excel starts 1
 
 def book_batch (number=1, **kwargs):
     
@@ -185,7 +424,7 @@ def book_batch (number=1, **kwargs):
     Produces a given number of books. Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
 
-    def update_user_facing_stats(the_count, running_total,number):
+    def update_book_status(the_count, running_total,number):
         print (" " * 80,end='\r') # blank the line
         print("Generating Book #" + str(the_count) + "/" + str (number) + " (" + str((int(100*the_count/number))) + "%)" + " --> " + str(running_total) + " total gp value", end ='\r')
 
@@ -197,17 +436,12 @@ def book_batch (number=1, **kwargs):
         the_count = 0
 
         while the_count < number:
-
             the_count += 1
-            if check_if_should_place_existing_title():
-                books[the_count] = pick_existing_book()
-
-            else:
-                books[the_count] = create_fantasy_book(**kwargs)
-
-            running_total += books[the_count].market_value
-            update_user_facing_stats(the_count, running_total,number)
+            # books[the_count] = pick_existing_book()
+            books[the_count] = create_fantasy_book(**kwargs)
             
+            running_total += books[the_count].market_value
+            update_book_status(the_count, running_total,number)
 
     print ('') # get off the same line
     return books, running_total
@@ -218,7 +452,7 @@ def book_hoard (value=0,overshoot=True, **kwargs):
 
     Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
-    def update_user_facing_stats(the_count, running_total,value):
+    def update_book_status(the_count, running_total,value):
         print (" " * 80,end='\r') # blank the line
         print("Generating Book #" + str(the_count) + " --> " + str(running_total) + " gp/" + str (value) + " (" + str((int(100*running_total/value))) + "%)", end ='\r')
 
@@ -231,51 +465,21 @@ def book_hoard (value=0,overshoot=True, **kwargs):
 
         while running_total < value:
             the_count += 1
-            if check_if_should_place_existing_title():
-                books[the_count] = pick_existing_book()
-
-            else:
-                books[the_count] = create_fantasy_book(**kwargs)
-
+            books[the_count] = create_fantasy_book(**kwargs)
             running_total += books[the_count].market_value
-            update_user_facing_stats(the_count, running_total,value)
+            update_book_status(the_count, running_total,value)
 
         if overshoot: 
             pass    
         else:
             running_total -= books[len(books)].market_value # subtract last value that put us over the top
             books.popitem() # delete last book which put over the top
-            update_user_facing_stats(the_count, running_total,value)
+            update_book_status(the_count, running_total,value)
 
         if books == {}:
             print ("Zero books made in hoard; retrying ....") # need better error checking to avoid endless loop if value too low.
     print ('') # get off the same line
     return books, running_total
-
-def calculate_stats_excel (excel_file_pandas):
-    col_list = ['market_value','number_extant_copies','number_extant_available_to_place']
-    total={}
-    total["rows"] = len(excel_file_pandas.index)
-    for column in col_list:
-        total[column] = int (excel_file_pandas[column].sum())
-    return (total)
-
-def check_if_should_place_existing_title(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
-    
-    if stats['number_extant_available_to_place'] < 1: # ie none exist to place
-        return False
-    
-    else: 
-
-        total_books_copies_in_campaign = config['TOTAL_BOOKS_IN_CAMPAIGN']
-        total_books_copies_discovered = stats['number_extant_available_to_place']
-        dice_string = "1d" + str (total_books_copies_in_campaign)
-        
-        if d20.roll(dice_string).total <= total_books_copies_discovered:
-            return True
-        
-        else:
-            return False
 
 def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
@@ -297,8 +501,8 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
     '''
     book_columns,current_language_index, flavor_title_index = book_characteristics(books)
     
-    config['CURRENT_LANGUAGE_COLUMN_INDEX'] = current_language_index
-    config['FLAVOR_TITLE_COLUMN_INDEX'] = flavor_title_index
+    CURRENT_LANGUAGE_COLUMN_INDEX = current_language_index
+    FLAVOR_TITLE_COLUMN_INDEX = flavor_title_index
     
     try:
         wb = load_workbook(filename= filename)
@@ -348,77 +552,25 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
             # now get language of the last row (just added) and set the proper font for the flavor title cell
         the_lang = ws.cell(row=ws.max_row,column=current_language_index)
         the_flavor = ws.cell(row=ws.max_row, column=flavor_title_index)
-        the_flavor.font = openpyxl_font(name=config['font_languages'][the_lang.value],size=config['DEFAULT_EXCEL_FLAVOR_FONT_SIZE'])
+        the_flavor.font = openpyxl_font(name=font_languages[the_lang.value],size=DEFAULT_EXCEL_FLAVOR_FONT_SIZE)
 
     wb.save(filename)
     wb.close()
     print ('') # get off the same line
     print ("Exported to Excel file '" + filename + "'")
 
-def get_proper_random_book (filename='master_fantasy_book_list.xlsx', worksheet='Master List'):
-    '''
-    Picking a row at random isn't a true randomization, since each row has a different number of extant books. This routine calculates the odds of each line, and rolls dice, returning the chosen line.
-    '''
-
-    def take_closest(myList, myNumber):
-        """
-        Assumes myList is sorted. Returns closest value to myNumber.
-
-        If two numbers are equally close, return the smallest number.
-        """
-        pos = bisect_left(myList, myNumber)
-        if pos == 0:
-            return myList[0]
-        if pos == len(myList):
-            return myList[-1]
-        before = myList[pos - 1]
-        after = myList[pos]
-        if after - myNumber < myNumber - before:
-            return after
-        else:
-            return before
-    
-    probability_array={}
-    master_book_pandas_table = read_excel_file_into_pandas (filename = filename,worksheet = worksheet)
-    total_number_extant_volumes = master_book_pandas_table['number_extant_available_to_place'].sum()
-    running_total = 0
-
-    for index, row in master_book_pandas_table.iterrows():
-        
-        running_total = running_total + row["number_extant_available_to_place"]
-        probability_array[index] = running_total
-
-    probability_array[index+1] = probability_array[index] # extra index so check algorithm below won't have out of range error if very last rolled.
-    running_total_list = list (probability_array.values())
-
-    dice_string = "1d" + str (int(total_number_extant_volumes))
-    the_roll = d20.roll(dice_string).total
-
-    the_closest = take_closest(running_total_list,the_roll)
-    the_index = running_total_list.index(the_closest)
-# the_index -= 1
-
-    while True:
-        if the_roll > probability_array[the_index]:
-            the_index+=1
-        else:
-            break
-
-    return the_index+1 # array starts at zero, the line in the dataform starts at 1
-
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
         titles are generated with a lorem_ipsum algorithm from random words in *.txt files in the folder lorem_ipsum_fantasy.
         This is called just once as the program starts, and then the lists are passed to the lorem_ipsum_fantasy package.
 
-        More languages and the like can be added in the config['dictionary_languages'] dictionary at the beginning of the program with the other constants. Key is the language; value is the name of the text file.
+        More languages and the like can be added in the dictionary_languages dictionary at the beginning of the program with the other constants. Key is the language; value is the name of the text file.
     '''
-
     ROOT_DIR = os.getcwd() # os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
     THIS_FOLDER = os.path.join((ROOT_DIR), 'lorem_text_fantasy')
     vocab_dictionary = {}
 
-    for language,file in config['dictionary_languages'].items():
+    for language,file in dictionary_languages.items():
         TARGET_LANGUAGE_FILE = os.path.join(THIS_FOLDER, file)
         the_words_imported = []
         with open(TARGET_LANGUAGE_FILE,encoding = 'utf8', mode='r') as f:
@@ -428,9 +580,12 @@ def import_language_words():
 
     return vocab_dictionary
 
-def load_excel_objects (filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+    '''
+    Randomly picks a single book from the master Excel file, and passes it back as a dictionary book_to_be, which can then be treated as input for create_fantasy_book(book_to_be**)
+    '''
 
-# load source
+    # load source
     try:
         wb_source = load_workbook(filename= filename)
     except:
@@ -441,89 +596,30 @@ def load_excel_objects (filename = 'master_fantasy_book_list.xlsx', worksheet = 
     else:
         raise FileNotFoundError ("Could not find the worksheet: " + worksheet + " even though file " + filename + " was successfully loaded.")
     
-    return wb_source,ws_source
-
-def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
-    '''
-    Randomly picks a single book from the master Excel file, and passes it back as a dictionary book_to_be, which can then be treated as input for create_fantasy_book(book_to_be**)
-    '''
-
-    wb_source,ws_source = load_excel_objects(filename = filename, worksheet = worksheet)
-    
     book_to_be = {}
-    # number_of_books = ws_source.max_row
-    # dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
-    
-    try:
-        while True:
-            random_book = get_proper_random_book(filename=filename, worksheet=worksheet)
+    number_of_books = ws_source.max_row
+    dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
+    random_book = d20.roll(dice_string).total
+    while True:
+        for row in ws_source.iter_rows(min_row=random_book, max_row=random_book, max_col=ws_source.max_column): # min/max row same since only 1
+            # CODE TO ADD: Needs to check to see if a book is avail to place. If not then CONTINUE. Should do some kind of counting of how many times we try again, so as to avoid an infinite loop if no books avail to be placed.
+            # need to subtract one from available books
 
-            index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
-            number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
-
-            if number_books_left_this_title == 0:
-                print ("zero books of this title, picking another...")
-                continue # ie not avail, pick another at random
-            
-            # Otherwise, copy over
-            
-            ws_source.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
-            
-            the_counter = 1 # Excel columns start at 1, not zero.
-            for attribute in config['book_variables_in_chosen_order']:
-                book_to_be [attribute] = ws_source.cell(row=random_book, column = the_counter).value
+            the_counter = 0
+            for attribute in book_variables_in_chosen_order:
+                book_to_be [attribute] = row[the_counter].value
                 the_counter += 1
-                        
-            wb_source.save(filename) # save the master list with the decremented number of books for that title.
+            
+            wb_source.save()
             wb_source.close()
-            break
+            break # leave the infinite while True loop
 
-    finally:
-             pass
-    
-    dataframe = read_excel_file_into_pandas(filename = filename, worksheet=worksheet)
     book = create_fantasy_book(**book_to_be)
-    stats = calculate_stats_excel(dataframe)
-    update_master_books_array(stats)
-    # save_master_books_settings()
-    print ("Picked preexist book.")
     return book
-
-def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',worksheet = 'Master List'):
-    excel_file_pandas = pd.read_excel(filename, sheet_name=worksheet, header=0, index_col=None, usecols=None, dtype=None, engine="openpyxl", decimal='.')
-    return excel_file_pandas
-
-def save_master_books_settings():
-    '''
-    Saves the master_list_stats array so data persists between sessions.
-    '''
-    try:
-        with open("master_books_settings.yaml", "w") as f:     
-            yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
-    except:
-        print ('Error with saving file "master_books_settings.yaml". Is the file open in another program?')
-
-def update_master_books_array(the_array):
-    master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
-    master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['market_value']
-    master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['number_extant_copies']
-    master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['number_extant_available_to_place']
-
-def zero_out_master_books_file():
-    master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = 0
-    master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = 0
-    master_list_stats['TOTAL_BOOKS_IN_MASTER'] = 0
-    master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = 0
-    save_master_books_settings()
-    print ("Master book settings have been zeroed out. Makes sure the excel files contains no books.")
-
+    
 ######################## CLASSES ########################
 
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
-# read in dataframe for master file
-dataframe = read_excel_file_into_pandas()
-stats = calculate_stats_excel(dataframe)
-
 
 class FantasyBook():
     ''' 
@@ -682,7 +778,7 @@ class FantasyBook():
             table_name = 'BookAge_'+ self.current_language # Ancient, Dwarvish, Elvish, Classical, Common are options
             dice_string = self.book_details_result_from_tables(table_name)
             if self.is_a_translation == True: 
-                self.age_at_discovery = d20.roll(config['TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL']).total # bonus to age if is translation.
+                self.age_at_discovery = d20.roll(TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL).total # bonus to age if is translation.
             
             self.age_at_discovery = self.age_at_discovery + d20.roll(dice_string).total
         else:
@@ -702,8 +798,8 @@ class FantasyBook():
 
     def author_epithet_set (self, author_epithet=None):
         if not author_epithet:
-            if config['CHANCE_OF_EPITHET_IN_AUTHOR_NAME'] > d20.roll("1d100").total:
-                author_epithet = nt['epithets_table'].df.sample() # a random option is then chosen
+            if CHANCE_OF_EPITHET_IN_AUTHOR_NAME > d20.roll("1d100").total:
+                author_epithet = epithets_table.df.sample() # a random option is then chosen
                 author_epithet = author_epithet.iloc[0,0]         
         self.author_epithet = author_epithet            
 
@@ -792,45 +888,45 @@ class FantasyBook():
             self.template = "Final title passed in as: " + book_title
         
         else:
-            if not template: template = nt['titles_template_list_general'].df.sample().iloc[0,0]
+            if not template: template = titles_template_list_general.df.sample().iloc[0,0]
             topic = self.topic_title_form
 
             if "theology" in topic.lower():
                 while ("religious" not in template) and ("biography" not in template):
-                    template = nt['titles_template_list_theology'].df.sample().iloc[0,0]
+                    template = titles_template_list_theology.df.sample().iloc[0,0]
 
             if "history" in topic.lower():
                 while ("history" not in template) and ("biography" not in template):
-                    template = nt['titles_template_list_history'].df.sample().iloc[0,0]
+                    template = titles_template_list_history.df.sample().iloc[0,0]
 
             if ("occult" in topic.lower()) or ("apostasy" in topic.lower()) or ("black lore" in topic.lower()):
                 while ("occult" not in template) and ("negative" not in template) and {"evil" not in template} and ("biography" not in template):
-                    template = nt['titles_template_list_occult'].df.sample().iloc[0,0]
+                    template = titles_template_list_occult.df.sample().iloc[0,0]
             
             # refactor this code eventually into loop with eval()
 
-            if not adjective_1 and "{adjective_1}" in template: adjective_1 = nt['titles_adjective_1_list'].df.sample().iloc[0,0]
-            if not noun_1 and "{noun_1}" in template: noun_1 = nt['titles_noun_1_list'].df.sample().iloc[0,0]
-            if not noun_2 and "{noun_2}" in template: noun_2 = nt['titles_noun_2_list'].df.sample().iloc[0,0]
-            if not study_of and "{study_of}" in template: study_of = nt['titles_study_of_list'].df.sample().iloc[0,0]
-            if not study_in and "{study_in}" in template: study_in = nt['titles_study_in_list'].df.sample().iloc[0,0]
-            if not study_on and "{study_on}" in template: study_on = nt['titles_study_on_list'].df.sample().iloc[0,0]
-            if not conjunction_about and "{conjunction_about}" in template: conjunction_about = nt['titles_conjunction_about'].df.sample().iloc[0,0]
-            if not conjunction_by and "{conjunction_by}" in template: conjunction_by = nt['titles_conjunction_by'].df.sample().iloc[0,0]
-            if not negative_1 and "{negative_1}" in template: negative_1 = nt['titles_negative_subject'].df.sample().iloc[0,0]
-            if not place_city and "{place_city}" in template: place_city = nt['titles_places_cities'].df.sample().iloc[0,0]
-            if not place_nation and "{place_nation}" in template: place_nation = nt['titles_places_nations'].df.sample().iloc[0,0]
-            if not religious_starter and "{religious_starter}" in template: religious_starter = nt['titles_religious_starter'].df.sample().iloc[0,0]
-            if not verbing and "{verbing}" in template: verbing = nt['titles_study_verbing'].df.sample().iloc[0,0]
-            if not saint and "{saint}" in template: saint = nt['titles_saints_amalgamated'].df.sample().iloc[0,0]
-            if not person_famous and "{person_famous}" in template: person_famous = nt['titles_person_famous_amalgamated'].df.sample().iloc[0,0]
-            if not communication and "{communication}" in template: communication = nt['titles_communication'].df.sample().iloc[0,0]
-            if not biography_starter and "{biography_starter}" in template: biography_starter = nt['titles_biography_starter'].df.sample().iloc[0,0]
-            if not person_evil and "{person_evil}" in template: person_evil = nt['titles_person_evil'].df.sample().iloc[0,0]
+            if not adjective_1 and "{adjective_1}" in template: adjective_1 = titles_adjective_1_list.df.sample().iloc[0,0]
+            if not noun_1 and "{noun_1}" in template: noun_1 = titles_noun_1_list.df.sample().iloc[0,0]
+            if not noun_2 and "{noun_2}" in template: noun_2 = titles_noun_2_list.df.sample().iloc[0,0]
+            if not study_of and "{study_of}" in template: study_of = titles_study_of_list.df.sample().iloc[0,0]
+            if not study_in and "{study_in}" in template: study_in = titles_study_in_list.df.sample().iloc[0,0]
+            if not study_on and "{study_on}" in template: study_on = titles_study_on_list.df.sample().iloc[0,0]
+            if not conjunction_about and "{conjunction_about}" in template: conjunction_about = titles_conjunction_about.df.sample().iloc[0,0]
+            if not conjunction_by and "{conjunction_by}" in template: conjunction_by = titles_conjunction_by.df.sample().iloc[0,0]
+            if not negative_1 and "{negative_1}" in template: negative_1 = titles_negative_subject.df.sample().iloc[0,0]
+            if not place_city and "{place_city}" in template: place_city = titles_places_cities.df.sample().iloc[0,0]
+            if not place_nation and "{place_nation}" in template: place_nation = titles_places_nations.df.sample().iloc[0,0]
+            if not religious_starter and "{religious_starter}" in template: religious_starter = titles_religious_starter.df.sample().iloc[0,0]
+            if not verbing and "{verbing}" in template: verbing = titles_study_verbing.df.sample().iloc[0,0]
+            if not saint and "{saint}" in template: saint = titles_saints_amalgamated.df.sample().iloc[0,0]
+            if not person_famous and "{person_famous}" in template: person_famous = titles_person_famous_amalgamated.df.sample().iloc[0,0]
+            if not communication and "{communication}" in template: communication = titles_communication.df.sample().iloc[0,0]
+            if not biography_starter and "{biography_starter}" in template: biography_starter = titles_biography_starter.df.sample().iloc[0,0]
+            if not person_evil and "{person_evil}" in template: person_evil = titles_person_evil.df.sample().iloc[0,0]
             if not person_1 and "{person_1}" in template: person_1, _ , _ = self.name_generate() # 2nd,3rd are nation, sex which we don't need
             if not person_2 and "{person_2}" in template: person_2, _, _ = self.name_generate()
-            if not history_of and "{history_of}" in template: history_of = nt['titles_history_of'].df.sample().iloc[0,0]
-            if not the_1 and "{the_1}" in template: the_1 = nt['titles_the_1'].df.sample().iloc[0,0]
+            if not history_of and "{history_of}" in template: history_of = titles_history_of.df.sample().iloc[0,0]
+            if not the_1 and "{the_1}" in template: the_1 = titles_the_1.df.sample().iloc[0,0]
             
             self.template = template
 
@@ -862,11 +958,8 @@ class FantasyBook():
 
     def complexity_set(self,complexity=None):
         if not complexity:
-            complexity_from_table = self.book_details_result_from_tables(config['complexity_table_list'][self.scope-1]) # Minus 1 since list index starts at zero.
+            complexity_from_table = self.book_details_result_from_tables(complexity_table_list[self.scope-1]) # Minus 1 since list index starts at zero.
             if complexity_from_table >= 1: complexity_from_table = int(complexity_from_table) # doesn't integerize 0.75
-            if complexity_from_table - self.scope > 4:
-                complexity_from_table = 5-self.scope
-
             self.complexity = complexity_from_table
         
         else:
@@ -891,7 +984,7 @@ class FantasyBook():
                 self.scope_esoteric = self.book_details_result_from_tables('BookScope')
                 
                 # esoteric complexity
-                esoteric_complexity_from_table = self.book_details_result_from_tables(config['complexity_table_list'][int(self.scope_esoteric)-1])
+                esoteric_complexity_from_table = self.book_details_result_from_tables(complexity_table_list[int(self.scope_esoteric)-1])
                 if esoteric_complexity_from_table >= 1: esoteric_complexity_from_table = int(esoteric_complexity_from_table)      
                 self.complexity_esoteric = esoteric_complexity_from_table
 
@@ -941,13 +1034,13 @@ class FantasyBook():
         if not book_title_flavor:
 
             # Limit number chars (like Akkadian, gothic_latin)
-            if  self.current_language in config['lang_limit_40_chars']:
+            if  self.current_language in lang_limit_40_chars:
                 limit_chars = 40 # These require only 40 chars or weird stuff happens. ? Unicode issue
             else:
                 limit_chars = 0 # all the rest no limit
 
             # no spaces between:
-            if self.current_language in config['lang_no_spaces']:
+            if self.current_language in lang_no_spaces:
                 spaces = False # No spaces between works; Kanji looks better, for example.
             else:
                 spaces = True # all the rest have spaces
@@ -958,8 +1051,8 @@ class FantasyBook():
                 try:
                     
                     num_words_in_english_title = len(self.book_title.split())
-                    num_words_in_flavor_title = eval(config['DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE'])
-                    if num_words_in_flavor_title <3: num_words_in_flavor_title = eval(config['DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS'])
+                    num_words_in_flavor_title = eval(DEFAULT_FORMULA_CALC_NUM_FLAV_TEXT_WORDS_FROM_ORIG_TITLE)
+                    if num_words_in_flavor_title <3: num_words_in_flavor_title = eval(DEFAULT_FLAVOR_TEXT_NUMBER_OF_WORDS)
 
                     book_title_flavor = str(
                         lf.words(vocab_dictionary[self.current_language],
@@ -975,11 +1068,7 @@ class FantasyBook():
         self.book_title_flavor = book_title_flavor
 
     def literary_value_set (self):
-        if self.scope >= 1:
-            target_table = 'BookLiteraryValueScope' + str(self.scope)
-        else:
-            target_table = 'BookLiteraryValueScope' + str('1')
-
+        target_table = 'BookLiteraryValueScope' + str(self.scope)
         self.literary_value_base = self.look_up_table(
             table_name=target_table,
             search_column='Complexity',
@@ -1007,17 +1096,17 @@ class FantasyBook():
     def name_generate(self,sex=None):
         # first name
         if sex == None:
-            if d20.roll("1d100").total <  config['CHANCE_OF_FEMALE_AUTHOR']: 
+            if d20.roll("1d100").total <  CHANCE_OF_FEMALE_AUTHOR: 
                 sex = "Female"
             else: 
                 sex = "Male"
 
-        if sex == "Male": first_name = nt['complete_table_male_names'].df.sample()
-        else: first_name = nt['complete_table_female_names'].df.sample()
+        if sex == "Male": first_name = complete_table_male_names.df.sample()
+        else: first_name = complete_table_female_names.df.sample()
         author_nationality = (first_name.iloc[0,1]) # the second column (i.e. index 1 since starts at 0) is the table for this type of name's surname.
                 
         # surname
-        last_name_table = (nt['surnames_tables'][author_nationality])
+        last_name_table = (surnames_tables[author_nationality])
         last_name = last_name_table.df.sample()
         author_name = str(first_name.iloc[0,0]) + " " + str(last_name.iloc[0,0]) # first (0 index) item is the name
 
@@ -1053,14 +1142,14 @@ class FantasyBook():
     def percentage_of_text_missing_set(self,fraction_complete=None):
         
         if not fraction_complete:
-            if config['CHANCE_OF_INCOMPLETE_WORK'] >= d20.roll("1d100").total:
+            if CHANCE_OF_INCOMPLETE_WORK >= d20.roll("1d100").total:
                 fraction_missing = round(d20.roll("1d99").total/100,2)
             else:
                 fraction_missing = 0
             fraction_complete = 1 - fraction_missing
          
-        self.scope = ceil(self.scope * 2.0 * fraction_complete) / 2.0 # the x2, then div 2 rounds to nearest 0.5
-        if self.scope < 1: self.scope = 1
+        self.scope = round(self.scope * 2.0 * fraction_complete) / 2.0 # the x2, then div 2 rounds to nearest 0.5
+        if self.scope == 0: self.scope = 0.5
 
         self.reading_time = round(self.reading_time * 2.0 * fraction_complete) / 2.0
         self.reference_time = round(self.reference_time * 2.0 * fraction_complete) / 2.0
@@ -1072,12 +1161,12 @@ class FantasyBook():
         self.fraction_complete = round(fraction_complete,2)
     
     def person_title_generate (self,sex="Male"):
-        
+        global author_title_table
         author_title = ''
 
-        if config['CHANCE_OF_TITLE_IN_AUTHOR_NAME'] >= d20.roll("1d100").total:
+        if CHANCE_OF_TITLE_IN_AUTHOR_NAME >= d20.roll("1d100").total:
 
-            author_title = str(nt['author_title_table'].df.sample().iloc[0,0])
+            author_title = str(author_title_table.df.sample().iloc[0,0])
            
         #  # male/female titles are separated by a slash in the SQL database  
             if author_title.__contains__("/"):
@@ -1127,12 +1216,12 @@ class FantasyBook():
     def reading_time_set(self,reading_time = None):
 
         if reading_time:
-            self.number_pages = config['READING_PAGES_PER_HOUR'] * reading_time
+            self.number_pages = READING_PAGES_PER_HOUR * reading_time
             self.reading_time = reading_time
             self.reference_time = reading_time
 
         else:
-            self.reading_time = ceil(self.number_pages/config['READING_PAGES_PER_HOUR'])
+            self.reading_time = ceil(self.number_pages/READING_PAGES_PER_HOUR)
             self.reference_time = self.reading_time
 
     def refresh_number_pages(self):
@@ -1155,7 +1244,7 @@ class FantasyBook():
     
     def sex_set (self, author_sex=None):
         if not author_sex:
-            if d20.roll("1d100").total <= config['CHANCE_OF_FEMALE_AUTHOR']: self.author_sex = "Female"
+            if d20.roll("1d100").total <= CHANCE_OF_FEMALE_AUTHOR: self.author_sex = "Female"
             else: self.author_sex = "Male"
         else:
             self.author_sex = author_sex
@@ -1197,7 +1286,7 @@ class FantasyBook():
         self.is_a_translation = False
         self.translator_full_name = translator_full_name
 
-        if (translator_name or translator_full_name) and (self.current_language not in config['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO']):
+        if (translator_name or translator_full_name) and (self.current_language not in ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO):
             self.is_a_translation = True
             self.translator_nationality = translator_nationality
             self.translator_title = translator_title
@@ -1209,7 +1298,7 @@ class FantasyBook():
             else:
                 self.translator_full_name = self.translator_title + " " + self.translator_name
 
-        elif (roll_to_see_if_it_is_a_translation < config['CHANCE_OF_BEING_TRANSLATION']) and (self.current_language not in config['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO']):
+        elif (roll_to_see_if_it_is_a_translation < CHANCE_OF_BEING_TRANSLATION) and (self.current_language not in ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO):
             self.is_a_translation = True
             self.translator_name, self.translator_nationality, self.translator_sex = self.name_generate()
             self.translator_title = self.person_title_generate(sex = self.translator_sex)
@@ -1227,12 +1316,12 @@ class FantasyBook():
             self.number_volumes = number_volumes
 
             if self.format == "Codex":
-                self.number_pages = ceil (self.number_volumes * config['PAGES_PER_VOLUME_FOR_CODEX'])
-                self.weight = ceil ((self.number_pages * self.weight_per_page) + (self.number_volumes * config['WEIGHT_PER_VOLUME_OF_CODEX']))
+                self.number_pages = ceil (self.number_volumes * PAGES_PER_VOLUME_FOR_CODEX)
+                self.weight = ceil ((self.number_pages * self.weight_per_page) + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX))
             
             elif self.format == "Scroll":
-                self.number_pages = ceil (self.number_volumes * config['PAGES_PER_VOLUME_FOR_SCROLL'])
-                self.weight = ceil((self.number_pages * self.weight_per_page) + (self.number_volumes * config['WEIGHT_PER_VOLUME_OF_SCROLL']))
+                self.number_pages = ceil (self.number_volumes * PAGES_PER_VOLUME_FOR_SCROLL)
+                self.weight = ceil((self.number_pages * self.weight_per_page) + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL))
 
             elif self.format == "Tablet":
                 self.number_volumes = 1 # ie, never multivolume
@@ -1245,12 +1334,12 @@ class FantasyBook():
         else:
 
             if self.format == "Codex":
-                self.number_volumes = ceil(self.number_pages/config['PAGES_PER_VOLUME_FOR_CODEX'])
-                self.weight = self.weight + (self.number_volumes * config['WEIGHT_PER_VOLUME_OF_CODEX'])
+                self.number_volumes = ceil(self.number_pages/PAGES_PER_VOLUME_FOR_CODEX)
+                self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_CODEX)
             
             elif self.format == "Scroll":
-                self.number_volumes = ceil(self.number_pages/config['PAGES_PER_VOLUME_FOR_SCROLL'])
-                self.weight = self.weight + (self.number_volumes * config['WEIGHT_PER_VOLUME_OF_SCROLL'])
+                self.number_volumes = ceil(self.number_pages/PAGES_PER_VOLUME_FOR_SCROLL)
+                self.weight = self.weight + (self.number_volumes * WEIGHT_PER_VOLUME_OF_SCROLL)
             
             elif self.format == "Tablet":
                 self.number_volumes = 1 # ie, never multivolume
@@ -1278,20 +1367,14 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-# books, books_value = book_hoard (value=10000,overshoot=True)
+# books, books_value = book_hoard (value=15000,overshoot=True)
+books, books_value = book_batch(number = 2)
 
-
-books, books_value = book_batch(number = 50)
 export_books_to_excel(books)
 
-print ('TOTAL: ' + str(books_value))
-print ('Number of books: ' + str (len(books)) + " Done!")
+# print ('TOTAL: ' + str(books_value))
+# print ('Number of books: ' + str (len(books)) + " Done!")
 
 archive_to_master()
 
-gls = read_excel_file_into_pandas()
-gls2 = calculate_stats_excel(gls)
-update_master_books_array(gls2)
-# zero_out_master_books_file()
-
-save_master_books_settings() # save data for next time.
+# the_book = pick_existing_book()
