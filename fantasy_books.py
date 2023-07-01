@@ -1286,17 +1286,18 @@ class MagicBook(FantasyBook):
 # books, books_value = book_hoard (value=10000,overshoot=True)
 
 
-books, books_value = book_batch(number = 10000)
-export_books_to_excel(books)
+# books, books_value = book_batch(number = 100)
+# export_books_to_excel(books)
 
-print ('TOTAL: ' + str(books_value))
-print ('Number of books: ' + str (len(books)) + " Done!")
+# print ('TOTAL: ' + str(books_value))
+# print ('Number of books: ' + str (len(books)) + " Done!")
 
-archive_to_master()
+# archive_to_master()
 
-gls = read_excel_file_into_pandas()
-gls2 = calculate_stats_excel(gls)
-update_master_books_array(gls2)
-# zero_out_master_books_file()
+# gls = read_excel_file_into_pandas()
+# gls2 = calculate_stats_excel(gls)
+# update_master_books_array(gls2)
 
+zero_out_master_books_file()
 save_master_books_settings() # save data for next time.
+
