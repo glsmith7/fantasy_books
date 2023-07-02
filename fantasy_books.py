@@ -1298,6 +1298,6 @@ class MagicBook(FantasyBook):
 # gls2 = calculate_stats_excel(gls)
 # update_master_books_array(gls2)
 
-zero_out_master_books_file()
+# zero_out_master_books_file()
 save_master_books_settings() # save data for next time.
 
