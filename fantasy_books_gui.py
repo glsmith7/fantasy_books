@@ -89,8 +89,19 @@ def fantasy_books_main_gui():
             sg.Text('Generate books by value ⟶', 
                     enable_events=True, 
                     k='-T1-',
-                    expand_x = True
+                    
                     ),
+            
+            sg.Input(
+                    key = "-value_of_books_to_make-",
+                    default_text = 0,
+                    size = (15, 1),
+                    
+            ),
+
+            sg.Text('gp total',
+                    expand_x=True,
+                    ), 
 
             sg.Text('Allow last book to exceed budget:',
                     ), 
@@ -118,7 +129,18 @@ def fantasy_books_main_gui():
                     enable_events=True, 
                     k='-T2-',
                     tooltip = ' A given number of books will be generated. ',
-                    expand_x = True,)
+                    ),
+            
+            sg.Input(
+                    key = "-number_of_books_to_make-",
+                    default_text = 0,
+                    size = (13, 1),
+                    
+            ),
+
+            sg.Text('books',
+                    expand_x=True,
+                    ), 
             ],
 
             # Final buttons
@@ -162,6 +184,8 @@ while True:
 
         sg.user_settings_set_entry('-overshoot_toggle_status', values['-MASTER_WORKSHEET-'])
         sg.user_settings_set_entry('-overshoot_status-', window['Overshoot'].get_text())
+        print (values)
+
         break
     
     elif event in radio_keys:
