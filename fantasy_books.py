@@ -12,6 +12,7 @@ import PySimpleGUI as sg
 import os
 import random as random
 import rpg_tables as r
+import shutil
 import string as string
 import sys
 import uuid
@@ -86,7 +87,7 @@ for i in config['list_of_surnames_tables']:
 
 ######################## FUNCTIONS ########################
 
-def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoard",destination="master_fantasy_book_list.xlsx",destination_worksheet = "Master List"):
+def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "Book Hoard",destination="master_fantasy_book_list.xlsx",destination_worksheet = "Master List"):
     '''
     Places books in an excel spreadsheet into the master_book_list. This is all books that exist in a campaign, and is used to produce additional copies (if they are extant) of already-described books. This happens at the appropriate frequency for the total number of books in the game world.
 
@@ -103,24 +104,34 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
     except:
         raise FileNotFoundError ("Could not load the source file: " + source + ".")
 
-    if worksheet in wb_source_books.sheetnames: 
-        ws_source_books = wb_source_books[worksheet]
+    if source_worksheet in wb_source_books.sheetnames: 
+        ws_source_books = wb_source_books[source_worksheet]
     else:
-        raise FileNotFoundError ("Could not find the worksheet: " + worksheet + " even though file " + source + " was successfully loaded.")
+        raise FileNotFoundError ("Could not find the worksheet: " + source_worksheet + " even though file " + source + " was successfully loaded.")
     
     # load destination
 
     try:
         wb_dest = load_workbook(filename= destination)
     except:
-        raise FileNotFoundError ("Could not load the destination file: " + destination + ".")
-    
+        create_new_master_excel_file(filename=destination, worksheet = destination_worksheet)
+    wb_dest = load_workbook(filename= destination)
+
     if destination_worksheet in wb_dest.sheetnames: 
         ws_dest = wb_dest[destination_worksheet]
-
     else:
-        raise FileNotFoundError ("Could not find the worksheet: " + destination_worksheet + " even though file " + destination + " was successfully loaded.")
+        ws_dest = wb_dest.create_sheet(title=destination_worksheet)
+        book_columns,current_language_index, flavor_title_index = book_characteristics(books)
+
+        # column headers to new sheet
+        the_counter = 0
+        for item in book_columns:
+            the_counter += 1
+            ws_dest.cell(row=1,column=the_counter,value=item)
+            ws_dest.cell(row=1,column=the_counter).font = openpyxl_font(bold='bold',size=9)
     
+            print ("Done column labels.")
+
     # Make sure can save
 
     try_to_save = True
@@ -138,7 +149,8 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
                 break
         else:
             try_to_save = False # ie succeeded
-    
+    ######
+
     row_dest = ws_dest.max_row + 1
     the_count = 0
 
@@ -167,7 +179,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", worksheet = "Book Hoa
         
         row_dest += 1
 
-    print ("\n Finished transfer to master.")
+    print ("\n Finished transfer to master file " + str (destination) + " in worksheet " + str (destination_worksheet) + ".")
     wb_source_books.save(source)
     wb_dest.save(destination)
     
@@ -227,15 +239,15 @@ def book_batch (number=1, **kwargs):
     print ('') # get off the same line
     return books, running_total
 
-def book_hoard (value=0,overshoot=True, **kwargs):
+def book_hoard (value_of_books=0,overshoot=True, **kwargs):
     ''' 
     produces a list of books worth the passed value. If overshoot is False, keeps total worth equal to or under value. If overshoot is true, then will produce a list that is _at least_ the passed value.
 
     Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
-    def update_user_facing_stats(the_count, running_total,value):
+    def update_user_facing_stats(the_count, running_total,value_of_books):
         print (" " * 80,end='\r') # blank the line
-        print("Generating Book #" + str(the_count) + " --> " + str(running_total) + " gp/" + str (value) + " (" + str((int(100*running_total/value))) + "%)", end ='\r')
+        print("Generating Book #" + str(the_count) + " --> " + str(running_total) + " gp/" + str (value_of_books) + " (" + str((int(100*running_total/value_of_books))) + "%)", end ='\r')
 
     books = {}
 
@@ -244,7 +256,7 @@ def book_hoard (value=0,overshoot=True, **kwargs):
         running_total = 0
         the_count = 0
 
-        while running_total < value:
+        while running_total < value_of_books:
             the_count += 1
             if check_if_should_place_existing_title():
                 books[the_count] = pick_existing_book()
@@ -253,26 +265,28 @@ def book_hoard (value=0,overshoot=True, **kwargs):
                 books[the_count] = create_fantasy_book(**kwargs)
 
             running_total += books[the_count].market_value
-            update_user_facing_stats(the_count, running_total,value)
+            update_user_facing_stats(the_count, running_total,value_of_books)
 
         if overshoot: 
             pass    
         else:
             running_total -= books[len(books)].market_value # subtract last value that put us over the top
             books.popitem() # delete last book which put over the top
-            update_user_facing_stats(the_count, running_total,value)
+            update_user_facing_stats(the_count, running_total,value_of_books)
 
         if books == {}:
             print ("\nZero books made in hoard; retrying ....") # need better error checking to avoid endless loop if value too low.
     print ('') # get off the same line
     return books, running_total
 
-def calculate_stats_excel (excel_file_pandas):
+def calculate_stats_excel (excel_file_pandas, filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
     col_list = ['market_value','number_extant_copies','number_extant_available_to_place']
     total={}
     total["rows"] = len(excel_file_pandas.index)
     for column in col_list:
         total[column] = int (excel_file_pandas[column].sum())
+    total['filename'] = filename
+    total['worksheet'] = worksheet
     return (total)
 
 def check_radio(key): # GUI function
@@ -305,6 +319,15 @@ def create_fantasy_book(book_type=None, **kwargs):
     ''' Returns a book object. Type can be default (normal), esoteric, authority, or magic'''
     book_type = string.capwords(str(book_type))
     return FantasyBook(**kwargs)
+
+def create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+    file_source = 'blank_excel_files_templates\master_fantasy_book_list_BLANK.xlsx'
+    file_destination = filename
+    if file_destination[-5:] != ".xlsx":
+        file_destination = file_destination + ".xlsx"
+
+    shutil.copyfile(file_source, file_destination)
+
 
 def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksheet = 'Book Hoard'):
     
@@ -497,9 +520,10 @@ def fantasy_books_main_gui():
             ],
 
             # Final buttons
-            [sg.Button('Ok', 
+            [sg.Button('Generate Books', 
                        bind_return_key=True,
-                       ),  
+                       ),
+            sg.Button("Save settings"),  
             sg.Button('Cancel'),
             sg.Button('Reset to defaults'),
             ]
@@ -644,9 +668,9 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     finally:
              pass
     
-    dataframe = read_excel_file_into_pandas(filename = filename, worksheet=worksheet)
+    dataframe = read_excel_file_into_pandas() # (filename = filename, worksheet=worksheet)
     book = create_fantasy_book(**book_to_be)
-    stats = calculate_stats_excel(dataframe)
+    stats = calculate_stats_excel(dataframe) # filename = filename, worksheet=worksheet)
     update_master_books_array(stats)
     # save_master_books_settings()
     print ("\nPicked preexisting book.")
@@ -696,6 +720,8 @@ def update_master_books_array(the_array):
     master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['market_value']
     master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['number_extant_copies']
     master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['number_extant_available_to_place']
+    # master_list_stats['MASTER_FILENAME'] = the_array['filename'] 
+    # master_list_stats['MASTER_WORKSHEET'] = the_array['worksheet'] 
 
 def zero_out_master_books_file():
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = 0
@@ -709,6 +735,7 @@ def zero_out_master_books_file():
 
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
 # read in dataframe for master file
+
 dataframe = read_excel_file_into_pandas()
 stats = calculate_stats_excel(dataframe)
 
@@ -1492,20 +1519,65 @@ while True:
             
             overshoot_toggle = overshoot_event(overshoot_toggle = overshoot_toggle)
             
-    elif event == 'Ok':
+    elif event == 'Save settings':
         save_gui_settings()
-
-        print ("Actually do the work here.")
-
         break
+    
+    elif event == 'Generate Books':
+        save_gui_settings()
+        #
+
+        # NEED code to check if stuff is integers
+
+        excel_filename = values['-EXCEL_OUT_FILENAME-']
+        excel_worksheet = values['-EXCEL_OUT_WORKSHEET-']
+        master_filename = values['-MASTER_FILENAME-']
+        master_worksheet = values['-MASTER_WORKSHEET-']
+        value_of_books = int(values['-value_of_books_to_make-'])
+        number_of_books = int(values['-number_of_books_to_make-'])
+
+        if window['-R1-'].metadata:
+            books, books_value = book_hoard (
+                value_of_books=value_of_books,
+                overshoot=overshoot_toggle, 
+                )
+            
+        else:
+            books, books_value = book_batch(
+                number = number_of_books,
+                )
+        
+        export_books_to_excel(
+            books,
+            filename = excel_filename, 
+            worksheet = excel_worksheet)
+
+        print ('TOTAL: ' + str(books_value))
+        print ('Number of books: ' + str (len(books)) + " Done!")
+
+        archive_to_master(
+            source=excel_filename, 
+            source_worksheet = excel_worksheet,
+            destination=master_filename,
+            destination_worksheet = master_worksheet,
+            )
+
+        master_as_pandas = read_excel_file_into_pandas(
+            filename = master_filename,
+            worksheet = master_worksheet,
+            )
+        
+        master_as_stats = calculate_stats_excel(master_as_pandas, filename = master_filename, worksheet = master_worksheet)
+        update_master_books_array(master_as_stats)
+        save_master_books_settings() # save data for next time.
     
     elif event == "Reset to defaults":
         window['-EXCEL_OUT_FILENAME-'].update(value="books_spreadsheet_out.xlsx")
         window['-EXCEL_OUT_WORKSHEET-'].update(value="Book Hoard")
         window['-MASTER_FILENAME-'].update(value="master_fantasy_book_list.xlsx")
         window['-MASTER_WORKSHEET-'].update(value="Master List")
-        window['-value_of_books_to_make-'].update(value = "")
-        window['-number_of_books_to_make-'].update(value = "")
+        window['-value_of_books_to_make-'].update(value = 0)
+        window['-number_of_books_to_make-'].update(value = 0)
         window['-R1-'].update(radio_checked_icon)
         window['-R1-'].metadata = True
         window['-R2-'].update(radio_unchecked_icon)
@@ -1539,20 +1611,7 @@ while True:
 
 window.close()
 
-# books, books_value = book_hoard (value=10000,overshoot=True)
 
-
-# # books, books_value = book_batch(number = 100)
-# export_books_to_excel(books)
-
-# print ('TOTAL: ' + str(books_value))
-# print ('Number of books: ' + str (len(books)) + " Done!")
-
-# archive_to_master()
-
-# gls = read_excel_file_into_pandas()
-# gls2 = calculate_stats_excel(gls)
-# update_master_books_array(gls2)
 
 # # zero_out_master_books_file()
-# save_master_books_settings() # save data for next time.
+
