@@ -139,10 +139,9 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
         try:
             wb_dest.save(destination) 
         except:
-            print ("You've probably got the Excel file " + destination + " open; can't save.")
-            user_response = input ("(T)ry again or (Q)uit? ")
+            user_response = sg.popup_ok_cancel ("The Excel file " + destination + " is probably open. \n\n Close the file, and click OK to try again.\n\nTo quit without saving, click CANCEL.")
             
-            if user_response == "Q" or user_response == "q":
+            if user_response == "Cancel":
                 try_to_save = False
                 print ("Quitting without saving to Excel.")
                 sys.exit()
@@ -370,10 +369,9 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
         try:
             wb.save(filename) 
         except:
-            print ("You've probably got the Excel file " + filename + " open; can't save until closed.")
-            user_response = input ("(T)ry again or (Q)uit? ")
+            user_response = sg.popup_ok_cancel ("The Excel file " + filename + " is probably open. \n\n Close the file, and click OK to try again.\n\nTo quit without saving, click CANCEL.")
             
-            if user_response == "Q" or user_response == "q":
+            if user_response == "Cancel":
                 try_to_save = False
                 print ("Quitting without saving to Excel.")
                 sys.exit()
@@ -1514,9 +1512,11 @@ window = sg.Window(
     finalize = True
     )
 
+# turn off tabbing to all elements
 for element in window.key_dict.values():
         element.block_focus()
 
+# retore tabbing
 window['-number_of_books_to_make-'].block_focus(block=False)
 window['-value_of_books_to_make-'].block_focus(block=False)
 ########## Main Event Loop of GUI
@@ -1635,8 +1635,6 @@ while True:
         window['-MASTER_WORKSHEET-'].update(values=[], value='')
 
 window.close()
-
-
 
 # # zero_out_master_books_file()
 
