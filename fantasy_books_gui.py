@@ -3,10 +3,12 @@
 import PySimpleGUI as sg
 import icons as i
 
+global overshoot_toggle
+
 #########Graphics###############
 
-radio_unchecked = i.radio_unchecked() 
-radio_checked = i.radio_checked()
+radio_unchecked_icon = i.radio_unchecked() 
+radio_checked_icon = i.radio_checked()
 books_icon = i. books_icon()
 
 ########################################################################################
@@ -17,9 +19,9 @@ def check_radio(key):
     radio_keys = ('-R1-', '-R2-')
     
     for k in radio_keys:
-        window[k].update(radio_unchecked)
+        window[k].update(radio_unchecked_icon)
         window[k].metadata = False
-    window[key].update(radio_checked)
+    window[key].update(radio_checked_icon)
     window[key].metadata = True
 
 def radio_is_checked(key):
@@ -78,10 +80,10 @@ def fantasy_books_main_gui():
             ],
 
             # line 3 ##################################################################
-            [sg.Image(radio_checked,
+            [sg.Image(radio_checked_icon if sg.user_settings_get_entry('-R1_status-') else radio_unchecked_icon,
                       enable_events=True, 
                       k='-R1-', 
-                      metadata=True,
+                      metadata=sg.user_settings_get_entry('-R1_status-'),
                       tooltip = ' A book collection of a given value will be generated. '
                       ),
             
@@ -93,7 +95,7 @@ def fantasy_books_main_gui():
             
             sg.Input(
                     key = "-value_of_books_to_make-",
-                    default_text = 0,
+                    default_text = sg.user_settings_get_entry('-books_value-'),
                     size = (15, 1),
                     
             ),
@@ -107,8 +109,8 @@ def fantasy_books_main_gui():
 
             sg.Button (
                     key='Overshoot', 
-                    button_text='Yes' if sg.user_settings_get_entry('-overshoot_status-') == 'Yes' else 'No', 
-                    button_color='white on green' if sg.user_settings_get_entry('-overshoot_status-') == 'Yes' else 'white on red', 
+                    button_text='Yes' if sg.user_settings_get_entry('-overshoot_status-') else 'No', 
+                    button_color='white on green' if sg.user_settings_get_entry('-overshoot_status-') else 'white on red',
                     size=(4, 1), 
                     tooltip=' If YES, the last book allowed to bring the hoard total to more than requested. If NO, the last book will not be included, and the hoard total value will thus be less than requested amount. ',
                     ),
@@ -118,10 +120,10 @@ def fantasy_books_main_gui():
 
             # line 4 ###################################################################
 
-            [sg.Image(radio_unchecked,
+            [sg.Image(radio_checked_icon if sg.user_settings_get_entry('-R2_status-') else radio_unchecked_icon,
                       enable_events=True, 
                       k='-R2-', 
-                      metadata=True,
+                      metadata=sg.user_settings_get_entry('-R2_status-'),
                       tooltip = ' A given number of books will be generated. '),
 
             sg.Text('Generate books by number ⟶', 
@@ -132,7 +134,7 @@ def fantasy_books_main_gui():
             
             sg.Input(
                     key = "-number_of_books_to_make-",
-                    default_text = 0,
+                    default_text = sg.user_settings_get_entry('-books_number-'),
                     size = (13, 1),
                     
             ),
@@ -146,12 +148,12 @@ def fantasy_books_main_gui():
             [sg.Button('Ok', 
                        bind_return_key=True,
                        ),  
-            sg.Button('Cancel')
+            sg.Button('Cancel'),
+            sg.Button('Reset to defaults'),
             ]
             ]
     
     return layout
-
 
 window = sg.Window(
      'Fantasy Books Generator', 
@@ -159,16 +161,16 @@ window = sg.Window(
      grab_anywhere = True,
      resizable = False,
      icon = books_icon,
+     finalize = True
      )
 
-### Set window based on saved statuses
+# overshoot_toggle
 
-if sg.user_settings_get_entry('-overshoot_status-') == 'Yes':
-     overshoot_toggle = True 
-else:
-     overshoot_toggle = False
+overshoot_toggle = sg.user_settings_get_entry('-overshoot_status-')
 
+# radio buttons
 radio_keys = ('-R1-', '-R2-')
+
 ########## Main Event Loop of GUI
 
 while True:
@@ -176,35 +178,61 @@ while True:
 
     if event in (sg.WIN_CLOSED, 'Cancel'):
         break
-    if event == 'Ok':
-        # Save combo boxes and contents
-        sg.user_settings_set_entry('-default_out_filenames-', list(set(sg.user_settings_get_entry('-default_out_filenames-', []) + [values['-EXCEL_OUT_FILENAME-'], ])))
-        sg.user_settings_set_entry('-last_default_out_filename-', values['-EXCEL_OUT_FILENAME-'])
-        sg.user_settings_set_entry('-default_out_worksheets-', list(set(sg.user_settings_get_entry('-default_out_worksheets-', []) + [values['-EXCEL_OUT_WORKSHEET-'], ])))
-        sg.user_settings_set_entry('-last_default_out_worksheet-', values['-EXCEL_OUT_WORKSHEET-'])
-        sg.user_settings_set_entry('-default_master_filenames-', list(set(sg.user_settings_get_entry('-default_master_filenames-', []) + [values['-MASTER_FILENAME-'], ])))
-        sg.user_settings_set_entry('-last_default_master_filename-', values['-MASTER_FILENAME-'])
-        sg.user_settings_set_entry('-default_master_worksheets-', list(set(sg.user_settings_get_entry('-default_master_worksheets-', []) + [values['-MASTER_WORKSHEET-'], ])))
-        sg.user_settings_set_entry('-last_default_master_worksheet-', values['-MASTER_WORKSHEET-'])
-
-        sg.user_settings_set_entry('-overshoot_toggle_status', values['-MASTER_WORKSHEET-'])
-        sg.user_settings_set_entry('-overshoot_status-', window['Overshoot'].get_text())
-        print (values)
-
-        break
     
-    elif event in radio_keys:
-            check_radio(event)
-    
-    elif event.startswith('-T'):        # If text element clicked, change it into a radio button key
-        check_radio(event.replace('T', 'R'))
-
     elif event == 'Overshoot':                # if the normal button that changes color and text
+            print ("Overshoot starts: " + str (overshoot_toggle))
             overshoot_toggle = not overshoot_toggle
             window['Overshoot'].update(
                  text='Yes' if overshoot_toggle else 'No', 
                  button_color='white on green' if overshoot_toggle else 'white on red'
                  )
+            print ("OVershoot ends: " + str (overshoot_toggle))
+            
+    elif event == 'Ok':
+        # Save combo boxes and contents - out
+        sg.user_settings_set_entry('-default_out_filenames-', list(set(sg.user_settings_get_entry('-default_out_filenames-', []) + [values['-EXCEL_OUT_FILENAME-'], ])))
+        sg.user_settings_set_entry('-last_default_out_filename-', values['-EXCEL_OUT_FILENAME-'])
+        sg.user_settings_set_entry('-default_out_worksheets-', list(set(sg.user_settings_get_entry('-default_out_worksheets-', []) + [values['-EXCEL_OUT_WORKSHEET-'], ])))
+        sg.user_settings_set_entry('-last_default_out_worksheet-', values['-EXCEL_OUT_WORKSHEET-'])
+
+        # Save combo boxes and contents - master
+        sg.user_settings_set_entry('-default_master_filenames-', list(set(sg.user_settings_get_entry('-default_master_filenames-', []) + [values['-MASTER_FILENAME-'], ])))
+        sg.user_settings_set_entry('-last_default_master_filename-', values['-MASTER_FILENAME-'])
+        sg.user_settings_set_entry('-default_master_worksheets-', list(set(sg.user_settings_get_entry('-default_master_worksheets-', []) + [values['-MASTER_WORKSHEET-'], ])))
+        sg.user_settings_set_entry('-last_default_master_worksheet-', values['-MASTER_WORKSHEET-'])
+
+        # Overshoot status toggle
+        
+        sg.user_settings_set_entry('-overshoot_status-', overshoot_toggle)
+
+
+        sg.user_settings_set_entry('-books_value-', values['-value_of_books_to_make-'])
+        sg.user_settings_set_entry('-books_number-', values['-number_of_books_to_make-'])
+
+        sg.user_settings_set_entry('-R1_status-', window["-R1-"].metadata)
+        sg.user_settings_set_entry('-R2_status-', window["-R2-"].metadata)
+
+        # print (values)
+
+        break
+    
+    elif event == "Reset to defaults":
+         window['-EXCEL_OUT_FILENAME-'].update(value="books_spreadsheet_out.xlsx")
+         window['-EXCEL_OUT_WORKSHEET-'].update(value="Book Hoard")
+         window['-MASTER_FILENAME-'].update(value="master_fantasy_book_list.xlsx")
+         window['-MASTER_WORKSHEET-'].update(value="Master List")
+         window['-value_of_books_to_make-'].update(value = "")
+         window['-number_of_books_to_make-'].update(value = "")
+         window['-R1-'].update(radio_checked_icon)
+         window['-R1-'].metadata = True
+         window['-R2-'].update(radio_unchecked_icon)
+         window['-R2-'].metadata = False
+
+    elif event in radio_keys:
+            check_radio(event)
+    
+    elif event.startswith('-T'):        # If text element clicked, change it into a radio button key
+        check_radio(event.replace('T', 'R'))
 
     elif event == 'Clear_History_Default_Out':
         sg.user_settings_set_entry('-default_out_filenames-', [])
