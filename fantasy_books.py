@@ -1514,6 +1514,11 @@ window = sg.Window(
     finalize = True
     )
 
+for element in window.key_dict.values():
+        element.block_focus()
+
+window['-number_of_books_to_make-'].block_focus(block=False)
+window['-value_of_books_to_make-'].block_focus(block=False)
 ########## Main Event Loop of GUI
 
 while True:
