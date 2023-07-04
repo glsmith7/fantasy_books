@@ -328,7 +328,6 @@ def create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx', wor
 
     shutil.copyfile(file_source, file_destination)
 
-
 def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksheet = 'Book Hoard'):
     
     '''
@@ -438,19 +437,25 @@ def fantasy_books_main_gui():
                     size=(50, 1), 
                     key='-MASTER_FILENAME-',
                     expand_x=True,
+                    disabled=True,
                     ),   
-            sg.FileBrowse(),   
+            sg.FileBrowse(
+                disabled = True,
+            ),   
             sg.Button('Clear History', 
                  key = 'Clear_Master_History',
+                 disabled = True,
                  ),
             sg.Text('Worksheet:'), 
             sg.Combo(sorted(sg.user_settings_get_entry('-default_master_worksheets-', [])), 
                     default_value=sg.user_settings_get_entry('-last_default_master_worksheet-', ''),
                     size=(20, 1), 
                     key='-MASTER_WORKSHEET-',
+                    disabled = True,
                     ), 
             sg.Button('Clear History',  
                  key = 'Clear_History_Master_Worksheet',
+                 disabled = True,
                  )
             ],
 
@@ -472,6 +477,7 @@ def fantasy_books_main_gui():
                     key = "-value_of_books_to_make-",
                     default_text = sg.user_settings_get_entry('-books_value-'),
                     size = (15, 1),
+                    enable_events = True,
                     
             ),
 
@@ -511,6 +517,7 @@ def fantasy_books_main_gui():
                     key = "-number_of_books_to_make-",
                     default_text = sg.user_settings_get_entry('-books_number-'),
                     size = (13, 1),
+                    enable_events = True,
                     
             ),
 
@@ -1511,10 +1518,23 @@ window = sg.Window(
 
 while True:
     event, values = window.read()
-
     if event in (sg.WIN_CLOSED, 'Cancel'):
         break
     
+    elif event == "-value_of_books_to_make-": # only allows integers, does not allow to be blank
+         if len(values['-value_of_books_to_make-']) > 0:
+            if values['-value_of_books_to_make-'][-1] not in ('0123456789'):
+                window['-value_of_books_to_make-'].update(values['-value_of_books_to_make-'][:-1])
+         else:
+             window['-value_of_books_to_make-'].update('0')
+    
+    elif event == "-number_of_books_to_make-": # only allows integers, does not allow to be blank
+         if len(values['-number_of_books_to_make-']) > 0:
+            if values['-number_of_books_to_make-'][-1] not in ('0123456789'):
+                window['-number_of_books_to_make-'].update(values['-number_of_books_to_make-'][:-1])
+         else:
+             window['-number_of_books_to_make-'].update('0')
+
     elif event == 'Overshoot':                # if the normal button that changes color and text
             
             overshoot_toggle = overshoot_event(overshoot_toggle = overshoot_toggle)
