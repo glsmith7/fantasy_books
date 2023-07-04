@@ -292,10 +292,10 @@ def check_radio(key): # GUI function
     radio_keys = ('-R1-', '-R2-')
     
     for k in radio_keys:
-        window[k].update(radio_unchecked_icon)
-        window[k].metadata = False
-    window[key].update(radio_checked_icon)
-    window[key].metadata = True
+        window1[k].update(radio_unchecked_icon)
+        window1[k].metadata = False
+    window1[key].update(radio_checked_icon)
+    window1[key].metadata = True
 
 def check_if_should_place_existing_title(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
     
@@ -627,7 +627,7 @@ def load_excel_objects (filename = 'master_fantasy_book_list.xlsx', worksheet = 
 def overshoot_event(overshoot_toggle): # gui
 
     overshoot_toggle = not overshoot_toggle
-    window['Overshoot'].update(
+    window1['Overshoot'].update(
         text='Yes' if overshoot_toggle else 'No', 
         button_color='white on green' if overshoot_toggle else 'white on red'
         )
@@ -681,8 +681,67 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     print ("\nPicked preexisting book.")
     return book
 
+def progress_window_gui():
+
+    layout = [
+
+            
+            [sg.Push(),
+             sg.Text(
+                text='Generating books:',
+                font = 'Helvetica 12 bold',
+
+                
+                ),  
+             sg.Push(),
+            
+            ],
+            [sg.Push(),
+             sg.Text(
+                key = '-books_count-',
+                text='5',
+                font = 'Helvetica 48',
+                justification='Center'
+                ),  
+            sg.Push(),
+            ],
+            [sg.Push(),
+             sg.Text(
+                text='Value:',
+                font='Helvetica 12',
+                pad = (0,1),
+            ),
+            sg.Text(
+                key = '-gold_pieces-',
+                text=10000,
+                font='Helvetica 12',
+                pad = (0,0),
+            ),
+            sg.Text(
+                text='gp',
+                font='Helvetica 12',
+                pad = (0,1),
+            ),
+            sg.Push(),
+            ],
+            [
+            sg.Push(),
+            sg.ProgressBar(
+                key='-book_generation_progress',
+                style='default',
+                orientation = 'horizontal',
+                # expand_x = True,
+                max_value = 100,
+                
+            ),
+            sg.Push(),
+            ],
+    ]
+
+    return layout
+
 def radio_is_checked(key): # GUI
-        return window[key].metadata
+        return window1[key].metadata
 
 def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',worksheet = 'Master List'):
     excel_file_pandas = pd.read_excel(filename, sheet_name=worksheet, header=0, index_col=None, usecols=None, dtype=None, engine="openpyxl", decimal='.')
@@ -707,8 +766,8 @@ def save_gui_settings():
     sg.user_settings_set_entry('-books_value-', values['-value_of_books_to_make-'])
     sg.user_settings_set_entry('-books_number-', values['-number_of_books_to_make-'])
 
-    sg.user_settings_set_entry('-R1_status-', window["-R1-"].metadata)
-    sg.user_settings_set_entry('-R2_status-', window["-R2-"].metadata)
+    sg.user_settings_set_entry('-R1_status-', window1["-R1-"].metadata)
+    sg.user_settings_set_entry('-R2_status-', window1["-R2-"].metadata)
 
 def save_master_books_settings():
     '''
@@ -1503,7 +1562,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
-window = sg.Window(
+window1 = sg.Window(
     'Fantasy Books Generator', 
     layout = fantasy_books_main_gui(),
     grab_anywhere = True,
@@ -1512,33 +1571,47 @@ window = sg.Window(
     finalize = True
     )
 
+window2 = sg.Window(
+    'Fantasy Books Generator', 
+    layout = progress_window_gui(),
+    grab_anywhere = True,
+    alpha_channel = 0.7,
+    no_titlebar=True,
+    resizable = False,
+    # icon = books_icon,
+    finalize = True
+    )
+
+# window2.hide()
+window2.move(window1.current_location()[0]+500, window1.current_location()[1]+200)
+
 # turn off tabbing to all elements
-for element in window.key_dict.values():
+for element in window1.key_dict.values():
         element.block_focus()
 
 # retore tabbing
-window['-number_of_books_to_make-'].block_focus(block=False)
-window['-value_of_books_to_make-'].block_focus(block=False)
+window1['-number_of_books_to_make-'].block_focus(block=False)
+window1['-value_of_books_to_make-'].block_focus(block=False)
 ########## Main Event Loop of GUI
 
 while True:
-    event, values = window.read()
+    window,event, values = sg.read_all_windows()
     if event in (sg.WIN_CLOSED, 'Cancel'):
         break
     
     elif event == "-value_of_books_to_make-": # only allows integers, does not allow to be blank
          if len(values['-value_of_books_to_make-']) > 0:
             if values['-value_of_books_to_make-'][-1] not in ('0123456789'):
-                window['-value_of_books_to_make-'].update(values['-value_of_books_to_make-'][:-1])
+                window1['-value_of_books_to_make-'].update(values['-value_of_books_to_make-'][:-1])
          else:
-             window['-value_of_books_to_make-'].update('0')
+             window1['-value_of_books_to_make-'].update('0')
     
     elif event == "-number_of_books_to_make-": # only allows integers, does not allow to be blank
          if len(values['-number_of_books_to_make-']) > 0:
             if values['-number_of_books_to_make-'][-1] not in ('0123456789'):
-                window['-number_of_books_to_make-'].update(values['-number_of_books_to_make-'][:-1])
+                window1['-number_of_books_to_make-'].update(values['-number_of_books_to_make-'][:-1])
          else:
-             window['-number_of_books_to_make-'].update('0')
+             window1['-number_of_books_to_make-'].update('0')
 
     elif event == 'Overshoot':                # if the normal button that changes color and text
             
@@ -1561,7 +1634,7 @@ while True:
         value_of_books = int(values['-value_of_books_to_make-'])
         number_of_books = int(values['-number_of_books_to_make-'])
 
-        if window['-R1-'].metadata:
+        if window1['-R1-'].metadata:
             books, books_value = book_hoard (
                 value_of_books=value_of_books,
                 overshoot=overshoot_toggle, 
@@ -1597,16 +1670,16 @@ while True:
         save_master_books_settings() # save data for next time.
     
     elif event == "Reset to defaults":
-        window['-EXCEL_OUT_FILENAME-'].update(value="books_spreadsheet_out.xlsx")
-        window['-EXCEL_OUT_WORKSHEET-'].update(value="Book Hoard")
-        window['-MASTER_FILENAME-'].update(value="master_fantasy_book_list.xlsx")
-        window['-MASTER_WORKSHEET-'].update(value="Master List")
-        window['-value_of_books_to_make-'].update(value = 0)
-        window['-number_of_books_to_make-'].update(value = 0)
-        window['-R1-'].update(radio_checked_icon)
-        window['-R1-'].metadata = True
-        window['-R2-'].update(radio_unchecked_icon)
-        window['-R2-'].metadata = False
+        window1['-EXCEL_OUT_FILENAME-'].update(value="books_spreadsheet_out.xlsx")
+        window1['-EXCEL_OUT_WORKSHEET-'].update(value="Book Hoard")
+        window1['-MASTER_FILENAME-'].update(value="master_fantasy_book_list.xlsx")
+        window1['-MASTER_WORKSHEET-'].update(value="Master List")
+        window1['-value_of_books_to_make-'].update(value = 0)
+        window1['-number_of_books_to_make-'].update(value = 0)
+        window1['-R1-'].update(radio_checked_icon)
+        window1['-R1-'].metadata = True
+        window1['-R2-'].update(radio_unchecked_icon)
+        window1['-R2-'].metadata = False
 
     elif event in radio_keys:
             check_radio(event)
@@ -1617,22 +1690,22 @@ while True:
     elif event == 'Clear_History_Default_Out':
         sg.user_settings_set_entry('-default_out_filenames-', [])
         sg.user_settings_set_entry('-last_default_out_filename-', '')
-        window['-EXCEL_OUT_FILENAME-'].update(values=[], value='')
+        window1['-EXCEL_OUT_FILENAME-'].update(values=[], value='')
 
     elif event == 'Clear_Master_History':
         sg.user_settings_set_entry('-default_master_filenames-', [])
         sg.user_settings_set_entry('-last_default_master_filename-', '')
-        window['-MASTER_FILENAME-'].update(values=[], value='')
+        window1['-MASTER_FILENAME-'].update(values=[], value='')
 
     elif event == 'Clear_History_Default_Out_Worksheet':
         sg.user_settings_set_entry('-default_out_worksheets-', [])
         sg.user_settings_set_entry('-last_default_out_worksheet-', '')
-        window['-EXCEL_OUT_WORKSHEET-'].update(values=[], value='')
+        window1['-EXCEL_OUT_WORKSHEET-'].update(values=[], value='')
 
     elif event == 'Clear_History_Master_Worksheet':
         sg.user_settings_set_entry('-default_master_worksheets-', [])
         sg.user_settings_set_entry('-last_default_master_worksheet-', '')
-        window['-MASTER_WORKSHEET-'].update(values=[], value='')
+        window1['-MASTER_WORKSHEET-'].update(values=[], value='')
 
 window.close()
 
