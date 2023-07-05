@@ -15,6 +15,7 @@ import rpg_tables as r
 import shutil
 import string as string
 import sys
+import time
 import uuid
 import yaml
 
@@ -131,7 +132,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
             ws_dest.cell(row=1,column=the_counter,value=item)
             ws_dest.cell(row=1,column=the_counter).font = openpyxl_font(bold='bold',size=9)
     
-            print ("Done column labels.")
+            sg.popup_ok ("Done column labels.")
 
     # Make sure can save
 
@@ -144,7 +145,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
             
             if user_response == "Cancel":
                 try_to_save = False
-                print ("Quitting without saving to Excel.")
+                sg.popup_ok ("Quitting without saving to Excel.")
                 sys.exit()
                 break
         else:
@@ -183,8 +184,6 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
             
             cell_dest.value = cell_source.value
             cell_dest.font = copy (cell_source.font)
-        
-        # print ("Copying Row #" + str(the_count) + "/" + str (ws_source_books.max_row - ws_source_books.min_row),end ='\r')   
         
         row_dest += 1
 
@@ -227,10 +226,6 @@ def book_batch (number=1, **kwargs):
     Produces a given number of books. Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
 
-    # def update_user_facing_stats(the_count, running_total,number):
-    #     print (" " * 80,end='\r') # blank the line
-    #     print("Generating Book #" + str(the_count) + "/" + str (number) + " (" + str((int(100*the_count/number))) + "%)" + " --> " + str(running_total) + " total gp value", end ='\r')
-
     books = {}
     sg.theme('Light Blue 1')
 
@@ -268,9 +263,6 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
 
     Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
-    # def update_user_facing_stats(the_count, running_total,value_of_books):
-    #     print (" " * 80,end='\r') # blank the line
-    #     print("Generating Book #" + str(the_count) + " --> " + str(running_total) + " gp/" + str (value_of_books) + " (" + str((int(100*running_total/value_of_books))) + "%)", end ='\r')
 
     books = {}
     sg.theme('Light Blue 1')
@@ -414,7 +406,7 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
             
             if user_response == "Cancel":
                 try_to_save = False
-                print ("Quitting without saving to Excel.")
+                sg.popup_ok ("Quitting without saving to Excel.")
                 sys.exit()
                 break
         else:
@@ -444,8 +436,6 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
                 break
     wb.save(filename)
     wb.close()
-    # print ('') # get off the same line
-    # print ("Exported to Excel file '" + filename + "'")
 
     sg.popup_notify("Export to Excel file \n\n" + filename + "\n\nis complete.",
         title = "Excel export done.",
@@ -595,35 +585,20 @@ def fantasy_books_main_gui():
 
 def get_proper_random_book (filename='master_fantasy_book_list.xlsx', worksheet='Master List'):
     '''
-    Picking a row at random isn't a true randomization, since each row has a different number of extant books. This routine calculates the odds of each line, and rolls dice, returning the chosen line.
+    Picking a row at random isn't a true randomization, since each row has a different number of extant books. This routine uses a weighted random choice and returns the line.
     '''
-    # # XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    
     master_book_pandas_table = read_excel_file_into_pandas (filename = filename,worksheet = worksheet)
-    total_number_extant_volumes = master_book_pandas_table['number_extant_available_to_place'].sum()
-    running_total = 0
+    number_of_lines = len (master_book_pandas_table.index)
+    lines_list = [i for i in range (0,number_of_lines)]
+    weighted_chances_list = master_book_pandas_table["number_extant_available_to_place"].values.tolist()
 
-    dice_string = "1d" + str (int(total_number_extant_volumes))
-    the_roll = d20.roll(dice_string).total
+    row_target = random.choices(lines_list,weights=weighted_chances_list,k=1)
+    to_return = int (row_target[0])
+    print (to_return)
+    to_return += 2 # Excel starts from 1, pandas from 0. Pandas also does not have column headers here, so + 2 net to match Excel.
 
-    master_book_pandas_table['cumulative_avail_for_place'] = master_book_pandas_table['number_extant_available_to_place'].cumsum()
-    master_book_pandas_table_target = master_book_pandas_table.iloc[(master_book_pandas_table['cumulative_avail_for_place']-the_roll).abs().argsort()[:1]]
-    row_target = master_book_pandas_table_target.index[0]
-    column_target = config['NUMBER_COPIES_AVAIL_TO_PLACE']-1 # df starts at 0, excel at 1
-
-    cummulative_number = master_book_pandas_table['cumulative_avail_for_place'].iloc[row_target] 
-    
-    while (the_roll > cummulative_number) or (the_roll == cummulative_number and the_roll == master_book_pandas_table['cumulative_avail_for_place'].iloc[row_target+1]):
-        row_target+=1
-        cummulative_number = master_book_pandas_table['cumulative_avail_for_place'].iloc[row_target]
-
-    print ("----START----")
-    print ("The Roll: " + str(the_roll))
-    print ("Cumulative no: " + str(cummulative_number))
-    
-    row_target +- 2 # Excel starts from 1, pandas from 0. Pandas also does not have column headers here, so + 2 net to match Excel.
-    print ("Row_target: " + str(row_target))
-    print ("----end----")
-    return row_target
+    return to_return
 
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
@@ -687,7 +662,7 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
         while True:
             random_book = get_proper_random_book(filename=filename, worksheet=worksheet)
             if random_book < 2: random_book = 2
-
+            # print ("Random book #1:" + str(random_book))
             index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
             try:
                 number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
@@ -705,8 +680,10 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
                     alpha = config['alpha_toaster_popups'],
                     location = None)
                 
-                continue # ie not avail, pick another at random
-            
+                random_book+=1 # ie not avail, pick another
+                # print ("Random book #2:" + str(random_book))
+                number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
+
             # Otherwise, copy over
             
             ws_source.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
@@ -1672,7 +1649,7 @@ for element in window1.key_dict.values():
 window1['-number_of_books_to_make-'].block_focus(block=False)
 window1['-value_of_books_to_make-'].block_focus(block=False)
 ########## Main Event Loop of GUI
-
+print ("Start:" + str(time.asctime()))
 while True:
     window,event, values = sg.read_all_windows()
     if event in (sg.WIN_CLOSED, 'Quit'):
@@ -1746,6 +1723,7 @@ while True:
         save_master_books_settings() # save data for next time.
         window1.set_cursor("arrow")
         window1.un_hide()
+        break
 
     elif event == "Reset to defaults":
         window1['-EXCEL_OUT_FILENAME-'].update(value="books_spreadsheet_out.xlsx")
@@ -1786,6 +1764,7 @@ while True:
         window1['-MASTER_WORKSHEET-'].update(values=[], value='')
 
 window.close()
+print ("End:" + str(time.asctime()))
 # input("Press Enter to Close.")
 # # zero_out_master_books_file()
 
