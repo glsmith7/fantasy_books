@@ -340,6 +340,8 @@ def check_radio(key): # GUI function
 
 def check_if_should_place_existing_title(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
     
+    return False
+
     if stats['number_extant_available_to_place'] < 1: # ie none exist to place
         return False
     
@@ -584,7 +586,7 @@ def fantasy_books_main_gui():
             [sg.Button('Generate Books', 
                        bind_return_key=True,
                        ),
-            sg.Button("Save settings"),  
+            sg.Button("Save settings and Quit"),  
             sg.Button('Reset to defaults'),
             sg.Button('Quit'),
             
@@ -1699,7 +1701,7 @@ while True:
             
             overshoot_toggle = overshoot_event(overshoot_toggle = overshoot_toggle)
             
-    elif event == 'Save settings':
+    elif event == 'Save settings and Quit':
         save_gui_settings()
         break
     
@@ -1789,6 +1791,7 @@ while True:
         window1['-MASTER_WORKSHEET-'].update(values=[], value='')
 
 window.close()
+input("Press Enter to Close.")
 
 # # zero_out_master_books_file()
 
