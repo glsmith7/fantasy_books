@@ -339,6 +339,8 @@ def check_radio(key): # GUI function
     window1[key].metadata = True
 
 def check_if_should_place_existing_title(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+    
+    return False
 
     if stats['number_extant_available_to_place'] < 1: # ie none exist to place
         return False
