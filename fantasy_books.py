@@ -595,7 +595,6 @@ def get_proper_random_book (filename='master_fantasy_book_list.xlsx', worksheet=
 
     row_target = random.choices(lines_list,weights=weighted_chances_list,k=1)
     to_return = int (row_target[0])
-    print (to_return)
     to_return += 2 # Excel starts from 1, pandas from 0. Pandas also does not have column headers here, so + 2 net to match Excel.
 
     return to_return
@@ -658,60 +657,56 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     # number_of_books = ws_source.max_row
     # dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
     
-    try:
-        while True:
-            random_book = get_proper_random_book(filename=filename, worksheet=worksheet)
-            if random_book < 2: random_book = 2
-            # print ("Random book #1:" + str(random_book))
-            index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
-            try:
-                number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
+    
+    while True:
+        random_book = get_proper_random_book(filename=filename, worksheet=worksheet)
+
+        index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
+        try:
+            number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
+        
+        except:
+
+            break # errors if nothing in the cell, so nothing to pick; get out of loop.
+
+        if number_books_left_this_title == 0:
+            sg.popup_notify("Zero books of this title remain for placement; picking another book...",
+                title = "None of these left.",
+                icon = radio_unchecked_icon,
+                display_duration_in_ms = config['duration_toaster_popups'],
+                fade_in_duration = config['fade_in_duration_toaster_popups'],
+                alpha = config['alpha_toaster_popups'],
+                location = None)
             
-            except:
-
-                break # errors if nothing in the cell, so nothing to pick; get out of loop.
-
-            if number_books_left_this_title == 0:
-                sg.popup_notify("Zero books of this title remain for placement; picking another book...",
-                    title = "None of these left.",
-                    icon = radio_unchecked_icon,
-                    display_duration_in_ms = config['duration_toaster_popups'],
-                    fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = config['alpha_toaster_popups'],
-                    location = None)
-                
-                random_book+=1 # ie not avail, pick another
-                # print ("Random book #2:" + str(random_book))
-                number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
-
-            # Otherwise, copy over
+            random_book+=1 # ie not avail, pick another
             
-            ws_source.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
-            
-            the_counter = 1 # Excel columns start at 1, not zero.
-            for attribute in config['book_variables_in_chosen_order']:
-                book_to_be [attribute] = ws_source.cell(row=random_book, column = the_counter).value
-                the_counter += 1
-                        
-            wb_source.save(filename) # save the master list with the decremented number of books for that title.
-            wb_source.close()
-            break
+            number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
 
-    finally:
-             pass
+        # Otherwise, copy over
+        
+        ws_source.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
+        
+        the_counter = 1 # Excel columns start at 1, not zero.
+        for attribute in config['book_variables_in_chosen_order']:
+            book_to_be [attribute] = ws_source.cell(row=random_book, column = the_counter).value
+            the_counter += 1
+                    
+        wb_source.save(filename) # save the master list with the decremented number of books for that title.
+        wb_source.close()
+        break
     
     dataframe = read_excel_file_into_pandas() # (filename = filename, worksheet=worksheet)
     book = create_fantasy_book(**book_to_be)
     stats = calculate_stats_excel(dataframe) # filename = filename, worksheet=worksheet)
     update_master_books_array(stats)
-    # save_master_books_settings()
-    sg.popup_notify("Pre-existing book from master library placed.",
-                    title = "Another copy!",
-                    icon = radio_unchecked_icon,
-                    display_duration_in_ms = config['duration_toaster_popups'],
-                    fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = config['alpha_toaster_popups'],
-                    location = None)
+
+    # sg.popup_notify("Pre-existing book from master library placed.",
+    #                 title = "Another copy!",
+    #                 icon = radio_unchecked_icon,
+    #                 display_duration_in_ms = config['duration_toaster_popups'],
+    #                 fade_in_duration = config['fade_in_duration_toaster_popups'],
+    #                 alpha = config['alpha_toaster_popups'],
+    #                 location = None)
     return book
 
 def progress_window_gui():
