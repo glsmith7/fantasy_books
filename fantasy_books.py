@@ -163,7 +163,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
 
         if not sg.one_line_progress_meter(
                 'To master ...', 
-                the_count+1, 
+                the_count, 
                 total_number_to_copy, 
                 orientation = 'h',
                 ) and the_count+1 != total_number_to_copy:
@@ -252,10 +252,10 @@ def book_batch (number=1, **kwargs):
             # update_user_facing_stats(the_count, running_total,number)
             if not sg.one_line_progress_meter(
                 'Generating books', 
-                the_count+1, 
+                the_count, 
                 number, 
                 orientation = 'h',
-                ): # and the_count+1 != number:
+                ):
                 sg.popup_auto_close("The rest of the books won't be generated. Those already made will be added to the Excel file and the master library Excel file.")
                 break
 
@@ -292,11 +292,11 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
 
             if not sg.one_line_progress_meter(
                 'Generating books', 
-                the_count+1, 
+                running_total, 
                 value_of_books, 
                 orientation = 'h',
                 
-                ): # and the_count+1 != value_of_books
+                ):
                 sg.popup_auto_close("The rest of the books won't be generated. Those already made will be added to the Excel file and the master library Excel file.")
                 break
 
@@ -436,7 +436,7 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
         the_flavor.font = openpyxl_font(name=config['font_languages'][the_lang.value],size=config['DEFAULT_EXCEL_FLAVOR_FONT_SIZE'])
         if not sg.one_line_progress_meter(
                 'Placing books in Excel file.', 
-                the_counter+1, 
+                the_counter, 
                 len(books), 
                 orientation = 'h',
                 ):
@@ -585,8 +585,9 @@ def fantasy_books_main_gui():
                        bind_return_key=True,
                        ),
             sg.Button("Save settings"),  
-            sg.Button('Cancel'),
             sg.Button('Reset to defaults'),
+            sg.Button('Quit'),
+            
             ]
             ]
     
@@ -1677,7 +1678,7 @@ window1['-value_of_books_to_make-'].block_focus(block=False)
 
 while True:
     window,event, values = sg.read_all_windows()
-    if event in (sg.WIN_CLOSED, 'Cancel'):
+    if event in (sg.WIN_CLOSED, 'Quit'):
         break
     
     elif event == "-value_of_books_to_make-": # only allows integers, does not allow to be blank
