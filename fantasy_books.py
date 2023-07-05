@@ -43,6 +43,7 @@ logger = logging.getLogger(__name__)
 
 global vocab_dictionary, nt, wb_source, ws_source
 global window, overshoot_toggle # for GUI
+global excel_workbook, excel_worksheet,master_book_pandas_table
 
 # GUI and graphics
 
@@ -225,7 +226,7 @@ def book_batch (number=1, **kwargs):
     ''' 
     Produces a given number of books. Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
-
+    
     books = {}
     sg.theme('Light Blue 1')
 
@@ -266,15 +267,18 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
 
     books = {}
     sg.theme('Light Blue 1')
+    excel_workbook, excel_worksheet = load_excel_objects(filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
+    master_book_pandas_table = read_excel_file_into_pandas (filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
+
     while books == {}:
     
         running_total = 0
         the_count = 0
-
+        
         while running_total < value_of_books:
             the_count += 1
             if check_if_should_place_existing_title():
-                books[the_count] = pick_existing_book()
+                books[the_count] = pick_existing_book(excel_workbook = excel_workbook, excel_worksheet=excel_worksheet, pandas_table=master_book_pandas_table)
 
             else:
                 books[the_count] = create_fantasy_book(**kwargs)
@@ -330,7 +334,7 @@ def check_radio(key): # GUI function
     window1[key].update(radio_checked_icon)
     window1[key].metadata = True
 
-def check_if_should_place_existing_title(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+def check_if_should_place_existing_title():
 
     if stats['number_extant_available_to_place'] < 1: # ie none exist to place
         return False
@@ -583,15 +587,14 @@ def fantasy_books_main_gui():
     
     return layout
 
-def get_proper_random_book (filename='master_fantasy_book_list.xlsx', worksheet='Master List'):
+def get_proper_random_book (pandas_table):
     '''
     Picking a row at random isn't a true randomization, since each row has a different number of extant books. This routine uses a weighted random choice and returns the line.
     '''
     
-    master_book_pandas_table = read_excel_file_into_pandas (filename = filename,worksheet = worksheet)
-    number_of_lines = len (master_book_pandas_table.index)
+    number_of_lines = len (pandas_table.index)
     lines_list = [i for i in range (0,number_of_lines)]
-    weighted_chances_list = master_book_pandas_table["number_extant_available_to_place"].values.tolist()
+    weighted_chances_list = pandas_table["number_extant_available_to_place"].values.tolist()
 
     row_target = random.choices(lines_list,weights=weighted_chances_list,k=1)
     to_return = int (row_target[0])
@@ -646,21 +649,19 @@ def overshoot_event(overshoot_toggle): # gui
     
     return overshoot_toggle
     
-def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+def pick_existing_book():
     '''
     Randomly picks a single book from the master Excel file, and passes it back as a dictionary book_to_be, which can then be treated as input for create_fantasy_book(book_to_be**)
     '''
-
-    wb_source,ws_source = load_excel_objects(filename = filename, worksheet = worksheet)
     
     book_to_be = {} 
     
     while True:
-        random_book = get_proper_random_book(filename=filename, worksheet=worksheet)
+        random_book = get_proper_random_book(master_book_pandas_table)
 
         index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
         try:
-            number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
+            number_books_left_this_title = int (excel_worksheet.cell(row = random_book, column = index).value)
         
         except:
 
@@ -677,25 +678,25 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
             
             random_book+=1 # ie not avail, pick another
             
-            number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
+            number_books_left_this_title = int (excel_worksheet.cell(row = random_book, column = index).value)
 
         # Otherwise, copy over
         
-        ws_source.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
+        excel_worksheet.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
         
         the_counter = 1 # Excel columns start at 1, not zero.
         for attribute in config['book_variables_in_chosen_order']:
-            book_to_be [attribute] = ws_source.cell(row=random_book, column = the_counter).value
+            book_to_be [attribute] = excel_worksheet.cell(row=random_book, column = the_counter).value
             the_counter += 1
                     
-        wb_source.save(filename) # save the master list with the decremented number of books for that title.
-        wb_source.close()
+        # wb_source.save('master_fantasy_book_list.xlsx') # save the master list with the decremented number of books for that title.
+        # wb_source.close()
         break
     
-    dataframe = read_excel_file_into_pandas() # (filename = filename, worksheet=worksheet)
+    # dataframe = read_excel_file_into_pandas() # (filename = filename, worksheet=worksheet)
     book = create_fantasy_book(**book_to_be)
-    stats = calculate_stats_excel(dataframe) # filename = filename, worksheet=worksheet)
-    update_master_books_array(stats)
+    # stats = calculate_stats_excel(dataframe) # filename = filename, worksheet=worksheet)
+    # update_master_books_array(stats)
 
     # sg.popup_notify("Pre-existing book from master library placed.",
     #                 title = "Another copy!",
@@ -831,8 +832,9 @@ def zero_out_master_books_file():
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
 # read in dataframe for master file
 
-dataframe = read_excel_file_into_pandas()
-stats = calculate_stats_excel(dataframe)
+master_book_pandas_table = read_excel_file_into_pandas (filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
+stats = calculate_stats_excel(master_book_pandas_table)
+excel_workbook, excel_worksheet = load_excel_objects(filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
 
 class FantasyBook():
     ''' 
