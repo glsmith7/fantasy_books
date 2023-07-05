@@ -597,52 +597,33 @@ def get_proper_random_book (filename='master_fantasy_book_list.xlsx', worksheet=
     '''
     Picking a row at random isn't a true randomization, since each row has a different number of extant books. This routine calculates the odds of each line, and rolls dice, returning the chosen line.
     '''
-
-    def take_closest(myList, myNumber):
-        """
-        Assumes myList is sorted. Returns closest value to myNumber.
-
-        If two numbers are equally close, return the smallest number.
-        """
-        pos = bisect_left(myList, myNumber)
-        if pos == 0:
-            return myList[0]
-        if pos == len(myList):
-            return myList[-1]
-        before = myList[pos - 1]
-        after = myList[pos]
-        if after - myNumber < myNumber - before:
-            return after
-        else:
-            return before
-    
-    probability_array={}
+    # # XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     master_book_pandas_table = read_excel_file_into_pandas (filename = filename,worksheet = worksheet)
     total_number_extant_volumes = master_book_pandas_table['number_extant_available_to_place'].sum()
     running_total = 0
 
-    for index, row in master_book_pandas_table.iterrows():
-        
-        running_total = running_total + row["number_extant_available_to_place"]
-        probability_array[index] = running_total
-
-    probability_array[index+1] = probability_array[index] # extra index so check algorithm below won't have out of range error if very last rolled.
-    running_total_list = list (probability_array.values())
-
     dice_string = "1d" + str (int(total_number_extant_volumes))
     the_roll = d20.roll(dice_string).total
 
-    the_closest = take_closest(running_total_list,the_roll)
-    the_index = running_total_list.index(the_closest)
-# the_index -= 1
+    master_book_pandas_table['cumulative_avail_for_place'] = master_book_pandas_table['number_extant_available_to_place'].cumsum()
+    master_book_pandas_table_target = master_book_pandas_table.iloc[(master_book_pandas_table['cumulative_avail_for_place']-the_roll).abs().argsort()[:1]]
+    row_target = master_book_pandas_table_target.index[0]
+    column_target = config['NUMBER_COPIES_AVAIL_TO_PLACE']-1 # df starts at 0, excel at 1
 
-    while True:
-        if the_roll > probability_array[the_index]:
-            the_index+=1
-        else:
-            break
+    cummulative_number = master_book_pandas_table['cumulative_avail_for_place'].iloc[row_target] 
+    
+    while (the_roll > cummulative_number) or (the_roll == cummulative_number and the_roll == master_book_pandas_table['cumulative_avail_for_place'].iloc[row_target+1]):
+        row_target+=1
+        cummulative_number = master_book_pandas_table['cumulative_avail_for_place'].iloc[row_target]
 
-    return the_index+1 # array starts at zero, the line in the dataform starts at 1
+    print ("----START----")
+    print ("The Roll: " + str(the_roll))
+    print ("Cumulative no: " + str(cummulative_number))
+    
+    row_target +- 2 # Excel starts from 1, pandas from 0. Pandas also does not have column headers here, so + 2 net to match Excel.
+    print ("Row_target: " + str(row_target))
+    print ("----end----")
+    return row_target
 
 def import_language_words():
     ''' creates a dictionary of lists of various languages/character sets for the 'flavor text' titles of books based on their language.
@@ -757,63 +738,63 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     return book
 
 def progress_window_gui():
-
-    layout = [
-
-            
-            [sg.Push(),
-             sg.Text(
-                text='Generating books:',
-                font = 'Helvetica 12 bold',
+    pass
+    #     layout = [
 
                 
-                ),  
-             sg.Push(),
-            
-            ],
-            [sg.Push(),
-             sg.Text(
-                key = '-books_count-',
-                text='5',
-                font = 'Helvetica 48',
-                justification='Center'
-                ),  
-            sg.Push(),
-            ],
-            [sg.Push(),
-             sg.Text(
-                text='Value:',
-                font='Helvetica 12',
-                pad = (0,1),
-            ),
-            sg.Text(
-                key = '-gold_pieces-',
-                text=10000,
-                font='Helvetica 12',
-                pad = (0,0),
-            ),
-            sg.Text(
-                text='gp',
-                font='Helvetica 12',
-                pad = (0,1),
-            ),
-            sg.Push(),
-            ],
-            [
-            sg.Push(),
-            sg.ProgressBar(
-                key='-book_generation_progress',
-                style='default',
-                orientation = 'horizontal',
-                # expand_x = True,
-                max_value = 100,
-                
-            ),
-            sg.Push(),
-            ],
-    ]
+    #             [sg.Push(),
+    #              sg.Text(
+    #                 text='Generating books:',
+    #                 font = 'Helvetica 12 bold',
 
-    return layout
+                    
+    #                 ),  
+    #              sg.Push(),
+                
+    #             ],
+    #             [sg.Push(),
+    #              sg.Text(
+    #                 key = '-books_count-',
+    #                 text='5',
+    #                 font = 'Helvetica 48',
+    #                 justification='Center'
+    #                 ),  
+    #             sg.Push(),
+    #             ],
+    #             [sg.Push(),
+    #              sg.Text(
+    #                 text='Value:',
+    #                 font='Helvetica 12',
+    #                 pad = (0,1),
+    #             ),
+    #             sg.Text(
+    #                 key = '-gold_pieces-',
+    #                 text=10000,
+    #                 font='Helvetica 12',
+    #                 pad = (0,0),
+    #             ),
+    #             sg.Text(
+    #                 text='gp',
+    #                 font='Helvetica 12',
+    #                 pad = (0,1),
+    #             ),
+    #             sg.Push(),
+    #             ],
+    #             [
+    #             sg.Push(),
+    #             sg.ProgressBar(
+    #                 key='-book_generation_progress',
+    #                 style='default',
+    #                 orientation = 'horizontal',
+    #                 # expand_x = True,
+    #                 max_value = 100,
+                    
+    #             ),
+    #             sg.Push(),
+    #             ],
+    #     ]
+
+    #     return layout
 
 def radio_is_checked(key): # GUI
         return window1[key].metadata
@@ -858,7 +839,7 @@ def save_master_books_settings():
         with open("master_books_settings.yaml", "w") as f:     
             yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
     except:
-        print ('Error with saving file "master_books_settings.yaml". Is the file open in another program?')
+        sg.popup_error ('Error with saving file "master_books_settings.yaml". Is the file open in another program?')
 
 def update_master_books_array(the_array):
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
@@ -874,7 +855,7 @@ def zero_out_master_books_file():
     master_list_stats['TOTAL_BOOKS_IN_MASTER'] = 0
     master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = 0
     save_master_books_settings()
-    print ("Master book settings have been zeroed out. Makes sure the excel files contains no books.")
+    sg.popup_ok ("Master book settings have been zeroed out. Makes sure the Excel files contain no books.")
 
 ######################## CLASSES ########################
 
@@ -1276,6 +1257,7 @@ class FantasyBook():
 
     def esoteric_value_set (self):
         target_table = 'BookLiteraryValueScope' + str(int(self.scope_esoteric))
+        self.complexity_esoteric = self.hack_complexity(target_table, complexity=self.complexity_esoteric)
         self.esoteric_literary_value_base = self.look_up_table(
             table_name=target_table,
             search_column='Complexity',
@@ -1337,13 +1319,28 @@ class FantasyBook():
                 book_title_flavor = book_title_flavor.capitalize()
 
         self.book_title_flavor = book_title_flavor
+    
+    def hack_complexity(self, target_table,complexity):
+        ''' Prevents occasional bizarre complexity value causing lookup errors in the SQL table. This is a disgraceful, hacky solution pending  a better understanding of where the occasional bug is coming from. '''
 
+        if complexity > 4 and target_table == "BookLiteraryValueScope1":
+            return 4
+        elif complexity > 5 and target_table == "BookLiteraryValueScope2":
+            return 5
+        elif complexity > 6 and target_table == "BookLiteraryValueScope3":
+            return 6
+        elif complexity > 7 and target_table == "BookLiteraryValueScope4":
+            return 7
+        else: 
+            return complexity
+        
     def literary_value_set (self):
         
         if self.scope >= 1:
             target_table = 'BookLiteraryValueScope' + str(int(self.scope))
         else:
             target_table = 'BookLiteraryValueScope' + str('1')
+        self.complexity = self.hack_complexity(target_table, complexity=self.complexity)
 
         self.literary_value_base = self.look_up_table(
             table_name=target_table,
@@ -1789,8 +1786,6 @@ while True:
         window1['-MASTER_WORKSHEET-'].update(values=[], value='')
 
 window.close()
-input("Press Enter to Close.")
-
-
+# input("Press Enter to Close.")
 # # zero_out_master_books_file()
 
