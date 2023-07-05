@@ -47,7 +47,8 @@ global window, overshoot_toggle # for GUI
 
 radio_unchecked_icon = i.radio_unchecked() 
 radio_checked_icon = i.radio_checked()
-books_icon = i. books_icon()
+books_icon = i.books_icon()
+excel_icon = i.excel_icon()
 sg.theme('Dark Blue 3')
 overshoot_toggle = sg.user_settings_get_entry('-overshoot_toggle-')
 radio_keys = ('-R1-', '-R2-')
@@ -149,16 +150,26 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
         else:
             try_to_save = False # ie succeeded
     ######
-
+    sg.theme("Dark Green 5")
     row_dest = ws_dest.max_row + 1
     the_count = 0
 
     # copy each cell from source to destination
-
+    total_number_to_copy = (ws_source_books.max_row) - (ws_source_books.min_row)
     for row_source in ws_source_books.iter_rows(min_row=ws_source_books.min_row+1, min_col=ws_source_books.min_column, max_row=ws_source_books.max_row, max_col=ws_source_books.max_column):
         
         the_count +=1 
         the_note = row_source[config['NOTE_COLUMN_INDEX']]
+
+        if not sg.one_line_progress_meter(
+                'Copying books to master library file.', 
+                the_count+1, 
+                total_number_to_copy, 
+                orientation = 'h',
+                ) and the_count+1 != total_number_to_copy:
+                sg.popup_auto_close("The rest of the books won't be generated. Those already made will be added to the Excel file and the master library Excel file.")
+                break
+        
         if "do_not_archive" == the_note.value or "has_been_archived" == the_note.value:
             continue
 
@@ -172,13 +183,18 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
             
             cell_dest.value = cell_source.value
             cell_dest.font = copy (cell_source.font)
-            
         
-        print ("Copying Row #" + str(the_count) + "/" + str (ws_source_books.max_row - ws_source_books.min_row),end ='\r')   
+        # print ("Copying Row #" + str(the_count) + "/" + str (ws_source_books.max_row - ws_source_books.min_row),end ='\r')   
         
         row_dest += 1
 
-    print ("\n Finished transfer to master file " + str (destination) + " in worksheet " + str (destination_worksheet) + ".")
+    sg.popup_notify("Finished transfer to master file \n\n" + str (destination) + "\n\nin worksheet\n\n" + str (destination_worksheet) + ".",
+                    title = "Finished!",
+                    display_duration_in_ms = config['duration_toaster_popups'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups'],
+                    location = None)
+    
     wb_source_books.save(source)
     wb_dest.save(destination)
     
@@ -211,11 +227,12 @@ def book_batch (number=1, **kwargs):
     Produces a given number of books. Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
 
-    def update_user_facing_stats(the_count, running_total,number):
-        print (" " * 80,end='\r') # blank the line
-        print("Generating Book #" + str(the_count) + "/" + str (number) + " (" + str((int(100*the_count/number))) + "%)" + " --> " + str(running_total) + " total gp value", end ='\r')
+    # def update_user_facing_stats(the_count, running_total,number):
+    #     print (" " * 80,end='\r') # blank the line
+    #     print("Generating Book #" + str(the_count) + "/" + str (number) + " (" + str((int(100*the_count/number))) + "%)" + " --> " + str(running_total) + " total gp value", end ='\r')
 
     books = {}
+    sg.theme('Light Blue 1')
 
     while books == {}:
         
@@ -232,8 +249,15 @@ def book_batch (number=1, **kwargs):
                 books[the_count] = create_fantasy_book(**kwargs)
 
             running_total += books[the_count].market_value
-            update_user_facing_stats(the_count, running_total,number)
-            
+            # update_user_facing_stats(the_count, running_total,number)
+            if not sg.one_line_progress_meter(
+                'Generating books', 
+                the_count+1, 
+                number, 
+                orientation = 'h',
+                ) and the_count+1 != number:
+                sg.popup_auto_close('Cancelling your loop...')
+                break
 
     print ('') # get off the same line
     return books, running_total
@@ -244,12 +268,12 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
 
     Randomized characteristics unless keyword parameters are passed in. Those not passed with be randomized as far as it able (some values are interrelated, and so this can result in some slight deviations from the tables.)
     '''
-    def update_user_facing_stats(the_count, running_total,value_of_books):
-        print (" " * 80,end='\r') # blank the line
-        print("Generating Book #" + str(the_count) + " --> " + str(running_total) + " gp/" + str (value_of_books) + " (" + str((int(100*running_total/value_of_books))) + "%)", end ='\r')
+    # def update_user_facing_stats(the_count, running_total,value_of_books):
+    #     print (" " * 80,end='\r') # blank the line
+    #     print("Generating Book #" + str(the_count) + " --> " + str(running_total) + " gp/" + str (value_of_books) + " (" + str((int(100*running_total/value_of_books))) + "%)", end ='\r')
 
     books = {}
-
+    sg.theme('Light Blue 1')
     while books == {}:
     
         running_total = 0
@@ -264,18 +288,34 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
                 books[the_count] = create_fantasy_book(**kwargs)
 
             running_total += books[the_count].market_value
-            update_user_facing_stats(the_count, running_total,value_of_books)
+            # update_user_facing_stats(the_count, running_total,value_of_books)
+
+            if not sg.one_line_progress_meter(
+                'Generating books', 
+                the_count+1, 
+                value_of_books, 
+                orientation = 'h',
+                
+                ) and the_count+1 != value_of_books:
+                sg.popup_auto_close("The rest of the books won't be generated. Those already made will be added to the Excel file and the master library Excel file.")
+                break
 
         if overshoot: 
             pass    
         else:
             running_total -= books[len(books)].market_value # subtract last value that put us over the top
             books.popitem() # delete last book which put over the top
-            update_user_facing_stats(the_count, running_total,value_of_books)
+            # update_user_facing_stats(the_count, running_total,value_of_books)
 
         if books == {}:
-            print ("\nZero books made in hoard; retrying ....") # need better error checking to avoid endless loop if value too low.
-    print ('') # get off the same line
+            sg.popup_notify("Zero books made in hoard; retrying ....",
+                    title = "Retrying",
+                    icon = radio_unchecked_icon,
+                    display_duration_in_ms = config['duration_toaster_popups'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups'],
+                    location = None)
+    
     return books, running_total
 
 def calculate_stats_excel (excel_file_pandas, filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
@@ -381,24 +421,40 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
 
     # each row for a book
     the_counter = 0
+    sg.theme("Dark Green 4")
     for book in books:
         row = []
         for attribute in book_columns:
             row.append(getattr(books[book],attribute))
         ws.append(row)
         the_counter += 1
-        print ("Saving Book #" + str(the_counter) + "/" + str(len(books)) + " (" + str((int(100*the_counter/len(books)))) + "%)",end='\r')
+        # print ("Saving Book #" + str(the_counter) + "/" + str(len(books)) + " (" + str((int(100*the_counter/len(books)))) + "%)",end='\r')
 
             # now get language of the last row (just added) and set the proper font for the flavor title cell
         the_lang = ws.cell(row=ws.max_row,column=current_language_index)
         the_flavor = ws.cell(row=ws.max_row, column=flavor_title_index)
         the_flavor.font = openpyxl_font(name=config['font_languages'][the_lang.value],size=config['DEFAULT_EXCEL_FLAVOR_FONT_SIZE'])
-
+        if not sg.one_line_progress_meter(
+                'Placing books in Excel file.', 
+                the_counter+1, 
+                len(books), 
+                orientation = 'h',
+                ) and the_counter+1 != len(books):
+                sg.popup_auto_close('Cancelling your loop...')
+                break
     wb.save(filename)
     wb.close()
-    print ('') # get off the same line
-    print ("Exported to Excel file '" + filename + "'")
+    # print ('') # get off the same line
+    # print ("Exported to Excel file '" + filename + "'")
 
+    sg.popup_notify("Export to Excel file \n\n" + filename + "\n\nis complete.",
+        title = "Excel export done.",
+        icon = excel_icon,
+        display_duration_in_ms = config['duration_toaster_popups'],
+        fade_in_duration = config['fade_in_duration_toaster_popups'],
+        alpha = config['alpha_toaster_popups'],
+        location = None)
+    
 def fantasy_books_main_gui():
     layout = [
 
@@ -651,10 +707,22 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
             if random_book < 2: random_book = 2
 
             index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
-            number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
+            try:
+                number_books_left_this_title = int (ws_source.cell(row = random_book, column = index).value)
+            
+            except:
+
+                break # errors if nothing in the cell, so nothing to pick; get out of loop.
 
             if number_books_left_this_title == 0:
-                print ("\nZero books of this title remain for placement; picking another book...")
+                sg.popup_notify("Zero books of this title remain for placement; picking another book...",
+                    title = "None of these left.",
+                    icon = radio_unchecked_icon,
+                    display_duration_in_ms = config['duration_toaster_popups'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups'],
+                    location = None)
+                
                 continue # ie not avail, pick another at random
             
             # Otherwise, copy over
@@ -678,7 +746,13 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
     stats = calculate_stats_excel(dataframe) # filename = filename, worksheet=worksheet)
     update_master_books_array(stats)
     # save_master_books_settings()
-    print ("\nPicked preexisting book.")
+    sg.popup_notify("Pre-existing book from master library placed.",
+                    title = "Another copy!",
+                    icon = radio_unchecked_icon,
+                    display_duration_in_ms = config['duration_toaster_popups'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups'],
+                    location = None)
     return book
 
 def progress_window_gui():
@@ -744,8 +818,14 @@ def radio_is_checked(key): # GUI
         return window1[key].metadata
 
 def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',worksheet = 'Master List'):
-    excel_file_pandas = pd.read_excel(filename, sheet_name=worksheet, header=0, index_col=None, usecols=None, dtype=None, engine="openpyxl", decimal='.')
-    return excel_file_pandas
+    try:
+        excel_file_pandas = pd.read_excel(filename, sheet_name=worksheet, header=0, index_col=None, usecols=None, dtype=None, engine="openpyxl", decimal='.')
+
+    except:
+        sg.popup_error("Problem opening file:" + filename + " If you get a ZipFile error, this may be due to a corrupt Excel file.")
+        raise IOError ("Problem importing excel file.")
+    else:    
+        return excel_file_pandas
 
 def save_gui_settings():
     # Save combo boxes and contents - out
@@ -1194,7 +1274,7 @@ class FantasyBook():
             self.esoteric_value_set()
 
     def esoteric_value_set (self):
-        target_table = 'BookLiteraryValueScope' + str(self.scope_esoteric)
+        target_table = 'BookLiteraryValueScope' + str(int(self.scope_esoteric))
         self.esoteric_literary_value_base = self.look_up_table(
             table_name=target_table,
             search_column='Complexity',
@@ -1258,8 +1338,9 @@ class FantasyBook():
         self.book_title_flavor = book_title_flavor
 
     def literary_value_set (self):
+        
         if self.scope >= 1:
-            target_table = 'BookLiteraryValueScope' + str(self.scope)
+            target_table = 'BookLiteraryValueScope' + str(int(self.scope))
         else:
             target_table = 'BookLiteraryValueScope' + str('1')
 
@@ -1571,19 +1652,19 @@ window1 = sg.Window(
     finalize = True
     )
 
-window2 = sg.Window(
-    'Fantasy Books Generator', 
-    layout = progress_window_gui(),
-    grab_anywhere = True,
-    alpha_channel = 0.7,
-    no_titlebar=True,
-    resizable = False,
-    # icon = books_icon,
-    finalize = True
-    )
+# window2 = sg.Window(
+#     'Fantasy Books Generator', 
+#     layout = progress_window_gui(),
+#     grab_anywhere = True,
+#     alpha_channel = 0.7,
+#     no_titlebar=True,
+#     resizable = False,
+#     # icon = books_icon,
+#     finalize = True
+#     )
 
 # window2.hide()
-window2.move(window1.current_location()[0]+500, window1.current_location()[1]+200)
+# window2.move(window1.current_location()[0]+500, window1.current_location()[1]+200)
 
 # turn off tabbing to all elements
 for element in window1.key_dict.values():
@@ -1622,10 +1703,10 @@ while True:
         break
     
     elif event == 'Generate Books':
+        window1.set_cursor("clock")
+        # window1.hide()
         save_gui_settings()
-        #
 
-        # NEED code to check if stuff is integers
 
         excel_filename = values['-EXCEL_OUT_FILENAME-']
         excel_worksheet = values['-EXCEL_OUT_WORKSHEET-']
@@ -1650,9 +1731,6 @@ while True:
             filename = excel_filename, 
             worksheet = excel_worksheet)
 
-        print ('TOTAL: ' + str(books_value))
-        print ('Number of books: ' + str (len(books)) + " Done!")
-
         archive_to_master(
             source=excel_filename, 
             source_worksheet = excel_worksheet,
@@ -1668,7 +1746,9 @@ while True:
         master_as_stats = calculate_stats_excel(master_as_pandas, filename = master_filename, worksheet = master_worksheet)
         update_master_books_array(master_as_stats)
         save_master_books_settings() # save data for next time.
-    
+        window1.set_cursor("arrow")
+        window1.un_hide()
+
     elif event == "Reset to defaults":
         window1['-EXCEL_OUT_FILENAME-'].update(value="books_spreadsheet_out.xlsx")
         window1['-EXCEL_OUT_WORKSHEET-'].update(value="Book Hoard")

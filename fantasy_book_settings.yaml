@@ -209,3 +209,9 @@ FLAVOR_TITLE_COLUMN_INDEX : 19
 NOTE_COLUMN_INDEX : 49
 NUMBER_EXTANT_COPIES_INDEX : 23
 NUMBER_COPIES_AVAIL_TO_PLACE : 24
+
+# GUI
+
+duration_toaster_popups: 500 # milliseconds
+fade_in_duration_toaster_popups: 125 # milliseconds
+alpha_toaster_popups: 0.7 # 0-1
