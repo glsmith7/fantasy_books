@@ -162,12 +162,12 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
         the_note = row_source[config['NOTE_COLUMN_INDEX']]
 
         if not sg.one_line_progress_meter(
-                'Copying books to master library file.', 
+                'To master ...', 
                 the_count+1, 
                 total_number_to_copy, 
                 orientation = 'h',
                 ) and the_count+1 != total_number_to_copy:
-                sg.popup_auto_close("The rest of the books won't be generated. Those already made will be added to the Excel file and the master library Excel file.")
+                sg.popup_auto_close("The rest of the books won't be copied to the master library Excel file.")
                 break
         
         if "do_not_archive" == the_note.value or "has_been_archived" == the_note.value:
@@ -255,11 +255,11 @@ def book_batch (number=1, **kwargs):
                 the_count+1, 
                 number, 
                 orientation = 'h',
-                ) and the_count+1 != number:
-                sg.popup_auto_close('Cancelling your loop...')
+                ): # and the_count+1 != number:
+                sg.popup_auto_close("The rest of the books won't be generated. Those already made will be added to the Excel file and the master library Excel file.")
                 break
 
-    print ('') # get off the same line
+    sg.one_line_progress_meter_cancel()
     return books, running_total
 
 def book_hoard (value_of_books=0,overshoot=True, **kwargs):
@@ -296,10 +296,11 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
                 value_of_books, 
                 orientation = 'h',
                 
-                ) and the_count+1 != value_of_books:
+                ): # and the_count+1 != value_of_books
                 sg.popup_auto_close("The rest of the books won't be generated. Those already made will be added to the Excel file and the master library Excel file.")
                 break
 
+        sg.one_line_progress_meter_cancel()
         if overshoot: 
             pass    
         else:
@@ -428,7 +429,6 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
             row.append(getattr(books[book],attribute))
         ws.append(row)
         the_counter += 1
-        # print ("Saving Book #" + str(the_counter) + "/" + str(len(books)) + " (" + str((int(100*the_counter/len(books)))) + "%)",end='\r')
 
             # now get language of the last row (just added) and set the proper font for the flavor title cell
         the_lang = ws.cell(row=ws.max_row,column=current_language_index)
@@ -439,8 +439,8 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
                 the_counter+1, 
                 len(books), 
                 orientation = 'h',
-                ) and the_counter+1 != len(books):
-                sg.popup_auto_close('Cancelling your loop...')
+                ):
+                sg.popup_auto_close('Saving the rest of the books to the Excel file canceled. Those books already in the file will still be entered into the master library file.')
                 break
     wb.save(filename)
     wb.close()
@@ -1703,7 +1703,7 @@ while True:
         break
     
     elif event == 'Generate Books':
-        window1.set_cursor("clock")
+        window1.set_cursor("watch")
         # window1.hide()
         save_gui_settings()
 
