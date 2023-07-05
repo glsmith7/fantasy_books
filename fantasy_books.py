@@ -653,10 +653,7 @@ def pick_existing_book(filename = 'master_fantasy_book_list.xlsx', worksheet = '
 
     wb_source,ws_source = load_excel_objects(filename = filename, worksheet = worksheet)
     
-    book_to_be = {}
-    # number_of_books = ws_source.max_row
-    # dice_string = "1d" + str(number_of_books-1) + "+1" # at least second row
-    
+    book_to_be = {} 
     
     while True:
         random_book = get_proper_random_book(filename=filename, worksheet=worksheet)
