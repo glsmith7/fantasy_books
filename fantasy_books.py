@@ -696,7 +696,7 @@ def pick_existing_book():
     # dataframe = read_excel_file_into_pandas() # (filename = filename, worksheet=worksheet)
     book = create_fantasy_book(**book_to_be)
     stats = calculate_stats_excel(master_book_pandas_table) # filename = filename, worksheet=worksheet)
-    update_master_books_array(stats)
+    update_master_books_array(stats XXXXXXXXXXXX
 
     # sg.popup_notify("Pre-existing book from master library placed.",
     #                 title = "Another copy!",
