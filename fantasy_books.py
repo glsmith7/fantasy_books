@@ -587,14 +587,14 @@ def fantasy_books_main_gui():
     
     return layout
 
-def get_proper_random_book (pandas_table):
+def get_proper_random_book ():
     '''
     Picking a row at random isn't a true randomization, since each row has a different number of extant books. This routine uses a weighted random choice and returns the line.
     '''
     
-    number_of_lines = len (pandas_table.index)
+    number_of_lines = len (master_book_pandas_table.index)
     lines_list = [i for i in range (0,number_of_lines)]
-    weighted_chances_list = pandas_table["number_extant_available_to_place"].values.tolist()
+    weighted_chances_list = master_book_pandas_table["number_extant_available_to_place"].values.tolist()
 
     row_target = random.choices(lines_list,weights=weighted_chances_list,k=1)
     to_return = int (row_target[0])
@@ -657,7 +657,7 @@ def pick_existing_book():
     book_to_be = {} 
     
     while True:
-        random_book = get_proper_random_book(master_book_pandas_table)
+        random_book = get_proper_random_book()
 
         index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
         try:
@@ -695,8 +695,8 @@ def pick_existing_book():
     
     # dataframe = read_excel_file_into_pandas() # (filename = filename, worksheet=worksheet)
     book = create_fantasy_book(**book_to_be)
-    # stats = calculate_stats_excel(dataframe) # filename = filename, worksheet=worksheet)
-    # update_master_books_array(stats)
+    stats = calculate_stats_excel(master_book_pandas_table) # filename = filename, worksheet=worksheet)
+    update_master_books_array(stats)
 
     # sg.popup_notify("Pre-existing book from master library placed.",
     #                 title = "Another copy!",
