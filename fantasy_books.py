@@ -246,7 +246,7 @@ def book_batch (number=1, **kwargs):
                 books[the_count] = create_fantasy_book(**kwargs)
 
             running_total += books[the_count].market_value
-            # update_user_facing_stats(the_count, running_total,number)
+            
             if not sg.one_line_progress_meter(
                 'Generating books', 
                 the_count, 
@@ -283,7 +283,6 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
                 books[the_count] = create_fantasy_book(**kwargs)
 
             running_total += books[the_count].market_value
-            # update_user_facing_stats(the_count, running_total,value_of_books)
 
             if not sg.one_line_progress_meter(
                 'Generating books', 
@@ -301,7 +300,6 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
         else:
             running_total -= books[len(books)].market_value # subtract last value that put us over the top
             books.popitem() # delete last book which put over the top
-            # update_user_facing_stats(the_count, running_total,value_of_books)
 
         if books == {}:
             sg.popup_notify("Zero books made in hoard; retrying ....",
@@ -315,17 +313,17 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
     return books, running_total
 
 def calculate_stats_excel (wb_master,ws_master):
-
+    
     col_list = ['market_value','number_extant_copies','number_extant_available_to_place']
     total={}
-    total['rows'] = ws_master.max_row
+    total['rows'] = ws_master.max_row-1 # total rows less 1 heading.
 
     for column in col_list:
         
         total[column] = 0 # will be non-existence if Excel file is empty, i.e., less than 2 lines, see for m in range loop.
-
         for m in range(2,ws_master.max_row+1): # starts from 2 since line 1 is headers. Max row thus needs +1 as well.
-            total[column] = total[column] + int (ws_master.cell(row=m,column=[config[column]]).value)
+           # the_column_index_num = 
+            total[column] = total[column] + int (ws_master.cell(row=m,column=config[column]).value)
             
     return (total)
 
@@ -685,9 +683,11 @@ def pick_existing_book():
             number_books_left_this_title = int (master_excel_worksheet.cell(row = random_book, column = index).value)
 
         # Otherwise, copy over
-        
         master_excel_worksheet.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
         
+        # also edit the pandas version
+        master_book_pandas_table.at[random_book-1,'number_extant_available_to_place'] = (number_books_left_this_title-1)
+
         the_counter = 1 # Excel columns start at 1, not zero.
         for attribute in config['book_variables_in_chosen_order']:
             book_to_be [attribute] = master_excel_worksheet.cell(row=random_book, column = the_counter).value
@@ -816,9 +816,9 @@ def save_master_books_settings():
 
 def update_master_books_array(the_array):
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
-    master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['MARKET_VALUE_INDEX']
-    master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['NUMBER_EXTANT_COPIES_INDEX']
-    master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['NUMBER_COPIES_AVAIL_TO_PLACE_INDEX']
+    master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['market_value']
+    master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['number_extant_copies']
+    master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['number_extant_available_to_place']
 
 def zero_out_master_books_file():
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = 0
@@ -1701,6 +1701,8 @@ while True:
             filename = excel_filename, 
             worksheet = excel_worksheet)
 
+        master_book_pandas_table.to_excel(excel_writer = r'D:\Dropbox\My Documents\Greg Documents\Programming\Python 3\fantasy_books_workspace\fantasy_books\master_fantasy_book_list.xlsx', sheet_name='Master List')
+
         archive_to_master(
             source=excel_filename, 
             source_worksheet = excel_worksheet,
@@ -1713,13 +1715,12 @@ while True:
             worksheet = master_worksheet,
             )
         # TO_DO
-        wb_master,ws_master = load_excel_objects(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List')
+        wb_master, ws_master = load_excel_objects(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List')
         master_as_stats = calculate_stats_excel(wb_master,ws_master)
         update_master_books_array(master_as_stats)
         save_master_books_settings() # save data for next time.
         window1.set_cursor("arrow")
         window1.un_hide()
-        break
 
     elif event == "Reset to defaults":
         window1['-EXCEL_OUT_FILENAME-'].update(value="books_spreadsheet_out.xlsx")
