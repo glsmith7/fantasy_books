@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 
 global vocab_dictionary, nt, wb_source, ws_source
 global window, overshoot_toggle # for GUI
-global excel_workbook, excel_worksheet,master_book_pandas_table
+global master_excel_workbook, master_excel_worksheet,master_book_pandas_table
 
 # GUI and graphics
 
@@ -267,7 +267,7 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
 
     books = {}
     sg.theme('Light Blue 1')
-    excel_workbook, excel_worksheet = load_excel_objects(filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
+    master_excel_workbook, master_excel_worksheet = load_excel_objects(filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
     master_book_pandas_table = read_excel_file_into_pandas (filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
 
     while books == {}:
@@ -278,7 +278,7 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
         while running_total < value_of_books:
             the_count += 1
             if check_if_should_place_existing_title():
-                books[the_count] = pick_existing_book(excel_workbook = excel_workbook, excel_worksheet=excel_worksheet, pandas_table=master_book_pandas_table)
+                books[the_count] = pick_existing_book(excel_workbook = master_excel_workbook, excel_worksheet=master_excel_worksheet, pandas_table=master_book_pandas_table)
 
             else:
                 books[the_count] = create_fantasy_book(**kwargs)
@@ -661,7 +661,7 @@ def pick_existing_book():
 
         index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
         try:
-            number_books_left_this_title = int (excel_worksheet.cell(row = random_book, column = index).value)
+            number_books_left_this_title = int (master_excel_worksheet.cell(row = random_book, column = index).value)
         
         except:
 
@@ -678,15 +678,15 @@ def pick_existing_book():
             
             random_book+=1 # ie not avail, pick another
             
-            number_books_left_this_title = int (excel_worksheet.cell(row = random_book, column = index).value)
+            number_books_left_this_title = int (master_excel_worksheet.cell(row = random_book, column = index).value)
 
         # Otherwise, copy over
         
-        excel_worksheet.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
+        master_excel_worksheet.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
         
         the_counter = 1 # Excel columns start at 1, not zero.
         for attribute in config['book_variables_in_chosen_order']:
-            book_to_be [attribute] = excel_worksheet.cell(row=random_book, column = the_counter).value
+            book_to_be [attribute] = master_excel_worksheet.cell(row=random_book, column = the_counter).value
             the_counter += 1
                     
         # wb_source.save('master_fantasy_book_list.xlsx') # save the master list with the decremented number of books for that title.
@@ -696,7 +696,7 @@ def pick_existing_book():
     # dataframe = read_excel_file_into_pandas() # (filename = filename, worksheet=worksheet)
     book = create_fantasy_book(**book_to_be)
     stats = calculate_stats_excel(master_book_pandas_table) # filename = filename, worksheet=worksheet)
-    update_master_books_array(stats XXXXXXXXXXXX
+    update_master_books_array(stats)
 
     # sg.popup_notify("Pre-existing book from master library placed.",
     #                 title = "Another copy!",
@@ -834,7 +834,7 @@ vocab_dictionary = import_language_words() # this is here because must come afte
 
 master_book_pandas_table = read_excel_file_into_pandas (filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
 stats = calculate_stats_excel(master_book_pandas_table)
-excel_workbook, excel_worksheet = load_excel_objects(filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
+master_excel_workbook, master_excel_worksheet = load_excel_objects(filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
 
 class FantasyBook():
     ''' 
