@@ -661,7 +661,7 @@ def pick_existing_book():
     while True:
         random_book = get_proper_random_book()
 
-        index = config['book_variables_in_chosen_order'].index('number_extant_available_to_place')+1
+        index = config['number_extant_available_to_place']
         try:
             number_books_left_this_title = int (master_excel_worksheet.cell(row = random_book, column = index).value)
         
@@ -686,15 +686,13 @@ def pick_existing_book():
         master_excel_worksheet.cell(row = random_book, column = index, value = (number_books_left_this_title-1))
         
         # also edit the pandas version
-        master_book_pandas_table.at[random_book-1,'number_extant_available_to_place'] = (number_books_left_this_title-1)
+        master_book_pandas_table.at[random_book-2,'number_extant_available_to_place'] = (number_books_left_this_title-1)
 
         the_counter = 1 # Excel columns start at 1, not zero.
         for attribute in config['book_variables_in_chosen_order']:
             book_to_be [attribute] = master_excel_worksheet.cell(row=random_book, column = the_counter).value
             the_counter += 1
                     
-        # wb_source.save('master_fantasy_book_list.xlsx') # save the master list with the decremented number of books for that title.
-        # wb_source.close()
         break
     
     book = create_fantasy_book(**book_to_be)
@@ -1701,7 +1699,8 @@ while True:
             filename = excel_filename, 
             worksheet = excel_worksheet)
 
-        master_book_pandas_table.to_excel(excel_writer = r'D:\Dropbox\My Documents\Greg Documents\Programming\Python 3\fantasy_books_workspace\fantasy_books\master_fantasy_book_list.xlsx', sheet_name='Master List')
+        master_excel_workbook.save('master_fantasy_book_list.xlsx') # save the master list with the decremented number of books for that title.
+        master_excel_workbook.close()
 
         archive_to_master(
             source=excel_filename, 
@@ -1715,10 +1714,16 @@ while True:
             worksheet = master_worksheet,
             )
         # TO_DO
-        wb_master, ws_master = load_excel_objects(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List')
-        master_as_stats = calculate_stats_excel(wb_master,ws_master)
-        update_master_books_array(master_as_stats)
+        master_excel_workbook, master_excel_worksheet = load_excel_objects(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List')
+        stats = calculate_stats_excel(master_excel_workbook, master_excel_worksheet)
+        update_master_books_array(stats)
         save_master_books_settings() # save data for next time.
+
+        # load for next round:
+        master_book_pandas_table = read_excel_file_into_pandas(
+            filename = 'master_fantasy_book_list.xlsx',
+            worksheet = 'Master List',
+            )
         window1.set_cursor("arrow")
         window1.un_hide()
 
