@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 
 global vocab_dictionary, nt, wb_source, ws_source
 global window, overshoot_toggle # for GUI
-global master_excel_workbook, master_excel_worksheet,master_book_pandas_table
+global master_excel_workbook, master_excel_worksheet,master_book_pandas_table, stats
 
 # GUI and graphics
 
@@ -228,6 +228,7 @@ def book_batch (number=1, **kwargs):
     '''
     
     books = {}
+    
     sg.theme('Light Blue 1')
 
     while books == {}:
@@ -267,8 +268,6 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
 
     books = {}
     sg.theme('Light Blue 1')
-    master_excel_workbook, master_excel_worksheet = load_excel_objects(filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
-    master_book_pandas_table = read_excel_file_into_pandas (filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
 
     while books == {}:
     
@@ -315,14 +314,19 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
     
     return books, running_total
 
-def calculate_stats_excel (excel_file_pandas, filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+def calculate_stats_excel (wb_master,ws_master):
+
     col_list = ['market_value','number_extant_copies','number_extant_available_to_place']
     total={}
-    total["rows"] = len(excel_file_pandas.index)
+    total['rows'] = ws_master.max_row
+
     for column in col_list:
-        total[column] = int (excel_file_pandas[column].sum())
-    total['filename'] = filename
-    total['worksheet'] = worksheet
+        
+        total[column] = 0 # will be non-existence if Excel file is empty, i.e., less than 2 lines, see for m in range loop.
+
+        for m in range(2,ws_master.max_row+1): # starts from 2 since line 1 is headers. Max row thus needs +1 as well.
+            total[column] = total[column] + int (ws_master.cell(row=m,column=[config[column]]).value)
+            
     return (total)
 
 def check_radio(key): # GUI function
@@ -339,7 +343,7 @@ def check_if_should_place_existing_title():
     if stats['number_extant_available_to_place'] < 1: # ie none exist to place
         return False
     
-    else: 
+    else: #TO_DO
 
         total_books_copies_in_campaign = config['TOTAL_BOOKS_IN_CAMPAIGN']
         total_books_copies_discovered = stats['number_extant_available_to_place']
@@ -693,9 +697,8 @@ def pick_existing_book():
         # wb_source.close()
         break
     
-    # dataframe = read_excel_file_into_pandas() # (filename = filename, worksheet=worksheet)
     book = create_fantasy_book(**book_to_be)
-    stats = calculate_stats_excel(master_book_pandas_table) # filename = filename, worksheet=worksheet)
+    stats = calculate_stats_excel(master_excel_workbook,master_excel_worksheet) # filename = filename, worksheet=worksheet)
     update_master_books_array(stats)
 
     # sg.popup_notify("Pre-existing book from master library placed.",
@@ -813,11 +816,9 @@ def save_master_books_settings():
 
 def update_master_books_array(the_array):
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
-    master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['market_value']
-    master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['number_extant_copies']
-    master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['number_extant_available_to_place']
-    # master_list_stats['MASTER_FILENAME'] = the_array['filename'] 
-    # master_list_stats['MASTER_WORKSHEET'] = the_array['worksheet'] 
+    master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['MARKET_VALUE_INDEX']
+    master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['NUMBER_EXTANT_COPIES_INDEX']
+    master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['NUMBER_COPIES_AVAIL_TO_PLACE_INDEX']
 
 def zero_out_master_books_file():
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = 0
@@ -833,8 +834,8 @@ vocab_dictionary = import_language_words() # this is here because must come afte
 # read in dataframe for master file
 
 master_book_pandas_table = read_excel_file_into_pandas (filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
-stats = calculate_stats_excel(master_book_pandas_table)
 master_excel_workbook, master_excel_worksheet = load_excel_objects(filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
+stats = calculate_stats_excel(master_excel_workbook, master_excel_worksheet)
 
 class FantasyBook():
     ''' 
@@ -1711,8 +1712,9 @@ while True:
             filename = master_filename,
             worksheet = master_worksheet,
             )
-        
-        master_as_stats = calculate_stats_excel(master_as_pandas, filename = master_filename, worksheet = master_worksheet)
+        # TO_DO
+        wb_master,ws_master = load_excel_objects(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List')
+        master_as_stats = calculate_stats_excel(wb_master,ws_master)
         update_master_books_array(master_as_stats)
         save_master_books_settings() # save data for next time.
         window1.set_cursor("arrow")
@@ -1758,7 +1760,6 @@ while True:
         window1['-MASTER_WORKSHEET-'].update(values=[], value='')
 
 window.close()
-print ("End:" + str(time.asctime()))
-# input("Press Enter to Close.")
+
 # # zero_out_master_books_file()
 

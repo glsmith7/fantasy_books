@@ -206,9 +206,10 @@ book_variables_in_chosen_order : [
 # magic numbers related to above; must change if the order is changed. Starts from ONE (1)
 CURRENT_LANGUAGE_COLUMN_INDEX : 6
 FLAVOR_TITLE_COLUMN_INDEX : 19
+market_value: 15
+number_extant_copies : 23
+number_extant_available_to_place : 24
 NOTE_COLUMN_INDEX : 49
-NUMBER_EXTANT_COPIES_INDEX : 23
-NUMBER_COPIES_AVAIL_TO_PLACE : 24
 
 # GUI
 
