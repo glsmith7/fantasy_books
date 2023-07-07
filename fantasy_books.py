@@ -114,6 +114,11 @@ radio_unchecked_icon = i.radio_unchecked()
 radio_checked_icon = i.radio_checked()
 books_icon = i.books_icon()
 excel_icon = i.excel_icon()
+settings_general_icon = i.settings_general()
+settings_save_icon = i.settings_save()
+settings_cancel_icon = i.settings_dismiss()
+settings_reset_icon = i.settings_reset()
+
 overshoot_toggle = sg.user_settings_get_entry('-overshoot_toggle-')
 radio_keys = ('-R1-', '-R2-')
 
@@ -1892,7 +1897,7 @@ window_settings = sg.Window(
     'Preferences',
     layout = settings_gui(),
     grab_anywhere=True,
-    icon = '',#TO_DO
+    icon = settings_general_icon,
     finalize=True,
     disable_close = True,
 )
@@ -2067,10 +2072,10 @@ while True:
         
         sg.popup_notify("Preferences have been saved.",
                     title = "Settings saved!",
-                    icon = '',#TO_DO
+                    icon = settings_save_icon,
                     display_duration_in_ms = config['duration_toaster_popups_longer'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = config['alpha_toaster_popups'],
+                    alpha = 0.9,
                     location = None)
 
     elif event == "-RESTORE-DEFAULT-PREFS-":
@@ -2082,10 +2087,10 @@ while True:
         
         sg.popup_notify("Default settings restored. You may Quit to keep, or Quit to discard and revert.",
                     title = "Default restored",
-                    icon = '',#TO_DO
+                    icon = settings_reset_icon,
                     display_duration_in_ms = config['duration_toaster_popups_longer'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = config['alpha_toaster_popups'],
+                    alpha = 0.9,
                     location = None)
 
     elif event == '-DONT-SAVE-PREFS-':
@@ -2100,10 +2105,10 @@ while True:
         
         sg.popup_notify("Preferences were NOT saved. No changes were made.",
                     title = "Settings not saved.",
-                    icon = '',#TO_DO
+                    icon = settings_cancel_icon,
                     display_duration_in_ms = config['duration_toaster_popups_longer'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = config['alpha_toaster_popups'],
+                    alpha = 0.9,
                     location = None)
 
 window.close()
