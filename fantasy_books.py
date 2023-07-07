@@ -1220,8 +1220,12 @@ class FantasyBook():
                 self.age_at_discovery = d20.roll(preferences['TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL']).total # bonus to age if is translation.
             
             self.age_at_discovery = self.age_at_discovery + d20.roll(dice_string).total
+            if self.age_at_discovery < preferences['MINIMUM_AGE_BOOK']: self.age_at_discovery = preferences['MINIMUM_AGE_BOOK']
+            if self.age_at_discovery > preferences['MAXIMUM_AGE_BOOK']: self.age_at_discovery = preferences['MAXIMUM_AGE_BOOK']
         else:
             self.age_at_discovery = age
+            if self.age < preferences['MINIMUM_AGE_BOOK']: self.age = preferences['MINIMUM_AGE_BOOK']
+            if self.age > preferences['MAXIMUM_AGE_BOOK']: self.age = preferences['MAXIMUM_AGE_BOOK']
     
     def add_note (self,note=None):
         self.note = note
