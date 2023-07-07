@@ -1,4 +1,3 @@
-from bisect import bisect_left
 from copy import copy
 import datetime
 import d20
@@ -8,6 +7,7 @@ from math import ceil
 from openpyxl.styles import Font as openpyxl_font
 from openpyxl import load_workbook
 from openpyxl import Workbook
+
 import pandas as pd
 import PySimpleGUI as sg
 import os
@@ -963,7 +963,6 @@ def save_master_books_settings():
     '''
     Saves the master_list_stats array so data persists between sessions.
     '''
-
     try_to_save = True
     while try_to_save:
         try:
@@ -995,6 +994,41 @@ def save_master_books_settings():
         else:
             try_to_save = False # ie succeeded
 
+def settings_gui():
+
+    col2 = sg.Column([[sg.Frame('Accounts:', [[sg.Column([[sg.Listbox(['Account '+str(i) for i in range(1,16)],
+                                                      key='-ACCT-LIST-',size=(15,20)),]],size=(150,400))]])]],pad=(0,0))
+
+    col1 = sg.Column([
+        # Categories sg.Frame
+        [sg.Frame('',[[ sg.Radio('Websites', 'radio1', default=True, key='-WEBSITES-', size=(10,1)),
+                                sg.Radio('Software', 'radio1', key='-SOFTWARE-',  size=(10,1))]],)],
+        # Information sg.Frame
+        [sg.Frame('Information:', [[sg.Text(), sg.Column([[sg.Text('Account:')],
+                                [sg.Input(key='-ACCOUNT-IN-', size=(19,1))],
+                                [sg.Text('User Id:')],
+                                [sg.Input(key='-USERID-IN-', size=(19,1)),
+                                sg.Button('Copy', key='-USERID-')],
+                                [sg.Text('Password:')],
+                                [sg.Input(key='-PW-IN-', size=(19,1)),
+                                sg.Button('Copy', key='-PASS-')],
+                                [sg.Text('Location:')],
+                                [sg.Input(key='-LOC-IN-', size=(19,1)),
+                                sg.Button('Copy', key='-LOC-')],
+                                [sg.Text('Notes:')],
+                                [sg.Multiline(key='-NOTES-', size=(25,5))],
+                                ], size=(235,350), pad=(0,0))]])], ], pad=(0,0))
+
+    col3 = sg.Column([[sg.Frame('Actions:',
+                                [[sg.Column([[sg.Button('Save'), sg.Button('Clear'), sg.Button('Delete'), ]],
+                                            size=(450,45), pad=(0,0))]])]], pad=(0,0))
+
+    # The final layout is a simple one
+    layout = [[col1, col2],
+            [col3]]
+    
+    return layout
+
 def update_master_books_array(the_array):
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
     master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['market_value']
@@ -1006,7 +1040,9 @@ def zero_out_master_books_file():
     master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = 0
     master_list_stats['TOTAL_BOOKS_IN_MASTER'] = 0
     master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = 0
+
     save_master_books_settings()
+
     sg.popup_notify("Master book settings have been zeroed out.",
                     title = "New master",
                     icon = radio_unchecked_icon,
@@ -1808,7 +1844,13 @@ window1 = sg.Window(
     icon = books_icon,
     finalize = True
     )
-
+window_prefs = sg.Window(
+    'Preferences',
+    layout = settings_gui(),
+    grab_anywhere=True,
+    icon = '',#TO_DO
+    finalize=True
+)
 # window2 = sg.Window(
 #     'Fantasy Books Generator', 
 #     layout = progress_window_gui(),
