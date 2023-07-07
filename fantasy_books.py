@@ -33,6 +33,9 @@ with open("fantasy_book_settings.yaml") as f:
 with open("master_books_settings.yaml") as g:     
     master_list_stats= yaml.load (g, Loader=SafeLoader)
 
+with open("preferences_fantasy_books.yaml") as h:     
+    preferences= yaml.load (h, Loader=SafeLoader)
+
 # logging boilerplate
 import settings_GLS as s
 import logging
@@ -343,7 +346,7 @@ def check_if_should_place_existing_title():
     
     else: #TO_DO
 
-        total_books_copies_in_campaign = config['TOTAL_BOOKS_IN_CAMPAIGN']
+        total_books_copies_in_campaign = preferences['TOTAL_BOOKS_IN_CAMPAIGN']
         total_books_copies_discovered = stats['number_extant_available_to_place']
         dice_string = "1d" + str (total_books_copies_in_campaign)
         the_roll = d20.roll(dice_string).total
@@ -992,7 +995,7 @@ class FantasyBook():
             table_name = 'BookAge_'+ self.current_language # Ancient, Dwarvish, Elvish, Classical, Common are options
             dice_string = self.book_details_result_from_tables(table_name)
             if self.is_a_translation == True: 
-                self.age_at_discovery = d20.roll(config['TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL']).total # bonus to age if is translation.
+                self.age_at_discovery = d20.roll(preferences['TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL']).total # bonus to age if is translation.
             
             self.age_at_discovery = self.age_at_discovery + d20.roll(dice_string).total
         else:
@@ -1012,7 +1015,7 @@ class FantasyBook():
 
     def author_epithet_set (self, author_epithet=None):
         if not author_epithet:
-            if config['CHANCE_OF_EPITHET_IN_AUTHOR_NAME'] > d20.roll("1d100").total:
+            if preferences['CHANCE_OF_EPITHET_IN_AUTHOR_NAME'] > d20.roll("1d100").total:
                 author_epithet = nt['epithets_table'].df.sample() # a random option is then chosen
                 author_epithet = author_epithet.iloc[0,0]         
         self.author_epithet = author_epithet            
@@ -1339,7 +1342,7 @@ class FantasyBook():
     def name_generate(self,sex=None):
         # first name
         if sex == None:
-            if d20.roll("1d100").total <  config['CHANCE_OF_FEMALE_AUTHOR']: 
+            if d20.roll("1d100").total <  preferences['CHANCE_OF_FEMALE_AUTHOR']: 
                 sex = "Female"
             else: 
                 sex = "Male"
@@ -1385,7 +1388,7 @@ class FantasyBook():
     def percentage_of_text_missing_set(self,fraction_complete=None):
         
         if not fraction_complete:
-            if config['CHANCE_OF_INCOMPLETE_WORK'] >= d20.roll("1d100").total:
+            if preferences['CHANCE_OF_INCOMPLETE_WORK'] >= d20.roll("1d100").total:
                 fraction_missing = round(d20.roll("1d99").total/100,2)
             else:
                 fraction_missing = 0
@@ -1407,7 +1410,7 @@ class FantasyBook():
         
         author_title = ''
 
-        if config['CHANCE_OF_TITLE_IN_AUTHOR_NAME'] >= d20.roll("1d100").total:
+        if preferences['CHANCE_OF_TITLE_IN_AUTHOR_NAME'] >= d20.roll("1d100").total:
 
             author_title = str(nt['author_title_table'].df.sample().iloc[0,0])
            
@@ -1487,7 +1490,7 @@ class FantasyBook():
     
     def sex_set (self, author_sex=None):
         if not author_sex:
-            if d20.roll("1d100").total <= config['CHANCE_OF_FEMALE_AUTHOR']: self.author_sex = "Female"
+            if d20.roll("1d100").total <= preferences['CHANCE_OF_FEMALE_AUTHOR']: self.author_sex = "Female"
             else: self.author_sex = "Male"
         else:
             self.author_sex = author_sex
@@ -1529,7 +1532,7 @@ class FantasyBook():
         self.is_a_translation = False
         self.translator_full_name = translator_full_name
 
-        if (translator_name or translator_full_name) and (self.current_language not in config['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO']):
+        if (translator_name or translator_full_name) and (self.current_language not in preferences['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO']):
             self.is_a_translation = True
             self.translator_nationality = translator_nationality
             self.translator_title = translator_title
@@ -1541,7 +1544,7 @@ class FantasyBook():
             else:
                 self.translator_full_name = self.translator_title + " " + self.translator_name
 
-        elif (roll_to_see_if_it_is_a_translation < config['CHANCE_OF_BEING_TRANSLATION']) and (self.current_language not in config['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO']):
+        elif (roll_to_see_if_it_is_a_translation < preferences['CHANCE_OF_BEING_TRANSLATION']) and (self.current_language not in preferences['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO']):
             self.is_a_translation = True
             self.translator_name, self.translator_nationality, self.translator_sex = self.name_generate()
             self.translator_title = self.person_title_generate(sex = self.translator_sex)
@@ -1642,7 +1645,7 @@ for element in window1.key_dict.values():
 window1['-number_of_books_to_make-'].block_focus(block=False)
 window1['-value_of_books_to_make-'].block_focus(block=False)
 ########## Main Event Loop of GUI
-print ("Start:" + str(time.asctime()))
+
 while True:
     window,event, values = sg.read_all_windows()
     if event in (sg.WIN_CLOSED, 'Quit'):
@@ -1671,6 +1674,7 @@ while True:
         break
     
     elif event == 'Generate Books':
+        print ("Start:" + str(time.asctime()))
         window1.set_cursor("watch")
         # window1.hide()
         save_gui_settings()
@@ -1726,6 +1730,7 @@ while True:
             )
         window1.set_cursor("arrow")
         window1.un_hide()
+        print ("End:" + str(time.asctime()))
 
     elif event == "Reset to defaults":
         window1['-EXCEL_OUT_FILENAME-'].update(value="books_spreadsheet_out.xlsx")
