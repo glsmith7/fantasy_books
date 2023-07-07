@@ -712,6 +712,9 @@ def fantasy_books_main_gui():
             sg.Text('books',
                     expand_x=True,
                     ), 
+
+            sg.Push(),
+            sg.Button('Master library stats'),
             ],
 
             # Final buttons
