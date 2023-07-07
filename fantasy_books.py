@@ -1,5 +1,6 @@
 from bisect import bisect_left
 from copy import copy
+import datetime
 import d20
 import icons as i
 from lorem_text_fantasy import lorem as lf
@@ -120,7 +121,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
     try:
         wb_dest = load_workbook(filename= destination)
     except:
-        create_new_master_excel_file(filename=destination, worksheet = destination_worksheet)
+        create_new_master_excel_file(filename=destination)
     wb_dest = load_workbook(filename= destination)
 
     if destination_worksheet in wb_dest.sheetnames: 
@@ -204,6 +205,36 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
     wb_source_books.close()
     wb_dest.close()
 
+def backup_excel_file(filename = "master_fantasy_book_list.xlsx"):
+
+    # archive the old master file
+    file_source = filename
+    the_label = datetime.datetime.now().strftime("%Y%m%d_%H%M_%S")
+    file_destination = 'excel_backups\master_fantasy_book_list_backup_XXLABELXX.xlsx'
+    file_destination = file_destination.replace('XXLABELXX',the_label)
+    
+    try:
+        shutil.move(file_source, file_destination)
+    except:
+        sg.popup_notify('The old file ' + file_source + ' could not be archived. This could be because: [1] Not able to save or delete files. [2] File is open in Excel. [3] File either renamed or does not exit. Try creating an empty excel file named ' + file_source,
+                    title = "Can't archive!",
+                    icon = radio_unchecked_icon,
+                    display_duration_in_ms = 5000,
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = 1,
+                    location = None)
+        raise FileNotFoundError("A new file could not be created.")
+    
+    else:
+
+        sg.popup_notify('Former master book file moved to folder "excel_backups".',
+                        title = "Archived",
+                        icon = radio_unchecked_icon,
+                        display_duration_in_ms = config['duration_toaster_popups'],
+                        fade_in_duration = config['fade_in_duration_toaster_popups'],
+                        alpha = config['alpha_toaster_popups'],
+                        location = None)
+    
 def book_characteristics(books):
 
 
@@ -361,13 +392,31 @@ def create_fantasy_book(book_type=None, **kwargs):
     book_type = string.capwords(str(book_type))
     return FantasyBook(**kwargs)
 
-def create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+def create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx'):
     file_source = 'blank_excel_files_templates\master_fantasy_book_list_BLANK.xlsx'
     file_destination = filename
     if file_destination[-5:] != ".xlsx":
         file_destination = file_destination + ".xlsx"
 
-    shutil.copyfile(file_source, file_destination)
+    try:
+        shutil.copyfile(file_source, file_destination)
+    except:
+        sg.popup_notify('A new file could not be created. This could be because: [1] Not able to save or delete files. [2] Blank file in "balnk_excel_files_templates" folder either renamed or does not exit.',
+                    title = "New master.",
+                    icon = radio_unchecked_icon,
+                    display_duration_in_ms = 5000,
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = 1,
+                    location = None)
+        raise FileNotFoundError("A new file could not be created.")
+    else:
+        sg.popup_notify('New blank master file created.',
+                    title = "New master.",
+                    icon = radio_unchecked_icon,
+                    display_duration_in_ms = config['duration_toaster_popups'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups'],
+                    location = None)
 
 def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksheet = 'Book Hoard'):
     
@@ -513,7 +562,8 @@ def fantasy_books_main_gui():
             ],
 
             # line 3 ##################################################################
-            [sg.Image(radio_checked_icon if sg.user_settings_get_entry('-R1_status-') else radio_unchecked_icon,
+            [
+                sg.Image(radio_checked_icon if sg.user_settings_get_entry('-R1_status-') else radio_unchecked_icon,
                       enable_events=True, 
                       k='-R1-', 
                       metadata=sg.user_settings_get_entry('-R1_status-'),
@@ -550,11 +600,9 @@ def fantasy_books_main_gui():
                     ),
             ],
 
-        
-
             # line 4 ###################################################################
-
-            [sg.Image(radio_checked_icon if sg.user_settings_get_entry('-R2_status-') else radio_unchecked_icon,
+            [
+                sg.Image(radio_checked_icon if sg.user_settings_get_entry('-R2_status-') else radio_unchecked_icon,
                       enable_events=True, 
                       k='-R2-', 
                       metadata=sg.user_settings_get_entry('-R2_status-'),
@@ -580,12 +628,15 @@ def fantasy_books_main_gui():
             ],
 
             # Final buttons
-            [sg.Button('Generate Books', 
+            [
+                sg.Button('Generate Books', 
                        bind_return_key=True,
                        ),
             sg.Button("Save settings and Quit"),  
             sg.Button('Reset to defaults'),
             sg.Button('Quit'),
+            sg.Push(),
+            sg.Button('Clear master Excel file')
             
             ]
             ]
@@ -827,7 +878,13 @@ def zero_out_master_books_file():
     master_list_stats['TOTAL_BOOKS_IN_MASTER'] = 0
     master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = 0
     save_master_books_settings()
-    sg.popup_ok ("Master book settings have been zeroed out. Makes sure the Excel files contain no books.")
+    sg.popup_notify("Master book settings have been zeroed out.",
+                    title = "New master",
+                    icon = radio_unchecked_icon,
+                    display_duration_in_ms = config['duration_toaster_popups'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups'],
+                    location = None)
 
 ######################## CLASSES ########################
 
@@ -1673,6 +1730,11 @@ while True:
         save_gui_settings()
         break
     
+    elif event == 'Clear master Excel file':
+        zero_out_master_books_file()
+        backup_excel_file(filename = 'master_fantasy_book_list.xlsx')
+        create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx')
+
     elif event == 'Generate Books':
         print ("Start:" + str(time.asctime()))
         window1.set_cursor("watch")
