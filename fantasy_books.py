@@ -28,14 +28,65 @@ except ImportError:
     from yaml import SafeLoader
 
 # settings files
-with open("fantasy_book_settings.yaml") as f:     
-    config = yaml.load(f, Loader=SafeLoader)
+global config, master_list_stats, preferences
+loaded_settings_files = False
 
-with open("master_books_settings.yaml") as g:     
-    master_list_stats= yaml.load (g, Loader=SafeLoader)
+while not loaded_settings_files:
+    try:
+        with open("fantasy_book_settings.yaml") as f:     
+            config = yaml.load(f, Loader=SafeLoader)
 
-with open("preferences_fantasy_books.yaml") as h:     
-    preferences= yaml.load (h, Loader=SafeLoader)
+    except PermissionError:
+        sg.popup_error ("The settings file 'fantasy_books_settings.yaml' cannot be accessed. Is it open in another program?")
+        sys.exit()
+
+    except FileNotFoundError:
+        sg.popup_error ("The settings file 'fantasy_books_settings.yaml' cannot be found. Has it been moved, deleted, or renamed?\n\n There is a backup copy in the folder 'default_settings_files_backup' if needed.")
+        sys.exit()
+
+    except:
+        sg.popup_error ("An error has occured with settings file 'fantasy_books_settings.yaml'.")
+
+    else:
+        pass
+
+    try:
+        with open("master_books_settings.yaml") as g:     
+            master_list_stats= yaml.load (g, Loader=SafeLoader)
+
+    except PermissionError:
+        sg.popup_error ("The settings file 'master_books_settings.yaml' cannot be accessed. Is it open in another program?")
+        sys.exit()
+
+    except FileNotFoundError:
+        sg.popup_error ("The settings file 'master_books_settings.yaml' cannot be found. Has it been moved, deleted, or renamed?\n\n There is a backup copy in the folder 'default_settings_files_backup' if needed.")
+        sys.exit()
+
+    except:
+        sg.popup_error ("An error has occured with settings file 'master_books_settings.yaml'.")
+
+    else: 
+        pass
+
+    try:
+        with open("preferences_fantasy_books.yaml") as h:     
+            preferences= yaml.load (h, Loader=SafeLoader)
+
+    except PermissionError:
+        sg.popup_error ("The settings file 'preferences_fantasy_books.yaml' cannot be accessed. Is it open in another program?")
+        sys.exit()
+
+    except FileNotFoundError:
+        sg.popup_error ("The settings file 'preferences_fantasy_books.yaml' cannot be found. Has it been moved, deleted, or renamed?\n\n There is a backup copy in the folder 'default_settings_files_backup' if needed.")
+        sys.exit()
+
+    except:
+        sg.popup_error ("An error has occured with settings file 'preferences_fantasy_books.yaml'.")
+
+    else:
+        pass
+
+    loaded_settings_files = True
 
 # logging boilerplate
 import settings_GLS as s
@@ -108,7 +159,8 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
     # load source
     try:
         wb_source_books = load_workbook(filename= source)
-    except:
+    except FileNotFoundError:
+
         raise FileNotFoundError ("Could not load the source file: " + source + ".")
 
     if source_worksheet in wb_source_books.sheetnames: 
@@ -136,8 +188,6 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
             the_counter += 1
             ws_dest.cell(row=1,column=the_counter,value=item)
             ws_dest.cell(row=1,column=the_counter).font = openpyxl_font(bold='bold',size=9)
-    
-            sg.popup_ok ("Done column labels.")
 
     # Make sure can save
 
@@ -145,8 +195,8 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
     while try_to_save:
         try:
             wb_dest.save(destination) 
-        except:
-            user_response = sg.popup_ok_cancel ("The Excel file " + destination + " is probably open. \n\n Close the file, and click OK to try again.\n\nTo quit without saving, click CANCEL.")
+        except PermissionError:
+            user_response = sg.popup_ok_cancel ("The Excel file " + destination + " can't be opened, which means it is probably open in another program. \n\n Close the file, and click OK to try again.\n\nTo quit without saving, click CANCEL.")
             
             if user_response == "Cancel":
                 try_to_save = False
@@ -168,7 +218,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
         the_note = row_source[config['NOTE_COLUMN_INDEX']]
 
         if not sg.one_line_progress_meter(
-                'To master ...', 
+                'Copy to master', 
                 the_count, 
                 total_number_to_copy, 
                 orientation = 'h',
@@ -213,23 +263,38 @@ def backup_excel_file(filename = "master_fantasy_book_list.xlsx"):
     file_destination = 'excel_backups\master_fantasy_book_list_backup_XXLABELXX.xlsx'
     file_destination = file_destination.replace('XXLABELXX',the_label)
     
-    try:
-        shutil.move(file_source, file_destination)
-    except:
-        sg.popup_notify('The old file ' + file_source + ' could not be archived. This could be because: [1] Not able to save or delete files. [2] File is open in Excel. [3] File either renamed or does not exit. Try creating an empty excel file named ' + file_source,
-                    title = "Can't archive!",
-                    icon = radio_unchecked_icon,
+    try_to_save = True
+    while try_to_save:
+        try:
+            shutil.move(file_source, file_destination)
+
+        except PermissionError:
+            
+            user_response = sg.popup_ok_cancel ("The Excel file " + file_source + " can't be opened, which means it is probably open in another program. \n\n Close the file, and click OK to try again.\n\nTo quit without saving, click CANCEL.")
+            
+            if user_response == "Cancel":
+                try_to_save = False
+                sg.popup_ok ("Quitting without saving to Excel.")
+                sys.exit()
+                break
+
+        except FileNotFoundError:
+            sg.popup_notify('The old file ' + file_source + ' could not be archived, probably because it has been either renamed or does not exist. Try creating an empty excel file named ' + file_source,
+                    title = "File not found",
+                    icon = '', # TO_DO
                     display_duration_in_ms = 5000,
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 1,
                     location = None)
-        raise FileNotFoundError("A new file could not be created.")
-    
-    else:
-
-        sg.popup_notify('Former master book file moved to folder "excel_backups".',
+        
+        except:
+            raise ("A new file could not be created.")
+        
+        else:
+            try_to_save = False # ie succeeded
+            sg.popup_notify('Former master book file moved to folder "excel_backups".',
                         title = "Archived",
-                        icon = radio_unchecked_icon,
+                        icon = '', # TO_DO
                         display_duration_in_ms = config['duration_toaster_popups'],
                         fade_in_duration = config['fade_in_duration_toaster_popups'],
                         alpha = config['alpha_toaster_popups'],
@@ -242,10 +307,8 @@ def book_characteristics(books):
                    if not attribute.startswith('__')
                    and not callable(getattr(books[1], attribute))
                    ]
-    # edit these to make appear in the Excel output in a different order
     
-    
-    # this bit adds any variables that have been omitted from the above list, so all will be displayed even if user error.
+        # this bit adds any variables that have been omitted from the above list, so all will be displayed even if user error/omission.
     for item in book_attributes:
         if item not in config['book_variables_in_chosen_order']:
             config['book_variables_in_chosen_order'].append(item)
@@ -398,20 +461,37 @@ def create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx'):
     if file_destination[-5:] != ".xlsx":
         file_destination = file_destination + ".xlsx"
 
-    try:
-        shutil.copyfile(file_source, file_destination)
-    except:
-        sg.popup_notify('A new file could not be created. This could be because: [1] Not able to save or delete files. [2] Blank file in "balnk_excel_files_templates" folder either renamed or does not exit.',
-                    title = "New master.",
-                    icon = radio_unchecked_icon,
+    try_to_save = True
+    while try_to_save:
+        try:
+            shutil.copyfile(file_source, file_destination)
+
+        except PermissionError:
+            
+            user_response = sg.popup_ok_cancel ("The Excel file " + file_source + " can't be opened, which means it is probably open in another program. \n\n Close the file, and click OK to try again.\n\nTo quit without saving, click CANCEL.")
+            
+            if user_response == "Cancel":
+                try_to_save = False
+                sg.popup_ok ("Quitting without saving to Excel.")
+                sys.exit()
+                break
+
+        except FileNotFoundError:
+            sg.popup_notify('The template file ' + file_source + ' could not be found, probably because it has been either renamed or does not exist. Try creating an empty excel file named ' + file_source,
+                    title = "File not found",
+                    icon = '', # TO_DO
                     display_duration_in_ms = 5000,
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 1,
                     location = None)
-        raise FileNotFoundError("A new file could not be created.")
-    else:
-        sg.popup_notify('New blank master file created.',
-                    title = "New master.",
+        
+        except:
+            raise ("A new file could not be created.")
+        
+        else:
+            try_to_save = False # ie succeeded
+            sg.popup_notify('New blank master file created.',
+                    title = "New master",
                     icon = radio_unchecked_icon,
                     display_duration_in_ms = config['duration_toaster_popups'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
@@ -459,7 +539,7 @@ def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksh
     while try_to_save:
         try:
             wb.save(filename) 
-        except:
+        except PermissionError:
             user_response = sg.popup_ok_cancel ("The Excel file " + filename + " is probably open. \n\n Close the file, and click OK to try again.\n\nTo quit without saving, click CANCEL.")
             
             if user_response == "Cancel":
@@ -726,7 +806,7 @@ def pick_existing_book():
         if number_books_left_this_title == 0:
             sg.popup_notify("Zero books of this title remain for placement; picking another book...",
                 title = "None of these left.",
-                icon = radio_unchecked_icon,
+                icon = '', # TO_DO
                 display_duration_in_ms = config['duration_toaster_popups'],
                 fade_in_duration = config['fade_in_duration_toaster_popups'],
                 alpha = config['alpha_toaster_popups'],
@@ -824,15 +904,38 @@ def progress_window_gui():
 def radio_is_checked(key): # GUI
         return window1[key].metadata
 
-def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',worksheet = 'Master List'):
-    try:
-        excel_file_pandas = pd.read_excel(filename, sheet_name=worksheet, header=0, index_col=None, usecols=None, dtype=None, engine="openpyxl", decimal='.')
+def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',worksheet = 'Master List'): 
+    
+    try_to_save = True
+    while try_to_save:
+        try:
+            excel_file_pandas = pd.read_excel(filename, sheet_name=worksheet, header=0, index_col=None, usecols=None, dtype=None, engine="openpyxl", decimal='.')
 
-    except:
-        sg.popup_error("Problem opening file:" + filename + " If you get a ZipFile error, this may be due to a corrupt Excel file.")
-        raise IOError ("Problem importing excel file.")
-    else:    
-        return excel_file_pandas
+        except PermissionError:
+                
+            user_response = sg.popup_ok_cancel ("The Excel file " + filename + " can't be opened, which means it is probably open in another program. \n\n Close the file, and click OK to try again.\n\nTo quit without saving, click CANCEL.")
+            
+            if user_response == "Cancel":
+                try_to_save = False
+                sg.popup_ok ("Quitting ...")
+                sys.exit()
+                break
+
+        except FileNotFoundError:
+            sg.popup_notify('The old file ' + filename + ' could not be archived, probably because it has been either renamed or does not exist.',
+                    title = "File not found",
+                    icon = '', # TO_DO
+                    display_duration_in_ms = 5000,
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = 1,
+                    location = None)
+                
+        except:
+            sg.popup_error("Problem opening file:" + filename + " If you get a ZipFile error, this may be due to a corrupt Excel file.")
+            
+        else:
+            try_to_save = False # succeeded!     
+            return excel_file_pandas
 
 def save_gui_settings():
     # Save combo boxes and contents - out
@@ -860,11 +963,37 @@ def save_master_books_settings():
     '''
     Saves the master_list_stats array so data persists between sessions.
     '''
-    try:
-        with open("master_books_settings.yaml", "w") as f:     
-            yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
-    except:
-        sg.popup_error ('Error with saving file "master_books_settings.yaml". Is the file open in another program?')
+
+    try_to_save = True
+    while try_to_save:
+        try:
+            with open("master_books_settings.yaml", "w") as f:     
+                yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
+
+        except PermissionError:
+            
+            user_response = sg.popup_ok_cancel ("The Excel file " + 'master_books_settings.yaml' + " can't be saved, which means it is probably open in another program. \n\n Close the file, and click OK to try again.\n\nTo quit without saving, click CANCEL.")
+            
+            if user_response == "Cancel":
+                try_to_save = False
+                sg.popup_ok ("Quitting without saving to Excel.")
+                sys.exit()
+                break
+
+        except FileNotFoundError: # this will probably never be called. Here in case, for now.
+            sg.popup_notify('The file ' + 'master_books_settings.yaml' + ' could not be saved, probably because it has been either renamed or does not exist.',
+                    title = "File not found",
+                    icon = '', # TO_DO
+                    display_duration_in_ms = 5000,
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = 1,
+                    location = None)
+        
+        except:
+            raise ("A problem with saving the master library settings file was encountered.")
+        
+        else:
+            try_to_save = False # ie succeeded
 
 def update_master_books_array(the_array):
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
