@@ -29,70 +29,78 @@ except ImportError:
 
 # settings files
 global config, master_list_stats, preferences
-loaded_settings_files = False
-
-while not loaded_settings_files:
-    try:
-        with open("fantasy_book_settings.yaml") as f:     
-            config = yaml.load(f, Loader=SafeLoader)
-
-    except PermissionError:
-        sg.popup_error ("The settings file 'fantasy_books_settings.yaml' cannot be accessed. Is it open in another program?")
-        sys.exit()
-
-    except FileNotFoundError:
-        sg.popup_error ("The settings file 'fantasy_books_settings.yaml' cannot be found. Has it been moved, deleted, or renamed?\n\n There is a backup copy in the folder 'default_settings_files_backup' if needed.")
-        sys.exit()
-
-    except:
-        sg.popup_error ("An error has occured with settings file 'fantasy_books_settings.yaml'.")
-
-    else:
-        pass
-
-    try:
-        with open("master_books_settings.yaml") as g:     
-            master_list_stats= yaml.load (g, Loader=SafeLoader)
-
-    except PermissionError:
-        sg.popup_error ("The settings file 'master_books_settings.yaml' cannot be accessed. Is it open in another program?")
-        sys.exit()
-
-    except FileNotFoundError:
-        sg.popup_error ("The settings file 'master_books_settings.yaml' cannot be found. Has it been moved, deleted, or renamed?\n\n There is a backup copy in the folder 'default_settings_files_backup' if needed.")
-        sys.exit()
-
-    except:
-        sg.popup_error ("An error has occured with settings file 'master_books_settings.yaml'.")
-
-    else: 
-        pass
-
-    try:
-        with open("preferences_fantasy_books.yaml") as h:     
-            preferences= yaml.load (h, Loader=SafeLoader)
-
-    except PermissionError:
-        sg.popup_error ("The settings file 'preferences_fantasy_books.yaml' cannot be accessed. Is it open in another program?")
-        sys.exit()
-
-    except FileNotFoundError:
-        sg.popup_error ("The settings file 'preferences_fantasy_books.yaml' cannot be found. Has it been moved, deleted, or renamed?\n\n There is a backup copy in the folder 'default_settings_files_backup' if needed.")
-        sys.exit()
-
-    except:
-        sg.popup_error ("An error has occured with settings file 'preferences_fantasy_books.yaml'.")
-
-    else:
-        pass
-
-    loaded_settings_files = True
 
 # logging boilerplate
 import settings_GLS as s
 import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
+
+def load_settings():
+
+    loaded_settings_files = False
+
+    while not loaded_settings_files:
+        # list of values for GUI use
+
+        try:
+            with open("fantasy_book_settings.yaml") as f:     
+                config = yaml.load(f, Loader=SafeLoader)
+
+        except PermissionError:
+            sg.popup_error ("The settings file 'fantasy_books_settings.yaml' cannot be accessed. Is it open in another program?")
+            sys.exit()
+
+        except FileNotFoundError:
+            sg.popup_error ("The settings file 'fantasy_books_settings.yaml' cannot be found. Has it been moved, deleted, or renamed?\n\n There is a backup copy in the folder 'default_settings_files_backup' if needed.")
+            sys.exit()
+
+        except:
+            sg.popup_error ("An error has occured with settings file 'fantasy_books_settings.yaml'.")
+
+        else:
+            pass
+
+        try:
+            with open("master_books_settings.yaml") as g:     
+                master_list_stats= yaml.load (g, Loader=SafeLoader)
+
+        except PermissionError:
+            sg.popup_error ("The settings file 'master_books_settings.yaml' cannot be accessed. Is it open in another program?")
+            sys.exit()
+
+        except FileNotFoundError:
+            sg.popup_error ("The settings file 'master_books_settings.yaml' cannot be found. Has it been moved, deleted, or renamed?\n\n There is a backup copy in the folder 'default_settings_files_backup' if needed.")
+            sys.exit()
+
+        except:
+            sg.popup_error ("An error has occured with settings file 'master_books_settings.yaml'.")
+
+        else: 
+            pass
+
+        try:
+            with open("preferences_fantasy_books.yaml") as h:     
+                preferences= yaml.load (h, Loader=SafeLoader)
+
+        except PermissionError:
+            sg.popup_error ("The settings file 'preferences_fantasy_books.yaml' cannot be accessed. Is it open in another program?")
+            sys.exit()
+
+        except FileNotFoundError:
+            sg.popup_error ("The settings file 'preferences_fantasy_books.yaml' cannot be found. Has it been moved, deleted, or renamed?\n\n There is a backup copy in the folder 'default_settings_files_backup' if needed.")
+            sys.exit()
+
+        except:
+            sg.popup_error ("An error has occured with settings file 'preferences_fantasy_books.yaml'.")
+
+        else:
+            pass
+
+        loaded_settings_files = True
+        return config, master_list_stats, preferences
+
+config, master_list_stats, preferences = load_settings()
 
 # globals
 
@@ -106,7 +114,6 @@ radio_unchecked_icon = i.radio_unchecked()
 radio_checked_icon = i.radio_checked()
 books_icon = i.books_icon()
 excel_icon = i.excel_icon()
-sg.theme('Dark Blue 3')
 overshoot_toggle = sg.user_settings_get_entry('-overshoot_toggle-')
 radio_keys = ('-R1-', '-R2-')
 
@@ -374,7 +381,7 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
         while running_total < value_of_books:
             the_count += 1
             if check_if_should_place_existing_title():
-                books[the_count] = pick_existing_book(excel_workbook = master_excel_workbook, excel_worksheet=master_excel_worksheet, pandas_table=master_book_pandas_table)
+                books[the_count] = pick_existing_book()
 
             else:
                 books[the_count] = create_fantasy_book(**kwargs)
@@ -713,11 +720,11 @@ def fantasy_books_main_gui():
                        bind_return_key=True,
                        ),
             sg.Button("Save settings and Quit"),  
-            sg.Button('Reset to defaults'),
             sg.Button('Quit'),
             sg.Push(),
-            sg.Button('Clear master Excel file')
-            
+            sg.Button('Reset to defaults'),
+            sg.Button('Edit preferences'),
+            sg.Button('Clear master Excel file'),
             ]
             ]
     
@@ -996,38 +1003,65 @@ def save_master_books_settings():
 
 def settings_gui():
 
-    col2 = sg.Column([[sg.Frame('Accounts:', [[sg.Column([[sg.Listbox(['Account '+str(i) for i in range(1,16)],
-                                                      key='-ACCT-LIST-',size=(15,20)),]],size=(150,400))]])]],pad=(0,0))
-
-    col1 = sg.Column([
-        # Categories sg.Frame
-        [sg.Frame('',[[ sg.Radio('Websites', 'radio1', default=True, key='-WEBSITES-', size=(10,1)),
-                                sg.Radio('Software', 'radio1', key='-SOFTWARE-',  size=(10,1))]],)],
-        # Information sg.Frame
-        [sg.Frame('Information:', [[sg.Text(), sg.Column([[sg.Text('Account:')],
-                                [sg.Input(key='-ACCOUNT-IN-', size=(19,1))],
-                                [sg.Text('User Id:')],
-                                [sg.Input(key='-USERID-IN-', size=(19,1)),
-                                sg.Button('Copy', key='-USERID-')],
-                                [sg.Text('Password:')],
-                                [sg.Input(key='-PW-IN-', size=(19,1)),
-                                sg.Button('Copy', key='-PASS-')],
-                                [sg.Text('Location:')],
-                                [sg.Input(key='-LOC-IN-', size=(19,1)),
-                                sg.Button('Copy', key='-LOC-')],
-                                [sg.Text('Notes:')],
-                                [sg.Multiline(key='-NOTES-', size=(25,5))],
-                                ], size=(235,350), pad=(0,0))]])], ], pad=(0,0))
-
-    col3 = sg.Column([[sg.Frame('Actions:',
-                                [[sg.Column([[sg.Button('Save'), sg.Button('Clear'), sg.Button('Delete'), ]],
-                                            size=(450,45), pad=(0,0))]])]], pad=(0,0))
-
-    # The final layout is a simple one
-    layout = [[col1, col2],
-            [col3]]
+    row_1 = [
+        sg.Text("Ancient languages not to be translated into:", tooltip='These are languages which are ancient or dead. \nThus, original works may be in these languages, \nand there may be translations _into_ other languages, \nbut they will not be the destination language for translations. \n(E.g., a Latin work could be translated into English, \nor could remain in Latin. An English text, \nhowever, would not be translated into Latin. )'),
+        sg.Input(preferences['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO'],key='ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO')
+    ]
+    row_2 = [
+        sg.Text("Additional age for translation:", tooltip= 'Dice formula for age added to book that is a translation.',),
+        sg.Input(preferences['TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL'], size=(8,1), key='TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL'),
+        sg.Push(),
+        sg.Text("Chance of being translation (%):", tooltip='Chance from 0-100% book is a translation.',size=(25,1)),
+        sg.Input(preferences['CHANCE_OF_BEING_TRANSLATION'], size=(3,1),key='CHANCE_OF_BEING_TRANSLATION'),
+        
+    ]
+    row_3 = [     
+        sg.Text("Chance of female author (%):", tooltip= 'Chance from 0-100% of author having female name.',size=(25,1)),
+        sg.Input(preferences['CHANCE_OF_FEMALE_AUTHOR'], size=(3,1),key='CHANCE_OF_FEMALE_AUTHOR'),
+        sg.Push(),
+        sg.Text("Chance of being incomplete (%):", tooltip='Chance from 0-100% book is not entirely intact.'),
+        sg.Input(preferences['CHANCE_OF_INCOMPLETE_WORK'], size=(3,1),key='CHANCE_OF_INCOMPLETE_WORK'),
+    ]
+    row_4 = [     
+        sg.Text("Chance of author title (%):", tooltip= 'Chance from 0-100% of author name including\n a title (e.g., "Doctor, Professor").',size=(25,1)),
+        sg.Input(preferences['CHANCE_OF_TITLE_IN_AUTHOR_NAME'], size=(3,1),key='CHANCE_OF_TITLE_IN_AUTHOR_NAME'),
+        sg.Push(),
+        sg.Text("Chance of author epithet (%):", tooltip='Chance from 0-100% of author name including\n an epithet (e.g., "Bob the Brave, Joe the Fat").'),
+        sg.Input(preferences['CHANCE_OF_EPITHET_IN_AUTHOR_NAME'], size=(3,1),key='CHANCE_OF_EPITHET_IN_AUTHOR_NAME'),
+    ]
+    row_5 = [
+        sg.Text("Minimum age book:", tooltip= 'Book will not be younger than this.',size=(25,1)),
+        sg.Input(preferences['MINIMUM_AGE_BOOK'], size=(3,1),key='MINIMUM_AGE_BOOK'),
+        sg.Push(),
+        sg.Text("Maximum age book:", tooltip='Book will not be older than this.'),
+        sg.Input(preferences['MAXIMUM_AGE_BOOK'], size=(4,1),key='MAXIMUM_AGE_BOOK'),
+    ]
+    row_6 = [
+        sg.Text("Total number of books in campaign:", tooltip= 'Total number of volumes (includes duplicates of same text).',size=(25,1)),
+        sg.Input(preferences['TOTAL_BOOKS_IN_CAMPAIGN'], size=(10,1),key='TOTAL_BOOKS_IN_CAMPAIGN'),
+        # sg.Push(),
+        # sg.Text("Maximum age book:", tooltip='Book will not be older than this.'),
+        # sg.Input(preferences['MAXIMUM_AGE_BOOK'], size=(4,1),key='MAXIMUM_AGE_BOOK'),
+    ]
+    row_final = [
+        sg.Button('Save', key='-SAVE-PREFS-'),
+        sg.Button('Cancel', key='-DONT-SAVE-PREFS-'),
+        sg.Push(),
+        sg.Button('Restore Defaults', key='-RESTORE-DEFAULT-PREFS-'),
+    
+    ]
+    layout = [
+        [row_1],
+        [row_2],
+        [row_3],
+        [row_4],
+        [row_5],
+        [row_6],
+        [row_final]
+            ]
     
     return layout
+
 
 def update_master_books_array(the_array):
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
@@ -1840,6 +1874,7 @@ class MagicBook(FantasyBook):
 
 ######################## main() ########################
 
+sg.theme('Dark Blue 3')
 window1 = sg.Window(
     'Fantasy Books Generator', 
     layout = fantasy_books_main_gui(),
@@ -1848,12 +1883,15 @@ window1 = sg.Window(
     icon = books_icon,
     finalize = True
     )
-window_prefs = sg.Window(
+
+sg.theme("Dark Blue 12")
+window_settings = sg.Window(
     'Preferences',
     layout = settings_gui(),
     grab_anywhere=True,
     icon = '',#TO_DO
-    finalize=True
+    finalize=True,
+    disable_close = True,
 )
 # window2 = sg.Window(
 #     'Fantasy Books Generator', 
@@ -1866,14 +1904,14 @@ window_prefs = sg.Window(
 #     finalize = True
 #     )
 
-# window2.hide()
+window_settings.hide()
 # window2.move(window1.current_location()[0]+500, window1.current_location()[1]+200)
 
-# turn off tabbing to all elements
+# turn off tabbing to all elements in window1
 for element in window1.key_dict.values():
         element.block_focus()
 
-# retore tabbing
+# retore tabbing to some in window1
 window1['-number_of_books_to_make-'].block_focus(block=False)
 window1['-value_of_books_to_make-'].block_focus(block=False)
 ########## Main Event Loop of GUI
@@ -1900,7 +1938,11 @@ while True:
     elif event == 'Overshoot':                # if the normal button that changes color and text
             
             overshoot_toggle = overshoot_event(overshoot_toggle = overshoot_toggle)
-            
+
+    elif event == 'Edit preferences':
+        window1.hide()
+        window_settings.un_hide()
+
     elif event == 'Save settings and Quit':
         save_gui_settings()
         break
@@ -2006,6 +2048,35 @@ while True:
         sg.user_settings_set_entry('-default_master_worksheets-', [])
         sg.user_settings_set_entry('-last_default_master_worksheet-', '')
         window1['-MASTER_WORKSHEET-'].update(values=[], value='')
+    
+    elif event == "-SAVE-PREFS-":
+        for the_setting in config['prefs_list_integers']:
+            preferences[the_setting] = int(values[the_setting])
+
+        for the_setting in config['prefs_list_strings']:
+            preferences[the_setting] = values[the_setting]
+
+        with open("preferences_fantasy_books.yaml", "w") as f:     
+                    yaml.dump(preferences, stream=f, default_flow_style=False, sort_keys=True)
+        window_settings.hide()
+        window1.un_hide()
+
+    elif event == "-RESTORE-DEFAULT-PREFS-":
+        for index,value in enumerate(config['prefs_list_integers']):
+            window[value].update((config['prefs_list_integers_defaults'])[index])
+
+        for index,value in enumerate (config['prefs_list_strings']):
+               window[value].update((config['prefs_list_strings_defaults'])[index])
+
+    elif event == '-DONT-SAVE-PREFS-':
+        for index,value in enumerate(config['prefs_list_integers']):
+            window[value].update(preferences[value])
+
+        for index,value in enumerate (config['prefs_list_strings']):
+               window[value].update(preferences[value])
+
+        window_settings.hide()
+        window1.un_hide()
 
 window.close()
 

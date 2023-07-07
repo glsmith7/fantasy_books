@@ -206,3 +206,11 @@ NOTE_COLUMN_INDEX : 49
 duration_toaster_popups: 500 # milliseconds
 fade_in_duration_toaster_popups: 125 # milliseconds
 alpha_toaster_popups: 0.7 # 0-1
+
+# PREFERENCES stored within program
+
+prefs_list_integers : ['CHANCE_OF_BEING_TRANSLATION', 'CHANCE_OF_EPITHET_IN_AUTHOR_NAME','CHANCE_OF_TITLE_IN_AUTHOR_NAME', 'CHANCE_OF_FEMALE_AUTHOR', 'CHANCE_OF_INCOMPLETE_WORK','MAXIMUM_AGE_BOOK','MINIMUM_AGE_BOOK','TOTAL_BOOKS_IN_CAMPAIGN']
+prefs_list_integers_defaults : [5,25,30,50,1,9999,1,100000]
+
+prefs_list_strings : ['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO', 'TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL']
+prefs_list_strings_defaults : ['Ancient','1d100+20']
