@@ -204,6 +204,7 @@ NOTE_COLUMN_INDEX : 49
 # GUI
 
 duration_toaster_popups: 500 # milliseconds
+duration_toaster_popups_longer: 3000 # milliseconds
 fade_in_duration_toaster_popups: 125 # milliseconds
 alpha_toaster_popups: 0.7 # 0-1
 

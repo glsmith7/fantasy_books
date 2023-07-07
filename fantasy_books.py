@@ -2058,8 +2058,17 @@ while True:
 
         with open("preferences_fantasy_books.yaml", "w") as f:     
                     yaml.dump(preferences, stream=f, default_flow_style=False, sort_keys=True)
+
         window_settings.hide()
         window1.un_hide()
+        
+        sg.popup_notify("Preferences have been saved.",
+                    title = "Settings saved!",
+                    icon = '',#TO_DO
+                    display_duration_in_ms = config['duration_toaster_popups_longer'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups'],
+                    location = None)
 
     elif event == "-RESTORE-DEFAULT-PREFS-":
         for index,value in enumerate(config['prefs_list_integers']):
@@ -2067,6 +2076,14 @@ while True:
 
         for index,value in enumerate (config['prefs_list_strings']):
                window[value].update((config['prefs_list_strings_defaults'])[index])
+        
+        sg.popup_notify("Default settings restored. You may Quit to keep, or Quit to discard and revert.",
+                    title = "Default restored",
+                    icon = '',#TO_DO
+                    display_duration_in_ms = config['duration_toaster_popups_longer'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups'],
+                    location = None)
 
     elif event == '-DONT-SAVE-PREFS-':
         for index,value in enumerate(config['prefs_list_integers']):
@@ -2074,11 +2091,17 @@ while True:
 
         for index,value in enumerate (config['prefs_list_strings']):
                window[value].update(preferences[value])
-
+        
         window_settings.hide()
         window1.un_hide()
+        
+        sg.popup_notify("Preferences were NOT saved. No changes were made.",
+                    title = "Settings not saved.",
+                    icon = '',#TO_DO
+                    display_duration_in_ms = config['duration_toaster_popups_longer'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups'],
+                    location = None)
 
 window.close()
-
-# # zero_out_master_books_file()
 
