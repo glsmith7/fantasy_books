@@ -76,3 +76,7 @@ From within the software, users can easily edit:
 
 ## Version 1.0.2
 * Bug fix on age of book.
+
+## Version 1.0.3
+* Prevent endless loop if budget is too low despite repeated attempts to generate book, with overshoot enabled
+* Check before run to be sure number of books asked is not zero.
