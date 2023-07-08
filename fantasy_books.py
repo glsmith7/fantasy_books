@@ -399,6 +399,7 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
     '''
 
     books = {}
+    number_of_low_budget_attempts = 0 # track number of tries to avoid endless loop. Target defined by config['number_of_low_budget_attempts']
     sg.theme('Light Blue 1')
 
     while books == {}:
@@ -434,13 +435,23 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
             books.popitem() # delete last book which put over the top
 
         if books == {}:
-            sg.popup_notify("Zero books made in hoard; retrying ....",
+            sg.popup_notify("Zero books made in hoard because budget below generated value.\n\nWill attempt " + str(config['maximum_tries_for_low_budget'] - number_of_low_budget_attempts) + " more times before quitting to avoid endless loop.",
                     title = "Retrying",
-                    icon = radio_unchecked_icon,
+                    icon = '', #TO_DO
                     display_duration_in_ms = config['duration_toaster_popups'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = config['alpha_toaster_popups'],
                     location = None)
+            number_of_low_budget_attempts+=1
+            if number_of_low_budget_attempts >= config['maximum_tries_for_low_budget']: 
+                sg.popup_notify("Unable to generate book hoard for low budget of "  + str(value_of_books) + " gp, despite " + str(config['maximum_tries_for_low_budget']) + " tries. Shutting down to prevent endless loop.",
+                    title = "Shutting down",
+                    icon = '', #TO_DO
+                    display_duration_in_ms = config['duration_toaster_popups_longer'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups_more_important'],
+                    location = None)
+                sys.exit()
     
     return books, running_total
 
@@ -2014,13 +2025,13 @@ while True:
         number_of_books = int(values['-number_of_books_to_make-'])
 
         if window1['-R1-'].metadata:
-            if int(values['-value_of_books_to_make-']) > 100:
+            if int(values['-value_of_books_to_make-']) > 0:
                 books, books_value = book_hoard (
                     value_of_books=value_of_books,
                     overshoot=overshoot_toggle, 
                     )
             else:
-                sg.popup_notify("Must have some value to the book hoard. Try at least 500 gp",
+                sg.popup_notify("Must have some value to the book hoard. Try at least 500 gp for best results.",
                     title = "I need a budget",
                     icon = '',#TO_DO
                     display_duration_in_ms = config['duration_toaster_popups_longer'],

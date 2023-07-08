@@ -205,8 +205,14 @@ NOTE_COLUMN_INDEX : 49
 
 duration_toaster_popups: 500 # milliseconds
 duration_toaster_popups_longer: 3000 # milliseconds
+
 fade_in_duration_toaster_popups: 125 # milliseconds
+
 alpha_toaster_popups: 0.7 # 0-1
+alpha_toaster_popups_more_important: 0.9 # 0-1
+
+# other
+maximum_tries_for_low_budget: 2
 
 # PREFERENCES stored within program
 
