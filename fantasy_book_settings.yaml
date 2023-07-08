@@ -1,15 +1,5 @@
 # Settings file for fantasy_books.py
 
-# These are the key values for customization; others have more to do with the guts of the program.
-ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO : ['Ancient']
-CHANCE_OF_BEING_TRANSLATION : 5 # # 0-100%
-CHANCE_OF_EPITHET_IN_AUTHOR_NAME : 15 # 0-100%
-CHANCE_OF_TITLE_IN_AUTHOR_NAME : 30 # 0-100%
-CHANCE_OF_FEMALE_AUTHOR : 50 # 0-100%
-TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL : '1d100+20'
-CHANCE_OF_INCOMPLETE_WORK : 5 # 0-100%
-TOTAL_BOOKS_IN_CAMPAIGN : 100000 # This number is used to determine chance of another copy of already-created book appearing in a different hoard. Generating 10,000 books with a campaign total of 100,000 ultimately produced 9539 unique titles, and total of 1,629,369 volumes yet to be placed. Total value of all to be placed was 1,510,186,467 gp. Total value of the 9539 books already placed books was 19,246,561. (For comparison, note that pre-printing-press Europe had around 30,000 books.)
-
 # ACKS given values
 READING_PAGES_PER_HOUR : 180
 PAGES_PER_VOLUME_FOR_CODEX : 750
@@ -206,6 +196,22 @@ book_variables_in_chosen_order : [
 # magic numbers related to above; must change if the order is changed. Starts from ONE (1)
 CURRENT_LANGUAGE_COLUMN_INDEX : 6
 FLAVOR_TITLE_COLUMN_INDEX : 19
+market_value: 15
+number_extant_copies : 23
+number_extant_available_to_place : 24
 NOTE_COLUMN_INDEX : 49
-NUMBER_EXTANT_COPIES_INDEX : 23
-NUMBER_COPIES_AVAIL_TO_PLACE : 24
+
+# GUI
+
+duration_toaster_popups: 500 # milliseconds
+duration_toaster_popups_longer: 3000 # milliseconds
+fade_in_duration_toaster_popups: 125 # milliseconds
+alpha_toaster_popups: 0.7 # 0-1
+
+# PREFERENCES stored within program
+
+prefs_list_integers : ['CHANCE_OF_BEING_TRANSLATION', 'CHANCE_OF_EPITHET_IN_AUTHOR_NAME','CHANCE_OF_TITLE_IN_AUTHOR_NAME', 'CHANCE_OF_FEMALE_AUTHOR', 'CHANCE_OF_INCOMPLETE_WORK','MAXIMUM_AGE_BOOK','MINIMUM_AGE_BOOK','TOTAL_BOOKS_IN_CAMPAIGN']
+prefs_list_integers_defaults : [5,25,30,50,1,9999,1,100000]
+
+prefs_list_strings : ['ANCIENT_LANGUAGES_WHICH_WOULD_NOT_BE_TRANSLATED_INTO', 'TRANSLATION_ADDITIONAL_AGE_OF_ORIGINAL']
+prefs_list_strings_defaults : ['Ancient','1d100+20']
