@@ -157,6 +157,29 @@ for i in config['list_of_surnames_tables']:
 
 ######################## FUNCTIONS ########################
 
+def about_window_gui():
+
+    credits_text = r"by GLS, (C) 2023 \
+     \
+    this is a test."
+    row_1 = [
+        sg.Multiline(default_text=credits_text,)
+        
+    ]
+    
+    row_final = [
+        sg.Push(),
+        sg.Button('Ok', key='-CLOSE-ABOUT-'),
+    
+    ]
+    layout = [
+        [row_1],
+        #
+        [row_final]
+            ]
+    
+    return layout
+
 def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "Book Hoard",destination="master_fantasy_book_list.xlsx",destination_worksheet = "Master List"):
     '''
     Places books in an excel spreadsheet into the master_book_list. This is all books that exist in a campaign, and is used to produce additional copies (if they are extant) of already-described books. This happens at the appropriate frequency for the total number of books in the game world.
@@ -1047,9 +1070,8 @@ def settings_gui():
     row_6 = [
         sg.Text("Total number of books in campaign:", tooltip= 'Total number of volumes (includes duplicates of same text).',size=(25,1)),
         sg.Input(preferences['TOTAL_BOOKS_IN_CAMPAIGN'], size=(10,1),key='TOTAL_BOOKS_IN_CAMPAIGN'),
-        # sg.Push(),
-        # sg.Text("Maximum age book:", tooltip='Book will not be older than this.'),
-        # sg.Input(preferences['MAXIMUM_AGE_BOOK'], size=(4,1),key='MAXIMUM_AGE_BOOK'),
+        sg.Push(),
+        sg.Button("About", tooltip="Credits and info.")
     ]
     row_final = [
         sg.Button('Save', key='-SAVE-PREFS-'),
@@ -1900,7 +1922,20 @@ window_settings = sg.Window(
     icon = settings_general_icon,
     finalize=True,
     disable_close = True,
+    modal = False,
 )
+
+sg.theme("Dark Green 1")
+window_about = sg.Window(
+    'Preferences',
+    layout = about_window_gui(),
+    grab_anywhere=True,
+    icon = settings_general_icon,
+    finalize=True,
+    disable_close = False,
+    modal = False,
+)
+
 # window2 = sg.Window(
 #     'Fantasy Books Generator', 
 #     layout = progress_window_gui(),
