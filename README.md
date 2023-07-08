@@ -70,3 +70,6 @@ From within the software, users can easily edit:
 ## License:
 
 * [GNU GPL v3.0](https://choosealicense.com/licenses/gpl-3.0/)
+
+## Version 1.0.0
+* initial public version
