@@ -73,3 +73,6 @@ From within the software, users can easily edit:
 
 ## Version 1.0.0
 * initial public version
+
+## Version 1.0.2
+* Bug fix on age of book.
