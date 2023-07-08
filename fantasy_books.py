@@ -1288,9 +1288,9 @@ class FantasyBook():
             if self.age_at_discovery > preferences['MAXIMUM_AGE_BOOK']: self.age_at_discovery = preferences['MAXIMUM_AGE_BOOK']
         else:
             self.age_at_discovery = age
-            self.age = age
-            if self.age < preferences['MINIMUM_AGE_BOOK']: self.age = preferences['MINIMUM_AGE_BOOK']
-            if self.age > preferences['MAXIMUM_AGE_BOOK']: self.age = preferences['MAXIMUM_AGE_BOOK']
+            
+            if self.age_at_discovery < preferences['MINIMUM_AGE_BOOK']: self.age_at_discovery = preferences['MINIMUM_AGE_BOOK']
+            if self.age_at_discovery > preferences['MAXIMUM_AGE_BOOK']: self.age_at_discovery = preferences['MAXIMUM_AGE_BOOK']
     
     def add_note (self,note=None):
         self.note = note
