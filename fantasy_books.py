@@ -850,6 +850,7 @@ def pick_existing_book():
                 alpha = config['alpha_toaster_popups'],
                 location = None)
             
+            
             random_book+=1 # ie not avail, pick another
             
             number_books_left_this_title = int (master_excel_worksheet.cell(row = random_book, column = index).value)
@@ -2013,15 +2014,38 @@ while True:
         number_of_books = int(values['-number_of_books_to_make-'])
 
         if window1['-R1-'].metadata:
-            books, books_value = book_hoard (
-                value_of_books=value_of_books,
-                overshoot=overshoot_toggle, 
-                )
+            if int(values['-value_of_books_to_make-']) > 100:
+                books, books_value = book_hoard (
+                    value_of_books=value_of_books,
+                    overshoot=overshoot_toggle, 
+                    )
+            else:
+                sg.popup_notify("Must have some value to the book hoard. Try at least 500 gp",
+                    title = "I need a budget",
+                    icon = '',#TO_DO
+                    display_duration_in_ms = config['duration_toaster_popups_longer'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = 0.9,
+                    location = None)
+                window1.set_cursor("arrow")
+                continue
             
         else:
-            books, books_value = book_batch(
-                number = number_of_books,
-                )
+            if int (values['-number_of_books_to_make-']) > 0:
+
+                books, books_value = book_batch(
+                    number = number_of_books,
+                    )
+            else: 
+                sg.popup_notify("Must generate at least 1 book.",
+                    title = "Make at least one!",
+                    icon = '',#TO_DO
+                    display_duration_in_ms = config['duration_toaster_popups_longer'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = 0.9,
+                    location = None)
+                window1.set_cursor("arrow")
+                continue
         
         export_books_to_excel(
             books,
