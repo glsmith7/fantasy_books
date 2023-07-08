@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# GLS added
+/aa-archive
+
 # C extensions
 *.so
 

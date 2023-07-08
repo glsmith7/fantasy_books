@@ -742,7 +742,7 @@ def fantasy_books_main_gui():
                     ), 
 
             sg.Push(),
-            sg.Button('Master library stats'),
+            sg.Button('Master library stats', tooltip = "Info about the current master library. TO IMPLEMENT", disabled=True),
             ],
 
             # Final buttons
@@ -1071,7 +1071,7 @@ def settings_gui():
         sg.Text("Total number of books in campaign:", tooltip= 'Total number of volumes (includes duplicates of same text).',size=(25,1)),
         sg.Input(preferences['TOTAL_BOOKS_IN_CAMPAIGN'], size=(10,1),key='TOTAL_BOOKS_IN_CAMPAIGN'),
         sg.Push(),
-        sg.Button("About", tooltip="Credits and info.")
+        sg.Button("About", tooltip="Credits and info. TO BE IMPLEMENTED",disabled=True)
     ]
     row_final = [
         sg.Button('Save', key='-SAVE-PREFS-'),
@@ -1925,16 +1925,18 @@ window_settings = sg.Window(
     modal = False,
 )
 
-sg.theme("Dark Green 1")
-window_about = sg.Window(
-    'Preferences',
-    layout = about_window_gui(),
-    grab_anywhere=True,
-    icon = settings_general_icon,
-    finalize=True,
-    disable_close = False,
-    modal = False,
-)
+# TO BE IMPLEMENTED 
+
+# sg.theme("Dark Green 1")
+# window_about = sg.Window(
+#     'Preferences',
+#     layout = about_window_gui(),
+#     grab_anywhere=True,
+#     icon = settings_general_icon,
+#     finalize=True,
+#     disable_close = False,
+#     modal = False,
+# )
 
 # window2 = sg.Window(
 #     'Fantasy Books Generator', 
