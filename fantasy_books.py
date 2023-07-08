@@ -337,7 +337,6 @@ def backup_excel_file(filename = "master_fantasy_book_list.xlsx"):
     
 def book_characteristics(books):
 
-
     book_attributes = [attribute for attribute in dir(books[1])
                    if not attribute.startswith('__')
                    and not callable(getattr(books[1], attribute))
@@ -399,6 +398,7 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
     '''
 
     books = {}
+    number_of_low_budget_attempts = 0 # track number of tries to avoid endless loop. Target defined by config['number_of_low_budget_attempts']
     sg.theme('Light Blue 1')
 
     while books == {}:
@@ -434,13 +434,25 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
             books.popitem() # delete last book which put over the top
 
         if books == {}:
-            sg.popup_notify("Zero books made in hoard; retrying ....",
+            sg.popup_notify("Zero books made in hoard because budget below generated value.\n\nWill attempt " + str(config['maximum_tries_for_low_budget'] - number_of_low_budget_attempts) + " more times before quitting to avoid endless loop.",
                     title = "Retrying",
-                    icon = radio_unchecked_icon,
+                    icon = '', #TO_DO
                     display_duration_in_ms = config['duration_toaster_popups'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = config['alpha_toaster_popups'],
                     location = None)
+            
+            number_of_low_budget_attempts+=1
+
+            if number_of_low_budget_attempts >= config['maximum_tries_for_low_budget']: 
+                sg.popup_notify("Unable to generate book hoard for low budget of "  + str(value_of_books) + " gp, despite " + str(config['maximum_tries_for_low_budget']) + " tries. Shutting down to prevent endless loop.",
+                    title = "Shutting down",
+                    icon = '', #TO_DO
+                    display_duration_in_ms = config['duration_toaster_popups_longer'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = config['alpha_toaster_popups_more_important'],
+                    location = None)
+                sys.exit()
     
     return books, running_total
 
@@ -849,6 +861,7 @@ def pick_existing_book():
                 fade_in_duration = config['fade_in_duration_toaster_popups'],
                 alpha = config['alpha_toaster_popups'],
                 location = None)
+            
             
             random_book+=1 # ie not avail, pick another
             
@@ -1928,27 +1941,17 @@ window_settings = sg.Window(
 
 # TO BE IMPLEMENTED 
 
-# sg.theme("Dark Green 1")
+# sg.theme("Dark Blue 13")
 # window_about = sg.Window(
-#     'Preferences',
+#     'About',
 #     layout = about_window_gui(),
 #     grab_anywhere=True,
-#     icon = settings_general_icon,
+#     icon = '', # TO_DO
 #     finalize=True,
-#     disable_close = False,
+#     disable_close = True,
 #     modal = False,
 # )
 
-# window2 = sg.Window(
-#     'Fantasy Books Generator', 
-#     layout = progress_window_gui(),
-#     grab_anywhere = True,
-#     alpha_channel = 0.7,
-#     no_titlebar=True,
-#     resizable = False,
-#     # icon = books_icon,
-#     finalize = True
-#     )
 
 window_settings.hide()
 # window2.move(window1.current_location()[0]+500, window1.current_location()[1]+200)
@@ -1960,6 +1963,8 @@ for element in window1.key_dict.values():
 # retore tabbing to some in window1
 window1['-number_of_books_to_make-'].block_focus(block=False)
 window1['-value_of_books_to_make-'].block_focus(block=False)
+
+
 ########## Main Event Loop of GUI
 
 while True:
@@ -2013,15 +2018,38 @@ while True:
         number_of_books = int(values['-number_of_books_to_make-'])
 
         if window1['-R1-'].metadata:
-            books, books_value = book_hoard (
-                value_of_books=value_of_books,
-                overshoot=overshoot_toggle, 
-                )
+            if int(values['-value_of_books_to_make-']) > 0:
+                books, books_value = book_hoard (
+                    value_of_books=value_of_books,
+                    overshoot=overshoot_toggle, 
+                    )
+            else:
+                sg.popup_notify("Must have some value to the book hoard. Try at least 500 gp for best results.",
+                    title = "I need a budget",
+                    icon = '',#TO_DO
+                    display_duration_in_ms = config['duration_toaster_popups_longer'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = 0.9,
+                    location = None)
+                window1.set_cursor("arrow")
+                continue
             
         else:
-            books, books_value = book_batch(
-                number = number_of_books,
-                )
+            if int (values['-number_of_books_to_make-']) > 0:
+
+                books, books_value = book_batch(
+                    number = number_of_books,
+                    )
+            else: 
+                sg.popup_notify("Must generate at least 1 book.",
+                    title = "Make at least one!",
+                    icon = '',#TO_DO
+                    display_duration_in_ms = config['duration_toaster_popups_longer'],
+                    fade_in_duration = config['fade_in_duration_toaster_popups'],
+                    alpha = 0.9,
+                    location = None)
+                window1.set_cursor("arrow")
+                continue
         
         export_books_to_excel(
             books,
