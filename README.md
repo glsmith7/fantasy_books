@@ -48,9 +48,9 @@ From within the software, users can easily edit:
 
 ([Consider SQLiteStudio](https://sqlitestudio.pl/) for easy GUI editing of these files.)
 
-# Editing *.txt files allows addition or change to lorem ipsum elements for foreign languages.
+# Editing .txt files allows addition or change to lorem ipsum elements for foreign languages.
 
-# Editing *.yaml files for settings allows other parameters to be customized.
+# Editing .yaml files for settings allows other parameters to be customized.
 
 ## Built in part with these libraries:
 * [d20](https://pypi.org/project/d20/)
