@@ -11,7 +11,7 @@ import string as string
 import sys
 
 # logging boilerplate
-import settings_GLS as s
+import rpg_tables_settings as s
 import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
