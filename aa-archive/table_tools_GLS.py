@@ -1,7 +1,7 @@
 import sql_wrapper_GLS as sqlW
 import re # reg expressions
 import d20
-import settings_GLS as s
+import rpg_tables_settings as s
 
 # logging boilerplate
 import logging

@@ -31,7 +31,7 @@ except ImportError:
 global config, master_list_stats, preferences
 
 # logging boilerplate
-import settings_GLS as s
+import rpg_tables_settings as s
 import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
@@ -118,6 +118,13 @@ settings_general_icon = i.settings_general()
 settings_save_icon = i.settings_save()
 settings_cancel_icon = i.settings_dismiss()
 settings_reset_icon = i.settings_reset()
+lost_file_icon = i.lost_file()
+retry_icon = i.retry()
+empty_icon = i.empty()
+coins_add_icon = i.coins_add()
+archive_icon=i.archive()
+quit_icon = i.quit()
+
 
 overshoot_toggle = sg.user_settings_get_entry('-overshoot_toggle-')
 radio_keys = ('-R1-', '-R2-')
@@ -316,7 +323,7 @@ def backup_excel_file(filename = "master_fantasy_book_list.xlsx"):
         except FileNotFoundError:
             sg.popup_notify('The old file ' + file_source + ' could not be archived, probably because it has been either renamed or does not exist. Try creating an empty excel file named ' + file_source,
                     title = "File not found",
-                    icon = '', # TO_DO
+                    icon = lost_file_icon,
                     display_duration_in_ms = 5000,
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 1,
@@ -329,7 +336,7 @@ def backup_excel_file(filename = "master_fantasy_book_list.xlsx"):
             try_to_save = False # ie succeeded
             sg.popup_notify('Former master book file moved to folder "excel_backups".',
                         title = "Archived",
-                        icon = '', # TO_DO
+                        icon = archive_icon,
                         display_duration_in_ms = config['duration_toaster_popups'],
                         fade_in_duration = config['fade_in_duration_toaster_popups'],
                         alpha = config['alpha_toaster_popups'],
@@ -436,7 +443,7 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
         if books == {}:
             sg.popup_notify("Zero books made in hoard because budget below generated value.\n\nWill attempt " + str(config['maximum_tries_for_low_budget'] - number_of_low_budget_attempts) + " more times before quitting to avoid endless loop.",
                     title = "Retrying",
-                    icon = '', #TO_DO
+                    icon = retry_icon,
                     display_duration_in_ms = config['duration_toaster_popups'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = config['alpha_toaster_popups'],
@@ -447,7 +454,7 @@ def book_hoard (value_of_books=0,overshoot=True, **kwargs):
             if number_of_low_budget_attempts >= config['maximum_tries_for_low_budget']: 
                 sg.popup_notify("Unable to generate book hoard for low budget of "  + str(value_of_books) + " gp, despite " + str(config['maximum_tries_for_low_budget']) + " tries. Shutting down to prevent endless loop.",
                     title = "Shutting down",
-                    icon = '', #TO_DO
+                    icon = coins_add_icon,
                     display_duration_in_ms = config['duration_toaster_popups_longer'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = config['alpha_toaster_popups_more_important'],
@@ -526,7 +533,7 @@ def create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx'):
         except FileNotFoundError:
             sg.popup_notify('The template file ' + file_source + ' could not be found, probably because it has been either renamed or does not exist. Try creating an empty excel file named ' + file_source,
                     title = "File not found",
-                    icon = '', # TO_DO
+                    icon = lost_file_icon,
                     display_duration_in_ms = 5000,
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 1,
@@ -856,7 +863,7 @@ def pick_existing_book():
         if number_books_left_this_title == 0:
             sg.popup_notify("Zero books of this title remain for placement; picking another book...",
                 title = "None of these left.",
-                icon = '', # TO_DO
+                icon = empty_icon,
                 display_duration_in_ms = config['duration_toaster_popups'],
                 fade_in_duration = config['fade_in_duration_toaster_popups'],
                 alpha = config['alpha_toaster_popups'],
@@ -975,7 +982,7 @@ def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',work
         except FileNotFoundError:
             sg.popup_notify('The old file ' + filename + ' could not be archived, probably because it has been either renamed or does not exist.',
                     title = "File not found",
-                    icon = '', # TO_DO
+                    icon = lost_file_icon,
                     display_duration_in_ms = 5000,
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 1,
@@ -1033,7 +1040,7 @@ def save_master_books_settings():
         except FileNotFoundError: # this will probably never be called. Here in case, for now.
             sg.popup_notify('The file ' + 'master_books_settings.yaml' + ' could not be saved, probably because it has been either renamed or does not exist.',
                     title = "File not found",
-                    icon = '', # TO_DO
+                    icon = lost_file_icon,
                     display_duration_in_ms = 5000,
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 1,
@@ -2026,7 +2033,7 @@ while True:
             else:
                 sg.popup_notify("Must have some value to the book hoard. Try at least 500 gp for best results.",
                     title = "I need a budget",
-                    icon = '',#TO_DO
+                    icon = coins_add_icon,
                     display_duration_in_ms = config['duration_toaster_popups_longer'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 0.9,
@@ -2043,7 +2050,7 @@ while True:
             else: 
                 sg.popup_notify("Must generate at least 1 book.",
                     title = "Make at least one!",
-                    icon = '',#TO_DO
+                    icon = empty_icon,
                     display_duration_in_ms = config['duration_toaster_popups_longer'],
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 0.9,

@@ -4,7 +4,7 @@ import sqlite3
 import os
 import datetime
 import array
-import settings_GLS as s
+import rpg_tables_settings as s
 
 # logging boilerplate
 import logging

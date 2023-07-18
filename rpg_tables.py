@@ -6,7 +6,7 @@ import sqlite3 as sqlite3
 import string as string
 
 # logging boilerplate
-import settings_GLS as s
+import rpg_tables_settings as s
 import logging
 import logging_tools_GLS
 logger = logging.getLogger(__name__)
@@ -225,11 +225,4 @@ def what_dice_to_roll(table_name, path = s.PATH_DEFAULT):
 # main
 
 if __name__ == "__main__":
-    g=RPG_table("ReactionRollStandard")
-    h=RPG_table("ReactionRollStandard")
-
-    i=g+h
-    print (i.display_all)
-    print (i.madlib())
-    print (i.madlib(2))
-    print (madlib("ReactionRollStandard"))
+    print ("You're running the rpg_tables file, probably not what you want.")

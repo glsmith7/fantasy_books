@@ -66,7 +66,12 @@ From within the software, users can easily edit:
 * Dismiss Setting by icon 54 from <a href="https://thenounproject.com/browse/icons/term/dismiss-setting/" target="_blank" title="Dismiss Setting Icons">Noun Project</a>
 * Reset Settings by icon 54 from <a href="https://thenounproject.com/browse/icons/term/reset-settings/" target="_blank" title="Reset Settings Icons">Noun Project</a>
 * Cog by icon 54 from <a href="https://thenounproject.com/browse/icons/term/cog/" target="_blank" title="cog Icons">Noun Project</a>
-
+* Lost file by Viktor Vorobyev from <a href="https://thenounproject.com/browse/icons/term/lost-file/" target="_blank" title="Lost file Icons">Noun Project</a>
+* Archive by Alain W. from <a href="https://thenounproject.com/browse/icons/term/archive/" target="_blank" title="archive Icons">Noun Project</a>
+* Retry by Alice Design from <a href="https://thenounproject.com/browse/icons/term/retry/" target="_blank" title="retry Icons">Noun Project</a>
+* Quit by VINZENCE STUDIO from <a href="https://thenounproject.com/browse/icons/term/quit/" target="_blank" title="quit Icons">Noun Project</a>
+* Empty by Gregor Cresnar from <a href="https://thenounproject.com/browse/icons/term/empty/" target="_blank" title="Empty Icons">Noun Project</a>
+* Coins by kliwir art from <a href="https://thenounproject.com/browse/icons/term/coins/" target="_blank" title="Coins Icons">Noun Project</a>
 ## License:
 
 * [GNU GPL v3.0](https://choosealicense.com/licenses/gpl-3.0/)
@@ -80,3 +85,6 @@ From within the software, users can easily edit:
 ## Version 1.0.3
 * Prevent endless loop if budget is too low despite repeated attempts to generate book, with overshoot enabled
 * Check before run to be sure number of books asked is not zero.
+
+## Version 1.0.4
+* add a few more icons
