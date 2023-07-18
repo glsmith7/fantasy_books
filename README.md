@@ -112,3 +112,6 @@ From within the software, users can easily edit:
 
 ## Version 1.1.01
 * README.md typos fixed.
+
+## Version 1.1.02
+* 
