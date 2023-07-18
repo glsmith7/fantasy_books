@@ -104,3 +104,7 @@ From within the software, users can easily edit:
 
 ## Version 1.0.5
 * tweak .gitignore file
+
+## Version 1.1.0
+* got rid of unneeded folders
+* 
