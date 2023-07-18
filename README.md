@@ -6,6 +6,18 @@ It produces an Excel file of fantasy books for use in libraries or treasure hoar
 
 I am a strictly amateur, self-taught programmer, and this was my first python code. Apologies for infelicities of style and algorithm.
 
+## Download pre-made executable
+
+If you just want to download and run the program:
+
+1. download the zip file located in the "executable" folder on Git. Unzip it.
+
+2. The first file after the folders will be a shortcut to acks_fpg.exe -- run it. The two Excel files created also have shortcuts directly beneath.
+
+3. You should be able to ignore all other files unless you want to.
+
+4. Note that there are two free-for-use fonts in the "font" folder that you may need to install on your system to see the flavor titles properly. This only needs to be done once.
+
 ## Features
 
 * rapid generation of books--100 books can be generated in less than 30 seconds; 1000 can be done in under 5 minutes.
@@ -88,3 +100,4 @@ From within the software, users can easily edit:
 
 ## Version 1.0.4
 * add a few more icons
+* included pre-made executable

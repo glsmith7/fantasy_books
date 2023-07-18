@@ -13,12 +13,13 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
+dist/ # pip files
 downloads/
 eggs/
 .eggs/
 lib/
 lib64/
+output/ # auto-py-to-exe files
 parts/
 sdist/
 var/
@@ -27,7 +28,7 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
+MANIFEST 
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
