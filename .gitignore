@@ -5,6 +5,7 @@ __pycache__/
 
 # GLS added
 /aa-archive
+logGLS.log
 
 # C extensions
 *.so
