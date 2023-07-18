@@ -52,17 +52,18 @@ From within the software, users can easily edit:
 ## Other user-modifiable features
 
 * Editing SQLite files allows additions or changes to:
-** templates for book title generation
-** first and last names
-** language groups for name generation
-** titles and epithets
-** tables which generate the library
+    * templates for book title generation
+    * first and last names
+    * language groups for name generation
+    * titles and epithets
+    * tables which generate the library
 
-([Consider SQLiteStudio](https://sqlitestudio.pl/) for easy GUI editing of these files.)
 
-# Editing .txt files allows addition or change to lorem ipsum elements for foreign languages.
+> ([Consider SQLiteStudio](https://sqlitestudio.pl/) for easy GUI editing of these files.)
 
-# Editing .yaml files for settings allows other parameters to be customized.
+* Editing .txt files allows addition or change to lorem ipsum elements for foreign languages.
+
+* Editing .yaml files for settings allows other parameters to be customized.
 
 ## Built in part with these libraries:
 * [d20](https://pypi.org/project/d20/)
@@ -104,3 +105,6 @@ From within the software, users can easily edit:
 
 ## Version 1.0.5
 * tweak .gitignore file
+
+## Version 1.1.01
+* README.md typos fixed.
