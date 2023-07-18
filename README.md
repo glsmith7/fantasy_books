@@ -58,7 +58,7 @@ From within the software, users can easily edit:
     * titles and epithets
     * tables which generate the library
 
-    ([Consider SQLiteStudio](https://sqlitestudio.pl/) for easy GUI editing of these files.)
+    > ([Consider SQLiteStudio](https://sqlitestudio.pl/) for easy GUI editing of these files.)
 
 * Editing .txt files allows addition or change to lorem ipsum elements for foreign languages.
 
