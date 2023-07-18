@@ -58,10 +58,10 @@ From within the software, users can easily edit:
     * titles and epithets
     * tables which generate the library
 
-
 > ([Consider SQLiteStudio](https://sqlitestudio.pl/) for easy GUI editing of these files.)
 
 * Editing .txt files allows addition or change to lorem ipsum elements for foreign languages.
+
 
 * Editing .yaml files for settings allows other parameters to be customized.
 
@@ -105,6 +105,10 @@ From within the software, users can easily edit:
 
 ## Version 1.0.5
 * tweak .gitignore file
+
+## Version 1.1.0
+* got rid of unneeded folders
+* typos in README.md file
 
 ## Version 1.1.01
 * README.md typos fixed.
