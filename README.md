@@ -101,3 +101,6 @@ From within the software, users can easily edit:
 ## Version 1.0.4
 * add a few more icons
 * included pre-made executable
+
+## Version 1.0.5
+* tweak .gitignore file
