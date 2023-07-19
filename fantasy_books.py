@@ -1,24 +1,33 @@
+# logging boilerplate
+import rpg_tables_package.rpg_tables_settings as s
+import logging
+import logging_gls_package.logging_tools_GLS as logging_tools_GLS
+logger = logging.getLogger(__name__)
+
+# imports
 from copy import copy
 import datetime
 import d20
-import icons as i
-from lorem_text_fantasy import lorem as lf
+import inspect
 from math import ceil
 from openpyxl.styles import Font as openpyxl_font
 from openpyxl import load_workbook
 from openpyxl import Workbook
-
 import pandas as pd
 import PySimpleGUI as sg
 import os
 import random as random
-import rpg_tables as r
 import shutil
 import string as string
 import sys
 import time
 import uuid
 import yaml
+
+# GLS imports
+import icons_package.icons as i
+import lorem_text_fantasy.lorem as lf
+import rpg_tables_package.rpg_tables as r
 
 # use faster C code for yaml if available, otherwise pure python code
 try:
@@ -27,14 +36,30 @@ try:
 except ImportError:
     from yaml import SafeLoader
 
-# settings files
+# globals 
+## settings globals
 global config, master_list_stats, preferences
+global CURRENT_SCRIPT_DIR
+global fantasy_book_settings_path, master_books_settings_path, preferences_fantasy_books_path
 
-# logging boilerplate
-import rpg_tables_settings as s
-import logging
-import logging_tools_GLS
-logger = logging.getLogger(__name__)
+## GUI globals
+global window_event_source_gui, overshoot_toggle, overshoot_event # for GUI
+global window_1_gui_books, window_settings_gui_books, values_gui_books, books, event_books_gui
+
+## other globals
+global master_fantasy_book_list_excel_file_path, books_spreadsheet_out_excel_file_path
+global vocab_dictionary, nt, wb_source, ws_source
+global master_excel_workbook, master_excel_worksheet,master_book_pandas_table, stats
+
+CURRENT_SCRIPT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '.'))
+
+fantasy_book_settings_path = os.path.join((CURRENT_SCRIPT_DIR), 'settings/fantasy_books_settings.yaml')
+master_books_settings_path = os.path.join((CURRENT_SCRIPT_DIR), 'settings/master_books_settings.yaml')
+preferences_fantasy_books_path = os.path.join((CURRENT_SCRIPT_DIR), 'settings/preferences_fantasy_books.yaml')
+
+master_fantasy_book_list_excel_file_path = os.path.join((CURRENT_SCRIPT_DIR), 'master_fantasy_book_list.xlsx')
+books_spreadsheet_out_excel_file_path = os.path.join((CURRENT_SCRIPT_DIR), 'books_spreadsheet_out.xlsx')
+values_gui_books = {}
 
 def load_settings():
 
@@ -42,9 +67,9 @@ def load_settings():
 
     while not loaded_settings_files:
         # list of values for GUI use
-
+    
         try:
-            with open("fantasy_book_settings.yaml") as f:     
+            with open(fantasy_book_settings_path) as f:     
                 config = yaml.load(f, Loader=SafeLoader)
 
         except PermissionError:
@@ -62,7 +87,7 @@ def load_settings():
             pass
 
         try:
-            with open("master_books_settings.yaml") as g:     
+            with open(master_books_settings_path) as g:     
                 master_list_stats= yaml.load (g, Loader=SafeLoader)
 
         except PermissionError:
@@ -80,7 +105,7 @@ def load_settings():
             pass
 
         try:
-            with open("preferences_fantasy_books.yaml") as h:     
+            with open(preferences_fantasy_books_path) as h:     
                 preferences= yaml.load (h, Loader=SafeLoader)
 
         except PermissionError:
@@ -98,15 +123,19 @@ def load_settings():
             pass
 
         loaded_settings_files = True
+        master_fantasy_book_list_excel_file_path = master_list_stats['MASTER_FANTASY_BOOK_LIST_PATH']
+        if not master_fantasy_book_list_excel_file_path: 
+            master_fantasy_book_list_excel_file_path = os.path.join((CURRENT_SCRIPT_DIR), "master_fantasy_book_list.xlsx")
+            master_list_stats['MASTER_FANTASY_BOOK_LIST_PATH'] = master_fantasy_book_list_excel_file_path
+
+        books_spreadsheet_out_excel_file_path = master_list_stats['BOOKS_SPREADSHEET_OUT_PATH']
+        if not books_spreadsheet_out_excel_file_path: 
+            books_spreadsheet_out_excel_file_path = os.path.join((CURRENT_SCRIPT_DIR), "books_spreadsheet_out.xlsx")
+            master_list_stats['BOOKS_SPREADSHEET_OUT_PATH'] = books_spreadsheet_out_excel_file_path
+
         return config, master_list_stats, preferences
 
 config, master_list_stats, preferences = load_settings()
-
-# globals
-
-global vocab_dictionary, nt, wb_source, ws_source
-global window, overshoot_toggle # for GUI
-global master_excel_workbook, master_excel_worksheet, master_book_pandas_table, stats
 
 # GUI and graphics
 
@@ -124,8 +153,6 @@ empty_icon = i.empty()
 coins_add_icon = i.coins_add()
 archive_icon=i.archive()
 quit_icon = i.quit()
-
-
 overshoot_toggle = sg.user_settings_get_entry('-overshoot_toggle-')
 radio_keys = ('-R1-', '-R2-')
 
@@ -187,7 +214,7 @@ def about_window_gui():
     
     return layout
 
-def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "Book Hoard",destination="master_fantasy_book_list.xlsx",destination_worksheet = "Master List"):
+def archive_to_master(source=books_spreadsheet_out_excel_file_path, source_worksheet = "Book Hoard",destination=master_fantasy_book_list_excel_file_path,destination_worksheet = "Master List"):
     '''
     Places books in an excel spreadsheet into the master_book_list. This is all books that exist in a campaign, and is used to produce additional copies (if they are extant) of already-described books. This happens at the appropriate frequency for the total number of books in the game world.
 
@@ -222,7 +249,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
         ws_dest = wb_dest[destination_worksheet]
     else:
         ws_dest = wb_dest.create_sheet(title=destination_worksheet)
-        book_columns, current_language_index, flavor_title_index = book_characteristics(books)
+        book_columns,current_language_index, flavor_title_index = book_characteristics(books)
 
         # column headers to new sheet
         the_counter = 0
@@ -297,12 +324,12 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
     wb_source_books.close()
     wb_dest.close()
 
-def backup_excel_file(filename = "master_fantasy_book_list.xlsx"):
+def backup_excel_file(filename = master_fantasy_book_list_excel_file_path):
 
     # archive the old master file
     file_source = filename
     the_label = datetime.datetime.now().strftime("%Y%m%d_%H%M_%S")
-    file_destination = 'excel_backups\master_fantasy_book_list_backup_XXLABELXX.xlsx'
+    file_destination = os.path.join((CURRENT_SCRIPT_DIR), 'excel_backups\master_fantasy_book_list_backup_XXLABELXX.xlsx')
     file_destination = file_destination.replace('XXLABELXX',the_label)
     
     try_to_save = True
@@ -482,10 +509,10 @@ def check_radio(key): # GUI function
     radio_keys = ('-R1-', '-R2-')
     
     for k in radio_keys:
-        window1[k].update(radio_unchecked_icon)
-        window1[k].metadata = False
-    window1[key].update(radio_checked_icon)
-    window1[key].metadata = True
+        window_1_gui_books[k].update(radio_unchecked_icon)
+        window_1_gui_books[k].metadata = False
+    window_1_gui_books[key].update(radio_checked_icon)
+    window_1_gui_books[key].metadata = True
 
 def check_if_should_place_existing_title():
 
@@ -509,8 +536,8 @@ def create_fantasy_book(book_type=None, **kwargs):
     book_type = string.capwords(str(book_type))
     return FantasyBook(**kwargs)
 
-def create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx'):
-    file_source = 'blank_excel_files_templates\master_fantasy_book_list_BLANK.xlsx'
+def create_new_master_excel_file(filename = master_fantasy_book_list_excel_file_path):
+    file_source = os.path.join((CURRENT_SCRIPT_DIR), 'blank_excel_files_templates\master_fantasy_book_list_BLANK.xlsx')
     file_destination = filename
     if file_destination[-5:] != ".xlsx":
         file_destination = file_destination + ".xlsx"
@@ -552,7 +579,7 @@ def create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx'):
                     alpha = config['alpha_toaster_popups'],
                     location = None)
 
-def export_books_to_excel (books,filename = 'books_spreadsheet_out.xlsx', worksheet = 'Book Hoard'):
+def export_books_to_excel (books,filename = books_spreadsheet_out_excel_file_path, worksheet = 'Book Hoard'):
     
     '''
     Takes a list of books and exports to Excel file. Default file 'books_spreadsheet_out.xlsx' in same folder, worksheet defaults to "Book Hoard."
@@ -803,7 +830,7 @@ def import_language_words():
         More languages and the like can be added in the config['dictionary_languages'] dictionary at the beginning of the program with the other constants. Key is the language; value is the name of the text file.
     '''
 
-    ROOT_DIR = os.getcwd() # os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
+    ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '.')) # os.getcwd() 
     THIS_FOLDER = os.path.join((ROOT_DIR), 'lorem_text_fantasy')
     vocab_dictionary = {}
 
@@ -817,25 +844,26 @@ def import_language_words():
 
     return vocab_dictionary
 
-def load_excel_objects (filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List'):
+def load_excel_objects (filename = master_fantasy_book_list_excel_file_path, worksheet = 'Master List'):
 
+    workbook_target = os.path.join((CURRENT_SCRIPT_DIR), filename)
 # load source
     try:
-        wb_source = load_workbook(filename= filename)
+        wb_source = load_workbook(filename= workbook_target)
     except:
-        raise FileNotFoundError ("Could not load the source file: " + filename + ".")
+        raise FileNotFoundError ("Could not load the source file: " + workbook_target + ".")
 
     if worksheet in wb_source.sheetnames: 
         ws_source = wb_source[worksheet]
     else:
-        raise FileNotFoundError ("Could not find the worksheet: " + worksheet + " even though file " + filename + " was successfully loaded.")
+        raise FileNotFoundError ("Could not find the worksheet: " + worksheet + " even though file " + workbook_target + " was successfully loaded.")
     
     return wb_source,ws_source
 
 def overshoot_event(overshoot_toggle): # gui
 
     overshoot_toggle = not overshoot_toggle
-    window1['Overshoot'].update(
+    window_1_gui_books['Overshoot'].update(
         text='Yes' if overshoot_toggle else 'No', 
         button_color='white on green' if overshoot_toggle else 'white on red'
         )
@@ -843,6 +871,8 @@ def overshoot_event(overshoot_toggle): # gui
     return overshoot_toggle
     
 def pick_existing_book():
+    global master_excel_workbook
+
     '''
     Randomly picks a single book from the master Excel file, and passes it back as a dictionary book_to_be, which can then be treated as input for create_fantasy_book(book_to_be**)
     '''
@@ -960,9 +990,9 @@ def progress_window_gui():
     #     return layout
 
 def radio_is_checked(key): # GUI
-        return window1[key].metadata
+        return window_1_gui_books[key].metadata
 
-def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',worksheet = 'Master List'): 
+def read_excel_file_into_pandas (filename = master_fantasy_book_list_excel_file_path,worksheet = 'Master List'): 
     
     try_to_save = True
     while try_to_save:
@@ -996,26 +1026,28 @@ def read_excel_file_into_pandas (filename = 'master_fantasy_book_list.xlsx',work
             return excel_file_pandas
 
 def save_gui_settings():
+
+    global values_gui_books
     # Save combo boxes and contents - out
-    sg.user_settings_set_entry('-default_out_filenames-', list(set(sg.user_settings_get_entry('-default_out_filenames-', []) + [values['-EXCEL_OUT_FILENAME-'], ])))
-    sg.user_settings_set_entry('-last_default_out_filename-', values['-EXCEL_OUT_FILENAME-'])
-    sg.user_settings_set_entry('-default_out_worksheets-', list(set(sg.user_settings_get_entry('-default_out_worksheets-', []) + [values['-EXCEL_OUT_WORKSHEET-'], ])))
-    sg.user_settings_set_entry('-last_default_out_worksheet-', values['-EXCEL_OUT_WORKSHEET-'])
+    sg.user_settings_set_entry('-default_out_filenames-', list(set(sg.user_settings_get_entry('-default_out_filenames-', []) + [values_gui_books['-EXCEL_OUT_FILENAME-'], ])))
+    sg.user_settings_set_entry('-last_default_out_filename-', values_gui_books['-EXCEL_OUT_FILENAME-'])
+    sg.user_settings_set_entry('-default_out_worksheets-', list(set(sg.user_settings_get_entry('-default_out_worksheets-', []) + [values_gui_books['-EXCEL_OUT_WORKSHEET-'], ])))
+    sg.user_settings_set_entry('-last_default_out_worksheet-', values_gui_books['-EXCEL_OUT_WORKSHEET-'])
 
     # Save combo boxes and contents - master
-    sg.user_settings_set_entry('-default_master_filenames-', list(set(sg.user_settings_get_entry('-default_master_filenames-', []) + [values['-MASTER_FILENAME-'], ])))
-    sg.user_settings_set_entry('-last_default_master_filename-', values['-MASTER_FILENAME-'])
-    sg.user_settings_set_entry('-default_master_worksheets-', list(set(sg.user_settings_get_entry('-default_master_worksheets-', []) + [values['-MASTER_WORKSHEET-'], ])))
-    sg.user_settings_set_entry('-last_default_master_worksheet-', values['-MASTER_WORKSHEET-'])
+    sg.user_settings_set_entry('-default_master_filenames-', list(set(sg.user_settings_get_entry('-default_master_filenames-', []) + [values_gui_books['-MASTER_FILENAME-'], ])))
+    sg.user_settings_set_entry('-last_default_master_filename-', values_gui_books['-MASTER_FILENAME-'])
+    sg.user_settings_set_entry('-default_master_worksheets-', list(set(sg.user_settings_get_entry('-default_master_worksheets-', []) + [values_gui_books['-MASTER_WORKSHEET-'], ])))
+    sg.user_settings_set_entry('-last_default_master_worksheet-', values_gui_books['-MASTER_WORKSHEET-'])
 
     # sg.user_settings_set_entry('-overshoot_toggle-', overshoot_toggle)
     sg.user_settings_set_entry('-overshoot_toggle-', overshoot_toggle)
 
-    sg.user_settings_set_entry('-books_value-', values['-value_of_books_to_make-'])
-    sg.user_settings_set_entry('-books_number-', values['-number_of_books_to_make-'])
+    sg.user_settings_set_entry('-books_value-', values_gui_books['-value_of_books_to_make-'])
+    sg.user_settings_set_entry('-books_number-', values_gui_books['-number_of_books_to_make-'])
 
-    sg.user_settings_set_entry('-R1_status-', window1["-R1-"].metadata)
-    sg.user_settings_set_entry('-R2_status-', window1["-R2-"].metadata)
+    sg.user_settings_set_entry('-R1_status-', window_1_gui_books["-R1-"].metadata)
+    sg.user_settings_set_entry('-R2_status-', window_1_gui_books["-R2-"].metadata)
 
 def save_master_books_settings():
     '''
@@ -1024,7 +1056,7 @@ def save_master_books_settings():
     try_to_save = True
     while try_to_save:
         try:
-            with open("master_books_settings.yaml", "w") as f:     
+            with open(master_books_settings_path, "w") as f:     
                 yaml.dump(master_list_stats, stream=f, default_flow_style=False, sort_keys=False)
 
         except PermissionError:
@@ -1112,12 +1144,13 @@ def settings_gui():
     
     return layout
 
-
 def update_master_books_array(the_array):
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = the_array['rows']
     master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['market_value']
     master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['number_extant_copies']
     master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['number_extant_available_to_place']
+    master_list_stats['MASTER_FANTASY_BOOK_LIST_PATH'] = master_fantasy_book_list_excel_file_path
+    master_list_stats['BOOKS_SPREADSHEET_OUT_PATH'] = books_spreadsheet_out_excel_file_path
 
 def zero_out_master_books_file():
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = 0
@@ -1140,8 +1173,8 @@ def zero_out_master_books_file():
 vocab_dictionary = import_language_words() # this is here because must come after definition of function
 # read in dataframe for master file
 
-master_book_pandas_table = read_excel_file_into_pandas (filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
-master_excel_workbook, master_excel_worksheet = load_excel_objects(filename = "master_fantasy_book_list.xlsx", worksheet = "Master List")
+master_book_pandas_table = read_excel_file_into_pandas (filename = master_fantasy_book_list_excel_file_path, worksheet = "Master List")
+master_excel_workbook, master_excel_worksheet = load_excel_objects(filename = master_fantasy_book_list_excel_file_path, worksheet = "Master List")
 stats = calculate_stats_excel(master_excel_workbook, master_excel_worksheet)
 
 class FantasyBook():
@@ -1924,265 +1957,259 @@ class MagicBook(FantasyBook):
 
 
 ######################## main() ########################
+def main():
+    global window_1_gui_books, window_settings_gui_books, values_gui_books
+    global master_fantasy_book_list_excel_file_path, books_spreadsheet_out_excel_file_path
+    global master_excel_workbook, overshoot_toggle, overshoot_event
 
-sg.theme('Dark Blue 3')
-window1 = sg.Window(
-    'Fantasy Books Generator', 
-    layout = fantasy_books_main_gui(),
-    grab_anywhere = True,
-    resizable = False,
-    icon = books_icon,
-    finalize = True
+    sg.theme('Dark Blue 3')
+    window_1_gui_books = sg.Window(
+        'Fantasy Books Generator', 
+        layout = fantasy_books_main_gui(),
+        grab_anywhere = True,
+        resizable = False,
+        icon = books_icon,
+        finalize = True
+        )
+
+    sg.theme("Dark Blue 12")
+    window_settings_gui_books = sg.Window(
+        'Preferences',
+        layout = settings_gui(),
+        grab_anywhere=True,
+        icon = settings_general_icon,
+        finalize=True,
+        disable_close = True,
+        modal = False,
     )
 
-sg.theme("Dark Blue 12")
-window_settings = sg.Window(
-    'Preferences',
-    layout = settings_gui(),
-    grab_anywhere=True,
-    icon = settings_general_icon,
-    finalize=True,
-    disable_close = True,
-    modal = False,
-)
+    window_settings_gui_books.hide()
+    # window2.move(window_1_gui_books.current_location()[0]+500, window_1_gui_books.current_location()[1]+200)
 
-# TO BE IMPLEMENTED 
+    # turn off tabbing to all elements in window_1_gui_books
+    for element in window_1_gui_books.key_dict.values():
+            element.block_focus()
 
-# sg.theme("Dark Blue 13")
-# window_about = sg.Window(
-#     'About',
-#     layout = about_window_gui(),
-#     grab_anywhere=True,
-#     icon = '', # TO_DO
-#     finalize=True,
-#     disable_close = True,
-#     modal = False,
-# )
+    # retore tabbing to some in window_1_gui_books
+    window_1_gui_books['-number_of_books_to_make-'].block_focus(block=False)
+    window_1_gui_books['-value_of_books_to_make-'].block_focus(block=False)
 
 
-window_settings.hide()
-# window2.move(window1.current_location()[0]+500, window1.current_location()[1]+200)
+    ########## Main Event Loop of GUI
 
-# turn off tabbing to all elements in window1
-for element in window1.key_dict.values():
-        element.block_focus()
-
-# retore tabbing to some in window1
-window1['-number_of_books_to_make-'].block_focus(block=False)
-window1['-value_of_books_to_make-'].block_focus(block=False)
-
-
-########## Main Event Loop of GUI
-
-while True:
-    window,event, values = sg.read_all_windows()
-    if event in (sg.WIN_CLOSED, 'Quit'):
-        break
-    
-    elif event == "-value_of_books_to_make-": # only allows integers, does not allow to be blank
-         if len(values['-value_of_books_to_make-']) > 0:
-            if values['-value_of_books_to_make-'][-1] not in ('0123456789'):
-                window1['-value_of_books_to_make-'].update(values['-value_of_books_to_make-'][:-1])
-         else:
-             window1['-value_of_books_to_make-'].update('0')
-    
-    elif event == "-number_of_books_to_make-": # only allows integers, does not allow to be blank
-         if len(values['-number_of_books_to_make-']) > 0:
-            if values['-number_of_books_to_make-'][-1] not in ('0123456789'):
-                window1['-number_of_books_to_make-'].update(values['-number_of_books_to_make-'][:-1])
-         else:
-             window1['-number_of_books_to_make-'].update('0')
-
-    elif event == 'Overshoot':                # if the normal button that changes color and text
-            
-            overshoot_toggle = overshoot_event(overshoot_toggle = overshoot_toggle)
-
-    elif event == 'Edit preferences':
-        window1.hide()
-        window_settings.un_hide()
-
-    elif event == 'Save settings and Quit':
-        save_gui_settings()
-        break
-    
-    elif event == 'Clear master Excel file':
-        zero_out_master_books_file()
-        backup_excel_file(filename = 'master_fantasy_book_list.xlsx')
-        create_new_master_excel_file(filename = 'master_fantasy_book_list.xlsx')
-
-    elif event == 'Generate Books':
-        print ("Start:" + str(time.asctime()))
-        window1.set_cursor("watch")
-        # window1.hide()
-        save_gui_settings()
-
-
-        excel_filename = values['-EXCEL_OUT_FILENAME-']
-        excel_worksheet = values['-EXCEL_OUT_WORKSHEET-']
-        master_filename = values['-MASTER_FILENAME-']
-        master_worksheet = values['-MASTER_WORKSHEET-']
-        value_of_books = int(values['-value_of_books_to_make-'])
-        number_of_books = int(values['-number_of_books_to_make-'])
-
-        if window1['-R1-'].metadata:
-            if int(values['-value_of_books_to_make-']) > 0:
-                books, books_value = book_hoard (
-                    value_of_books=value_of_books,
-                    overshoot=overshoot_toggle, 
-                    )
+    while True:
+        window_event_source_gui,event_books_gui, values_gui_books = sg.read_all_windows()
+        if event_books_gui in (sg.WIN_CLOSED, 'Quit'):
+            break
+        
+        elif event_books_gui == "-value_of_books_to_make-": # only allows integers, does not allow to be blank
+            if len(values_gui_books['-value_of_books_to_make-']) > 0:
+                if values_gui_books['-value_of_books_to_make-'][-1] not in ('0123456789'):
+                    window_1_gui_books['-value_of_books_to_make-'].update(values_gui_books['-value_of_books_to_make-'][:-1])
             else:
-                sg.popup_notify("Must have some value to the book hoard. Try at least 500 gp for best results.",
-                    title = "I need a budget",
-                    icon = coins_add_icon,
-                    display_duration_in_ms = config['duration_toaster_popups_longer'],
-                    fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = 0.9,
-                    location = None)
-                window1.set_cursor("arrow")
-                continue
+                window_1_gui_books['-value_of_books_to_make-'].update('0')
+        
+        elif event_books_gui == "-number_of_books_to_make-": # only allows integers, does not allow to be blank
+            if len(values_gui_books['-number_of_books_to_make-']) > 0:
+                if values_gui_books['-number_of_books_to_make-'][-1] not in ('0123456789'):
+                    window_1_gui_books['-number_of_books_to_make-'].update(values_gui_books['-number_of_books_to_make-'][:-1])
+            else:
+                window_1_gui_books['-number_of_books_to_make-'].update('0')
+
+        elif event_books_gui == 'Overshoot':                # if the normal button that changes color and text
+                
+                overshoot_toggle = overshoot_event(overshoot_toggle = overshoot_toggle)
+
+        elif event_books_gui == 'Edit preferences':
+            window_1_gui_books.hide()
+            window_settings_gui_books.un_hide()
+
+        elif event_books_gui == 'Save settings and Quit':
+            save_gui_settings()
+            break
+        
+        elif event_books_gui == 'Clear master Excel file':
+            zero_out_master_books_file()
+            backup_excel_file(filename = master_fantasy_book_list_excel_file_path)
+            create_new_master_excel_file(filename = master_fantasy_book_list_excel_file_path)
+
+        elif event_books_gui == 'Generate Books':
+            print ("Start:" + str(time.asctime()))
+            window_1_gui_books.set_cursor("watch")
+            # window_1_gui_books.hide()
+            save_gui_settings()
+
+
+            excel_filename = values_gui_books['-EXCEL_OUT_FILENAME-']
+            excel_worksheet = values_gui_books['-EXCEL_OUT_WORKSHEET-']
+            master_filename = values_gui_books['-MASTER_FILENAME-']
+            master_worksheet = values_gui_books['-MASTER_WORKSHEET-']
+            value_of_books = int(values_gui_books['-value_of_books_to_make-'])
+            number_of_books = int(values_gui_books['-number_of_books_to_make-'])
+
+            if window_1_gui_books['-R1-'].metadata:
+                if int(values_gui_books['-value_of_books_to_make-']) > 0:
+                    books, books_value = book_hoard (
+                        value_of_books=value_of_books,
+                        overshoot=overshoot_toggle, 
+                        )
+                else:
+                    sg.popup_notify("Must have some value to the book hoard. Try at least 500 gp for best results.",
+                        title = "I need a budget",
+                        icon = coins_add_icon,
+                        display_duration_in_ms = config['duration_toaster_popups_longer'],
+                        fade_in_duration = config['fade_in_duration_toaster_popups'],
+                        alpha = 0.9,
+                        location = None)
+                    window_1_gui_books.set_cursor("arrow")
+                    continue
+                
+            else:
+                if int (values_gui_books['-number_of_books_to_make-']) > 0:
+
+                    books, books_value = book_batch(
+                        number = number_of_books,
+                        )
+                else: 
+                    sg.popup_notify("Must generate at least 1 book.",
+                        title = "Make at least one!",
+                        icon = empty_icon,
+                        display_duration_in_ms = config['duration_toaster_popups_longer'],
+                        fade_in_duration = config['fade_in_duration_toaster_popups'],
+                        alpha = 0.9,
+                        location = None)
+                    window_1_gui_books.set_cursor("arrow")
+                    continue
+
+            books_spreadsheet_out_excel_file_path = os.path.join((CURRENT_SCRIPT_DIR), excel_filename)
+            export_books_to_excel(
+                books,
+                filename = books_spreadsheet_out_excel_file_path, 
+                worksheet = excel_worksheet)
+
+            master_excel_workbook.save(master_fantasy_book_list_excel_file_path) # save the master list with the decremented number of books for that title.
+            master_excel_workbook.close()
+
+            archive_to_master(
+                source=books_spreadsheet_out_excel_file_path, 
+                source_worksheet = excel_worksheet,
+                destination=master_filename,
+                destination_worksheet = master_worksheet,
+                )
+
+            master_as_pandas = read_excel_file_into_pandas(
+                filename = master_filename,
+                worksheet = master_worksheet,
+                )
+            # TO_DO
+            master_excel_workbook, master_excel_worksheet = load_excel_objects(filename = master_fantasy_book_list_excel_file_path, worksheet = 'Master List')
+            stats = calculate_stats_excel(master_excel_workbook, master_excel_worksheet)
+            update_master_books_array(stats)
+            save_master_books_settings() # save data for next time.
+
+            # load for next round:
+            master_book_pandas_table = read_excel_file_into_pandas(
+                filename = master_fantasy_book_list_excel_file_path,
+                worksheet = 'Master List',
+                )
+            window_1_gui_books.set_cursor("arrow")
+            window_1_gui_books.un_hide()
+            print ("End:" + str(time.asctime()))
+
+        elif event_books_gui == "Reset to defaults":
+            window_1_gui_books['-EXCEL_OUT_FILENAME-'].update(value=books_spreadsheet_out_excel_file_path)
+            window_1_gui_books['-EXCEL_OUT_WORKSHEET-'].update(value="Book Hoard")
+            window_1_gui_books['-MASTER_FILENAME-'].update(value=master_fantasy_book_list_excel_file_path)
+            window_1_gui_books['-MASTER_WORKSHEET-'].update(value="Master List")
+            window_1_gui_books['-value_of_books_to_make-'].update(value = 0)
+            window_1_gui_books['-number_of_books_to_make-'].update(value = 0)
+            window_1_gui_books['-R1-'].update(radio_checked_icon)
+            window_1_gui_books['-R1-'].metadata = True
+            window_1_gui_books['-R2-'].update(radio_unchecked_icon)
+            window_1_gui_books['-R2-'].metadata = False
+
+        elif event_books_gui in radio_keys:
+                check_radio(event_books_gui)
+        
+        elif event_books_gui.startswith('-T'):        # If text element clicked, change it into a radio button key
+            check_radio(event_books_gui.replace('T', 'R'))
+
+        elif event_books_gui == 'Clear_History_Default_Out':
+            sg.user_settings_set_entry('-default_out_filenames-', [])
+            sg.user_settings_set_entry('-last_default_out_filename-', '')
+            window_1_gui_books['-EXCEL_OUT_FILENAME-'].update(values_gui_books=[], value='')
+
+        elif event_books_gui == 'Clear_Master_History':
+            sg.user_settings_set_entry('-default_master_filenames-', [])
+            sg.user_settings_set_entry('-last_default_master_filename-', '')
+            window_1_gui_books['-MASTER_FILENAME-'].update(values_gui_books=[], value='')
+
+        elif event_books_gui == 'Clear_History_Default_Out_Worksheet':
+            sg.user_settings_set_entry('-default_out_worksheets-', [])
+            sg.user_settings_set_entry('-last_default_out_worksheet-', '')
+            window_1_gui_books['-EXCEL_OUT_WORKSHEET-'].update(values_gui_books=[], value='')
+
+        elif event_books_gui == 'Clear_History_Master_Worksheet':
+            sg.user_settings_set_entry('-default_master_worksheets-', [])
+            sg.user_settings_set_entry('-last_default_master_worksheet-', '')
+            window_1_gui_books['-MASTER_WORKSHEET-'].update(values_gui_books=[], value='')
+        
+        elif event_books_gui == "-SAVE-PREFS-":
+            for the_setting in config['prefs_list_integers']:
+                preferences[the_setting] = int(values_gui_books[the_setting])
+
+            for the_setting in config['prefs_list_strings']:
+                preferences[the_setting] = values_gui_books[the_setting]
+
+            with open(preferences_fantasy_books_path, "w") as f:     
+                        yaml.dump(preferences, stream=f, default_flow_style=False, sort_keys=True)
+
+            window_settings_gui_books.hide()
+            window_1_gui_books.un_hide()
             
-        else:
-            if int (values['-number_of_books_to_make-']) > 0:
+            sg.popup_notify("Preferences have been saved.",
+                        title = "Settings saved!",
+                        icon = settings_save_icon,
+                        display_duration_in_ms = config['duration_toaster_popups_longer'],
+                        fade_in_duration = config['fade_in_duration_toaster_popups'],
+                        alpha = 0.9,
+                        location = None)
 
-                books, books_value = book_batch(
-                    number = number_of_books,
-                    )
-            else: 
-                sg.popup_notify("Must generate at least 1 book.",
-                    title = "Make at least one!",
-                    icon = empty_icon,
-                    display_duration_in_ms = config['duration_toaster_popups_longer'],
-                    fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = 0.9,
-                    location = None)
-                window1.set_cursor("arrow")
-                continue
-        
-        export_books_to_excel(
-            books,
-            filename = excel_filename, 
-            worksheet = excel_worksheet)
+        elif event_books_gui == "-RESTORE-DEFAULT-PREFS-":
+            for index,value in enumerate(config['prefs_list_integers']):
+                window_event_source_gui[value].update((config['prefs_list_integers_defaults'])[index])
 
-        master_excel_workbook.save('master_fantasy_book_list.xlsx') # save the master list with the decremented number of books for that title.
-        master_excel_workbook.close()
+            for index,value in enumerate (config['prefs_list_strings']):
+                window_event_source_gui[value].update((config['prefs_list_strings_defaults'])[index])
+            
+            sg.popup_notify("Default settings restored. You may Quit to keep, or Quit to discard and revert.",
+                        title = "Default restored",
+                        icon = settings_reset_icon,
+                        display_duration_in_ms = config['duration_toaster_popups_longer'],
+                        fade_in_duration = config['fade_in_duration_toaster_popups'],
+                        alpha = 0.9,
+                        location = None)
 
-        archive_to_master(
-            source=excel_filename, 
-            source_worksheet = excel_worksheet,
-            destination=master_filename,
-            destination_worksheet = master_worksheet,
-            )
+        elif event_books_gui == '-DONT-SAVE-PREFS-':
+            for index,value in enumerate(config['prefs_list_integers']):
+                window_event_source_gui[value].update(preferences[value])
 
-        master_as_pandas = read_excel_file_into_pandas(
-            filename = master_filename,
-            worksheet = master_worksheet,
-            )
-        # TO_DO
-        master_excel_workbook, master_excel_worksheet = load_excel_objects(filename = 'master_fantasy_book_list.xlsx', worksheet = 'Master List')
-        stats = calculate_stats_excel(master_excel_workbook, master_excel_worksheet)
-        update_master_books_array(stats)
-        save_master_books_settings() # save data for next time.
+            for index,value in enumerate (config['prefs_list_strings']):
+                window_event_source_gui[value].update(preferences[value])
+            
+            window_settings_gui_books.hide()
+            window_1_gui_books.un_hide()
+            
+            sg.popup_notify("Preferences were NOT saved. No changes were made.",
+                        title = "Settings not saved.",
+                        icon = settings_cancel_icon,
+                        display_duration_in_ms = config['duration_toaster_popups_longer'],
+                        fade_in_duration = config['fade_in_duration_toaster_popups'],
+                        alpha = 0.9,
+                        location = None)
 
-        # load for next round:
-        master_book_pandas_table = read_excel_file_into_pandas(
-            filename = 'master_fantasy_book_list.xlsx',
-            worksheet = 'Master List',
-            )
-        window1.set_cursor("arrow")
-        window1.un_hide()
-        print ("End:" + str(time.asctime()))
+    window_event_source_gui.close()
 
-    elif event == "Reset to defaults":
-        window1['-EXCEL_OUT_FILENAME-'].update(value="books_spreadsheet_out.xlsx")
-        window1['-EXCEL_OUT_WORKSHEET-'].update(value="Book Hoard")
-        window1['-MASTER_FILENAME-'].update(value="master_fantasy_book_list.xlsx")
-        window1['-MASTER_WORKSHEET-'].update(value="Master List")
-        window1['-value_of_books_to_make-'].update(value = 0)
-        window1['-number_of_books_to_make-'].update(value = 0)
-        window1['-R1-'].update(radio_checked_icon)
-        window1['-R1-'].metadata = True
-        window1['-R2-'].update(radio_unchecked_icon)
-        window1['-R2-'].metadata = False
-
-    elif event in radio_keys:
-            check_radio(event)
-    
-    elif event.startswith('-T'):        # If text element clicked, change it into a radio button key
-        check_radio(event.replace('T', 'R'))
-
-    elif event == 'Clear_History_Default_Out':
-        sg.user_settings_set_entry('-default_out_filenames-', [])
-        sg.user_settings_set_entry('-last_default_out_filename-', '')
-        window1['-EXCEL_OUT_FILENAME-'].update(values=[], value='')
-
-    elif event == 'Clear_Master_History':
-        sg.user_settings_set_entry('-default_master_filenames-', [])
-        sg.user_settings_set_entry('-last_default_master_filename-', '')
-        window1['-MASTER_FILENAME-'].update(values=[], value='')
-
-    elif event == 'Clear_History_Default_Out_Worksheet':
-        sg.user_settings_set_entry('-default_out_worksheets-', [])
-        sg.user_settings_set_entry('-last_default_out_worksheet-', '')
-        window1['-EXCEL_OUT_WORKSHEET-'].update(values=[], value='')
-
-    elif event == 'Clear_History_Master_Worksheet':
-        sg.user_settings_set_entry('-default_master_worksheets-', [])
-        sg.user_settings_set_entry('-last_default_master_worksheet-', '')
-        window1['-MASTER_WORKSHEET-'].update(values=[], value='')
-    
-    elif event == "-SAVE-PREFS-":
-        for the_setting in config['prefs_list_integers']:
-            preferences[the_setting] = int(values[the_setting])
-
-        for the_setting in config['prefs_list_strings']:
-            preferences[the_setting] = values[the_setting]
-
-        with open("preferences_fantasy_books.yaml", "w") as f:     
-                    yaml.dump(preferences, stream=f, default_flow_style=False, sort_keys=True)
-
-        window_settings.hide()
-        window1.un_hide()
-        
-        sg.popup_notify("Preferences have been saved.",
-                    title = "Settings saved!",
-                    icon = settings_save_icon,
-                    display_duration_in_ms = config['duration_toaster_popups_longer'],
-                    fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = 0.9,
-                    location = None)
-
-    elif event == "-RESTORE-DEFAULT-PREFS-":
-        for index,value in enumerate(config['prefs_list_integers']):
-            window[value].update((config['prefs_list_integers_defaults'])[index])
-
-        for index,value in enumerate (config['prefs_list_strings']):
-               window[value].update((config['prefs_list_strings_defaults'])[index])
-        
-        sg.popup_notify("Default settings restored. You may Quit to keep, or Quit to discard and revert.",
-                    title = "Default restored",
-                    icon = settings_reset_icon,
-                    display_duration_in_ms = config['duration_toaster_popups_longer'],
-                    fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = 0.9,
-                    location = None)
-
-    elif event == '-DONT-SAVE-PREFS-':
-        for index,value in enumerate(config['prefs_list_integers']):
-            window[value].update(preferences[value])
-
-        for index,value in enumerate (config['prefs_list_strings']):
-               window[value].update(preferences[value])
-        
-        window_settings.hide()
-        window1.un_hide()
-        
-        sg.popup_notify("Preferences were NOT saved. No changes were made.",
-                    title = "Settings not saved.",
-                    icon = settings_cancel_icon,
-                    display_duration_in_ms = config['duration_toaster_popups_longer'],
-                    fade_in_duration = config['fade_in_duration_toaster_popups'],
-                    alpha = 0.9,
-                    location = None)
-
-window.close()
-
+if __name__ == "__main__":
+   print ("Running fantasy_books.py as MAIN.")
+   main()

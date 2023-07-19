@@ -115,3 +115,7 @@ From within the software, users can easily edit:
 
 ## Version 1.1.2
 * Tried a different way of creating executable to deal with https://github.com/glsmith7/fantasy_books/issues/9
+
+## Version 1.1.3
+* Restructured folders for further expansion
+* turned logging level to CRITICAL
