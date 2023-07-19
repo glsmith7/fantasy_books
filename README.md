@@ -119,3 +119,5 @@ From within the software, users can easily edit:
 ## Version 1.1.3
 * Restructured folders for further expansion
 * turned logging level to CRITICAL
+* update requirements.txt file
+* correct default save location to avoid absolute pathway? Hopefully solves https://github.com/glsmith7/fantasy_books/issues/9.

@@ -2034,7 +2034,7 @@ def main():
             create_new_master_excel_file(filename = master_fantasy_book_list_excel_file_path)
 
         elif event_books_gui == 'Generate Books':
-            print ("Start:" + str(time.asctime()))
+            # print ("Start:" + str(time.asctime()))
             window_1_gui_books.set_cursor("watch")
             # window_1_gui_books.hide()
             save_gui_settings()
@@ -2114,13 +2114,13 @@ def main():
                 )
             window_1_gui_books.set_cursor("arrow")
             window_1_gui_books.un_hide()
-            print ("End:" + str(time.asctime()))
+            # print ("End:" + str(time.asctime()))
 
         elif event_books_gui == "Reset to defaults":
-            window_1_gui_books['-EXCEL_OUT_FILENAME-'].update(value=books_spreadsheet_out_excel_file_path)
-            window_1_gui_books['-EXCEL_OUT_WORKSHEET-'].update(value="Book Hoard")
-            window_1_gui_books['-MASTER_FILENAME-'].update(value=master_fantasy_book_list_excel_file_path)
-            window_1_gui_books['-MASTER_WORKSHEET-'].update(value="Master List")
+            window_1_gui_books['-EXCEL_OUT_FILENAME-'].update(value='books_spreadsheet_out.xlsx')
+            window_1_gui_books['-EXCEL_OUT_WORKSHEET-'].update(value='Book Hoard')
+            window_1_gui_books['-MASTER_FILENAME-'].update(value= "master_fantasy_book_list.xlsx")
+            window_1_gui_books['-MASTER_WORKSHEET-'].update(value='Master List')
             window_1_gui_books['-value_of_books_to_make-'].update(value = 0)
             window_1_gui_books['-number_of_books_to_make-'].update(value = 0)
             window_1_gui_books['-R1-'].update(radio_checked_icon)
@@ -2211,5 +2211,5 @@ def main():
     window_event_source_gui.close()
 
 if __name__ == "__main__":
-   print ("Running fantasy_books.py as MAIN.")
+   # print ("Running fantasy_books.py as MAIN.")
    main()
