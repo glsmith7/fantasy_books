@@ -106,7 +106,7 @@ config, master_list_stats, preferences = load_settings()
 
 global vocab_dictionary, nt, wb_source, ws_source
 global window, overshoot_toggle # for GUI
-global master_excel_workbook, master_excel_worksheet,master_book_pandas_table, stats
+global master_excel_workbook, master_excel_worksheet, master_book_pandas_table, stats
 
 # GUI and graphics
 
@@ -222,7 +222,7 @@ def archive_to_master(source="books_spreadsheet_out.xlsx", source_worksheet = "B
         ws_dest = wb_dest[destination_worksheet]
     else:
         ws_dest = wb_dest.create_sheet(title=destination_worksheet)
-        book_columns,current_language_index, flavor_title_index = book_characteristics(books)
+        book_columns, current_language_index, flavor_title_index = book_characteristics(books)
 
         # column headers to new sheet
         the_counter = 0
