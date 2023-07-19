@@ -750,7 +750,7 @@ def fantasy_books_main_gui():
                     ), 
 
             sg.Text('Allow last book to exceed budget:',
-                    ), 
+                    ),
 
             sg.Button (
                     key='Overshoot', 
@@ -1017,10 +1017,14 @@ def read_excel_file_into_pandas (filename = master_fantasy_book_list_excel_file_
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 1,
                     location = None)
+            sg.popup_ok ("Quitting ...")
+            sys.exit()
                 
         except:
             sg.popup_error("Problem opening file:" + filename + " If you get a ZipFile error, this may be due to a corrupt Excel file.")
-            
+            sg.popup_ok ("Quitting ...")
+            sys.exit()
+
         else:
             try_to_save = False # succeeded!     
             return excel_file_pandas
@@ -2030,8 +2034,9 @@ def main():
         
         elif event_books_gui == 'Clear master Excel file':
             zero_out_master_books_file()
-            backup_excel_file(filename = master_fantasy_book_list_excel_file_path)
-            create_new_master_excel_file(filename = master_fantasy_book_list_excel_file_path)
+            if os.path.isfile (master_fantasy_book_list_excel_file_path):
+                backup_excel_file(filename = master_fantasy_book_list_excel_file_path)
+            create_new_master_excel_file(filename = "master_fantasy_book.list.xlsx")
 
         elif event_books_gui == 'Generate Books':
             # print ("Start:" + str(time.asctime()))

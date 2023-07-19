@@ -136,6 +136,10 @@
   {
    "optionDest": "datas",
    "value": "C:/p/fantasy_books_workspace/fantasy_books/requirements.txt;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/Dropbox/My Documents/Greg Documents/Programming/Python 3/fantasy_books_workspace/fantasy_books/.venv/Lib/site-packages/d20/grammar.lark;."
   }
  ],
  "nonPyinstallerOptions": {
