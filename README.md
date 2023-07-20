@@ -118,6 +118,9 @@ From within the software, users can easily edit:
 
 ## Version 1.1.3
 * Restructured folders for further expansion
-* turned logging level to CRITICAL
-* update requirements.txt file
+* turned logging level down to CRITICAL
+* updated requirements.txt file
 * correct default save location to avoid absolute pathway? Hopefully solves https://github.com/glsmith7/fantasy_books/issues/9.
+* popups if file not exist to avoid infinite loop
+* check for absent master file when reseting master file to avoid FileNotFound infinite loop.
+* give option to create new, blank master file if it is not found. Values in master_books_settings.yaml reset to zero in this case.

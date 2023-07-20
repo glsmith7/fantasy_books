@@ -123,15 +123,15 @@ def load_settings():
             pass
 
         loaded_settings_files = True
-        master_fantasy_book_list_excel_file_path = master_list_stats['MASTER_FANTASY_BOOK_LIST_PATH']
-        if not master_fantasy_book_list_excel_file_path: 
-            master_fantasy_book_list_excel_file_path = os.path.join((CURRENT_SCRIPT_DIR), "master_fantasy_book_list.xlsx")
-            master_list_stats['MASTER_FANTASY_BOOK_LIST_PATH'] = master_fantasy_book_list_excel_file_path
+        # master_fantasy_book_list_excel_file_path = master_list_stats['MASTER_FANTASY_BOOK_LIST_PATH']
+        # if not master_fantasy_book_list_excel_file_path: 
+        #     master_fantasy_book_list_excel_file_path = os.path.join((CURRENT_SCRIPT_DIR), "master_fantasy_book_list.xlsx")
+        #     master_list_stats['MASTER_FANTASY_BOOK_LIST_PATH'] = master_fantasy_book_list_excel_file_path
 
-        books_spreadsheet_out_excel_file_path = master_list_stats['BOOKS_SPREADSHEET_OUT_PATH']
-        if not books_spreadsheet_out_excel_file_path: 
-            books_spreadsheet_out_excel_file_path = os.path.join((CURRENT_SCRIPT_DIR), "books_spreadsheet_out.xlsx")
-            master_list_stats['BOOKS_SPREADSHEET_OUT_PATH'] = books_spreadsheet_out_excel_file_path
+        # books_spreadsheet_out_excel_file_path = master_list_stats['BOOKS_SPREADSHEET_OUT_PATH']
+        # if not books_spreadsheet_out_excel_file_path: 
+        #     books_spreadsheet_out_excel_file_path = os.path.join((CURRENT_SCRIPT_DIR), "books_spreadsheet_out.xlsx")
+        #     master_list_stats['BOOKS_SPREADSHEET_OUT_PATH'] = books_spreadsheet_out_excel_file_path
 
         return config, master_list_stats, preferences
 
@@ -672,7 +672,7 @@ def fantasy_books_main_gui():
             [
              sg.Text('Default spreadsheet out:'),  
              sg.Combo(sorted(sg.user_settings_get_entry('-default_out_filenames-', [])), 
-                      default_value=sg.user_settings_get_entry('-last_default_out_filename-', ''), 
+                      default_value='books_spreadsheet_out.xlsx', 
                       size=(50, 1), 
                       key='-EXCEL_OUT_FILENAME-',
                       ),   
@@ -683,7 +683,7 @@ def fantasy_books_main_gui():
                      ), 
             sg.Text('Worksheet:'), 
             sg.Combo(sorted(sg.user_settings_get_entry('-default_out_worksheets-', [])), 
-                default_value=sg.user_settings_get_entry('-last_default_out_worksheet-', ''), 
+                default_value=('Book Hoard'), 
                 size=(20, 1), 
                 key='-EXCEL_OUT_WORKSHEET-',
                 ), 
@@ -696,7 +696,7 @@ def fantasy_books_main_gui():
             [
              sg.Text('Default master list:'),  
              sg.Combo(sorted(sg.user_settings_get_entry('-default_master_filenames-', [])), 
-                    default_value=sg.user_settings_get_entry('-last_default_master_filename-', ''), 
+                    default_value='master_fantasy_book_list.xlsx', 
                     size=(50, 1), 
                     key='-MASTER_FILENAME-',
                     expand_x=True,
@@ -711,7 +711,7 @@ def fantasy_books_main_gui():
                  ),
             sg.Text('Worksheet:'), 
             sg.Combo(sorted(sg.user_settings_get_entry('-default_master_worksheets-', [])), 
-                    default_value=sg.user_settings_get_entry('-last_default_master_worksheet-', ''),
+                    default_value='Master List',
                     size=(20, 1), 
                     key='-MASTER_WORKSHEET-',
                     disabled = True,
@@ -1010,15 +1010,24 @@ def read_excel_file_into_pandas (filename = master_fantasy_book_list_excel_file_
                 break
 
         except FileNotFoundError:
-            sg.popup_notify('The old file ' + filename + ' could not be archived, probably because it has been either renamed or does not exist.',
+            sg.popup_notify('The old file ' + filename + ' was not found, probably because it has been either renamed or does not exist.',
                     title = "File not found",
                     icon = lost_file_icon,
                     display_duration_in_ms = 5000,
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 1,
                     location = None)
-            sg.popup_ok ("Quitting ...")
-            sys.exit()
+            
+            user_response = sg.popup_ok_cancel ("A new, empty excel master file will be created if you click 'Ok'. \n\nTo quit without saving, click CANCEL.")
+            
+            if user_response == "Cancel":
+                try_to_save = False
+                sg.popup_ok ("Quitting ...")
+                sys.exit()
+                break
+            else:
+                create_new_master_excel_file(filename='master_fantasy_book_list.xlsx')
+                zero_out_master_books_file()
                 
         except:
             sg.popup_error("Problem opening file:" + filename + " If you get a ZipFile error, this may be due to a corrupt Excel file.")
@@ -1153,8 +1162,8 @@ def update_master_books_array(the_array):
     master_list_stats['TOTAL_VALUE_OF_SINGLE_UNIQUE_TITLES'] = the_array['market_value']
     master_list_stats['TOTAL_BOOKS_IN_MASTER'] = the_array['number_extant_copies']
     master_list_stats['TOTAL_BOOKS_IN_MASTER_FOR_PLACEMENT'] = the_array ['number_extant_available_to_place']
-    master_list_stats['MASTER_FANTASY_BOOK_LIST_PATH'] = master_fantasy_book_list_excel_file_path
-    master_list_stats['BOOKS_SPREADSHEET_OUT_PATH'] = books_spreadsheet_out_excel_file_path
+    # master_list_stats['MASTER_FANTASY_BOOK_LIST_PATH'] = master_fantasy_book_list_excel_file_path
+    # master_list_stats['BOOKS_SPREADSHEET_OUT_PATH'] = books_spreadsheet_out_excel_file_path
 
 def zero_out_master_books_file():
     master_list_stats['TOTAL_UNIQUE_TITLES_IN_MASTER'] = 0
