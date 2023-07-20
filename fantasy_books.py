@@ -664,7 +664,7 @@ def export_books_to_excel (books,filename = books_spreadsheet_out_excel_file_pat
     sg.popup_notify("Export to Excel file \n\n" + filename + "\n\nis complete.",
         title = "Excel export done.",
         icon = excel_icon,
-        display_duration_in_ms = 10000, #config['duration_toaster_popups'],
+        display_duration_in_ms = config['duration_toaster_popups'],
         fade_in_duration = config['fade_in_duration_toaster_popups'],
         alpha = config['alpha_toaster_popups'],
         location = None)
