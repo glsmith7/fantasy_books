@@ -609,8 +609,7 @@ def export_books_to_excel (books,filename = books_spreadsheet_out_excel_file_pat
         ws = wb.create_sheet(title=worksheet)
         
     if 'Sheet' in wb.sheetnames:
-        std=wb.get_sheet_by_name('Sheet')
-        wb.remove_sheet(std)
+        wb.remove('Sheet')
 
     # column headers
     the_counter = 0
