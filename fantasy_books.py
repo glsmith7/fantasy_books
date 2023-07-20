@@ -51,7 +51,7 @@ global master_fantasy_book_list_excel_file_path, books_spreadsheet_out_excel_fil
 global vocab_dictionary, nt, wb_source, ws_source
 global master_excel_workbook, master_excel_worksheet,master_book_pandas_table, stats
 
-CURRENT_SCRIPT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '.'))
+CURRENT_SCRIPT_DIR = os.getcwd()
 
 fantasy_book_settings_path = os.path.join((CURRENT_SCRIPT_DIR), 'settings/fantasy_books_settings.yaml')
 master_books_settings_path = os.path.join((CURRENT_SCRIPT_DIR), 'settings/master_books_settings.yaml')
@@ -348,13 +348,14 @@ def backup_excel_file(filename = master_fantasy_book_list_excel_file_path):
                 break
 
         except FileNotFoundError:
-            sg.popup_notify('The old file ' + file_source + ' could not be archived, probably because it has been either renamed or does not exist. Try creating an empty excel file named ' + file_source,
+            sg.popup_notify('The old file ' + file_source + ' could not be archived, probably because it has been either renamed or does not exist. We will create a new master file.',
                     title = "File not found",
                     icon = lost_file_icon,
                     display_duration_in_ms = 5000,
                     fade_in_duration = config['fade_in_duration_toaster_popups'],
                     alpha = 1,
                     location = None)
+            try_to_save = False # nothing to save, so continue
         
         except:
             raise ("A new file could not be created.")
@@ -606,7 +607,11 @@ def export_books_to_excel (books,filename = books_spreadsheet_out_excel_file_pat
         ws = wb[worksheet]
     else:
         ws = wb.create_sheet(title=worksheet)
-
+        
+    if 'Sheet1' in wb.sheetnames:
+        std=wb.get_sheet_by_name('Sheet1')
+        wb.remove_sheet(std)
+        
     # column headers
     the_counter = 0
     for item in book_columns:
