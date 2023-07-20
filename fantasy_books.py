@@ -608,8 +608,8 @@ def export_books_to_excel (books,filename = books_spreadsheet_out_excel_file_pat
     else:
         ws = wb.create_sheet(title=worksheet)
         
-    if 'Sheet' in wb.sheetnames:
-        wb.remove('Sheet')
+    # if 'Sheet' in wb.sheetnames:
+    #     wb.remove('Sheet')
 
     # column headers
     the_counter = 0
