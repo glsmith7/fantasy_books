@@ -611,7 +611,7 @@ def export_books_to_excel (books,filename = books_spreadsheet_out_excel_file_pat
     if 'Sheet1' in wb.sheetnames:
         std=wb.get_sheet_by_name('Sheet1')
         wb.remove_sheet(std)
-        
+
     # column headers
     the_counter = 0
     for item in book_columns:
@@ -2050,7 +2050,7 @@ def main():
             zero_out_master_books_file()
             if os.path.isfile (master_fantasy_book_list_excel_file_path):
                 backup_excel_file(filename = master_fantasy_book_list_excel_file_path)
-            create_new_master_excel_file(filename = "master_fantasy_book.list.xlsx")
+            create_new_master_excel_file(filename = "master_fantasy_book_list.xlsx")
 
         elif event_books_gui == 'Generate Books':
             # print ("Start:" + str(time.asctime()))
