@@ -659,7 +659,7 @@ def export_books_to_excel (books,filename = books_spreadsheet_out_excel_file_pat
     sg.popup_notify("Export to Excel file \n\n" + filename + "\n\nis complete.",
         title = "Excel export done.",
         icon = excel_icon,
-        display_duration_in_ms = config['duration_toaster_popups'],
+        display_duration_in_ms = 10000, #config['duration_toaster_popups'],
         fade_in_duration = config['fade_in_duration_toaster_popups'],
         alpha = config['alpha_toaster_popups'],
         location = None)
@@ -2151,22 +2151,22 @@ def main():
         elif event_books_gui == 'Clear_History_Default_Out':
             sg.user_settings_set_entry('-default_out_filenames-', [])
             sg.user_settings_set_entry('-last_default_out_filename-', '')
-            window_1_gui_books['-EXCEL_OUT_FILENAME-'].update(values_gui_books=[], value='')
+            window_1_gui_books['-EXCEL_OUT_FILENAME-'].update(values=[], value='')
 
         elif event_books_gui == 'Clear_Master_History':
             sg.user_settings_set_entry('-default_master_filenames-', [])
             sg.user_settings_set_entry('-last_default_master_filename-', '')
-            window_1_gui_books['-MASTER_FILENAME-'].update(values_gui_books=[], value='')
+            window_1_gui_books['-MASTER_FILENAME-'].update(values=[], value='')
 
         elif event_books_gui == 'Clear_History_Default_Out_Worksheet':
             sg.user_settings_set_entry('-default_out_worksheets-', [])
             sg.user_settings_set_entry('-last_default_out_worksheet-', '')
-            window_1_gui_books['-EXCEL_OUT_WORKSHEET-'].update(values_gui_books=[], value='')
+            window_1_gui_books['-EXCEL_OUT_WORKSHEET-'].update(values=[], value='')
 
         elif event_books_gui == 'Clear_History_Master_Worksheet':
             sg.user_settings_set_entry('-default_master_worksheets-', [])
             sg.user_settings_set_entry('-last_default_master_worksheet-', '')
-            window_1_gui_books['-MASTER_WORKSHEET-'].update(values_gui_books=[], value='')
+            window_1_gui_books['-MASTER_WORKSHEET-'].update(values=[], value='')
         
         elif event_books_gui == "-SAVE-PREFS-":
             for the_setting in config['prefs_list_integers']:

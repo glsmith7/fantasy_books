@@ -18,7 +18,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-executables/
+# executables/
 lib/
 lib64/
 output/

@@ -139,7 +139,11 @@
   },
   {
    "optionDest": "datas",
-   "value": "D:/Dropbox/My Documents/Greg Documents/Programming/Python 3/fantasy_books_workspace/fantasy_books/.venv/Lib/site-packages/d20/grammar.lark;."
+   "value": "C:/p/fantasy_books_workspace/fantasy_books/.venv/Lib/site-packages/d20/grammar.lark;d20/"
+  },
+  {
+   "optionDest": "collect_data",
+   "value": "d20"
   }
  ],
  "nonPyinstallerOptions": {
