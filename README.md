@@ -124,3 +124,6 @@ From within the software, users can easily edit:
 * popups if file not exist to avoid infinite loop
 * check for absent master file when reseting master file to avoid FileNotFound infinite loop.
 * give option to create new, blank master file if it is not found. Values in master_books_settings.yaml reset to zero in this case.
+
+## Version 1.1.14
+* 
