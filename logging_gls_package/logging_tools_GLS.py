@@ -4,7 +4,10 @@ import datetime as dt
 import os
 
 
-ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__)))
+
+working_direct = os.getcwd()
+log_file_path = os.path.join((working_direct), 'logging_gls_package','logGLS.log')
+
 
 # Adopted from https://stackoverflow.com/a/35804945/1691778
 # Adds a new logging method to the logging module
@@ -35,7 +38,8 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
 # Create the TRACE level
 addLoggingLevel("TRACE", logging.DEBUG - 5)
 
-logging.basicConfig(format = '%(levelname)s:\t|%(asctime)s|%(module)s|%(funcName)s|%(lineno)d - %(message)s', datefmt='%m/%d/%Y %I:%M:%S', encoding='utf-8', level=logging.CRITICAL,filename="logGLS.log",filemode='w')
+print (log_file_path)
+logging.basicConfig(format = '%(levelname)s:\t|%(asctime)s|%(module)s|%(funcName)s|%(lineno)d - %(message)s', datefmt='%m/%d/%Y %I:%M:%S', encoding='utf-8', level=logging.CRITICAL,filename=log_file_path,filemode='w')
 
 fileHandler = logging.FileHandler ("logGLS.log")
 logger_base = logging.getLogger(__name__)

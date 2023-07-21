@@ -1981,7 +1981,7 @@ def main():
 
     sg.theme('Dark Blue 3')
     window_1_gui_books = sg.Window(
-        'Fantasy Books Generator', 
+        'Fantasy Books Generator v. 1.1.21', 
         layout = fantasy_books_main_gui(),
         grab_anywhere = True,
         resizable = False,

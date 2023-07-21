@@ -5,7 +5,7 @@
 
 # GLS added
 /aa-archive
-logGLS.log
+*.log
 executables/
 output/
 __pycache__/
