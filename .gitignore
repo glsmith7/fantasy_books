@@ -10,6 +10,7 @@ executables/
 output/
 __pycache__/
 .vscode/
+*.code-workspace
 
 # C extensions
 *.so
