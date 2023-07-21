@@ -2053,10 +2053,15 @@ def main():
 
         elif event_books_gui == 'Generate Books':
             # print ("Start:" + str(time.asctime()))
+            if not values_gui_books['-value_of_books_to_make-']: values_gui_books['-value_of_books_to_make-'] = 0
+            if not values_gui_books['-number_of_books_to_make-']: values_gui_books['-number_of_books_to_make-'] =0
+            if not values_gui_books['-EXCEL_OUT_FILENAME-']: values_gui_books['-EXCEL_OUT_FILENAME-'] = 'books_spreadsheet_out.xlsx'
+            if not values_gui_books['-EXCEL_OUT_WORKSHEET-']: values_gui_books['-EXCEL_OUT_WORKSHEET-'] = 'Book Hoard'
+            if not values_gui_books['-MASTER_FILENAME-']: values_gui_books['-MASTER_FILENAME-'] = 'master_fantasy_book_list.xlsx'
+            if not values_gui_books['-MASTER_WORKSHEET-']: values_gui_books['-MASTER_WORKSHEET-'] = 'Master List'
             window_1_gui_books.set_cursor("watch")
             # window_1_gui_books.hide()
             save_gui_settings()
-
 
             excel_filename = values_gui_books['-EXCEL_OUT_FILENAME-']
             excel_worksheet = values_gui_books['-EXCEL_OUT_WORKSHEET-']
