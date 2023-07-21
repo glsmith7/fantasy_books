@@ -138,10 +138,6 @@
    "value": "C:/p/fantasy_books_workspace/fantasy_books/requirements.txt;."
   },
   {
-   "optionDest": "datas",
-   "value": "C:/p/fantasy_books_workspace/fantasy_books/.venv/Lib/site-packages/d20/grammar.lark;d20/"
-  },
-  {
    "optionDest": "collect_data",
    "value": "d20"
   }
