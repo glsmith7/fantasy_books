@@ -129,7 +129,7 @@ From within the software, users can easily edit:
 * Fixed crash if text fields with number of books to generate or value to generate were empty, rather than equal to zero.
 
 ## Version 1.1.15
-* Cosmetic tweaks, no user-facing changes.
+* Cosmetic code tweaks, no user-facing changes.
 
 ## Version 1.1.16
-* In progress....
+* Cosmetic code tweaks, no user-facing changes.
