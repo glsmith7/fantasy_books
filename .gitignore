@@ -1,11 +1,14 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
 *.py[cod]
 *$py.class
 
 # GLS added
 /aa-archive
 logGLS.log
+executables/
+output/
+__pycache__/
+.vscode/
 
 # C extensions
 *.so
@@ -20,7 +23,6 @@ eggs/
 .eggs/
 lib/
 lib64/
-output/
 parts/
 sdist/
 var/
