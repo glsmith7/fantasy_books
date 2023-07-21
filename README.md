@@ -10,7 +10,7 @@ I am a strictly amateur, self-taught programmer, and this was my first python co
 
 If you just want to download and run the program:
 
-1. download the zip file located in the "executable" folder on Git. Unzip it.
+1. download the latest release file from git. Unzip it.
 
 2. The first file after the folders will be a shortcut to acks_fpg.exe -- run it. The two Excel files created also have shortcuts directly beneath.
 
