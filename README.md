@@ -115,3 +115,21 @@ From within the software, users can easily edit:
 
 ## Version 1.1.2
 * Tried a different way of creating executable to deal with https://github.com/glsmith7/fantasy_books/issues/9
+
+## Version 1.1.13
+* Restructured folders for further expansion
+* turned logging level down to CRITICAL
+* updated requirements.txt file
+* correct default save location to avoid absolute pathway? Hopefully solves https://github.com/glsmith7/fantasy_books/issues/9.
+* popups if file not exist to avoid infinite loop
+* check for absent master file when reseting master file to avoid FileNotFound infinite loop.
+* give option to create new, blank master file if it is not found. Values in master_books_settings.yaml reset to zero in this case.
+
+## Version 1.1.14
+* Fixed crash if text fields with number of books to generate or value to generate were empty, rather than equal to zero.
+
+## Version 1.1.15
+* Cosmetic tweaks, no user-facing changes.
+
+## Version 1.1.16
+* In progress....
